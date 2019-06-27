@@ -37,9 +37,10 @@ export class SearchBoxComponent implements OnInit {
     }
     
     if($event.code == "Tab"){
-      let index = this.busqueda.nativeElement.value.split(' ').length-1;
-      console.log(this.busqueda.nativeElement.value.split(' ').slice(0,index));
-      this.busqueda.nativeElement.value += this.busqueda.nativeElement.value.split(' ').slice(0,index).join(' ') + this.nextWord;
+      let aux = this.busqueda.nativeElement.value.split(' ');
+      aux.pop();
+      aux.push(this.nextWord);      
+      this.busqueda.nativeElement.value = aux.join(' ') + ' ';
       this.nextWord = "";
     }
 
