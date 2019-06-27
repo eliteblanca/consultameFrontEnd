@@ -1,0 +1,8 @@
+.site{
+    display: grid;
+    grid-template-columns: auto;
+    grid-template-rows: 3rem auto;
+
+    grid-template-areas: "main_header"
+                         "mainContent";
+}
