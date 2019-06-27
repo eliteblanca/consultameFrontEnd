@@ -1,6 +1,7 @@
 <div class="search_box">
-    <input type="text" placeholder="Buscar" class="search_box_input" (keyup)="onKeyup()" (focus)="onFocus()" (focusout)="onFocusout()" #busqueda>
+    <input type="text" placeholder="Buscar" class="search_box_input" (keydown.Tab)="onKeyup($event)" (keyup)="onKeyup($event)" (focus)="onFocus()" (focusout)="onFocusout()" #busqueda>
     <div class="search_box_suggestions">
+        <div class="search_box_suggestion nextWord" *ngIf="nextWord">{{nextWord}}</div>        
         <div class="search_box_suggestion" *ngFor="let suggestion of suggestions">{{suggestion}}</div>        
     </div>
 </div>

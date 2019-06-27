@@ -9,8 +9,11 @@ export class SearchBoxComponent implements OnInit {
 
   @ViewChild('busqueda',{static:false}) busqueda: ElementRef;
   
+  nextWord:string = "";
+  lastWord:string = "";
   suggestions:string[];
-  diccionario:string[] = new DiccionarioEjemplo().listadoPalabras
+  diccionario:string[] = new DiccionarioEjemplo().listadoPalabras;
+
   onFocus(){
     if(!this.busqueda.nativeElement.value){
       this.suggestions = this.diccionario.slice(0,10);
@@ -21,7 +24,25 @@ export class SearchBoxComponent implements OnInit {
     this.suggestions = [];
   }
 
-  onKeyup(){
+  onKeyup($event){
+    if($event.code == "Space" || $event.code == "Enter"){
+      this.nextWord = "";
+    }else{
+      let index = this.busqueda.nativeElement.value.split(' ').length-1;
+      if(index >= 0){
+        this.nextWord = this.diccionario.filter((x)=>{
+          return new RegExp(`^${this.busqueda.nativeElement.value.split(' ')[index]}.*$`).test(x);
+        })[0];
+      }
+    }
+    
+    if($event.code == "Tab"){
+      let index = this.busqueda.nativeElement.value.split(' ').length-1;
+      console.log(this.busqueda.nativeElement.value.split(' ').slice(0,index));
+      this.busqueda.nativeElement.value += this.busqueda.nativeElement.value.split(' ').slice(0,index).join(' ') + this.nextWord;
+      this.nextWord = "";
+    }
+
     this.suggestions = this.diccionario.filter((x)=>{
       return new RegExp(`^${this.busqueda.nativeElement.value}.*$`).test(x);
     }).slice(0,10);

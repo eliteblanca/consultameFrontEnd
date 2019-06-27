@@ -27,13 +27,18 @@
     box-shadow: var(--shadow2);    
 }
 
+.search_box .nextWord{
+    text-align: end;
+    color: var(--secondaryText);
+}
+
 .search_box_input{
     height: 2.5rem;
     font-family: inherit;
     font-size: inherit;
     border: 0;
     background-color: transparent;
-    width: 20rem;
+    max-width: 20rem;
     padding: 1rem;
 }
 
