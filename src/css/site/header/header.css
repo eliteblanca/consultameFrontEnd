@@ -30,6 +30,17 @@
 .search_box .nextWord{
     text-align: end;
     color: var(--secondaryText);
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.search_box .nextWord span{
+    font-size: .5rem;
+    background-color: var(--primaryLight);
+    color: var(--secondaryText);
+    padding: .2rem;
+    margin-right: .5rem;
 }
 
 .search_box_input{
