@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpResponse } from '@angular/common/http';
-import { Observable,Subject,of } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { Observable,of } from 'rxjs';
 import { switchMap } from "rxjs/operators";
 enum EndPoints {
   suggestions = "suggestions"
@@ -19,7 +19,6 @@ export class ApiService {
   * @returns Observable<string[]>
   */
   getSuggestions(suggestion?:string):Observable<string[]>{
-    console.log(`getSuggestions(${suggestion})`);
     return of(null).pipe(
       switchMap(val=>{
         if(suggestion){
@@ -40,6 +39,10 @@ export class ApiService {
     return of(null).pipe(
       switchMap(val=>this.http.post<string[]>(EndPoints.suggestions,suggestion,{observe: "body"}))
     )
+  }
+
+  getArticles(input:string):Observable<string[]>{
+
   }
 
 }

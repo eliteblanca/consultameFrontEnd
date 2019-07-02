@@ -1,30 +1,35 @@
-import { Component, OnInit,AfterViewInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ViewChild, ElementRef, EventEmitter, Output } from '@angular/core';
 import { DiccionarioEjemplo } from "../diccionario-ejemplo";
 import { Observable,fromEvent,merge } from 'rxjs';
 import { filter,map, distinctUntilChanged } from "rxjs/operators";
 import { ApiService } from "../api.service";
+import { EventsService } from "../events.service";
+
+
 @Component({
   selector: 'app-search-box',
   templateUrl: './search-box.component.html',
-  styleUrls: ['./search-box.component.css'],
-  providers: [ApiService]
+  styleUrls: ['./search-box.component.css']
 })
 export class SearchBoxComponent implements OnInit, AfterViewInit {
 
+  @Output() nuevaBusqueda = new EventEmitter(); 
   @ViewChild('busqueda',{static:false}) busqueda: ElementRef;
   
   nextWord:string = "";
   lastWord:string = "";
-  suggestions:{selected:boolean,value:string}[];
+  suggestions:{selected:boolean,value:string}[] = [];
   diccionario:string[] = new DiccionarioEjemplo().listadoPalabras;
   public onkeydown$:Observable<KeyboardEvent>;
   public onArrows$:Observable<KeyboardEvent>;
   public onEnter$:Observable<KeyboardEvent>;
   public onNewWord$:Observable<string>;
   public onWordCountChange$:Observable<string>;
+  public onValueChange$:Observable<string>;
 
-
-  ngOnInit(){}
+  ngOnInit(){
+    
+  }
 
   ngAfterViewInit() {
     this.onkeydown$ = fromEvent(this.busqueda.nativeElement, 'keydown');
@@ -34,16 +39,17 @@ export class SearchBoxComponent implements OnInit, AfterViewInit {
     this.onEnter$ = this.onkeydown$.pipe(
       filter(({code})=>  code == 'Enter')
     );
-    this.onNewWord$ = this.onkeydown$.pipe(
-      filter(({code})=>  code == 'Space'),
-      map(val=>this.getInputValue().trim().split(' ')),
-      distinctUntilChanged(),
-      map(val=>this.getInputValue())
-    );
 
     this.onWordCountChange$ = this.onkeydown$.pipe(
-      map(val=>this.getInputValue().trim().split(' '))
-    );
+      filter(({code})=>  code == 'Space' || code == 'Backspace'),
+      map($event=>{
+        return [$event,this.getInputValue($event).trim().split(' ').length]
+      }),
+      distinctUntilChanged((prev, curr) => prev[1] === curr[1]),
+      map((val:[KeyboardEvent,number])=>{
+        return this.getInputValue(val[0])
+      })
+    )
 
     this.onkeydown$.subscribe(($event)=>{
       let {code} = $event;
@@ -103,24 +109,42 @@ export class SearchBoxComponent implements OnInit, AfterViewInit {
           })
         }
       }
-      console.log("flecha")
     });
     this.onEnter$.subscribe(val=>{
       if(this.suggestions.find(x=>x.selected)){
         this.busqueda.nativeElement.value = this.suggestions.find(x=>x.selected).value;
+        this.suggestions[this.suggestions.findIndex(x=>x.selected)].selected = false;
+        this.getSuggestions(this.busqueda.nativeElement.value.trim())
       }else if(this.getInputValue()){
-        this.api.postSuggestion(this.getInputValue())
-        .subscribe(val=>{
-          console.log('guardado');
-        });
-        window.alert(`buscando por ${this.getInputValue()}`);
+        this.buscar();
       }
     });
-    this.onNewWord$.subscribe(val=>{
-      this.getSuggestions(val);
+    this.onWordCountChange$.subscribe(val=>{
+      this.getSuggestions(val.trim());
+    })
+
+    this.events.onNewQuery$.subscribe(query=>{
+      this.buscar(query);
     })
   }
  
+  buscar(value?:string):void{
+    if(value){
+      this.events.newSearch(value);
+      this.busqueda.nativeElement.value = value;
+      this.api.postSuggestion(value)
+      .subscribe(val=>{
+        console.log('guardado');
+      });
+    }else{
+      this.events.newSearch(this.getInputValue());
+      this.api.postSuggestion(this.getInputValue())
+      .subscribe(val=>{
+        console.log('guardado');
+      });
+    }
+  }
+
   getSuggestions(input?:string){
     //:{selected:boolean,value:string}[]  
     this.api.getSuggestions(input).pipe(
@@ -128,8 +152,7 @@ export class SearchBoxComponent implements OnInit, AfterViewInit {
           return {selected: false,value:y}
         }))
       ).subscribe(x=>{
-        this.suggestions = x;
-        console.log(this.suggestions);
+        this.suggestions = x.slice(0,10);
       })
   }
 
@@ -183,6 +206,6 @@ export class SearchBoxComponent implements OnInit, AfterViewInit {
     }
   }
 
-  constructor(public api:ApiService) { } 
+  constructor(public api:ApiService, public events:EventsService) { } 
 
 }

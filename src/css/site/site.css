@@ -1,8 +1,11 @@
 .site{
     display: grid;
     grid-template-columns: auto;
-    grid-template-rows: 3rem auto;
+    grid-template-rows: 3.5rem auto;
 
     grid-template-areas: "main_header"
                          "mainContent";
+
+    width: 100%;
+    height: 100%;
 }

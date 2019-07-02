@@ -9,22 +9,26 @@ import { ExplorarComponent } from './explorar/explorar.component';
 import { HeaderComponent } from './header/header.component';
 import { SearchBoxComponent } from './search-box/search-box.component';
 
-import { ApiService } from "./api.service";
-import { mockServerService } from "./mock-back-end.service";  
+import { SearchComponent } from './search/search.component';
+
+import { mockServerService } from "./mock-back-end.service";
 ////#endregion imports
 @NgModule({
   declarations: [
     AppComponent,
     ExplorarComponent,
     HeaderComponent,
-    SearchBoxComponent
+    SearchBoxComponent,
+    SearchComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule
   ],
-  providers: [ApiService,mockServerService],
+  providers: [ 
+    mockServerService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
