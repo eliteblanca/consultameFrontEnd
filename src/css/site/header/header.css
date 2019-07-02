@@ -64,6 +64,9 @@
     padding-left: 1.5rem;
     color: var(--primaryText);
 }
+.search_box_suggestion.selected{
+    background-color: var(--terciaryDark);
+}
 
 .search_box_suggestions{ 
     margin-top: -2px;

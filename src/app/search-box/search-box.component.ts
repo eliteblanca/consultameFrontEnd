@@ -1,15 +1,15 @@
 import { Component, OnInit,AfterViewInit, ViewChild, ElementRef } from '@angular/core';
 import { DiccionarioEjemplo } from "../diccionario-ejemplo";
-import {Observable,fromEvent,timer} from 'rxjs';
-import { filter,debounceTime } from "rxjs/operators";
+import { Observable,fromEvent,merge } from 'rxjs';
+import { filter,map, distinctUntilChanged } from "rxjs/operators";
+import { ApiService } from "../api.service";
 @Component({
   selector: 'app-search-box',
   templateUrl: './search-box.component.html',
-  styleUrls: ['./search-box.component.css']
+  styleUrls: ['./search-box.component.css'],
+  providers: [ApiService]
 })
 export class SearchBoxComponent implements OnInit, AfterViewInit {
-
-  constructor() { } 
 
   @ViewChild('busqueda',{static:false}) busqueda: ElementRef;
   
@@ -19,20 +19,41 @@ export class SearchBoxComponent implements OnInit, AfterViewInit {
   diccionario:string[] = new DiccionarioEjemplo().listadoPalabras;
   public onkeydown$:Observable<KeyboardEvent>;
   public onArrows$:Observable<KeyboardEvent>;
+  public onEnter$:Observable<KeyboardEvent>;
+  public onNewWord$:Observable<string>;
+  public onWordCountChange$:Observable<string>;
 
-  ngOnInit() {}
+
+  ngOnInit(){}
 
   ngAfterViewInit() {
     this.onkeydown$ = fromEvent(this.busqueda.nativeElement, 'keydown');
+    this.onArrows$ = this.onkeydown$.pipe(
+      filter(({code})=>  code == 'ArrowDown' || code == "ArrowUp" || code == "ArrowLeft" || code == "ArrowRight")
+    );
+    this.onEnter$ = this.onkeydown$.pipe(
+      filter(({code})=>  code == 'Enter')
+    );
+    this.onNewWord$ = this.onkeydown$.pipe(
+      filter(({code})=>  code == 'Space'),
+      map(val=>this.getInputValue().trim().split(' ')),
+      distinctUntilChanged(),
+      map(val=>this.getInputValue())
+    );
+
+    this.onWordCountChange$ = this.onkeydown$.pipe(
+      map(val=>this.getInputValue().trim().split(' '))
+    );
+
     this.onkeydown$.subscribe(($event)=>{
-      console.log($event);
-      if($event.code == "Space" || $event.code == "Enter"){
+      let {code} = $event;
+      if(code == "Space" || code == "Enter"){
         this.nextWord = "";
       }else{
         this.nextWord = this.findNextWord($event);
       }
 
-      if($event.code == "Tab"){
+      if(code == "Tab"){
         $event.preventDefault();
         $event.stopPropagation();
         if(this.nextWord){
@@ -44,36 +65,76 @@ export class SearchBoxComponent implements OnInit, AfterViewInit {
           this.setCaretToPos(this.busqueda.nativeElement,10000);
         }
       }
-
-      this.suggestions = this.diccionario
-          .filter((x)=>{
-            return new RegExp(`^${this.getInputValue($event)}.*$`).test(x);})
-          .slice(0,10)
-          .map((x)=>{
-            return {selected:false, value:x};
-        });    
     });
-
-    this.onArrows$ = this.onkeydown$.pipe(
-      filter(({code})=>  code == 'ArrowDown' || code == "ArrowUp" || code == "ArrowLeft" || code == "ArrowRight")
-    )
-    
-    this.onArrows$.subscribe(({code})=>{
-      
+    this.onArrows$.subscribe(($event)=>{
+      let {code} = $event;
+      $event.preventDefault();
+      if(this.suggestions.length > 0){
+        if(code == 'ArrowDown'){
+          this.suggestions = this.suggestions.map((x,index)=>{
+            if( index == 0 && this.suggestions[this.suggestions.length-1].selected){
+              return {selected:true,value:x.value}
+            }
+            if( index == this.suggestions.length-1 && x.selected){
+              return {selected:false,value:x.value}
+            }
+            if(index-1 >= 0 && this.suggestions[index-1].selected){
+              return {selected:true,value:x.value}
+            }
+            if(index == 0 && this.suggestions.findIndex(x=>x.selected) == -1){
+              return {selected:true,value:x.value}
+            }
+            return {selected:false,value:x.value}
+          })
+        }
+        if(code == 'ArrowUp'){
+          this.suggestions = this.suggestions.map((x,index)=>{
+            if( index == 0 && x.selected){
+              this.setCaretToPos(this.busqueda.nativeElement,10000);
+              return {selected:false,value:x.value}
+            }
+            if(index+1 <= this.suggestions.length-1 && this.suggestions[index+1].selected){
+              return {selected:true,value:x.value}
+            }
+            if(index == this.suggestions.length-1 && x.selected){
+              return {selected:false,value:x.value}
+            }
+            return {selected:false,value:x.value}
+          })
+        }
+      }
       console.log("flecha")
+    });
+    this.onEnter$.subscribe(val=>{
+      if(this.suggestions.find(x=>x.selected)){
+        this.busqueda.nativeElement.value = this.suggestions.find(x=>x.selected).value;
+      }else if(this.getInputValue()){
+        this.api.postSuggestion(this.getInputValue())
+        .subscribe(val=>{
+          console.log('guardado');
+        });
+        window.alert(`buscando por ${this.getInputValue()}`);
+      }
+    });
+    this.onNewWord$.subscribe(val=>{
+      this.getSuggestions(val);
     })
+  }
+ 
+  getSuggestions(input?:string){
+    //:{selected:boolean,value:string}[]  
+    this.api.getSuggestions(input).pipe(
+        map(x=>x.map((y)=>{
+          return {selected: false,value:y}
+        }))
+      ).subscribe(x=>{
+        this.suggestions = x;
+        console.log(this.suggestions);
+      })
   }
 
   onFocus(){
-    if(!this.busqueda.nativeElement.value){
-      this.suggestions = this.diccionario
-          .filter((x)=>{
-            return new RegExp(`^${this.getInputValue()}.*$`).test(x);})
-          .slice(0,10)
-          .map((x)=>{
-            return {selected:false, value:x};
-        }); 
-    }
+    this.getSuggestions();
   }
 
   onFocusout(){
@@ -121,4 +182,7 @@ export class SearchBoxComponent implements OnInit, AfterViewInit {
       return "";
     }
   }
+
+  constructor(public api:ApiService) { } 
+
 }
