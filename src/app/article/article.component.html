@@ -1,0 +1,20 @@
+   
+<div class="img_header" #imgHeader>
+</div>
+<div class="article_body">
+
+    <h3 class="title">{{Article.title}}</h3>
+    <div class="resumme" #resume>
+    
+    </div>
+    <div class="resume_lists" #resumeLists>
+        
+    </div>
+    <div class="links" #links>
+
+    </div>
+</div>
+<div class="dissmissList" *ngIf="hasLongList">
+    <i class="material-icons" *ngIf="listDissmised" (click)="expandList()">expand_more</i>
+    <i class="material-icons" *ngIf="!listDissmised" (click)="dismissList()">expand_less</i>
+</div>

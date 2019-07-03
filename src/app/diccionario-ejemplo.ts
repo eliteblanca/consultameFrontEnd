@@ -1,4 +1,115 @@
 export class DiccionarioEjemplo {
+    public diccionarioArticles:string[] = [
+`<p align="justify"><font face="Arial">No, Nueva EPS es una empresa independiente, totalmente nueva, que busca mejorar la calidad de vida de los antiguos usuarios de la&nbsp;EPS del I.S.S. </font><strong><font color="#ffffff"><font face="Arial">nueva eps&nbsp; nueva eps&nbsp; nueva eps </font></font></strong></p>
+<p align="justify">No, Nueva EPS es una empresa independiente, totalmente nueva, que busca mejorar la calidad de vida de los antiguos usuarios de la&nbsp;EPS del I.S.S. <strong><font color="#ffffff">nueva eps&nbsp; nueva eps&nbsp; nueva eps </font></strong></p>`,
+`<font size="2">&nbsp;</font><font face="Arial" size="3">Usted debe ingresar a la siguiente pagina de internet&nbsp; www.elempleo.com y registrar su solicitud de empleo para Nueva EPS. <strong><font color="#ffffff">empleo empleo empleo</font></strong></font>
+<p align="justify">&nbsp;</p>`,
+`<ul>
+<li><font face="Arial">Para Mejorar la atencion que brindas a los usuarios.</font></li>
+<li><font face="Arial">Para aumentar tu nota de Precisi&oacute;n de Error Fatal.</font></li>
+<li><font face="Arial">Para que puedas enterarte de todos los cambios de informacion de manera oportuna.</font></li>
+<li><font face="Arial">Para que no tardes tanto buscando la respuesta que necesita tu afiliado.</font></li>
+<li><font face="Arial">Para que participes en la definicion de contenidos de esta Base de Conocimientos. <strong><font color="#ffffff">multiconsulta multiconsulta</font></strong><strong><font color="#ffffff"> multiconsulta</font></strong></font></li>
+</ul>
+<p><a style="FONT-WEIGHT: bold; FONT-SIZE: 17px" href="http://multiconsulta.multienlace.com.co/cons_nuevaeps/index.php?view=ViewArticle&amp;id=118"><font face="Arial" size="3">COMO UTILIZO MULTICONSULTA?</font></a><br /></p>`,
+`<p>Para ingresar a la aplicacion Suracliente se debe seguir la siguiente secuencia:</p>
+<p>1.&nbsp; Ingresar a la direccion <a href="http://www.suranet.com/"><font color="#0000ff"><strong>http://www.suranet.com/</strong></font></a>&nbsp;&oacute; <a href="http://mdeweb3.suranet.com/WebSiteSuranetV2/homedesktop.aspx"><font color="#0000ff"><strong>http://mdeweb3.suranet.com/WebSiteSuranetV2/homedesktop.aspx</strong></font></a></p>`,
+`<div align="left">
+<p align="justify"><strong><font face="Arial">Es necesario que cuando se requiera por parte del afiliado alguna documentacion, ustedes deben suministrar adicional al numero del fax, la ruta a seguir por el usuario en el IVR, para que los documentos lleguen correctamente clasificados.</font></strong></p>
+</div>
+<div align="left"><strong><font face="Arial"></font></strong></div>
+<div align="left"><strong><font face="Arial">INFORMACION&nbsp;IVR</font></strong></div>
+<div align="left"><strong>&nbsp;</strong></div>
+<div align="left"><strong><font face="Arial">OPCION 4 &ndash; FAX</font></strong></div>
+<div align="left"><strong><font face="Arial">&nbsp;</font></strong></div>
+<div align="left"><font face="Arial"><strong>Si el usuario desea enviar fax, debe tener en cuenta las opciones y marcar de acuerdo a su solicitud</strong><strong>&nbsp;</strong></font></div>
+<p align="left"><strong><font face="Arial">DEMOSTRAR AFILIACION A EPS DEL ISS, <font color="#3366ff">MARCA 1</font></font></strong></p>
+<p align="left"><strong><font face="Arial">CORRECCION DATOS DEL CARNE DE AFILIACION, <font color="#3366ff">MARCA 2</font></font></strong></p>
+<p align="left"><strong><font face="Arial">CORRECCION DIRECCION, TELEFONO, <font color="#3366ff">MARCA 3</font></font></strong></p>
+<p align="left"><strong><font face="Arial">INCONFORMIDAD, <font color="#3366ff">MARCA 4</font></font></strong></p>
+<p align="left"><strong><font face="Arial">PLANILLA DE PAGO, <font color="#3366ff">MARCA 5</font></font></strong></p>
+<p align="left"><strong><font face="Arial">SOLICITUD DE CERTIFICADO DE AFILIACION Y/O SEMANAS COTIZADAS, <font color="#3366ff">MARCA 6</font></font></strong></p>
+<p align="left"><strong><font face="Arial">REPETIR MENU, <font color="#3366ff">MARCA 8</font></font></strong></p>
+<p align="left"><strong><font face="Arial"></font></strong></p>
+<p align="left"><strong><font face="Arial"></font></strong></p>
+<p align="left"><strong><font face="Arial"></font></strong></p>
+<p align="left"><font face="Arial">&nbsp;</font><a style="FONT-WEIGHT: bold; FONT-SIZE: 17px" href="http://multiconsulta.multienlace.com.co/cons_nuevaeps/index.php?view=ViewArticle&amp;id=146"><font face="Arial" size="3">LINEA DE ATENCION NUEVA EPS</font></a></p>`,
+`<h2 style="MARGIN: 0cm 0cm 0pt; mso-layout-grid-align: none" align="center"><span style="mso-ansi-language: ES"><font face="Arial" size="2">PAGOS EN EFECTIVO - CONDICIONES GENERALES</font></span></h2>
+<h2 style="MARGIN: 0cm 0cm 0pt; mso-layout-grid-align: none" align="center"><span style="mso-ansi-language: ES"></span><font face="Arial" size="2">&nbsp;</font></h2>
+<h2 style="MARGIN: 0cm 0cm 0pt; mso-layout-grid-align: none" align="justify"><span style="mso-ansi-language: ES"><font face="Arial">
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt; mso-layout-grid-align: none"><span style="FONT-SIZE: 10pt; mso-ansi-language: ES">PLACA:________________<span style="mso-spacerun: yes">&nbsp;&nbsp;</span>SINIESTRO:________________<span style="mso-spacerun: yes">&nbsp;&nbsp; </span>ASEGURADO:____________________________________________________</span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt; mso-layout-grid-align: none"><span style="FONT-SIZE: 10pt; mso-ansi-language: ES"><font face="Times New Roman"></font></span><font size="2">&nbsp;</font></p>
+<o:p></o:p></font></span></h2>
+<p class="MsoBodyText2" style="MARGIN: 0cm 0cm 0pt"><font face="Arial" size="2">Las siguientes son las condiciones a cumplir por el Asegurado en el evento que desee reparar su veh&iacute;culo en un taller de su confianza y que no se encuentre adscrito a la red de talleres de Suramericana de Seguros S.A.:</font></p>
+<p class="MsoBodyText2" style="MARGIN: 0cm 0cm 0pt"><font face="Arial" size="2">&nbsp;</font></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt; TEXT-ALIGN: justify; mso-layout-grid-align: none"><font face="Arial"><font size="2"><span style="mso-ansi-language: ES; mso-bidi-font-size: 10.0pt">1. Presentar cotizaci&oacute;n de reparaci&oacute;n y ubicaci&oacute;n del veh&iacute;culo para el respectivo reconocimiento&nbsp;</span><span style="mso-ansi-language: ES; mso-bidi-font-size: 10.0pt">de da&ntilde;os por parte de un funcionario de Suramericana de Seguros S.A.</span></font></font></p>
+<span style="mso-ansi-language: ES; mso-bidi-font-size: 10.0pt"><font size="2"><font face="Arial">
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt; TEXT-ALIGN: justify; mso-layout-grid-align: none"><span style="mso-ansi-language: ES; mso-bidi-font-size: 10.0pt">2. Una vez concluida la reparaci&oacute;n en el taller de confianza del Asegurado, este deber&aacute; entregar al </span><span style="mso-ansi-language: ES; mso-bidi-font-size: 10.0pt">funcionario de la compa&ntilde;&iacute;a (Ajustador: Juan Pablo G&oacute;mez ;Tel: 6511555; Fax: 6346381)</span></p>
+<ul>
+    <li>
+    <div><span style="mso-ansi-language: ES; mso-bidi-font-size: 10.0pt"></span><span style="mso-ansi-language: ES; mso-bidi-font-size: 10.0pt"><o:p><span style="FONT-SIZE: 12pt; FONT-FAMILY: 'Times New Roman'; mso-fareast-font-family: 'Times New Roman'; mso-ansi-language: ES; mso-fareast-language: ES; mso-bidi-language: AR-SA; mso-bidi-font-size: 10.0pt"><span style="FONT-FAMILY: Arial; mso-ansi-language: ES; mso-bidi-font-size: 10.0pt"><font size="2">Original de las facturas de la reparaci&oacute;n a nombre del Asegurado y totalmente canceladas.&nbsp;</font></span></span></o:p></span></div>
+    </li>
+    <li>
+    <div><span style="mso-ansi-language: ES; mso-bidi-font-size: 10.0pt"><o:p><span style="FONT-SIZE: 12pt; FONT-FAMILY: 'Times New Roman'; mso-fareast-font-family: 'Times New Roman'; mso-ansi-language: ES; mso-fareast-language: ES; mso-bidi-language: AR-SA; mso-bidi-font-size: 10.0pt"><span style="FONT-FAMILY: Arial; mso-ansi-language: ES; mso-bidi-font-size: 10.0pt"><font size="2">Presentar el veh&iacute;culo debidamente reparado para ser reinspeccionado en la Carrera 11 N. # 91-16 en el horario Lunes a Viernes de 8:00 AM a 4:00 PM., en donde se constatara que lo estipulado en las facturas coincide con los da&ntilde;os derivados del siniestro, de lo contrario Suramericana de Seguros S.A. podr&aacute; hacer los respectivos descuentos.&nbsp;P</font></span></span></o:p></span></div>
+    </li>
+    <li>
+    <div><span style="mso-ansi-language: ES; mso-bidi-font-size: 10.0pt"><o:p><span style="FONT-SIZE: 12pt; FONT-FAMILY: 'Times New Roman'; mso-fareast-font-family: 'Times New Roman'; mso-ansi-language: ES; mso-fareast-language: ES; mso-bidi-language: AR-SA; mso-bidi-font-size: 10.0pt"><span style="FONT-FAMILY: Arial; mso-ansi-language: ES; mso-bidi-font-size: 10.0pt"><font size="2">Presentar los repuestos da&ntilde;ados que le fueron cambiados al veh&iacute;culo en la reparaci&oacute;n. </font></span></span></o:p></span></div>
+    </li>
+</ul>
+<p><span style="mso-ansi-language: ES; mso-bidi-font-size: 10.0pt"><o:p><span style="FONT-SIZE: 12pt; FONT-FAMILY: 'Times New Roman'; mso-fareast-font-family: 'Times New Roman'; mso-ansi-language: ES; mso-fareast-language: ES; mso-bidi-language: AR-SA; mso-bidi-font-size: 10.0pt"><span style="FONT-FAMILY: Arial; mso-ansi-language: ES; mso-bidi-font-size: 10.0pt"></span></span></o:p></span><span style="mso-ansi-language: ES; mso-bidi-font-size: 10.0pt"><o:p><span style="FONT-SIZE: 12pt; FONT-FAMILY: 'Times New Roman'; mso-fareast-font-family: 'Times New Roman'; mso-ansi-language: ES; mso-fareast-language: ES; mso-bidi-language: AR-SA; mso-bidi-font-size: 10.0pt"><span style="FONT-FAMILY: Arial; mso-ansi-language: ES; mso-bidi-font-size: 10.0pt"><o:p><font size="2">De acuerdo con el procedimiento establecido, Suramericana de Seguros S.A. tendr&aacute; en cuenta las siguientes condiciones:</font></o:p></span></span></o:p></span></p>
+<p><span style="mso-ansi-language: ES; mso-bidi-font-size: 10.0pt"><o:p><span style="FONT-SIZE: 12pt; FONT-FAMILY: 'Times New Roman'; mso-fareast-font-family: 'Times New Roman'; mso-ansi-language: ES; mso-fareast-language: ES; mso-bidi-language: AR-SA; mso-bidi-font-size: 10.0pt"><span style="FONT-FAMILY: Arial; mso-ansi-language: ES; mso-bidi-font-size: 10.0pt"><o:p></o:p></span></span></o:p></span><span style="mso-ansi-language: ES; mso-bidi-font-size: 10.0pt"><o:p><span style="FONT-SIZE: 12pt; FONT-FAMILY: 'Times New Roman'; mso-fareast-font-family: 'Times New Roman'; mso-ansi-language: ES; mso-fareast-language: ES; mso-bidi-language: AR-SA; mso-bidi-font-size: 10.0pt"><span style="FONT-FAMILY: Arial; mso-ansi-language: ES; mso-bidi-font-size: 10.0pt"><o:p><font size="2"><strong>1.</strong>&nbsp; En acuerdo con el Asegurado podr&aacute; suministrar los repuestos requeridos seg&uacute;n el presupuesto autorizado por la compa&ntilde;&iacute;a. </font></o:p></span></span></o:p></span><span style="mso-ansi-language: ES; mso-bidi-font-size: 10.0pt"><o:p><span style="FONT-SIZE: 12pt; FONT-FAMILY: 'Times New Roman'; mso-fareast-font-family: 'Times New Roman'; mso-ansi-language: ES; mso-fareast-language: ES; mso-bidi-language: AR-SA; mso-bidi-font-size: 10.0pt"><span style="FONT-FAMILY: Arial; mso-ansi-language: ES; mso-bidi-font-size: 10.0pt"><o:p><br /><font size="2"><strong>2.</strong>&nbsp;&nbsp;NO asume ning&uacute;n tipo de garant&iacute;a sobre la calidad de los trabajos efectuados al veh&iacute;culo, ni tampoco imprevistos. <br /><strong>3.</strong>&nbsp; Indemnizar&aacute; en efectivo el valor de mano de obra y repuestos (en caso de ser suministrados por el Asegurado), de acuerdo al presupuesto ajustado por&nbsp;la compa&ntilde;&iacute;a seg&uacute;n las tarifas y descuentos obtenidos de los Proveedores. <br /><strong>4.</strong> Pagar&aacute; el impuesto a las ventas (IVA) siempre y cuando en las facturas haya sido recaudado seg&uacute;n las normas tributarias vigentes. <br /><strong>5</strong>. Descontara el valor correspondiente al deducible que se encuentra estipulado en la p&oacute;liza. <br /><strong>6.</strong> El pago se har&aacute; efectivo mediante reembolso en uno solo pago, mediante cheque en una de nuestras sucursales luego de cumplidos todos requisitos anteriores, en fecha seg&uacute;n la siguiente tabla: </font></o:p></span></span></o:p></span></p>
+<ul>
+    <li>
+    <p><span style="mso-ansi-language: ES; mso-bidi-font-size: 10.0pt"><font face="Arial" size="4"><o:p><span style="FONT-SIZE: 12pt; FONT-FAMILY: 'Times New Roman'; mso-fareast-font-family: 'Times New Roman'; mso-ansi-language: ES; mso-fareast-language: ES; mso-bidi-language: AR-SA; mso-bidi-font-size: 10.0pt"><span style="FONT-FAMILY: Arial; mso-ansi-language: ES; mso-bidi-font-size: 10.0pt"><font size="2"><o:p></o:p></font></span></span></o:p></font></span>&nbsp;
+    <table class="MsoNormalTable" style="BORDER-RIGHT: medium none; BORDER-TOP: medium none; MARGIN: auto auto auto 32.85pt; BORDER-LEFT: medium none; BORDER-BOTTOM: medium none; BORDER-COLLAPSE: collapse; mso-padding-alt: 0cm 3.5pt 0cm 3.5pt; mso-border-alt: solid windowtext .5pt; mso-border-insideh: .5pt solid windowtext; mso-border-insidev: .5pt solid windowtext" cellspacing="0" cellpadding="0" border="1">
+        <tbody>
+            <tr style="HEIGHT: 20.75pt; mso-yfti-irow: 0; mso-yfti-firstrow: yes">
+                <td style="BORDER-RIGHT: windowtext 1pt solid; PADDING-RIGHT: 3.5pt; BORDER-TOP: windowtext 1pt solid; PADDING-LEFT: 3.5pt; BACKGROUND: silver; PADDING-BOTTOM: 0cm; BORDER-LEFT: windowtext 1pt solid; WIDTH: 214.85pt; PADDING-TOP: 0cm; BORDER-BOTTOM: windowtext 1pt solid; HEIGHT: 20.75pt; mso-border-alt: solid windowtext .5pt" valign="top" width="286">
+                <h4 style="MARGIN: 0cm 0cm 0pt"><span lang="ES-CO"><font size="2"><font face="Times New Roman">FECHA DE RECEPCI&Oacute;N DEL TOTAL<o:p></o:p></font></font></span></h4>
+                <h4 style="MARGIN: 0cm 0cm 0pt"><span lang="ES-CO"><font size="2"><font face="Times New Roman">DE DOCUMENTOS<o:p></o:p></font></font></span></h4>
+                </td>
+                <td style="BORDER-RIGHT: windowtext 1pt solid; PADDING-RIGHT: 3.5pt; BORDER-TOP: windowtext 1pt solid; PADDING-LEFT: 3.5pt; BORDER-LEFT-COLOR: #ece9d8; BACKGROUND: silver; PADDING-BOTTOM: 0cm; WIDTH: 214.85pt; PADDING-TOP: 0cm; BORDER-BOTTOM: windowtext 1pt solid; HEIGHT: 20.75pt; mso-border-alt: solid windowtext .5pt; mso-border-left-alt: solid windowtext .5pt" valign="top" width="286">
+                <h4 style="MARGIN: 0cm 0cm 0pt"><span lang="ES-CO"><font size="2"><font face="Times New Roman">FECHA DE PAGO<o:p></o:p></font></font></span></h4>
+                </td>
+            </tr>
+            <tr style="HEIGHT: 10.7pt; mso-yfti-irow: 1">
+                <td style="BORDER-RIGHT: windowtext 1pt solid; PADDING-RIGHT: 3.5pt; PADDING-LEFT: 3.5pt; PADDING-BOTTOM: 0cm; BORDER-LEFT: windowtext 1pt solid; WIDTH: 214.85pt; BORDER-TOP-COLOR: #ece9d8; PADDING-TOP: 0cm; BORDER-BOTTOM: windowtext 1pt solid; HEIGHT: 10.7pt; BACKGROUND-COLOR: transparent; mso-border-alt: solid windowtext .5pt; mso-border-top-alt: solid windowtext .5pt" valign="top" width="286">
+                <p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt; TEXT-ALIGN: justify"><span lang="ES-CO" style="FONT-SIZE: 10pt; mso-bidi-font-size: 12.0pt"><font face="Times New Roman">LUNES O MARTES<o:p></o:p></font></span></p>
+                </td>
+                <td style="BORDER-RIGHT: windowtext 1pt solid; PADDING-RIGHT: 3.5pt; PADDING-LEFT: 3.5pt; BORDER-LEFT-COLOR: #ece9d8; PADDING-BOTTOM: 0cm; WIDTH: 214.85pt; BORDER-TOP-COLOR: #ece9d8; PADDING-TOP: 0cm; BORDER-BOTTOM: windowtext 1pt solid; HEIGHT: 10.7pt; BACKGROUND-COLOR: transparent; mso-border-alt: solid windowtext .5pt; mso-border-left-alt: solid windowtext .5pt; mso-border-top-alt: solid windowtext .5pt" valign="top" width="286">
+                <p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt; TEXT-ALIGN: justify"><span lang="ES-CO" style="FONT-SIZE: 10pt; mso-bidi-font-size: 12.0pt"><font face="Times New Roman">VIERNES DE LA MISMA SEMANA<o:p></o:p></font></span></p>
+                </td>
+            </tr>
+            <tr style="HEIGHT: 10pt; mso-yfti-lastrow: yes; mso-yfti-irow: 2">
+                <td style="BORDER-RIGHT: windowtext 1pt solid; PADDING-RIGHT: 3.5pt; PADDING-LEFT: 3.5pt; PADDING-BOTTOM: 0cm; BORDER-LEFT: windowtext 1pt solid; WIDTH: 214.85pt; BORDER-TOP-COLOR: #ece9d8; PADDING-TOP: 0cm; BORDER-BOTTOM: windowtext 1pt solid; HEIGHT: 10pt; BACKGROUND-COLOR: transparent; mso-border-alt: solid windowtext .5pt; mso-border-top-alt: solid windowtext .5pt" valign="top" width="286">
+                <p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt; TEXT-ALIGN: justify"><span lang="ES-CO" style="FONT-SIZE: 10pt; mso-bidi-font-size: 12.0pt"><font face="Times New Roman">MI&Eacute;RCOLES, JUEVES O VIERNES<o:p></o:p></font></span></p>
+                </td>
+                <td style="BORDER-RIGHT: windowtext 1pt solid; PADDING-RIGHT: 3.5pt; PADDING-LEFT: 3.5pt; BORDER-LEFT-COLOR: #ece9d8; PADDING-BOTTOM: 0cm; WIDTH: 214.85pt; BORDER-TOP-COLOR: #ece9d8; PADDING-TOP: 0cm; BORDER-BOTTOM: windowtext 1pt solid; HEIGHT: 10pt; BACKGROUND-COLOR: transparent; mso-border-alt: solid windowtext .5pt; mso-border-left-alt: solid windowtext .5pt; mso-border-top-alt: solid windowtext .5pt" valign="top" width="286">
+                <p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt; TEXT-ALIGN: justify"><span lang="ES-CO" style="FONT-SIZE: 10pt; mso-bidi-font-size: 12.0pt"><font face="Times New Roman">VIERNES DE LA SEMANA SIGUIENTE<o:p></o:p></font></span></p>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    </p>
+    <h1 style="MARGIN: 0cm 0cm 0pt"><font size="2"></font></h1>
+    <h1 style="MARGIN: 0cm 0cm 0pt"><font size="2">FIRMA DE ACEPTACION ASEGURADO :___________________________<span style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp; </span>C.C._____________________<span style="mso-spacerun: yes">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; </span><span style="FONT-FAMILY: Arial"><o:p></o:p></span></font></h1>
+    <p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt; TEXT-ALIGN: justify"><strong><span style="FONT-SIZE: 10pt; mso-ansi-language: ES; mso-bidi-font-size: 12.0pt">CIUDAD Y FECHA</span></strong><span style="FONT-SIZE: 10pt; mso-ansi-language: ES; mso-bidi-font-size: 12.0pt">________________________________________________</span></p>
+    </li>
+</ul>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt; TEXT-ALIGN: justify"><span style="FONT-SIZE: 10pt; mso-ansi-language: ES; mso-bidi-font-size: 12.0pt"></span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt; TEXT-ALIGN: justify"><span style="FONT-SIZE: 10pt; mso-ansi-language: ES; mso-bidi-font-size: 12.0pt"></span></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt; TEXT-ALIGN: justify"><span style="FONT-SIZE: 10pt; mso-ansi-language: ES; mso-bidi-font-size: 12.0pt"></span></p>
+<span style="FONT-SIZE: 10pt; mso-ansi-language: ES; mso-bidi-font-size: 12.0pt">
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt"><strong>IMPORTANTE</strong></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt">Los reembolsos solo aplican para vehiculos con p&oacute;liza Global o Autosura, los cuales tienen la posibilidad de elegir el taller de su confianza pero teniendo en cuenta las condiciones que se tienen definidas para el pago. Para producto clasico se efectuara reembolso unicamente cuando el vehiculo ya se encuentre reparado, de lo contrario no.</p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt"><font face="Times New Roman" size="3"></font></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt"><font face="Times New Roman" size="3"></font></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt"><font face="Times New Roman" size="3"></font></p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt; TEXT-ALIGN: justify">&nbsp;</p>
+<p class="MsoNormal" style="MARGIN: 0cm 0cm 0pt; TEXT-ALIGN: justify" align="center"><span style="FONT-SIZE: 10pt; mso-ansi-language: ES; mso-bidi-font-size: 12.0pt">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <a href="http://multiconsulta.multienlace.com.co/cons_multiconsulta2/index.php?view=ViewArticle&amp;id=441"><strong><font color="#0000ff">VOLVER A</font><font color="#0000ff"> RECLAMACIONES</font></strong></a></span></p>
+</span></font></font></span>`
+    ];
+
     public listadoPalabras:string[] =
 [
     'qué'

@@ -12,6 +12,7 @@ import { SearchBoxComponent } from './search-box/search-box.component';
 import { SearchComponent } from './search/search.component';
 
 import { mockServerService } from "./mock-back-end.service";
+import { ArticleComponent } from './article/article.component';
 ////#endregion imports
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { mockServerService } from "./mock-back-end.service";
     ExplorarComponent,
     HeaderComponent,
     SearchBoxComponent,
-    SearchComponent
+    SearchComponent,
+    ArticleComponent
   ],
   imports: [
     BrowserModule,

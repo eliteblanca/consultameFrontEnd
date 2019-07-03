@@ -1,1 +1,4 @@
-<p>search works! {{busqueda}}</p>
+<div class="searchContainer">
+    <app-article *ngFor="let article of articles" [Article]="article"></app-article> 
+    <input type="button" value="Crear articulos de muestra" (click)="populateArticles()">
+</div>

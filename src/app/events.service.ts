@@ -14,11 +14,9 @@ export class EventsService {
   constructor() { }
 
   newSearch(input:string):void{
-    console.log(input);
     this.newSearchSource.next(input);
   }
   newQuery(input:string):void{
-    console.log(input);
     this.newQuerySource.next(input);
   }
 }

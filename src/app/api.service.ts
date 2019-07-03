@@ -43,6 +43,17 @@ export class ApiService {
     )
   }
 
+  /**
+  * ### retorna una lista de articulos que se relacionan con la busqueda pasada como argumento
+  * ***
+  * @param input `string` 
+  * 
+  * Testo que se va a utilizar para realizar la busqueda
+  * ***
+  * @returns Observable<string[]>
+  * 
+  * Observable que retorna un array de articulos
+  */
   getArticles(input:string):Observable<Article[]>{
     return of(null).pipe(
       switchMap(val=>{
@@ -51,5 +62,9 @@ export class ApiService {
     )
   }
 
-
+  postArticles(articles:Article[]):Observable<Article[]>{
+    return of(null).pipe(
+      switchMap(val=>this.http.post<Article[]>(EndPoints.articles,articles,{observe: "body"}))
+    )
+  }
 }

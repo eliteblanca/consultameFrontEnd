@@ -3,6 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { Article, articleConf } from "../article";
 import { ApiService } from "../api.service";
 import { switchMap } from "rxjs/operators";
+import { DiccionarioEjemplo } from "../diccionario-ejemplo";
 
 @Component({
   selector: 'app-search',
@@ -12,6 +13,7 @@ import { switchMap } from "rxjs/operators";
 export class SearchComponent implements OnInit {
 
   public busqueda:string = "";
+  public articles:Article[];
 
   constructor(public route:ActivatedRoute,public api:ApiService) {  }
 
@@ -21,8 +23,22 @@ export class SearchComponent implements OnInit {
         return this.api.getArticles(params['query'])
       })
     ).subscribe((articles)=>{
-      console.log(articles)
+      this.articles = articles;
+    })
+  }
+
+  populateArticles():void{
+    let diccionario = new DiccionarioEjemplo()
+    let newArticles:Article[] = [];
+    for(var i = 0; i<5; i++){
+      let newOne = new Article({content:diccionario.diccionarioArticles[i],title:"Articulo 1"});
+      newArticles.push(newOne);
+    }
+    
+    this.api.postArticles(newArticles).subscribe(val=>{
+      console.log("articulos guardados");
     })
   }
 
 }
+

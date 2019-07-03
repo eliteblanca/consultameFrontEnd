@@ -19,7 +19,7 @@ class MockBackEndService implements HttpInterceptor{
   * @param req HttpRequest<string>
   * @returns Observable<HttpEvent<string[]>>
   */
-  enrutar(req:HttpRequest<string>):Observable<HttpEvent<any>>{
+  enrutar(req:HttpRequest<any>):Observable<HttpEvent<any>>{
     let {url,method,body,params} = req;
     if(url.match('^suggestions$') && method == 'POST'){
       this.BBDD.postSuggestion(body);      
@@ -43,7 +43,7 @@ class MockBackEndService implements HttpInterceptor{
         }))
       }
     }
-
+    
     if(url.match('^articles$') && method == 'GET'){
       return of(new HttpResponse({
         status: 200,
@@ -51,6 +51,13 @@ class MockBackEndService implements HttpInterceptor{
       }))
     }
 
+    if(url.match('^articles$') && method == 'POST'){
+      console.log(body);
+      return of(new HttpResponse({
+        status: 200,
+        body: this.BBDD.postArticles(body)
+      }))
+    }
   }
 
   intercept(req: HttpRequest<string>, next: HttpHandler): Observable<HttpEvent<any>> {
