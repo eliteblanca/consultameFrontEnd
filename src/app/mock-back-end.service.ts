@@ -44,6 +44,13 @@ class MockBackEndService implements HttpInterceptor{
       }
     }
 
+    if(url.match('^articles$') && method == 'GET'){
+      return of(new HttpResponse({
+        status: 200,
+        body: this.BBDD.getArticles(params.get('input'))
+      }))
+    }
+
   }
 
   intercept(req: HttpRequest<string>, next: HttpHandler): Observable<HttpEvent<any>> {

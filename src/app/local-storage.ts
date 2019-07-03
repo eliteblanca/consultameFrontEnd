@@ -1,3 +1,5 @@
+import { Article } from "./article";
+
 export class LocalStorage {
 
     constructor(){
@@ -18,4 +20,9 @@ export class LocalStorage {
         }
     }
     
+    getArticles(input:string):Article[]{
+        let articles = (JSON.parse(localStorage.getItem('articles')) || []) as Article[];
+        return articles;
+    }
+
 }

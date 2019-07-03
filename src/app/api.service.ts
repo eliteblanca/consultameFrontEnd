@@ -2,8 +2,10 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable,of } from 'rxjs';
 import { switchMap } from "rxjs/operators";
+import { Article, articleConf } from "./article";
 enum EndPoints {
-  suggestions = "suggestions"
+  suggestions = "suggestions",
+  articles = "articles"
 }
 
 @Injectable({
@@ -41,8 +43,13 @@ export class ApiService {
     )
   }
 
-  getArticles(input:string):Observable<string[]>{
-
+  getArticles(input:string):Observable<Article[]>{
+    return of(null).pipe(
+      switchMap(val=>{
+          return this.http.get<Article[]>(EndPoints.articles,{params:{input:input},observe: "body"})
+      })
+    )
   }
+
 
 }
