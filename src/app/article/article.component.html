@@ -1,9 +1,8 @@
-   
 <div class="img_header" #imgHeader>
 </div>
+<h3 class="title">{{Article.title}}</h3>
 <div class="article_body">
 
-    <h3 class="title">{{Article.title}}</h3>
     <div class="resumme" #resume>
     
     </div>
@@ -18,3 +17,4 @@
     <i class="material-icons" *ngIf="listDissmised" (click)="expandList()">expand_more</i>
     <i class="material-icons" *ngIf="!listDissmised" (click)="dismissList()">expand_less</i>
 </div>
+

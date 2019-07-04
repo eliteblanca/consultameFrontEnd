@@ -1,9 +1,9 @@
-app-article{   
+.app-article{
     border-radius: 3px;
     box-shadow: var(--shadow2);
-    width: calc((100% - 3rem)/3);
+    width: calc((100%/3) - 3rem);
     background-color: white;
-    display: flex;
+    display: inline-flex;
     flex-direction: column;
     margin-right: .5rem;
     margin-bottom: .5rem;
@@ -19,9 +19,15 @@ app-article{
 .article_body{
     padding: 1rem;
 }
-
-.article_body .title{
+.article_body .resumme p{
     margin: 0;
+    margin-bottom: 1rem;
+}
+
+.app-article .title{
+    margin: 1rem;
+    margin-bottom: 0;
+    font-size: 1.5rem;
 }
 
 .article_body .links{
@@ -29,18 +35,35 @@ app-article{
     flex-direction: column;
 }
 
+.article_body .links a:hover:before, .article_body .links a:hover, .article_body .links a:hover *{
+    color: var(--primary) !important;
+}
+
+.article_body .links a:before {
+    font-family: "Material Icons";
+    content: "link";
+    font-size: 1.5rem;
+    margin-right: 1rem;
+}
+
+.article_body .links a *{
+    font-weight: 500 !important;
+}
+
 .article_body .links a{
-    font-weight: 300 !important;
+    font-weight: 400 !important;
     text-decoration: none;
-    background-color: var(--primaryLight);
-    padding: .5rem;
+    background-color: rgba(0,0,0,0.07);
+    padding: .2rem 1rem;
     border-radius: 3px;
-    text-transform: lowercase capitalize;
     text-transform: lowercase;
     max-width: 100%;
     margin-bottom: .2rem;
     overflow-x:hidden;
+    display: flex;
+    align-items: center;
 }
+
 
 .article_body *{
     color: var(--primaryText) !important;

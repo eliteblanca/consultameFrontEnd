@@ -23,8 +23,7 @@
     background-color: white;
     border-radius: 3px;
     display: flex;
-    flex-direction: column;    
-    box-shadow: var(--shadow2);    
+    flex-direction: column;       
 }
 
 .backDrop{    
@@ -62,17 +61,21 @@
     max-width: 20rem;
     padding: 1rem;
     z-index: 3;
-
+    border-radius: 3px;
     outline: 0 !important;
 }
 
 
+.search_box_suggestion:hover{
+    cursor: pointer;
+}    
 .search_box_suggestion{    
     background-color: white;
     width: 100%;
     padding: .5rem;
     padding-left: 1.5rem;
-    color: var(--primaryText);
+    color: var(--primaryText);    
+    z-index: 2;
 }
 .search_box_suggestion.selected{
     background-color: var(--terciaryDark);
@@ -80,7 +83,10 @@
 
 .search_box_suggestions{ 
     margin-top: -2px;
-    z-index: 3;
+    z-index: 2;
+    box-shadow: var(--shadow2);
+    border-radius: 0 0 3px 3px;
+    overflow: hidden;
 }
 
 .search_box_suggestion:hover{

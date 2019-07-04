@@ -1,19 +1,20 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { Article, articleConf } from "../article";
 import { ApiService } from "../api.service";
 import { switchMap } from "rxjs/operators";
-import { DiccionarioEjemplo } from "../diccionario-ejemplo";
+import { Article, articleConf } from "../article";
+import { Masonry, MasonryGridItem } from 'ng-masonry-grid';
 
 @Component({
   selector: 'app-search',
   templateUrl: './search.component.html',
   styleUrls: ['./search.component.css']
 })
-export class SearchComponent implements OnInit {
+export class SearchComponent implements OnInit, AfterViewInit  {
 
   public busqueda:string = "";
   public articles:Article[];
+  _masonry: Masonry;
 
   constructor(public route:ActivatedRoute,public api:ApiService) {  }
 
@@ -27,18 +28,13 @@ export class SearchComponent implements OnInit {
     })
   }
 
-  populateArticles():void{
-    let diccionario = new DiccionarioEjemplo()
-    let newArticles:Article[] = [];
-    for(var i = 0; i<5; i++){
-      let newOne = new Article({content:diccionario.diccionarioArticles[i],title:"Articulo 1"});
-      newArticles.push(newOne);
-    }
-    
-    this.api.postArticles(newArticles).subscribe(val=>{
-      console.log("articulos guardados");
-    })
+  ngAfterViewInit(){
+    //setTimeout(()=>this._masonry.reOrderItems(),1000);    
+  }
+
+
+  onNgMasonryInit($event: Masonry) {
+    this._masonry = $event;    
   }
 
 }
-

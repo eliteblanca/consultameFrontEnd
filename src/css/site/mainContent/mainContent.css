@@ -1,5 +1,4 @@
 .mainContent{
     grid-area: "mainContent";
     overflow-y: hidden;
-    z-index: -1;
 }

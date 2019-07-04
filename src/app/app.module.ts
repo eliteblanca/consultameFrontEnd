@@ -1,9 +1,10 @@
 //#region imports 
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-
 import { AppRoutingModule } from './app-routing.module';
 import { HttpClientModule } from '@angular/common/http';
+import { NgMasonryGridModule  } from 'ng-masonry-grid';
+
 import { AppComponent } from './app.component';
 import { ExplorarComponent } from './explorar/explorar.component';
 import { HeaderComponent } from './header/header.component';
@@ -13,6 +14,7 @@ import { SearchComponent } from './search/search.component';
 
 import { mockServerService } from "./mock-back-end.service";
 import { ArticleComponent } from './article/article.component';
+
 ////#endregion imports
 @NgModule({
   declarations: [
@@ -26,7 +28,8 @@ import { ArticleComponent } from './article/article.component';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    NgMasonryGridModule
   ],
   providers: [ 
     mockServerService

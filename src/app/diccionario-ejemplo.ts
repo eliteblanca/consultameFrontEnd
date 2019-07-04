@@ -2,7 +2,7 @@ export class DiccionarioEjemplo {
     public diccionarioArticles:string[] = [
 `<p align="justify"><font face="Arial">No, Nueva EPS es una empresa independiente, totalmente nueva, que busca mejorar la calidad de vida de los antiguos usuarios de la&nbsp;EPS del I.S.S. </font><strong><font color="#ffffff"><font face="Arial">nueva eps&nbsp; nueva eps&nbsp; nueva eps </font></font></strong></p>
 <p align="justify">No, Nueva EPS es una empresa independiente, totalmente nueva, que busca mejorar la calidad de vida de los antiguos usuarios de la&nbsp;EPS del I.S.S. <strong><font color="#ffffff">nueva eps&nbsp; nueva eps&nbsp; nueva eps </font></strong></p>`,
-`<font size="2">&nbsp;</font><font face="Arial" size="3">Usted debe ingresar a la siguiente pagina de internet&nbsp; www.elempleo.com y registrar su solicitud de empleo para Nueva EPS. <strong><font color="#ffffff">empleo empleo empleo</font></strong></font>
+`<img src="https://picsum.photos/300/200" alt=""><font size="2">&nbsp;</font><font face="Arial" size="3">Usted debe ingresar a la siguiente pagina de internet&nbsp; www.elempleo.com y registrar su solicitud de empleo para Nueva EPS. <strong><font color="#ffffff">empleo empleo empleo</font></strong></font>
 <p align="justify">&nbsp;</p>`,
 `<ul>
 <li><font face="Arial">Para Mejorar la atencion que brindas a los usuarios.</font></li>
@@ -14,7 +14,7 @@ export class DiccionarioEjemplo {
 <p><a style="FONT-WEIGHT: bold; FONT-SIZE: 17px" href="http://multiconsulta.multienlace.com.co/cons_nuevaeps/index.php?view=ViewArticle&amp;id=118"><font face="Arial" size="3">COMO UTILIZO MULTICONSULTA?</font></a><br /></p>`,
 `<p>Para ingresar a la aplicacion Suracliente se debe seguir la siguiente secuencia:</p>
 <p>1.&nbsp; Ingresar a la direccion <a href="http://www.suranet.com/"><font color="#0000ff"><strong>http://www.suranet.com/</strong></font></a>&nbsp;&oacute; <a href="http://mdeweb3.suranet.com/WebSiteSuranetV2/homedesktop.aspx"><font color="#0000ff"><strong>http://mdeweb3.suranet.com/WebSiteSuranetV2/homedesktop.aspx</strong></font></a></p>`,
-`<div align="left">
+`<img src="https://picsum.photos/600/300" alt=""><div align="left">
 <p align="justify"><strong><font face="Arial">Es necesario que cuando se requiera por parte del afiliado alguna documentacion, ustedes deben suministrar adicional al numero del fax, la ruta a seguir por el usuario en el IVR, para que los documentos lleguen correctamente clasificados.</font></strong></p>
 </div>
 <div align="left"><strong><font face="Arial"></font></strong></div>
