@@ -1,25 +1,3 @@
-<ng-masonry-grid class="searchContainer"
-    [masonryOptions]="{ transitionDuration: '0s', gutter: 16, horizontalOrder: true, percentPosition: true}"
-    [useAnimation]="true"
-    [useImagesLoaded]="true"
-    (onNgMasonryInit)="onNgMasonryInit($event)">
-
-    <ng-masonry-grid-item class="app-article" *ngFor="let article of articles" [Article]="article">
-
-    </ng-masonry-grid-item>
-    <ng-masonry-grid-item class="app-article" *ngFor="let article of articles" [Article]="article">
-
-    </ng-masonry-grid-item>
-    <ng-masonry-grid-item class="app-article" *ngFor="let article of articles" [Article]="article">
-
-    </ng-masonry-grid-item>
-    <ng-masonry-grid-item class="app-article" *ngFor="let article of articles" [Article]="article">
-
-    </ng-masonry-grid-item>
-    <ng-masonry-grid-item class="app-article" *ngFor="let article of articles" [Article]="article">
-
-    </ng-masonry-grid-item>
-    <ng-masonry-grid-item class="app-article" *ngFor="let article of articles" [Article]="article">
-
-    </ng-masonry-grid-item>
-</ng-masonry-grid>
+<div class="searchContainer">
+    <app-article-list [articles]="articles"></app-article-list>
+</div>

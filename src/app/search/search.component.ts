@@ -1,9 +1,8 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { ApiService } from "../api.service";
+import { ApiService } from "../services/index";
 import { switchMap } from "rxjs/operators";
 import { Article, articleConf } from "../article";
-import { Masonry, MasonryGridItem } from 'ng-masonry-grid';
 
 @Component({
   selector: 'app-search',
@@ -14,7 +13,6 @@ export class SearchComponent implements OnInit, AfterViewInit  {
 
   public busqueda:string = "";
   public articles:Article[];
-  _masonry: Masonry;
 
   constructor(public route:ActivatedRoute,public api:ApiService) {  }
 
@@ -31,10 +29,4 @@ export class SearchComponent implements OnInit, AfterViewInit  {
   ngAfterViewInit(){
     //setTimeout(()=>this._masonry.reOrderItems(),1000);    
   }
-
-
-  onNgMasonryInit($event: Masonry) {
-    this._masonry = $event;    
-  }
-
 }

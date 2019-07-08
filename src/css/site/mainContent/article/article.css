@@ -1,11 +1,10 @@
 .app-article{
     border-radius: 3px;
     box-shadow: var(--shadow2);
-    width: calc((100%/3) - 3rem);
+    width: calc((100%/3) - 1rem);
     background-color: white;
     display: inline-flex;
     flex-direction: column;
-    margin-right: .5rem;
     margin-bottom: .5rem;
     overflow: hidden;
 }

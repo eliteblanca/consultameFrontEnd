@@ -1,0 +1,10 @@
+<header class="header">
+    <a [routerLink]="['/app/explore']" [queryParams]="{category: belongsTo + '/' + category.name }" class="title">{{category.name}}</a>
+    <i class="material-icons" *ngIf="!category.desplegado && category.subcategories" (click)="category.desplegado = true">arrow_drop_down</i>
+    <i class="material-icons" *ngIf="category.desplegado && category.subcategories" (click)="category.desplegado = false">arrow_drop_up</i>
+</header>
+<div class="body" [ngClass]="{'desplegado': category.desplegado}">
+    <div class="categories">
+        <app-categorie *ngFor="let cat of category.subcategories" [category]="cat" [belongsTo]="belongsTo + '/' + category.name"></app-categorie>
+    </div>
+</div>

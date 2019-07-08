@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { EventsService } from "../events.service";
+import { EventsService } from "../services/events.service";
 import {BehaviorSubject, Subscription} from 'rxjs';
 import { DiccionarioEjemplo } from "../diccionario-ejemplo";
 import { Article, articleConf } from "../article";
-import { ApiService } from "../api.service";
+import { ApiService } from "../services/index";
 
 @Component({
   selector: 'app-header',

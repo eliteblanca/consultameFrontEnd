@@ -1,6 +1,6 @@
 import { Component,OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { EventsService } from './events.service';
+import { EventsService } from './services/index';
 import { Title } from "@angular/platform-browser";
 
 @Component({
@@ -20,7 +20,7 @@ export class AppComponent implements OnInit {
       if(newSearch){
         this.title.setTitle(newSearch);
         
-        this.router.navigate(['/search'],{ queryParams: { query: newSearch },queryParamsHandling: 'merge' })
+        this.router.navigate(['/app/search'],{ queryParams: { query: newSearch },queryParamsHandling: 'merge' })
       }
     })
 

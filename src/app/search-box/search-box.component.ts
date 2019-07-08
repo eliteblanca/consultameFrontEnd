@@ -2,8 +2,7 @@ import { Component, OnInit, AfterViewInit, ViewChild, ElementRef, EventEmitter, 
 import { DiccionarioEjemplo } from "../diccionario-ejemplo";
 import { Observable,fromEvent,merge } from 'rxjs';
 import { filter,map, distinctUntilChanged } from "rxjs/operators";
-import { ApiService } from "../api.service";
-import { EventsService } from "../events.service";
+import { ApiService, EventsService } from "../services/index";
 
 
 @Component({

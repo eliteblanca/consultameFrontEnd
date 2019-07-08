@@ -12,8 +12,14 @@ import { SearchBoxComponent } from './search-box/search-box.component';
 
 import { SearchComponent } from './search/search.component';
 
-import { mockServerService } from "./mock-back-end.service";
+import { mockServerService } from "./services/index";
 import { ArticleComponent } from './article/article.component';
+import { HomeComponent } from './home/home.component';
+import { LoginComponent } from './login/login.component';
+import { AplicationComponent } from './aplication/aplication.component';
+import { CategoriesComponent } from './categories/categories.component';
+import { CategorieComponent } from './categorie/categorie.component';
+import { ArticleListComponent } from './article-list/article-list.component';
 
 ////#endregion imports
 @NgModule({
@@ -23,7 +29,13 @@ import { ArticleComponent } from './article/article.component';
     HeaderComponent,
     SearchBoxComponent,
     SearchComponent,
-    ArticleComponent
+    ArticleComponent,
+    HomeComponent,
+    LoginComponent,
+    AplicationComponent,
+    CategoriesComponent,
+    CategorieComponent,
+    ArticleListComponent
   ],
   imports: [
     BrowserModule,

@@ -1,0 +1,53 @@
+.categories{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    width: 100%;
+}
+
+app-categorie{
+    background-color: var(--terciaryDark);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    width: 100%;
+    margin-bottom: .5rem;
+}
+
+app-categorie app-categorie{
+    background-color: transparent;    
+    margin-bottom: 0rem;
+}
+
+app-categorie .header{
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+    padding: .5rem;
+    padding-left: 1rem; 
+    padding-right: 1rem; 
+}
+
+app-categorie .header .title{
+    margin: 0;    
+    font-size: inherit;
+    color: inherit;
+    text-decoration: none;
+}
+
+app-categorie .header i:hover{
+    cursor: pointer;
+}
+
+app-categorie .body.desplegado{
+    display: inline-block;
+    padding-left: 2rem;
+    width: 100%;
+}
+
+app-categorie .body{    
+    display: none;
+}

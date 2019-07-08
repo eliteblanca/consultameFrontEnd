@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable,of } from 'rxjs';
-import { switchMap } from "rxjs/operators";
-import { Article, articleConf } from "./article";
+import { switchMap, tap, map } from "rxjs/operators";
+import { Article, articleConf } from "../article";
 enum EndPoints {
   suggestions = "suggestions",
-  articles = "articles"
+  articles = "articles",
+  login = "authenticate"
 }
 
 @Injectable({
@@ -32,7 +33,7 @@ export class ApiService {
     )
   }
 
-    /**
+  /**
   * save a new search
   * @param suggestion string
   * @returns Observable<string[]>
@@ -65,6 +66,25 @@ export class ApiService {
   postArticles(articles:Article[]):Observable<Article[]>{
     return of(null).pipe(
       switchMap(val=>this.http.post<Article[]>(EndPoints.articles,articles,{observe: "body"}))
+    )
+  }
+
+  login(user:string,pass:string):Observable<boolean>{
+    console.log()
+    return of(null).pipe(
+      switchMap(val=>this.http.post<{tokem:string}>(EndPoints.login,{user:user, pass:pass},{observe: "body"})),
+      tap(val=>{
+        if(val.tokem){
+          localStorage.setItem('token',val.tokem);
+        }
+      }),
+      map(val=>{
+        if(val.tokem){
+          return true
+        }else{
+          return false
+        }
+      })
     )
   }
 }

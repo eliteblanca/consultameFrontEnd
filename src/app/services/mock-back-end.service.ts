@@ -1,10 +1,9 @@
-//#region imports 
 import { Injectable } from '@angular/core';
 import { HttpRequest, HttpResponse, HttpHandler, HttpEvent, HttpInterceptor, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 
-import { LocalStorage } from "./local-storage";
-////#endregion imports
+import { LocalStorage } from "../local-storage";
+
 @Injectable({
   providedIn: 'root'
 })
@@ -57,6 +56,15 @@ class MockBackEndService implements HttpInterceptor{
         status: 200,
         body: this.BBDD.postArticles(body)
       }))
+    }
+
+    if(url.match('^authenticate$') && method == 'POST'){
+      if(body.user == 'julian' && body.pass == '123'){
+        return of(new HttpResponse({
+          status: 200,
+          body: {tokem:"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6Ikp1bGlhbiIsInJvbCI6ImFkbWluIiwibGluZSI6ImFsbCIsInN1YkxpbmUiOiIifQ.SkMKVjzCyzHQTvHq7MvEf_VCBldjhdHnLm6-1WBiodk"}
+        }))
+      }
     }
   }
 
