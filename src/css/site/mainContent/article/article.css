@@ -64,7 +64,6 @@
     align-items: center;
 }
 
-
 .article_body *{
     color: var(--primaryText) !important;
     font-size: 16px !important;
@@ -83,3 +82,48 @@
     cursor: pointer;
 }
     
+.footer{
+    display: flex;
+    align-items: flex-end;
+    padding: 1rem;
+    padding-bottom: .7rem;
+    padding-top: 0;
+}
+
+.footer .tags{
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-start;
+    flex-grow: 1;
+}
+
+.footer .tag{
+    padding: .4rem 1rem;
+    border-radius: 50px;
+    background-color: var(--primaryLight);
+    font-size: .85rem;
+    margin-right: .3rem;
+    margin-bottom: .3rem;
+    text-decoration: none;
+    color: inherit;
+}
+
+.footer .votes{
+    display: flex;
+    align-items: center;
+    color: grey;
+}
+
+.footer .votes .voteCount{
+    margin-right: .5rem;
+}
+
+.footer .votes i:hover{
+    cursor: pointer;
+    color: var(--primary);
+}
+
+.footer .votes i:nth-child(3){
+    margin-top: .3rem;
+}
