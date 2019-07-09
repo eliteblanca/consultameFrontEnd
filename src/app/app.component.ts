@@ -16,7 +16,6 @@ export class AppComponent implements OnInit {
 
   ngOnInit(){
     this.events.onNewSearch$.subscribe(newSearch=>{
-      console.log(newSearch);
       if(newSearch){
         this.title.setTitle(newSearch);
         

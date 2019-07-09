@@ -55,10 +55,10 @@ export class ApiService {
   * 
   * Observable que retorna un array de articulos
   */
-  getArticles(input:string):Observable<Article[]>{
+  getArticles(params:{query?:string,category?:string}):Observable<Article[]>{    
     return of(null).pipe(
       switchMap(val=>{
-          return this.http.get<Article[]>(EndPoints.articles,{params:{input:input},observe: "body"})
+          return this.http.get<Article[]>(EndPoints.articles,{params:params,observe: "body"})
       })
     )
   }

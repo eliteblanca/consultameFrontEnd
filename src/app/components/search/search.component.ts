@@ -1,8 +1,8 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { ApiService } from "../services/index";
+import { ApiService } from "../../services/index";
 import { switchMap } from "rxjs/operators";
-import { Article, articleConf } from "../article";
+import { Article, articleConf } from "../../article";
 
 @Component({
   selector: 'app-search',
@@ -19,7 +19,7 @@ export class SearchComponent implements OnInit, AfterViewInit  {
   ngOnInit() {
     this.route.queryParams.pipe(
       switchMap(params=>{
-        return this.api.getArticles(params['query'])
+        return this.api.getArticles(params)
       })
     ).subscribe((articles)=>{
       this.articles = articles;

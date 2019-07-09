@@ -44,10 +44,17 @@ class MockBackEndService implements HttpInterceptor{
     }
     
     if(url.match('^articles$') && method == 'GET'){
-      return of(new HttpResponse({
-        status: 200,
-        body: this.BBDD.getArticles(params.get('input'))
-      }))
+      if(params.has('query')){
+        return of(new HttpResponse({
+          status: 200,
+          body: this.BBDD.getArticles(params.get('query'))
+        }))
+      }else if(params.has('category')){
+          return of(new HttpResponse({
+            status: 200,
+            body: this.BBDD.getArticles(params.get('category'))
+          }))
+      }
     }
 
     if(url.match('^articles$') && method == 'POST'){

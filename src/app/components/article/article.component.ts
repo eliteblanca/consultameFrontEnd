@@ -1,8 +1,8 @@
 import { Component, OnInit, Input, Renderer2, ElementRef, ViewChild , AfterViewInit} from '@angular/core';
-import { Article } from '../article';
+import { Article } from '../../article';
 
 @Component({
-  selector: '.app-article',
+  selector: 'app-article',
   templateUrl: './article.component.html',
   styleUrls: ['./article.component.css']
 })
@@ -36,7 +36,6 @@ export class ArticleComponent implements OnInit, AfterViewInit {
       this.headings = this.document.querySelectorAll('h1,h2,h3,h4,h5,h6');
       this.text = this.document.querySelectorAll('p');
       this.attached = this.document.querySelectorAll('a');
-      console.log(this.lists);
       this.buildCard();
     })
   }
@@ -67,7 +66,6 @@ export class ArticleComponent implements OnInit, AfterViewInit {
 
   buildCard():void{
     if(this.Images.length){
-      
       this.renderer.appendChild(this.imgHeader.nativeElement,this.Images[0]);
     }
 
@@ -79,8 +77,6 @@ export class ArticleComponent implements OnInit, AfterViewInit {
 
     else if(this.text.length ){
       if(this.text[0].textContent.length > 27){
-          console.log(this.text[0].textContent.length);
-          console.log(this.text[0])
           this.renderer.appendChild(this.resume.nativeElement,this.text[0]);
       }
     }

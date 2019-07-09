@@ -1,8 +1,8 @@
 import { Component, OnInit, AfterViewInit, ViewChild, ElementRef, EventEmitter, Output } from '@angular/core';
-import { DiccionarioEjemplo } from "../diccionario-ejemplo";
+import { DiccionarioEjemplo } from "../../diccionario-ejemplo";
 import { Observable,fromEvent,merge } from 'rxjs';
 import { filter,map, distinctUntilChanged } from "rxjs/operators";
-import { ApiService, EventsService } from "../services/index";
+import { ApiService, EventsService } from "../../services/index";
 
 
 @Component({

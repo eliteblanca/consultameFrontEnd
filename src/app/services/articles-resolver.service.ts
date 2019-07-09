@@ -7,12 +7,12 @@ import { ApiService } from "./api.service";
 @Injectable({
   providedIn: 'root'
 })
-export class ArticlesResolverService implements Resolve<Article[]>{
+export class ArticlesResolverService /*implements Resolve<Article[]>*/{
 
   constructor(public api:ApiService) { }
 
-  resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot):Observable<Article[]>{
+  /* resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot):Observable<Article[]>{
     let query = route.url; 
     this.api.getArticles
-  }
+  } */
 }

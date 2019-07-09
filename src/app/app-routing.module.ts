@@ -1,12 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { SearchComponent } from "./search/search.component";
-import { ExplorarComponent } from "./explorar/explorar.component";
-import { HomeComponent } from "./home/home.component";
-import { AplicationComponent } from "./aplication/aplication.component";
-import { LoginComponent } from "./login/login.component";
+import { SearchComponent, ExplorarComponent, HomeComponent, AplicationComponent, LoginComponent, ArticleViewComponent } from "./components/index";
 import { AuthGuard, HomeGuard } from "./guards/index";
-import { ArticleListComponent } from "./article-list/article-list.component";
 
 const routes: Routes = [
 	{path: '', redirectTo: '/home', pathMatch:'full'},
@@ -15,7 +10,9 @@ const routes: Routes = [
 	{path: 'app',	component: AplicationComponent,	canActivate: [AuthGuard],
 		children:[
 			{path: 'search', component: SearchComponent},
-			{path: 'explore', component: ExplorarComponent}
+			{path: 'explore', component: ExplorarComponent},
+			{path: 'articles', redirectTo: 'explore'},
+			{path: 'articles/:id', component: ArticleViewComponent}
 		]},
 	{ path: '**', redirectTo: '' }
 ];

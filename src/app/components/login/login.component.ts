@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
-import { ApiService } from "../services/index";
+import { ApiService } from "../../services/index";
 
 import { Router } from '@angular/router';
 
