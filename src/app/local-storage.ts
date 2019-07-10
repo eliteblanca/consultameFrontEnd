@@ -25,6 +25,11 @@ export class LocalStorage {
         return articles;
     }
 
+    getArticle(articleId):Article{
+        let articles = (JSON.parse(localStorage.getItem('articles')) || []) as Article[];
+        return articles.find(article=> article.id == articleId);
+    }
+
     postArticles(articles:Article[]):Article[]{
         let articulos = (JSON.parse(localStorage.getItem('articles')) || []) as Article[];
         localStorage.setItem('articles',JSON.stringify(articulos.concat(articles)));

@@ -22,8 +22,7 @@ export class HeaderComponent implements OnInit {
     let diccionario = new DiccionarioEjemplo()
     let newArticles:Article[] = [];
     for(var i = 0; i<diccionario.diccionarioArticles.length; i++){
-      let newOne = new Article({content:diccionario.diccionarioArticles[i],title:"Articulo 1"});
-      newArticles.push(newOne);
+      newArticles.push(diccionario.diccionarioArticles[i]);
     }
     
     this.api.postArticles(newArticles).subscribe(val=>{

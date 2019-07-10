@@ -22,6 +22,7 @@
     padding: 1rem;
     background-color: rgba(255,255,255,0.2);
     margin: -.5rem;
+    margin-right: 1rem;
     border-radius: 3px;
     text-decoration: none;
     color: inherit;
@@ -29,4 +30,78 @@
 
 .tab:hover{
     cursor: pointer;
+}
+
+.main_header .separator{
+    flex-grow: 1;
+}
+
+.main_header .acountMenu{
+    position: relative;
+}
+
+.main_header .acountMenu .acount{
+    color: white;  
+    position: absolute;
+    top: .0rem;
+    right: .5rem;
+    transition-delay: 50ms;
+}
+
+
+.main_header .acountMenu .acount:hover, .main_header .acountMenu:hover .acount{
+    color: var(--primaryText) !important;
+    cursor: default;
+    pointer-events: none;
+}
+
+.main_header .acountMenu .container{
+    height: 0rem;
+    width: 0rem;
+}
+
+.main_header .acountMenu .acount:hover + .container, .main_header .acountMenu .container:hover{
+    display: inline-block;
+    height: 15rem;
+    width: 15rem;   
+    background-color: white;
+    box-shadow: var(--shadow2);
+    z-index: 2;
+    margin-top: -.5rem;
+    padding: .5rem 1rem; 
+    border-radius: 3px;
+}
+
+.main_header .acountMenu .container:hover *{
+    display: inline-block;    
+    color: var(--primaryText);
+}
+
+.main_header .acountMenu .container *{
+    color: transparent;
+    display: none;
+    transition-delay: 150ms;
+}
+
+.main_header .acountMenu .container:hover .nombre{    
+    display: inline-block;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--primaryText);
+    margin-top: .25rem;
+}
+
+.dropDownSelect{
+    width: 100%;
+    font-family: inherit;
+    color: inherit;
+    padding: .5rem;
+    background-color: white;
+    border-radius: 3px;
+    border: 1px solid var(--primary);
+    outline: inherit;
+}
+
+.dropDownSelect:hover{
+    border-radius: 3px 3px 0 0;
 }

@@ -1,4 +1,5 @@
 export interface articleConf{
+    id?:string;
     title:string;
     content:string;
     tags?:string[];
@@ -18,18 +19,19 @@ export interface articleConf{
 export class Article implements articleConf{
     public title:string;
     public content:string;
-    public tags:string[];
+    public tags?:string[];
     public resume?:string;
-    public attached:string[];
-    public likes:string[];//user ids
-    public disLikes:string[];//user ids
-    public favorites:string[];//user ids
-    public role:"noticia"|"articulo";
-    public publicationDate:Date;
-    public modificationDate:Date;
-    public modificationUser:string;
-    public creator:string;
-    public commentsList:string;
+    public attached?:string[];
+    public likes?:string[];//user ids
+    public disLikes?:string[];//user ids
+    public favorites?:string[];//user ids
+    public role?:"noticia"|"articulo";
+    public publicationDate?:Date;
+    public modificationDate?:Date;
+    public modificationUser?:string;
+    public creator?:string;
+    public commentsList?:string;
+    public id?:string;
 
     constructor(private conf:articleConf){
         this.title = conf.title;
@@ -68,7 +70,10 @@ export class Article implements articleConf{
             this.creator = conf.creator;
         }
         if(conf.commentsList){
-            this.commentsList = conf.commentsList
+            this.commentsList = conf.commentsList;
+        }
+        if(conf.id){
+            this.id = conf.id;
         }
     }
 }

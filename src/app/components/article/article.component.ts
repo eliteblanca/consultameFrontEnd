@@ -35,7 +35,7 @@ export class ArticleComponent implements OnInit, AfterViewInit {
       this.lists = this.document.querySelectorAll('ol, ul');
       this.headings = this.document.querySelectorAll('h1,h2,h3,h4,h5,h6');
       this.text = this.document.querySelectorAll('p');
-      this.attached = this.document.querySelectorAll('a');
+      this.attached = this.document.querySelectorAll('a[href]:not([target])');
       this.buildCard();
     })
   }

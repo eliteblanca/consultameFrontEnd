@@ -20,6 +20,7 @@ class MockBackEndService implements HttpInterceptor{
   */
   enrutar(req:HttpRequest<any>):Observable<HttpEvent<any>>{
     let {url,method,body,params} = req;
+    console.log(url)
     if(url.match('^suggestions$') && method == 'POST'){
       this.BBDD.postSuggestion(body);      
       
@@ -65,6 +66,13 @@ class MockBackEndService implements HttpInterceptor{
       }))
     }
 
+    if(url.startsWith('articles/') && method == 'GET'){
+      return of(new HttpResponse({
+        status: 200,
+        body: this.BBDD.getArticle(url.split('/')[1])
+      }))
+    }
+
     if(url.match('^authenticate$') && method == 'POST'){
       if(body.user == 'julian' && body.pass == '123'){
         return of(new HttpResponse({
@@ -72,6 +80,14 @@ class MockBackEndService implements HttpInterceptor{
           body: {tokem:"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6Ikp1bGlhbiIsInJvbCI6ImFkbWluIiwibGluZSI6ImFsbCIsInN1YkxpbmUiOiIifQ.SkMKVjzCyzHQTvHq7MvEf_VCBldjhdHnLm6-1WBiodk"}
         }))
       }
+    }
+
+    if(url.match("^users/.*/lines$") && method == 'GET'){
+      console.log(url);
+      return of(new HttpResponse({
+        status: 200,
+        body: ["Bancolombia", "Sura", "DirecTV"]
+      }))
     }
   }
 

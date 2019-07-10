@@ -3,10 +3,24 @@ import { HttpClient } from '@angular/common/http';
 import { Observable,of } from 'rxjs';
 import { switchMap, tap, map } from "rxjs/operators";
 import { Article, articleConf } from "../article";
+import { JwtHelperService } from '@auth0/angular-jwt';
+ 
+type user = {
+  sub:string,
+  name:string,
+  rol:string,
+  line:string,
+  subLine:string
+}
+
+const helper = new JwtHelperService();
+
 enum EndPoints {
   suggestions = "suggestions",
   articles = "articles",
-  login = "authenticate"
+  article = "articles/:id",
+  login = "authenticate",
+  userLines = "users/:id/lines"
 }
 
 @Injectable({
@@ -63,6 +77,14 @@ export class ApiService {
     )
   }
 
+  getArticle(articleId:string):Observable<Article>{
+    return of(null).pipe(
+      switchMap(val=>{
+          return this.http.get<Article>(EndPoints.article.replace(':id',articleId),{observe: "body"})
+      })
+    )
+  }
+
   postArticles(articles:Article[]):Observable<Article[]>{
     return of(null).pipe(
       switchMap(val=>this.http.post<Article[]>(EndPoints.articles,articles,{observe: "body"}))
@@ -84,6 +106,20 @@ export class ApiService {
         }else{
           return false
         }
+      })
+    )
+  }
+
+  getCurrentUser():user{
+    return helper.decodeToken(localStorage.getItem("token"));
+    //const expirationDate = helper.getTokenExpirationDate(myRawToken);
+    //const isExpired = helper.isTokenExpired(myRawToken);
+  }
+
+  getUserLines(userId):Observable<string[]>{
+    return of(null).pipe(
+      switchMap(val=>{
+          return this.http.get<string[]>(EndPoints.userLines.replace(':id',userId),{observe: "body"})
       })
     )
   }

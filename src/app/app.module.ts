@@ -1,4 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
+import { FormsModule} from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { HttpClientModule } from '@angular/common/http';
@@ -15,7 +16,9 @@ import {
   CategoriesComponent,
   CategorieComponent,
   ArticleListComponent,
-  ArticleViewComponent } from './components/index';
+  ArticleViewComponent,
+  AcountMenuComponent
+ } from './components/index';
 
 import { mockServerService } from "./services/index";
 
@@ -33,12 +36,14 @@ import { mockServerService } from "./services/index";
     CategoriesComponent,
     CategorieComponent,
     ArticleListComponent,
-    ArticleViewComponent
+    ArticleViewComponent,
+    AcountMenuComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    FormsModule
   ],
   providers: [ 
     mockServerService

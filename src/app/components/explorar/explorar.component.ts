@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { switchMap } from "rxjs/operators";
 import { Article } from "../../article";
 import { ApiService } from "../../services";
@@ -12,7 +12,7 @@ export class ExplorarComponent implements OnInit {
 
   public articles:Article[];
 
-  constructor(public route:ActivatedRoute, public api:ApiService ) {  }
+  constructor(public route:ActivatedRoute, public api:ApiService, public router:Router ) {  }
 
   ngOnInit() {
     this.route.queryParams.pipe(
@@ -25,8 +25,21 @@ export class ExplorarComponent implements OnInit {
       })
     ).subscribe(articles=>{
       this.articles = articles;
-    })
+    });    
     
+    this.route.queryParamMap.subscribe(params=>{
+      if(!params.has("line")){
+        console.log(params);
+        this.router.navigate(
+          [],{
+            relativeTo: this.route,
+            queryParams: {line:'line'}, 
+            queryParamsHandling: "merge",
+          });
+      }
+    })
   }
+
+
 
 }

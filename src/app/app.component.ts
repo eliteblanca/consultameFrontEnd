@@ -23,9 +23,14 @@ export class AppComponent implements OnInit {
       }
     })
 
-    this.route.queryParams.subscribe(params=>{
-      if(params['query']){
-        this.events.newQuery(params['query']);
+    this.route.queryParamMap.subscribe(params=>{
+      if(!params.has("line")){
+        console.log(params);
+        this.router.navigate(
+          ['login']);
+      }
+      if(params.has("query")){
+        this.events.newQuery(params.get('query'));
       }
     })
   }

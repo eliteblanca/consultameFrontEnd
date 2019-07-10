@@ -1,0 +1,9 @@
+<div class="acountMenu">
+    <i class="material-icons acount">person_pin</i>
+    <div class="container">
+        <h4 class="nombre">{{user.name}}</h4>
+        <select class="dropDownSelect" (change)="changeLine($event)">
+            <option *ngFor="let line of lines" [ngValue]="line">{{line}}</option>
+        </select>
+    </div>
+</div>
