@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 
 type categories = {
   name:string,
@@ -14,71 +14,12 @@ type categories = {
 })
 export class CategoriesComponent implements OnInit {
 
-  public categories:categories = [
-      {
-        name:"categoria 1",
-        order:1,
-        desplegado:true,
-        subcategories:[{
-            name:"sub Categoria 1",
-            order:1,
-            desplegado:true
-          },{
-            name:"sub Categoria 2",
-            order:1,
-            desplegado:true
-          }
-        ]
-      },{
-        name:"categoria 2",
-        order:1,
-        desplegado:true,
-        subcategories:[{
-            name:"sub Categoria 1",
-            order:1,
-            desplegado:true
-          },{
-            name:"sub Categoria 2",
-            order:1,
-            desplegado:true
-          }
-        ]
-      },{
-        name:"categoria 3",
-        order:1,
-        desplegado:true,
-        subcategories:[{
-            name:"sub Categoria 1",
-            order:1,
-            desplegado:true,
-            subcategories:[{
-              name:"sub Categoria 1",
-              order:1,
-              desplegado:true,
-              subcategories:[{
-                name:"sub Categoria 1",
-                order:1,
-                desplegado:true
-              },{
-                name:"sub Categoria 2",
-                order:1,
-                desplegado:true
-              }
-            ]
-            },{
-              name:"sub Categoria 2",
-              order:1,
-              desplegado:true
-            }
-          ]
-          },{
-            name:"sub Categoria 2",
-            order:1,
-            desplegado:true
-          }
-        ]
-      },
-    ];
+  @Output() onSelected: EventEmitter<string> = new EventEmitter();
+  @Input() categories:categories;
+
+  categoriaSeleccionada(categoria:string){
+    this.onSelected.emit(categoria);
+  }
 
   constructor() { }
 

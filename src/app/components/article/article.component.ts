@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, Renderer2, ElementRef, ViewChild , AfterViewInit} from '@angular/core';
 import { Article } from '../../article';
+import { fromEvent, Observable } from 'rxjs';
 
 @Component({
   selector: 'app-article',
@@ -12,6 +13,8 @@ export class ArticleComponent implements OnInit, AfterViewInit {
   @ViewChild("resume", {static:false}) resume: ElementRef;
   @ViewChild("resumeLists", {static:false}) resumeLists: ElementRef;
   @ViewChild("links", {static:false}) links: ElementRef;
+  @ViewChild("like", {static:false}) like: ElementRef;
+  @ViewChild("disLike", {static:false}) disLike: ElementRef;
 
   @Input() Article:Article;
   private document:DocumentFragment;
@@ -22,7 +25,8 @@ export class ArticleComponent implements OnInit, AfterViewInit {
   private attached:NodeList;
   public listDissmised = true;
   public hasLongList;
-
+  public onkeydown$:Observable<>;
+  
   constructor(private renderer:Renderer2) { }
 
   ngOnInit() {
@@ -38,6 +42,8 @@ export class ArticleComponent implements OnInit, AfterViewInit {
       this.attached = this.document.querySelectorAll('a[href]:not([target])');
       this.buildCard();
     })
+    
+    this.onLike$ = fromEvent(this.like.nativeElement, 'click');
   }
 
   getTextNodesIn(elem:Node, opt_fnFilter?): Node[] {
@@ -127,6 +133,5 @@ export class ArticleComponent implements OnInit, AfterViewInit {
       this.hasLongList = true;
     }
     this.renderer.appendChild(this.resumeLists.nativeElement,this.lists[0]);
-  }
-
+  }  
 }

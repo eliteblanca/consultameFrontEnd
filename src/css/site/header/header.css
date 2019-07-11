@@ -105,3 +105,7 @@
 .dropDownSelect:hover{
     border-radius: 3px 3px 0 0;
 }
+
+.main_header .dropDownSelect{
+    margin-bottom: .5rem;
+}

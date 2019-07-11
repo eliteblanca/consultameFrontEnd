@@ -118,6 +118,7 @@ app-article .title{
 
 .footer .votes .voteCount{
     margin-right: .5rem;
+    margin-left: .3rem;
 }
 
 .footer .votes i:hover{

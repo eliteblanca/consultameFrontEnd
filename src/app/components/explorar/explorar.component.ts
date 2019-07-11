@@ -1,8 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { switchMap } from "rxjs/operators";
+import { merge } from "rxjs";
+import { switchMap, map } from "rxjs/operators";
 import { Article } from "../../article";
-import { ApiService } from "../../services";
+import { ApiService, EventsService } from "../../services";
+
+type categories = {
+  name:string,
+  order:number,
+  desplegado:boolean,
+  subcategories?:categories
+}[];
 @Component({
   selector: 'app-explorar',
   templateUrl: './explorar.component.html',
@@ -11,35 +19,26 @@ import { ApiService } from "../../services";
 export class ExplorarComponent implements OnInit {
 
   public articles:Article[];
+  public categories:categories;
 
-  constructor(public route:ActivatedRoute, public api:ApiService, public router:Router ) {  }
+  constructor(public route:ActivatedRoute, public api:ApiService, public router:Router, public events:EventsService ) {  }
 
   ngOnInit() {
-    this.route.queryParams.pipe(
-      switchMap(params=>{
-        if(params['category']){
-          return this.api.getArticles(params);
-        }else{          
-          return this.api.getArticles({category:""});
-        }
+
+    this.events.onNewSelectedLine$.pipe(
+      switchMap(newLine=>{
+        return this.api.getCategories(newLine.line,newLine.subLine)
       })
-    ).subscribe(articles=>{
-      this.articles = articles;
-    });    
-    
-    this.route.queryParamMap.subscribe(params=>{
-      if(!params.has("line")){
-        console.log(params);
-        this.router.navigate(
-          [],{
-            relativeTo: this.route,
-            queryParams: {line:'line'}, 
-            queryParamsHandling: "merge",
-          });
-      }
-    })
+    ).subscribe(categories=>{
+      console.log(categories);
+      this.categories = categories;
+      this.articles = [];
+    })    
   }
 
-
-
+  categoriaSeleccionada(categoria:string){
+    this.api.getArticles({category:categoria}).subscribe(val=>{
+      this.articles = val;
+    })
+  }
 }

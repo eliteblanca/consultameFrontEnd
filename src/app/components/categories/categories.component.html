@@ -1,4 +1,4 @@
 <div class="categories">
-    <app-categorie *ngFor="let category of categories" [category]="category" [belongsTo]="'/'">
+    <app-categorie *ngFor="let category of categories" [category]="category" [belongsTo]="'/'" (onSelected)="categoriaSeleccionada($event)">
     </app-categorie>
 </div>

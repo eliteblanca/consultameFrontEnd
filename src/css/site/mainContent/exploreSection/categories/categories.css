@@ -38,7 +38,7 @@ app-categorie .header .title{
     text-decoration: none;
 }
 
-app-categorie .header i:hover{
+app-categorie .header i:hover, app-categorie .header .title{
     cursor: pointer;
 }
 

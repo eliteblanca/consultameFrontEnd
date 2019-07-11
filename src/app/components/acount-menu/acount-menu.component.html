@@ -1,9 +1,12 @@
 <div class="acountMenu">
     <i class="material-icons acount">person_pin</i>
     <div class="container">
-        <h4 class="nombre">{{user.name}}</h4>
+        <h4 class="nombre">{{userService.usuario.name}}</h4>
         <select class="dropDownSelect" (change)="changeLine($event)">
-            <option *ngFor="let line of lines" [ngValue]="line">{{line}}</option>
+            <option *ngFor="let line of lines" [ngValue]="line">{{line.name}}</option>
+        </select>
+        <select class="dropDownSelect" (change)="changeSubLine($event)">
+            <option *ngFor="let subLine of this.subLines" [ngValue]="subLine">{{subLine}}</option>
         </select>
     </div>
 </div>

@@ -2,6 +2,8 @@ import { Article, articleConf } from "./article";
 export class DiccionarioEjemplo {
     public diccionarioArticles:Article[] = [
         new Article({
+        likes:["prueba","prueba","prueba"],
+        disLikes:[],
         id:"1",
         title:"articulo 1",
         content:`"76499"	"0"	"Manual de Comunicaciones"	"Manual , comunicaciones , comunicación , guión , guion , plantilla"	"<p>

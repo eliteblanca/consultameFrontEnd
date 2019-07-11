@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { ApiService } from 'src/app/services';
-import { Router, ActivatedRoute } from '@angular/router';
-import { isPlatformBrowser } from '@angular/common';
-import { windowWhen } from 'rxjs/operators';
+import { ApiService, UserService  } from 'src/app/services';
+import { Router } from '@angular/router';
+import { mergeMap, tap } from 'rxjs/operators';
+import { Observable, forkJoin } from 'rxjs';
 
 type user = {
   sub:string,
@@ -18,21 +18,37 @@ type user = {
   styleUrls: ['./acount-menu.component.css']
 })
 export class AcountMenuComponent implements OnInit {
-  public user:user;
-  public lines:string[];
+  public lines:{name:string,sublines:string[]}[];
+  public subLines:string[];
 
-  constructor(public api:ApiService, public router:Router) { }
+
+  constructor(public api:ApiService, public router:Router, public userService:UserService) { }
 
   ngOnInit() {
-    this.user = this.api.getCurrentUser();
-    this.api.getUserLines(this.user.sub)
-    .subscribe((lines)=>{
+    this.api.getUserLines(this.userService.usuario.sub)
+    .pipe(
+      mergeMap((lines)=>{
+        return forkJoin(...lines.map(line=>{
+          return this.api.getUserSubLines(this.userService.usuario.sub, line)
+        }))
+      })
+    )
+    .subscribe((lines:{name:string,sublines:string[]}[])=>{
       this.lines = lines;
+      this.subLines = this.lines[0].sublines;      
+      this.userService.selectedSubLine = {line:this.lines[0].name, subLine: this.lines[0].sublines[0]};
     })
   }
 
   changeLine(event){
-    this.router.navigate(['/app/explore'],{ queryParams: { line: event.target.value },queryParamsHandling: 'merge' })
+    console.log(event.target.value)
+    this.userService.selectedSubLine = {line:event.target.value, subLine:this.lines.find(line=>line.name == event.target.value ).sublines[0]};
+    this.subLines = this.lines.find(line=>line.name == event.target.value ).sublines;
+  }
+
+  changeSubLine(event){
+    console.log("prueba 1")
+    this.userService.selectedSubLine = {line:this.userService.selectedSubLine.line, subLine:event.target.value};
   }
 
 }

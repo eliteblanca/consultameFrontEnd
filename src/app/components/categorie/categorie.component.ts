@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 type category = {
   name:string,
@@ -14,12 +14,21 @@ type category = {
 })
 export class CategorieComponent implements OnInit {
 
+  @Output() onSelected: EventEmitter<string> = new EventEmitter();
   @Input() public category:category;
   @Input() public belongsTo:string;
 
   constructor() { }
 
   ngOnInit() {
-    
   }
+
+  categoriaSeleccionada(categoria?:string):void{
+    if(typeof categoria == 'undefined'){
+      this.onSelected.emit(this.belongsTo + '/' + this.category.name);
+    }else{
+      this.onSelected.emit(categoria);
+    }
+  }
+
 }

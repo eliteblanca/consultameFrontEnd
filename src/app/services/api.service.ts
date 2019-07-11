@@ -2,26 +2,25 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable,of } from 'rxjs';
 import { switchMap, tap, map } from "rxjs/operators";
-import { Article, articleConf } from "../article";
-import { JwtHelperService } from '@auth0/angular-jwt';
- 
-type user = {
-  sub:string,
-  name:string,
-  rol:string,
-  line:string,
-  subLine:string
-}
-
-const helper = new JwtHelperService();
+import { Article } from "../article";
 
 enum EndPoints {
   suggestions = "suggestions",
   articles = "articles",
   article = "articles/:id",
   login = "authenticate",
-  userLines = "users/:id/lines"
+  userLines = "users/:id/lines",
+  userSubLines = "users/:id/lines/:lineId",
+  categories = "lines/:lineId/subLines/:SublineId/categories",
+  likes = "articles/:id/likes"
 }
+
+type categories = {
+  name:string,
+  order:number,
+  desplegado:boolean,
+  subcategories?:categories
+}[];
 
 @Injectable({
   providedIn: 'root'
@@ -91,6 +90,14 @@ export class ApiService {
     )
   }
 
+  getCategories(lineId:string, sublineId:string):Observable<categories>{
+    return of(null).pipe(
+      switchMap(val=>{
+          return this.http.get<categories>(EndPoints.categories.replace(':lineId',lineId).replace(':SublineId',sublineId),{observe: "body"})
+      })
+    )
+  }
+
   login(user:string,pass:string):Observable<boolean>{
     console.log()
     return of(null).pipe(
@@ -110,17 +117,25 @@ export class ApiService {
     )
   }
 
-  getCurrentUser():user{
-    return helper.decodeToken(localStorage.getItem("token"));
-    //const expirationDate = helper.getTokenExpirationDate(myRawToken);
-    //const isExpired = helper.isTokenExpired(myRawToken);
-  }
-
   getUserLines(userId):Observable<string[]>{
     return of(null).pipe(
       switchMap(val=>{
           return this.http.get<string[]>(EndPoints.userLines.replace(':id',userId),{observe: "body"})
       })
+    )
+  }
+
+  getUserSubLines(userId:string,line:string):Observable<{name:string,sublines:string[]}>{
+    return of(null).pipe(
+      switchMap(val=>{
+          return this.http.get<{name:string,sublines:string[]}>(EndPoints.userSubLines.replace(':id',userId).replace(':lineId',line),{observe: "body"})
+      })
+    )
+  }
+
+  postLike(userId,articleId){
+    return of(null).pipe(
+      switchMap(val=>this.http.post<string[]>(EndPoints.likes.replace(':id',articleId),{user:userId},{observe: "body"}))
     )
   }
 }

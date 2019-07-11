@@ -4,6 +4,13 @@ import { Observable, of } from 'rxjs';
 
 import { LocalStorage } from "../local-storage";
 
+type categories = {
+  name:string,
+  order:number,
+  desplegado:boolean,
+  subcategories?:categories
+}[];
+
 @Injectable({
   providedIn: 'root'
 })
@@ -20,7 +27,6 @@ class MockBackEndService implements HttpInterceptor{
   */
   enrutar(req:HttpRequest<any>):Observable<HttpEvent<any>>{
     let {url,method,body,params} = req;
-    console.log(url)
     if(url.match('^suggestions$') && method == 'POST'){
       this.BBDD.postSuggestion(body);      
       
@@ -83,10 +89,109 @@ class MockBackEndService implements HttpInterceptor{
     }
 
     if(url.match("^users/.*/lines$") && method == 'GET'){
-      console.log(url);
       return of(new HttpResponse({
         status: 200,
         body: ["Bancolombia", "Sura", "DirecTV"]
+      }))
+    }
+
+    if(url.match("^users/.*/lines/.*$") && method == 'GET'){
+      let subLines = [];      
+
+      switch (url.split('/')[3]) {
+        case 'Bancolombia':
+          subLines = ["Atencion al cliente", "Ventas", "Soporte"]
+          break;      
+        case 'Sura':
+          subLines = ["Citas", "Urgencias"]
+          break;      
+        case 'DirecTV':
+          subLines = ["Soporte", "SAC"]
+          break;      
+        default:          
+            subLines = ["Atencion al cliente", "Ventas", "Soporte"]
+          break;
+      }
+
+      return of(new HttpResponse({
+        status: 200,
+        body: {name:url.split('/')[3], sublines:subLines}
+      }))
+    }
+
+    if(url.match("^lines/.*/subLines/.*/categories$") && method == 'GET'){
+
+      let intPrueba = (Math.random() * 100).toPrecision(1)
+
+      let categories:categories = [
+        {
+          name:`categoria ${intPrueba}`,
+          order:1,
+          desplegado:true,
+          subcategories:[{
+              name:"sub Categoria 1",
+              order:1,
+              desplegado:true
+            },{
+              name:"sub Categoria 2",
+              order:1,
+              desplegado:true
+            }
+          ]
+        },{
+          name:"categoria 2",
+          order:1,
+          desplegado:true,
+          subcategories:[{
+              name:"sub Categoria 1",
+              order:1,
+              desplegado:true
+            },{
+              name:"sub Categoria 2",
+              order:1,
+              desplegado:true
+            }
+          ]
+        },{
+          name:"categoria 3",
+          order:1,
+          desplegado:true,
+          subcategories:[{
+              name:"sub Categoria 1",
+              order:1,
+              desplegado:true,
+              subcategories:[{
+                name:"sub Categoria 1",
+                order:1,
+                desplegado:true,
+                subcategories:[{
+                  name:"sub Categoria 1",
+                  order:1,
+                  desplegado:true
+                },{
+                  name:"sub Categoria 2",
+                  order:1,
+                  desplegado:true
+                }
+              ]
+              },{
+                name:"sub Categoria 2",
+                order:1,
+                desplegado:true
+              }
+            ]
+            },{
+              name:"sub Categoria 2",
+              order:1,
+              desplegado:true
+            }
+          ]
+        },
+      ];
+
+      return of(new HttpResponse({
+        status: 200,
+        body: categories
       }))
     }
   }

@@ -16,9 +16,8 @@ export class LineGuard implements CanActivate {
       // https://stackoverflow.com/questions/43698032/angular-how-to-update-queryparams-without-changing-route      
       if(next.queryParamMap.has('line')){
         return true;
-      }else{
-        
-          return false;
+      }else{        
+        return false;
       }
   }  
 }

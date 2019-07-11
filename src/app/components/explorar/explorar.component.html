@@ -1,5 +1,5 @@
 <div class="exploreContainer">
-    <app-categories></app-categories>
+    <app-categories (onSelected)="categoriaSeleccionada($event)" [categories]="categories"></app-categories>
     <div class="articles_container">
         <app-article-list [articles]="articles"></app-article-list>
     </div>

@@ -14,16 +14,26 @@ export class ArticleListComponent implements OnInit {
 
 
   @Input()
-  set articles(articles:Article[]){
-    this._articles = articles;    
-    let i = 0;
-    let row = 0;
-    while(i<this._articles.length){
-      for(let k = 0; k<this.columnsCount && i<this._articles.length;k++){
-        this.columns[k][row] = this._articles[i];
-        i++;
+  set articles(articles: Article[]) {
+    this._articles = [];
+    this.columns = [];
+    for(let i = 0; i<this.columnsCount;i++){
+      this.columns.push([])
+    }
+    console.log(articles);
+    if (typeof articles != 'undefined') {
+      this._articles = articles;
+      let i = 0;
+      let row = 0;
+      while (i < this._articles.length) {
+        for (let k = 0; k < this.columnsCount && i < this._articles.length; k++) {
+          this.columns[k][row] = this._articles[i];
+          i++;
+        }
+        row++;
       }
-      row++;
+    }else{
+      
     }
   }
 
