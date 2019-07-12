@@ -12,7 +12,8 @@ enum EndPoints {
   userLines = "users/:id/lines",
   userSubLines = "users/:id/lines/:lineId",
   categories = "lines/:lineId/subLines/:SublineId/categories",
-  likes = "articles/:id/likes"
+  likes = "articles/:id/likes",
+  disLikes = "articles/:id/disLikes"
 }
 
 type categories = {
@@ -133,9 +134,29 @@ export class ApiService {
     )
   }
 
-  postLike(userId,articleId){
+  postLike(userId:string,articleId:string):Observable<string[]>{
     return of(null).pipe(
       switchMap(val=>this.http.post<string[]>(EndPoints.likes.replace(':id',articleId),{user:userId},{observe: "body"}))
     )
   }
+  
+  deleteLike(userId:string,articleId:string):Observable<string[]>{
+    return of(null).pipe(
+      switchMap(val=>this.http.delete<string[]>(EndPoints.likes.replace(':id',articleId),{params:{user:userId},observe: "body"}))
+    )
+  }
+
+  postDisLike(userId:string,articleId:string):Observable<string[]>{
+    return of(null).pipe(
+      switchMap(val=>this.http.post<string[]>(EndPoints.disLikes.replace(':id',articleId),{user:userId},{observe: "body"}))
+    )
+  }
+
+  deleteDisLike(userId:string,articleId:string):Observable<string[]>{
+    return of(null).pipe(
+      switchMap(val=>this.http.delete<string[]>(EndPoints.disLikes.replace(':id',articleId),{params:{user:userId},observe: "body"}))
+    )
+  }
+    
+
 }

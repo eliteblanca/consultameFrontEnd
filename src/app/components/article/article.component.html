@@ -26,9 +26,9 @@
         <a class="tag" href="app/search?query=[Tag12234]">Tag12234</a>
     </div>
     <div class="votes">
-        <i class="material-icons" #like>thumb_up</i>
+        <i class="material-icons" (click)="like()" [ngClass]="{'liked bounce animated': liked()}">thumb_up</i>
         <span class="voteCount">{{Article.likes.length || 0}}</span>
-        <i class="material-icons" #disLike>thumb_down</i>
-        <span class="voteCount">{{Article.disLikes.lenght || 0}}</span>
+        <i class="material-icons" (click)="disLike()" [ngClass]="{'disLiked swing fadeOutDown animated': disLiked()}">thumb_down</i>
+        <span class="voteCount">{{Article.disLikes.length || 0}}</span>
     </div>
 </div>

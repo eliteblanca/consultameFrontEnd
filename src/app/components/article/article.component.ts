@@ -1,6 +1,7 @@
 import { Component, OnInit, Input, Renderer2, ElementRef, ViewChild , AfterViewInit} from '@angular/core';
 import { Article } from '../../article';
-import { fromEvent, Observable } from 'rxjs';
+import { UserService, ApiService } from 'src/app/services';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-article',
@@ -13,8 +14,6 @@ export class ArticleComponent implements OnInit, AfterViewInit {
   @ViewChild("resume", {static:false}) resume: ElementRef;
   @ViewChild("resumeLists", {static:false}) resumeLists: ElementRef;
   @ViewChild("links", {static:false}) links: ElementRef;
-  @ViewChild("like", {static:false}) like: ElementRef;
-  @ViewChild("disLike", {static:false}) disLike: ElementRef;
 
   @Input() Article:Article;
   private document:DocumentFragment;
@@ -25,9 +24,8 @@ export class ArticleComponent implements OnInit, AfterViewInit {
   private attached:NodeList;
   public listDissmised = true;
   public hasLongList;
-  public onkeydown$:Observable<>;
   
-  constructor(private renderer:Renderer2) { }
+  constructor(private renderer:Renderer2, private user:UserService, private api:ApiService) { }
 
   ngOnInit() {
   }
@@ -41,9 +39,7 @@ export class ArticleComponent implements OnInit, AfterViewInit {
       this.text = this.document.querySelectorAll('p');
       this.attached = this.document.querySelectorAll('a[href]:not([target])');
       this.buildCard();
-    })
-    
-    this.onLike$ = fromEvent(this.like.nativeElement, 'click');
+    })    
   }
 
   getTextNodesIn(elem:Node, opt_fnFilter?): Node[] {
@@ -122,7 +118,7 @@ export class ArticleComponent implements OnInit, AfterViewInit {
     this.renderer.appendChild(this.resumeLists.nativeElement,this.lists[0]);
   }
 
-  dismissList(){
+  dismissList():void{
     this.renderer.removeChild(this.resumeLists.nativeElement ,this.lists[0]);
     this.listDissmised = true;
     if(this.lists[0].childNodes.length > 5){
@@ -133,5 +129,43 @@ export class ArticleComponent implements OnInit, AfterViewInit {
       this.hasLongList = true;
     }
     this.renderer.appendChild(this.resumeLists.nativeElement,this.lists[0]);
-  }  
+  }
+
+  like():void{    
+    if(this.liked()){
+      this.api.deleteLike(this.user.usuario.sub,this.Article.id)
+      .subscribe(val=>{
+        this.Article.likes = val;
+      })
+    }else{
+      forkJoin(
+        this.api.postLike(this.user.usuario.sub,this.Article.id),        
+        this.api.deleteDisLike(this.user.usuario.sub,this.Article.id)
+      ).subscribe(val => {
+        this.Article.likes = val[0];
+        this.Article.disLikes = val[1];
+      })
+    }
+  }
+
+  disLike():void{
+    if(this.disLiked()){
+      this.api.deleteDisLike(this.user.usuario.sub,this.Article.id)
+      .subscribe(val=>{
+        this.Article.disLikes = val;
+      })
+    }else{
+      forkJoin(
+        this.api.postDisLike(this.user.usuario.sub,this.Article.id),        
+        this.api.deleteLike(this.user.usuario.sub,this.Article.id)
+      ).subscribe(val => {
+        this.Article.disLikes = val[0];
+        this.Article.likes = val[1];
+      })
+    }
+  }
+
+  liked = () => this.Article.likes.some(x=>x == this.user.usuario.sub);
+  disLiked = () => this.Article.disLikes.some(x=>x == this.user.usuario.sub);
+    
 }

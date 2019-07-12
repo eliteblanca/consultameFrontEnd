@@ -36,6 +36,64 @@ export class LocalStorage {
         return articles;
     }
 
+    postLike(articleId, userid):string[]{
+        let articles = (JSON.parse(localStorage.getItem('articles')) || []) as Article[];
+        articles.map(article=>{
+            if(article.id == articleId){
+                article.likes.push(userid)
+            }
+            return article;
+        })
 
+        localStorage.setItem('articles',JSON.stringify(articles));
+        return articles.find(x=>x.id == articleId).likes
+    }
+
+    deleteLike(articleId, userid):string[]{
+        let articles = (JSON.parse(localStorage.getItem('articles')) || []) as Article[];
+        articles.map(article=>{
+            if(article.id == articleId){                
+                let index = article.likes.findIndex(x=>x == userid)
+                console.log(index);
+                if(index > -1){
+                    article.likes.splice(index,1);
+                }
+            }
+            return article;
+        })
+        
+        localStorage.setItem('articles',JSON.stringify(articles));
+        return articles.find(x=>x.id == articleId).likes 
+    }
     
+    postDisLike(articleId, userid):string[]{
+        let articles = (JSON.parse(localStorage.getItem('articles')) || []) as Article[];
+        articles.map(article=>{
+            if(article.id == articleId){
+                article.disLikes.push(userid)
+            }
+            return article;
+        })
+
+        localStorage.setItem('articles',JSON.stringify(articles));
+        return articles.find(x=>x.id == articleId).disLikes
+    }
+
+    deleteDisLike(articleId, userid):string[]{
+        let articles = (JSON.parse(localStorage.getItem('articles')) || []) as Article[];
+        articles.map(article=>{
+            if(article.id == articleId){
+                let index = article.disLikes.findIndex(x=>x == userid)
+                if(index > -1){
+                    article.disLikes.splice(index,1);
+                }
+
+            }
+            return article;
+        })
+
+        localStorage.setItem('articles',JSON.stringify(articles));
+        return articles.find(x=>x.id == articleId).disLikes 
+    }
+
 }

@@ -17,7 +17,8 @@ import {
   CategorieComponent,
   ArticleListComponent,
   ArticleViewComponent,
-  AcountMenuComponent
+  AcountMenuComponent,
+  NewsComponent
  } from './components/index';
 
 import { mockServerService } from "./services/index";
@@ -37,7 +38,8 @@ import { mockServerService } from "./services/index";
     CategorieComponent,
     ArticleListComponent,
     ArticleViewComponent,
-    AcountMenuComponent
+    AcountMenuComponent,
+    NewsComponent
   ],
   imports: [
     BrowserModule,

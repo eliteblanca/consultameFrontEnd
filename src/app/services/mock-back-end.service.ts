@@ -194,6 +194,45 @@ class MockBackEndService implements HttpInterceptor{
         body: categories
       }))
     }
+
+    if(url.match('^articles/.*/likes$') && method == 'POST'){
+      let articleId = url.split('/')[1];
+
+      return of(new HttpResponse({
+        status: 200,
+        body: this.BBDD.postLike(articleId, body['user'])
+      }))
+      
+    }
+
+    if(url.match('^articles/.*/disLikes$') && method == 'POST'){
+      let articleId = url.split('/')[1];
+
+      return of(new HttpResponse({
+        status: 200,
+        body: this.BBDD.postDisLike(articleId, body['user'])
+      }))
+      
+    }
+
+    if(url.match('^articles/.*/likes$') && method == 'DELETE'){      
+      let articleId = url.split('/')[1];
+      let userId = params.get('user');
+      return of(new HttpResponse({
+        status: 200,
+        body: this.BBDD.deleteLike(articleId, userId)
+      }))
+      
+    }
+
+    if(url.match('^articles/.*/disLikes$') && method == 'DELETE'){
+      let articleId = url.split('/')[1];
+      let userId = params.get('user');
+      return of(new HttpResponse({
+        status: 200,
+        body: this.BBDD.deleteDisLike(articleId, userId)
+      }))
+    }
   }
 
   intercept(req: HttpRequest<string>, next: HttpHandler): Observable<HttpEvent<any>> {
@@ -202,7 +241,7 @@ class MockBackEndService implements HttpInterceptor{
 
   constructor() {
     this.BBDD = new LocalStorage();
-  } 
+  }
 }
 
 

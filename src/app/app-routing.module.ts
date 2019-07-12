@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { SearchComponent, ExplorarComponent, HomeComponent, AplicationComponent, LoginComponent, ArticleViewComponent } from "./components/index";
+import { SearchComponent, ExplorarComponent, HomeComponent, AplicationComponent, LoginComponent, ArticleViewComponent, NewsComponent } from "./components/index";
 import { AuthGuard, HomeGuard, LineGuard } from "./guards/index";
 
 const routes: Routes = [
@@ -12,7 +12,8 @@ const routes: Routes = [
 			{path: 'search', component: SearchComponent},
 			{path: 'explore', component: ExplorarComponent},
 			{path: 'articles', redirectTo: 'explore'},
-			{path: 'articles/:id', component: ArticleViewComponent}
+			{path: 'articles/:id', component: ArticleViewComponent},
+			{path: 'news', component: NewsComponent}
 		]},
 	{ path: '**', redirectTo: '' }
 ];

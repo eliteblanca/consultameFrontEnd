@@ -205,6 +205,6 @@ export class SearchBoxComponent implements OnInit, AfterViewInit {
     }
   }
 
-  constructor(public api:ApiService, public events:EventsService) { } 
+  constructor(public api:ApiService, public events:EventsService) { }
 
 }
