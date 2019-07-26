@@ -102,7 +102,7 @@ export class ApiService {
   login(user:string,pass:string):Observable<boolean>{
     console.log()
     return of(null).pipe(
-      switchMap(val=>this.http.post<{tokem:string}>(EndPoints.login,{user:user, pass:pass},{observe: "body"})),
+      switchMap(val=>this.http.post<{tokem:string}>('api/' + EndPoints.login,{username:user, password:pass},{observe: "body"})),
       tap(val=>{
         if(val.tokem){
           localStorage.setItem('token',val.tokem);

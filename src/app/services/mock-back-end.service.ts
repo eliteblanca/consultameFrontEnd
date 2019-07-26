@@ -25,7 +25,7 @@ class MockBackEndService implements HttpInterceptor{
   * @param req HttpRequest<string>
   * @returns Observable<HttpEvent<string[]>>
   */
-  enrutar(req:HttpRequest<any>):Observable<HttpEvent<any>>{
+  enrutar(req:HttpRequest<any>, next: HttpHandler):Observable<HttpEvent<any>>{
     let {url,method,body,params} = req;
     if(url.match('^suggestions$') && method == 'POST'){
       this.BBDD.postSuggestion(body);      
@@ -79,13 +79,15 @@ class MockBackEndService implements HttpInterceptor{
       }))
     }
 
-    if(url.match('^authenticate$') && method == 'POST'){
-      if(body.user == 'julian' && body.pass == '123'){
-        return of(new HttpResponse({
-          status: 200,
-          body: {tokem:"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6Ikp1bGlhbiIsInJvbCI6ImFkbWluIiwibGluZSI6ImFsbCIsInN1YkxpbmUiOiIifQ.SkMKVjzCyzHQTvHq7MvEf_VCBldjhdHnLm6-1WBiodk"}
-        }))
-      }
+    if(url.match('^api/authenticate$') && method == 'POST'){
+      return next.handle(req);
+
+      // if(body.user == 'julian' && body.pass == '123'){
+      //   return of(new HttpResponse({
+      //     status: 200,
+      //     body: {tokem:"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6Ikp1bGlhbiIsInJvbCI6ImFkbWluIiwibGluZSI6ImFsbCIsInN1YkxpbmUiOiIifQ.SkMKVjzCyzHQTvHq7MvEf_VCBldjhdHnLm6-1WBiodk"}
+      //   }))
+      // }
     }
 
     if(url.match("^users/.*/lines$") && method == 'GET'){
@@ -236,7 +238,7 @@ class MockBackEndService implements HttpInterceptor{
   }
 
   intercept(req: HttpRequest<string>, next: HttpHandler): Observable<HttpEvent<any>> {
-    return this.enrutar(req);
+    return this.enrutar(req, next);
   };
 
   constructor() {
