@@ -130,17 +130,9 @@ export class SearchBoxComponent implements OnInit, AfterViewInit {
   buscar(value?:string):void{
     if(value){
       this.events.newSearch(value);
-      this.busqueda.nativeElement.value = value;
-      this.api.postSuggestion(value)
-      .subscribe(val=>{
-        console.log('guardado');
-      });
+      this.busqueda.nativeElement.value = value;      
     }else{
-      this.events.newSearch(this.getInputValue());
-      this.api.postSuggestion(this.getInputValue())
-      .subscribe(val=>{
-        console.log('guardado');
-      });
+      this.events.newSearch(this.getInputValue());      
     }
   }
 

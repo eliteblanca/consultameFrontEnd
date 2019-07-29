@@ -26,15 +26,7 @@ class MockBackEndService implements HttpInterceptor{
   * @returns Observable<HttpEvent<string[]>>
   */
   enrutar(req:HttpRequest<any>, next: HttpHandler):Observable<HttpEvent<any>>{
-    let {url,method,body,params} = req;
-    if(url.match('^suggestions$') && method == 'POST'){
-      this.BBDD.postSuggestion(body);      
-      
-      return of(new HttpResponse({
-        status: 200,
-        body: this.BBDD.getSuggestions(10)
-      }))
-    }
+    let {url,method,body,params} = req;   
 
     if(url.match('^suggestions$') && method == 'GET'){
       if(params.has('input')){
@@ -50,18 +42,21 @@ class MockBackEndService implements HttpInterceptor{
       }
     }
     
-    if(url.match('^articles$') && method == 'GET'){
-      if(params.has('query')){
-        return of(new HttpResponse({
-          status: 200,
-          body: this.BBDD.getArticles(params.get('query'))
-        }))
-      }else if(params.has('category')){
-          return of(new HttpResponse({
-            status: 200,
-            body: this.BBDD.getArticles(params.get('category'))
-          }))
-      }
+    if(url.match('^api/articles$') && method == 'GET'){
+
+      return next.handle(req);
+
+      // if(params.has('query')){
+      //   return of(new HttpResponse({
+      //     status: 200,
+      //     body: this.BBDD.getArticles(params.get('query'))
+      //   }))
+      // }else if(params.has('category')){
+      //     return of(new HttpResponse({
+      //       status: 200,
+      //       body: this.BBDD.getArticles(params.get('category'))
+      //     }))
+      // }
     }
 
     if(url.match('^articles$') && method == 'POST'){
@@ -72,11 +67,15 @@ class MockBackEndService implements HttpInterceptor{
       }))
     }
 
-    if(url.startsWith('articles/') && method == 'GET'){
-      return of(new HttpResponse({
-        status: 200,
-        body: this.BBDD.getArticle(url.split('/')[1])
-      }))
+    if(url.startsWith('api/articles/') && method == 'GET'){
+
+      return next.handle(req);
+
+      // return of(new HttpResponse({
+      //   status: 200,
+      //   body: this.BBDD.getArticle(url.split('/')[1])
+      // }))
+
     }
 
     if(url.match('^api/authenticate$') && method == 'POST'){
@@ -245,6 +244,5 @@ class MockBackEndService implements HttpInterceptor{
     this.BBDD = new LocalStorage();
   }
 }
-
 
 export const mockServerService = { provide: HTTP_INTERCEPTORS, useClass: MockBackEndService, multi: true }

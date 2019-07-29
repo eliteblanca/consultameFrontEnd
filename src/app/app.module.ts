@@ -4,6 +4,7 @@ import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { HttpClientModule } from '@angular/common/http';
 import { AppComponent } from './app.component';
+
 import { 
   ExplorarComponent,
   HeaderComponent,
@@ -21,7 +22,7 @@ import {
   NewsComponent
  } from './components/index';
 
-import { mockServerService } from "./services/index";
+import { mockServerService, JwtInterceptor } from "./services/index";
 
 @NgModule({
   declarations: [
@@ -48,6 +49,7 @@ import { mockServerService } from "./services/index";
     FormsModule
   ],
   providers: [ 
+    JwtInterceptor,
     mockServerService
   ],
   bootstrap: [AppComponent]

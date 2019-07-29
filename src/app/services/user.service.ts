@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { JwtHelperService } from '@auth0/angular-jwt';
-import { EventsService } from "./index";
+import { EventsService } from "./events.service";
 
 const helper = new JwtHelperService();
 

@@ -3,17 +3,18 @@ import { HttpClient } from '@angular/common/http';
 import { Observable,of } from 'rxjs';
 import { switchMap, tap, map } from "rxjs/operators";
 import { Article } from "../article";
+import { EventsService } from './events.service';
 
 enum EndPoints {
   suggestions = "suggestions",
   articles = "articles",
   article = "articles/:id",
+  likes = "articles/:id/likes",
+  disLikes = "articles/:id/disLikes",
   login = "authenticate",
   userLines = "users/:id/lines",
   userSubLines = "users/:id/lines/:lineId",
-  categories = "lines/:lineId/subLines/:SublineId/categories",
-  likes = "articles/:id/likes",
-  disLikes = "articles/:id/disLikes"
+  categories = "lines/:lineId/subLines/:SublineId/categories"
 }
 
 type categories = {
@@ -27,7 +28,7 @@ type categories = {
   providedIn: 'root'
 })
 export class ApiService {
-  constructor(private http:HttpClient) {  }
+  constructor(private http:HttpClient, private events:EventsService) {  }
 
   /**
   * Gets a list of common search
@@ -48,17 +49,6 @@ export class ApiService {
   }
 
   /**
-  * save a new search
-  * @param suggestion string
-  * @returns Observable<string[]>
-  */
-  postSuggestion(suggestion:string):Observable<string[]>{
-    return of(null).pipe(
-      switchMap(val=>this.http.post<string[]>(EndPoints.suggestions,suggestion,{observe: "body"}))
-    )
-  }
-
-  /**
   * ### retorna una lista de articulos que se relacionan con la busqueda pasada como argumento
   * ***
   * @param input `string` 
@@ -69,10 +59,15 @@ export class ApiService {
   * 
   * Observable que retorna un array de articulos
   */
-  getArticles(params:{query?:string,category?:string}):Observable<Article[]>{    
+  getArticles(params:{query?:string,category?:string}):Observable<Article[]>{
+
+    let line = this.events.newSelectedLineSource.getValue();
+
+    let options = {...line, ...params};
+    
     return of(null).pipe(
       switchMap(val=>{
-          return this.http.get<Article[]>(EndPoints.articles,{params:params,observe: "body"})
+          return this.http.get<Article[]>( 'api/' + EndPoints.articles, {params:options, observe: "body"})
       })
     )
   }
@@ -80,7 +75,7 @@ export class ApiService {
   getArticle(articleId:string):Observable<Article>{
     return of(null).pipe(
       switchMap(val=>{
-          return this.http.get<Article>(EndPoints.article.replace(':id',articleId),{observe: "body"})
+          return this.http.get<Article>( 'api/' + EndPoints.article.replace(':id',articleId),{observe: "body"})
       })
     )
   }
