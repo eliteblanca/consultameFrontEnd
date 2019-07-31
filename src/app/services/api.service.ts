@@ -1,20 +1,22 @@
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable,of } from 'rxjs';
-import { switchMap, tap, map } from "rxjs/operators";
-import { Article } from "../article";
-import { EventsService } from './events.service';
+import { Injectable    }    from '@angular/core';
+import { HttpClient    }    from '@angular/common/http';
+import { Observable,of }    from 'rxjs';
+import { switchMap,    tap, map  } from "rxjs/operators";
+import { Article       }    from "../article";
+import { EventsService }    from './events.service';
 
-enum EndPoints {
-  suggestions = "suggestions",
-  articles = "articles",
-  article = "articles/:id",
-  likes = "articles/:id/likes",
-  disLikes = "articles/:id/disLikes",
-  login = "authenticate",
-  userLines = "users/:id/lines",
-  userSubLines = "users/:id/lines/:lineId",
-  categories = "lines/:lineId/subLines/:SublineId/categories"
+const host = "http://localhost:3000"
+
+const EndPoints = {
+  suggestions:  `${host}/api/suggestions`,
+  articles:     `${host}/api/articles`,
+  article:      `${host}/api/articles/:id`,
+  likes:        `${host}/api/articles/:id/likes`,
+  disLikes:     `${host}/api/articles/:id/disLikes`,
+  login:        `${host}/api/authenticate`,
+  userLines:    `${host}/api/users/:id/lines`,
+  userSubLines: `${host}/api/users/:id/lines/:lineId/sublines`,
+  categories:   `${host}/api/lines/:lineId/subLines/:SublineId/categories`
 }
 
 type categories = {
@@ -37,10 +39,15 @@ export class ApiService {
   * @returns Observable<string[]>
   */
   getSuggestions(suggestion?:string):Observable<string[]>{
+
+    let line = this.events.newSelectedLineSource.getValue();
+
+    let options = {...line, ...{input:suggestion}};
+
     return of(null).pipe(
       switchMap(val=>{
         if(suggestion){
-          return this.http.get<string[]>(EndPoints.suggestions,{params:{input:suggestion},observe: "body"})
+          return this.http.get<string[]>(EndPoints.suggestions,{params:options,observe: "body"})
         }else{
           return this.http.get<string[]>(EndPoints.suggestions,{observe: "body"});
         }
@@ -67,7 +74,7 @@ export class ApiService {
     
     return of(null).pipe(
       switchMap(val=>{
-          return this.http.get<Article[]>( 'api/' + EndPoints.articles, {params:options, observe: "body"})
+          return this.http.get<Article[]>(EndPoints.articles, {params:options, observe: "body"})
       })
     )
   }
@@ -75,7 +82,7 @@ export class ApiService {
   getArticle(articleId:string):Observable<Article>{
     return of(null).pipe(
       switchMap(val=>{
-          return this.http.get<Article>( 'api/' + EndPoints.article.replace(':id',articleId),{observe: "body"})
+          return this.http.get<Article>(EndPoints.article.replace(':id',articleId),{observe: "body"})
       })
     )
   }
@@ -97,7 +104,7 @@ export class ApiService {
   login(user:string,pass:string):Observable<boolean>{
     console.log()
     return of(null).pipe(
-      switchMap(val=>this.http.post<{tokem:string}>('api/' + EndPoints.login,{username:user, password:pass},{observe: "body"})),
+      switchMap(val=>this.http.post<{tokem:string}>(EndPoints.login,{username:user, password:pass},{observe: "body"})),
       tap(val=>{
         if(val.tokem){
           localStorage.setItem('token',val.tokem);
@@ -129,27 +136,27 @@ export class ApiService {
     )
   }
 
-  postLike(userId:string,articleId:string):Observable<string[]>{
+  postLike(articleId:string):Observable<string[]>{
     return of(null).pipe(
-      switchMap(val=>this.http.post<string[]>(EndPoints.likes.replace(':id',articleId),{user:userId},{observe: "body"}))
+      switchMap(val=>this.http.post<string[]>(EndPoints.likes.replace(':id',articleId),null,{observe: "body"}))
     )
   }
   
-  deleteLike(userId:string,articleId:string):Observable<string[]>{
+  deleteLike(articleId:string):Observable<string[]>{
     return of(null).pipe(
-      switchMap(val=>this.http.delete<string[]>(EndPoints.likes.replace(':id',articleId),{params:{user:userId},observe: "body"}))
+      switchMap(val=>this.http.delete<string[]>(EndPoints.likes.replace(':id',articleId),{observe: "body"}))
     )
   }
 
-  postDisLike(userId:string,articleId:string):Observable<string[]>{
+  postDisLike(articleId:string):Observable<string[]>{
     return of(null).pipe(
-      switchMap(val=>this.http.post<string[]>(EndPoints.disLikes.replace(':id',articleId),{user:userId},{observe: "body"}))
+      switchMap(val=>this.http.post<string[]>(EndPoints.disLikes.replace(':id',articleId),null,{observe: "body"}))
     )
   }
 
-  deleteDisLike(userId:string,articleId:string):Observable<string[]>{
+  deleteDisLike(articleId:string):Observable<string[]>{
     return of(null).pipe(
-      switchMap(val=>this.http.delete<string[]>(EndPoints.disLikes.replace(':id',articleId),{params:{user:userId},observe: "body"}))
+      switchMap(val=>this.http.delete<string[]>(EndPoints.disLikes.replace(':id',articleId),{observe: "body"}))
     )
   }
     

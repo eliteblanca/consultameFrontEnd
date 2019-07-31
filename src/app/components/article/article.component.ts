@@ -139,7 +139,7 @@ export class ArticleComponent implements OnInit, AfterViewInit {
       })
     }else{
       forkJoin(
-        this.api.postLike(this.user.usuario.sub,this.Article.id),        
+        this.api.postLike(this.Article.id),        
         this.api.deleteDisLike(this.user.usuario.sub,this.Article.id)
       ).subscribe(val => {
         this.Article.likes = val[0];

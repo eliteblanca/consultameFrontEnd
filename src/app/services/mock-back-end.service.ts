@@ -4,6 +4,8 @@ import { Observable, of } from 'rxjs';
 
 import { LocalStorage } from "../local-storage";
 
+const host = "http://localhost:3000";
+
 type categories = {
   name:string,
   order:number,
@@ -28,21 +30,24 @@ class MockBackEndService implements HttpInterceptor{
   enrutar(req:HttpRequest<any>, next: HttpHandler):Observable<HttpEvent<any>>{
     let {url,method,body,params} = req;   
 
-    if(url.match('^suggestions$') && method == 'GET'){
-      if(params.has('input')){
-        return of(new HttpResponse({
-          status: 200,
-          body: this.BBDD.getSuggestions(params.get('input'))
-        }))
-      }else{
-        return of(new HttpResponse({
-          status: 200,
-          body: this.BBDD.getSuggestions(10)
-        }))
-      }
+    if(url.match(`^${host}/api/suggestions$`) && method == 'GET'){
+
+      return next.handle(req);
+
+      // if(params.has('input')){
+      //   return of(new HttpResponse({
+      //     status: 200,
+      //     body: this.BBDD.getSuggestions(params.get('input'))
+      //   }))
+      // }else{
+      //   return of(new HttpResponse({
+      //     status: 200,
+      //     body: this.BBDD.getSuggestions(10)
+      //   }))
+      // }
     }
     
-    if(url.match('^api/articles$') && method == 'GET'){
+    if(url.match(`^${host}/api/articles$`) && method == 'GET'){
 
       return next.handle(req);
 
@@ -59,15 +64,17 @@ class MockBackEndService implements HttpInterceptor{
       // }
     }
 
-    if(url.match('^articles$') && method == 'POST'){
-      console.log(body);
-      return of(new HttpResponse({
-        status: 200,
-        body: this.BBDD.postArticles(body)
-      }))
+    if(url.match(`^${host}/api/articles$`) && method == 'POST'){
+
+      return next.handle(req);
+
+      // return of(new HttpResponse({
+      //   status: 200,
+      //   body: this.BBDD.postArticles(body)
+      // }))
     }
 
-    if(url.startsWith('api/articles/') && method == 'GET'){
+    if(url.startsWith(`${host}/api/articles/`) && method == 'GET'){
 
       return next.handle(req);
 
@@ -78,7 +85,7 @@ class MockBackEndService implements HttpInterceptor{
 
     }
 
-    if(url.match('^api/authenticate$') && method == 'POST'){
+    if(url.match(`^${host}/api/authenticate$`) && method == 'POST'){
       return next.handle(req);
 
       // if(body.user == 'julian' && body.pass == '123'){
@@ -89,134 +96,146 @@ class MockBackEndService implements HttpInterceptor{
       // }
     }
 
-    if(url.match("^users/.*/lines$") && method == 'GET'){
-      return of(new HttpResponse({
-        status: 200,
-        body: ["Bancolombia", "Sura", "DirecTV"]
-      }))
+    if(url.match(`^${host}/api/users/.*/lines$`) && method == 'GET'){
+      return next.handle(req);
+      // return of(new HttpResponse({
+      //   status: 200,
+      //   body: ["Bancolombia", "Sura", "DirecTV"]
+      // }))
     }
 
-    if(url.match("^users/.*/lines/.*$") && method == 'GET'){
-      let subLines = [];      
+    if(url.match(`^${host}/api/users/.*/lines/.*/sublines$`) && method == 'GET'){
 
-      switch (url.split('/')[3]) {
-        case 'Bancolombia':
-          subLines = ["Atencion al cliente", "Ventas", "Soporte"]
-          break;      
-        case 'Sura':
-          subLines = ["Citas", "Urgencias"]
-          break;      
-        case 'DirecTV':
-          subLines = ["Soporte", "SAC"]
-          break;      
-        default:          
-            subLines = ["Atencion al cliente", "Ventas", "Soporte"]
-          break;
-      }
+      return next.handle(req);
 
-      return of(new HttpResponse({
-        status: 200,
-        body: {name:url.split('/')[3], sublines:subLines}
-      }))
+      // let subLines = [];      
+
+      // switch (url.split('/')[3]) {
+      //   case 'Bancolombia':
+      //     subLines = ["Atencion al cliente", "Ventas", "Soporte"]
+      //     break;      
+      //   case 'Sura':
+      //     subLines = ["Citas", "Urgencias"]
+      //     break;      
+      //   case 'DirecTV':
+      //     subLines = ["Soporte", "SAC"]
+      //     break;      
+      //   default:          
+      //       subLines = ["Atencion al cliente", "Ventas", "Soporte"]
+      //     break;
+      // }
+
+      // return of(new HttpResponse({
+      //   status: 200,
+      //   body: {name:url.split('/')[3], sublines:subLines}
+      // }))
     }
 
-    if(url.match("^lines/.*/subLines/.*/categories$") && method == 'GET'){
+    if(url.match(`^${host}/api/lines/.*/subLines/.*/categories$`) && method == 'GET'){
 
-      let intPrueba = (Math.random() * 100).toPrecision(1)
+      return next.handle(req);
 
-      let categories:categories = [
-        {
-          name:`categoria ${intPrueba}`,
-          order:1,
-          desplegado:true,
-          subcategories:[{
-              name:"sub Categoria 1",
-              order:1,
-              desplegado:true
-            },{
-              name:"sub Categoria 2",
-              order:1,
-              desplegado:true
-            }
-          ]
-        },{
-          name:"categoria 2",
-          order:1,
-          desplegado:true,
-          subcategories:[{
-              name:"sub Categoria 1",
-              order:1,
-              desplegado:true
-            },{
-              name:"sub Categoria 2",
-              order:1,
-              desplegado:true
-            }
-          ]
-        },{
-          name:"categoria 3",
-          order:1,
-          desplegado:true,
-          subcategories:[{
-              name:"sub Categoria 1",
-              order:1,
-              desplegado:true,
-              subcategories:[{
-                name:"sub Categoria 1",
-                order:1,
-                desplegado:true,
-                subcategories:[{
-                  name:"sub Categoria 1",
-                  order:1,
-                  desplegado:true
-                },{
-                  name:"sub Categoria 2",
-                  order:1,
-                  desplegado:true
-                }
-              ]
-              },{
-                name:"sub Categoria 2",
-                order:1,
-                desplegado:true
-              }
-            ]
-            },{
-              name:"sub Categoria 2",
-              order:1,
-              desplegado:true
-            }
-          ]
-        },
-      ];
+      // let intPrueba = (Math.random() * 100).toPrecision(1)
 
-      return of(new HttpResponse({
-        status: 200,
-        body: categories
-      }))
+      // let categories:categories = [
+      //   {
+      //     name:`categoria ${intPrueba}`,
+      //     order:1,
+      //     desplegado:true,
+      //     subcategories:[{
+      //         name:"sub Categoria 1",
+      //         order:1,
+      //         desplegado:true
+      //       },{
+      //         name:"sub Categoria 2",
+      //         order:1,
+      //         desplegado:true
+      //       }
+      //     ]
+      //   },{
+      //     name:"categoria 2",
+      //     order:1,
+      //     desplegado:true,
+      //     subcategories:[{
+      //         name:"sub Categoria 1",
+      //         order:1,
+      //         desplegado:true
+      //       },{
+      //         name:"sub Categoria 2",
+      //         order:1,
+      //         desplegado:true
+      //       }
+      //     ]
+      //   },{
+      //     name:"categoria 3",
+      //     order:1,
+      //     desplegado:true,
+      //     subcategories:[{
+      //         name:"sub Categoria 1",
+      //         order:1,
+      //         desplegado:true,
+      //         subcategories:[{
+      //           name:"sub Categoria 1",
+      //           order:1,
+      //           desplegado:true,
+      //           subcategories:[{
+      //             name:"sub Categoria 1",
+      //             order:1,
+      //             desplegado:true
+      //           },{
+      //             name:"sub Categoria 2",
+      //             order:1,
+      //             desplegado:true
+      //           }
+      //         ]
+      //         },{
+      //           name:"sub Categoria 2",
+      //           order:1,
+      //           desplegado:true
+      //         }
+      //       ]
+      //       },{
+      //         name:"sub Categoria 2",
+      //         order:1,
+      //         desplegado:true
+      //       }
+      //     ]
+      //   },
+      // ];
+
+      // return of(new HttpResponse({
+      //   status: 200,
+      //   body: categories
+      // }))
     }
 
-    if(url.match('^articles/.*/likes$') && method == 'POST'){
-      let articleId = url.split('/')[1];
+    if(url.match(`^${host}/api/articles/.*/likes$`) && method == 'POST'){
 
-      return of(new HttpResponse({
-        status: 200,
-        body: this.BBDD.postLike(articleId, body['user'])
-      }))
+      return next.handle(req);
+
+      // let articleId = url.split('/')[1];
+
+      // return of(new HttpResponse({
+      //   status: 200,
+      //   body: this.BBDD.postLike(articleId, body['user'])
+      // }))
       
     }
 
-    if(url.match('^articles/.*/disLikes$') && method == 'POST'){
-      let articleId = url.split('/')[1];
+    if(url.match(`^${host}/api/articles/.*/disLikes$`) && method == 'POST'){
 
-      return of(new HttpResponse({
-        status: 200,
-        body: this.BBDD.postDisLike(articleId, body['user'])
-      }))
+      return next.handle(req);
+
+      // let articleId = url.split('/')[1];
+
+      // return of(new HttpResponse({
+      //   status: 200,
+      //   body: this.BBDD.postDisLike(articleId, body['user'])
+      // }))
       
     }
 
-    if(url.match('^articles/.*/likes$') && method == 'DELETE'){      
+    if(url.match(`^${host}/api/articles/.*/likes$`) && method == 'DELETE'){      
       let articleId = url.split('/')[1];
       let userId = params.get('user');
       return of(new HttpResponse({
@@ -226,7 +245,7 @@ class MockBackEndService implements HttpInterceptor{
       
     }
 
-    if(url.match('^articles/.*/disLikes$') && method == 'DELETE'){
+    if(url.match(`^${host}/api/articles/.*/disLikes$`) && method == 'DELETE'){
       let articleId = url.split('/')[1];
       let userId = params.get('user');
       return of(new HttpResponse({
