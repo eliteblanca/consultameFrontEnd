@@ -14,6 +14,8 @@ export interface articleConf{
     modificationUser?:string;
     creator?:string;
     commentsList?:string;
+    line?:string;
+    subLine?:string;
 }
 
 export class Article implements articleConf{
@@ -32,48 +34,56 @@ export class Article implements articleConf{
     public creator?:string;
     public commentsList?:string;
     public id?:string;
+    public subLine?:string;
+    public line?:string;    
 
-    constructor(private conf:articleConf){
-        this.title = conf.title;
-        this.content = conf.content;
-        if(conf.tags){
-            this.tags = conf.tags;
+    constructor(config:articleConf){
+        this.title = config.title;
+        this.content = config.content;
+        if(config.tags){
+            this.tags = config.tags;
         }
-        if(conf.resume){
-            this.resume = conf.resume;
+        if(config.resume){
+            this.resume = config.resume;
         }
-        if(conf.attached){
-            this.attached = conf.attached;
+        if(config.attached){
+            this.attached = config.attached;
         }
-        if(conf.likes){
-            this.likes = conf.likes;
+        if(config.likes){
+            this.likes = config.likes;
         }
-        if(conf.disLikes){
-            this.disLikes = conf.disLikes;
+        if(config.disLikes){
+            this.disLikes = config.disLikes;
         }
-        if(conf.favorites){
-            this.favorites = conf.favorites;
+        if(config.favorites){
+            this.favorites = config.favorites;
         }
-        if(conf.role){
-            this.role = conf.role;
+        if(config.role){
+            this.role = config.role;
         }
-        if(conf.publicationDate){
-            this.publicationDate = conf.publicationDate;
+        if(config.publicationDate){
+            this.publicationDate = config.publicationDate;
         }
-        if(conf.modificationDate){
-            this.modificationDate = conf.modificationDate;
+        if(config.modificationDate){
+            this.modificationDate = config.modificationDate;
         }
-        if(conf.modificationUser){
-            this.modificationUser = conf.modificationUser;
+        if(config.modificationUser){
+            this.modificationUser = config.modificationUser;
         }
-        if(conf.creator){
-            this.creator = conf.creator;
+        if(config.creator){
+            this.creator = config.creator;
         }
-        if(conf.commentsList){
-            this.commentsList = conf.commentsList;
+        if(config.commentsList){
+            this.commentsList = config.commentsList;
         }
-        if(conf.id){
-            this.id = conf.id;
+        if(config.id){
+            this.id = config.id;
+        }
+        if(config.line){
+            this.line = config.line;
+        }
+        if(config.subLine){
+            this.subLine = config.subLine;
         }
     }
 }

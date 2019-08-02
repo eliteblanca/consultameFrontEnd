@@ -236,22 +236,11 @@ class MockBackEndService implements HttpInterceptor{
     }
 
     if(url.match(`^${host}/api/articles/.*/likes$`) && method == 'DELETE'){      
-      let articleId = url.split('/')[1];
-      let userId = params.get('user');
-      return of(new HttpResponse({
-        status: 200,
-        body: this.BBDD.deleteLike(articleId, userId)
-      }))
-      
+      return next.handle(req);      
     }
 
     if(url.match(`^${host}/api/articles/.*/disLikes$`) && method == 'DELETE'){
-      let articleId = url.split('/')[1];
-      let userId = params.get('user');
-      return of(new HttpResponse({
-        status: 200,
-        body: this.BBDD.deleteDisLike(articleId, userId)
-      }))
+      return next.handle(req);
     }
   }
 

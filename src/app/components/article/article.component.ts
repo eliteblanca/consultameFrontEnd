@@ -133,14 +133,14 @@ export class ArticleComponent implements OnInit, AfterViewInit {
 
   like():void{    
     if(this.liked()){
-      this.api.deleteLike(this.user.usuario.sub,this.Article.id)
+      this.api.deleteLike(this.Article.id)
       .subscribe(val=>{
         this.Article.likes = val;
       })
     }else{
       forkJoin(
         this.api.postLike(this.Article.id),        
-        this.api.deleteDisLike(this.user.usuario.sub,this.Article.id)
+        this.api.deleteDisLike(this.Article.id)
       ).subscribe(val => {
         this.Article.likes = val[0];
         this.Article.disLikes = val[1];
@@ -150,14 +150,14 @@ export class ArticleComponent implements OnInit, AfterViewInit {
 
   disLike():void{
     if(this.disLiked()){
-      this.api.deleteDisLike(this.user.usuario.sub,this.Article.id)
+      this.api.deleteDisLike(this.Article.id)
       .subscribe(val=>{
         this.Article.disLikes = val;
       })
     }else{
       forkJoin(
-        this.api.postDisLike(this.user.usuario.sub,this.Article.id),        
-        this.api.deleteLike(this.user.usuario.sub,this.Article.id)
+        this.api.postDisLike(this.Article.id),        
+        this.api.deleteLike(this.Article.id)
       ).subscribe(val => {
         this.Article.disLikes = val[0];
         this.Article.likes = val[1];
