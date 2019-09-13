@@ -1,29 +1,30 @@
 import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 
-type categories = {
-  name:string,
-  order:number,
-  desplegado:boolean,
-  subcategories?:categories
-}[];
+type category = {
+    id: string;
+    name: string;
+    position: number;
+    icon: string;
+    group: string;
+    desplegado: boolean,
+    subcategories?: category[]
+}
 
 @Component({
-  selector: 'app-categories',
-  templateUrl: './categories.component.html',
-  styleUrls: ['./categories.component.css']
+    selector: 'app-categories',
+    templateUrl: './categories.component.html',
+    styleUrls: ['./categories.component.css']
 })
 export class CategoriesComponent implements OnInit {
 
-  @Output() onSelected: EventEmitter<string> = new EventEmitter();
-  @Input() categories:categories;
+    @Output() onSelected: EventEmitter<string> = new EventEmitter();
+    @Input() categories: category[];
 
-  categoriaSeleccionada(categoria:string){
-    this.onSelected.emit(categoria);
-  }
+    categoriaSeleccionada(categoria: string) {
+        this.onSelected.emit(categoria);
+    }
 
-  constructor() { }
+    constructor() { }
 
-  ngOnInit() {
-  }
-
+    ngOnInit() { }
 }

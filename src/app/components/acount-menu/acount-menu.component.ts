@@ -37,13 +37,13 @@ export class AcountMenuComponent implements OnInit {
 
     changeLine(line: AllowedLines[0]) {
         this.selectedSubLine = line.sublines[0]
-        // this.userService.selectedSubLine = { line: event.target.value, subLine: this.lines.find(line => line.name == event.target.value).sublines[0] };
+        this.userService.selectedSubLine = { line: this.selectedLine, subLine: this.selectedSubLine };
         // this.subLines = this.lines.find(line => line.name == event.target.value).sublines;
     }
 
     changeSubLine(subLine) {
         this.selectedSubLine = subLine;
-        // this.userService.selectedSubLine = { line: this.userService.selectedSubLine.line, subLine: event.target.value };
+        this.userService.selectedSubLine = { line: this.selectedLine, subLine: this.selectedSubLine };
     }
 
 }

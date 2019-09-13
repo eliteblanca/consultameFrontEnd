@@ -18,12 +18,7 @@ const EndPoints = {
     categories: `${host}/api/lines/:lineId/subLines/:SublineId/categories`
 }
 
-type categories = {
-    name: string,
-    order: number,
-    desplegado: boolean,
-    subcategories?: categories
-}[];
+
 
 @Injectable({
     providedIn: 'root'
@@ -59,22 +54,6 @@ export class ApiService {
     postArticles(articles: Article[]): Observable<Article[]> {
         return of(null).pipe(
             switchMap(val => this.http.post<Article[]>(EndPoints.articles, articles, { observe: "body" }))
-        )
-    }
-
-    getCategories(lineId: string, sublineId: string): Observable<categories> {
-        return of(null).pipe(
-            switchMap(val => {
-                return this.http.get<categories>(EndPoints.categories.replace(':lineId', lineId).replace(':SublineId', sublineId), { observe: "body" })
-            })
-        )
-    }
-
-    getUserSubLines(userId: string, line: string): Observable<{ name: string, sublines: string[] }> {
-        return of(null).pipe(
-            switchMap(val => {
-                return this.http.get<{ name: string, sublines: string[] }>(EndPoints.userSubLines.replace(':id', userId).replace(':lineId', line), { observe: "body" })
-            })
         )
     }
 

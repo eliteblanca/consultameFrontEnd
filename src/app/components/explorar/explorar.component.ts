@@ -1,17 +1,22 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { merge } from "rxjs";
-import { switchMap, map } from "rxjs/operators";
+import { switchMap, map, filter, findIndex } from "rxjs/operators";
 import { Article } from "../../article";
 import { ApiService, EventsService } from "../../services";
 import { ArticlesApiService } from "../../api/articles-api.service";
+import { CategoriesApiService, categories } from "../../api/categories-api.service";
 
-type categories = {
-    name: string,
-    order: number,
+type category = {
+    id: string;
+    name: string;
+    position: number;
+    icon: string;
+    group: string;
     desplegado: boolean,
-    subcategories?: categories
-}[];
+    subcategories?: category[]
+}
+
 @Component({
     selector: 'app-explorar',
     templateUrl: './explorar.component.html',
@@ -20,32 +25,52 @@ type categories = {
 export class ExplorarComponent implements OnInit {
 
     public articles: Article[];
-    public categories: categories;
+    public categories: category[];
 
     constructor(
         public route: ActivatedRoute,
         public api: ApiService,
         public router: Router,
         public events: EventsService,
-        private articlesApiService: ArticlesApiService
+        private articlesApiService: ArticlesApiService,
+        private categoriesApi: CategoriesApiService
     ) { }
 
     ngOnInit() {
-
         this.events.onNewSelectedLine$.pipe(
-            switchMap(newLine => {
-                return this.api.getCategories(newLine.line.id, newLine.subLine.id)
-            })
+            filter(selectedLine => selectedLine.line != null && selectedLine.subLine != null),
+            switchMap(selectedLine => this.categoriesApi.getCategories(selectedLine.subLine.id))
         ).subscribe(categories => {
-            console.log(categories);
-            this.categories = categories;
+            this.categories = this.reorderCategories(categories);
+            console.log(this.categories)
             this.articles = [];
         })
     }
 
     categoriaSeleccionada(categoria: string) {
-        this.articlesApiService.getArticles({ category: categoria }).subscribe(val => {
+        this.articlesApiService.getArticlesByCategory(categoria).subscribe(val => {
             this.articles = val;
         })
     }
+
+    reorderCategories(categories: categories): category[] {
+
+        let categoriesAux = categories.map(category => { return { subcategories: [], desplegado: false, ...category } })
+
+        let categoriesToDelete = [];
+        while (categoriesAux.some(category => category.group != undefined)) {
+            for (let i = 0; i < categoriesAux.length; i++) {
+                if (!categoriesAux.some(category => category.group == categoriesAux[i].id)) {
+                    let groupIndex = categoriesAux.findIndex(category => category.id == categoriesAux[i].group)
+                    categoriesAux[groupIndex].subcategories.push(categoriesAux[i])
+                    categoriesToDelete.push(categoriesAux[i].id)
+                }
+            }
+
+            categoriesAux = categoriesAux.filter(category => !categoriesToDelete.includes(category.id))
+        }
+
+        return categoriesAux;
+    }
 }
+

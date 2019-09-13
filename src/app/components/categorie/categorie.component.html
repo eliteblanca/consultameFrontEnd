@@ -1,10 +1,13 @@
 <header class="header">
     <h4 class="title" (click)="categoriaSeleccionada()">{{category.name}}</h4>
-    <i class="material-icons" *ngIf="!category.desplegado && category.subcategories" (click)="category.desplegado = true">arrow_drop_down</i>
-    <i class="material-icons" *ngIf="category.desplegado && category.subcategories" (click)="category.desplegado = false">arrow_drop_up</i>
+    <i class="material-icons" *ngIf="!category.desplegado && category.subcategories"
+        (click)="category.desplegado = true">arrow_drop_down</i>
+    <i class="material-icons" *ngIf="category.desplegado && category.subcategories"
+        (click)="category.desplegado = false">arrow_drop_up</i>
 </header>
 <div class="body" [ngClass]="{'desplegado': category.desplegado}">
     <div class="categories">
-        <app-categorie *ngFor="let cat of category.subcategories" [category]="cat" [belongsTo]="belongsTo + '/' + category.name" (onSelected)="categoriaSeleccionada($event)"></app-categorie>
+        <app-categorie *ngFor="let cat of category.subcategories" [category]="cat"
+            (onSelected)="categoriaSeleccionada($event)"></app-categorie>
     </div>
 </div>

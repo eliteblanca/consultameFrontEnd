@@ -26,15 +26,17 @@ export class SearchComponent implements OnInit, AfterViewInit {
 
     ngOnInit() {
         this.route.queryParams.pipe(
-            tap(params => this.params = params),
+            tap(params => {
+                this.params = params
+            }),
             switchMap(params => {
-                console.log({ params })
                 return this.eventsService.newSelectedLineSource
             }),
             filter(selectedLine => selectedLine.line != null && selectedLine.subLine != null),
             switchMap(selectedLine => {
                 if (selectedLine.subLine) {
-                    return this.articlesApiService.getArticles({ ...this.params, subline: selectedLine.subLine.id })
+                    console.log({ ...this.params, subline: selectedLine.subLine.id })
+                    return this.articlesApiService.getArticlesByQuery({ query: this.params.query, subline: selectedLine.subLine.id })
                 } else {
                     return of(null)
                 }
