@@ -1,0 +1,37 @@
+<header class="header">
+    <app-text-input [placeholder]="'Nombre linea'" [initialText]="line.name" *ngIf="newlineMode"
+        (onConfirm)="updateLine($event); newlineMode = false" (onCancel)="newlineMode = false">
+    </app-text-input>
+    <div class="headerNoEdit" *ngIf="!newlineMode">
+        <h4 class="title">{{line.name}}</h4>
+    </div>
+    <div class="headerEdit" *ngIf="!newlineMode">
+        <i class="material-icons" (click)="newlineMode = true">edit</i>
+        <i class="material-icons" (click)="deleteLine()">delete</i>
+        <i class="material-icons" (click)="newsublineMode = true">add_circle</i>
+    </div>
+    <i class="material-icons" *ngIf="!desplegado && line.sublines.length && !newlineMode"
+        (click)="desplegado = true">arrow_drop_down</i>
+    <i class="material-icons" *ngIf="desplegado && line.sublines.length && !newlineMode"
+        (click)="desplegado = false">arrow_drop_up</i>
+</header>
+
+<div class="body" [ngClass]="{'desplegado': desplegado}">
+    <app-text-input [placeholder]="'Nombre nueva sublinea'" *ngIf="newsublineMode"
+        (onConfirm)="createSubLine($event);newsublineMode = false" (onCancel)="newsublineMode = false">
+    </app-text-input>
+    <header class="header" *ngFor="let subline of line.sublines">
+        <app-text-input [placeholder]="'Nombre sublinea'" [initialText]="subline.name"
+            *ngIf="lineOnEdition == subline.id" (onConfirm)="updateSubline(subline.id, $event); lineOnEdition = ''"
+            (onCancel)="lineOnEdition = ''">
+        </app-text-input>
+        <header class="headerNoEdit" *ngIf="lineOnEdition != subline.id">
+            <h4 class="title">{{subline.name}}</h4>
+        </header>
+        <div class="headerEdit" *ngIf="lineOnEdition != subline.id">
+            <i class="material-icons" (click)="newSublineMode = true; lineOnEdition = subline.id">edit</i>
+            <i class="material-icons">delete</i>
+        </div>
+    </header>
+
+</div>
