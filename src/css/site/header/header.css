@@ -26,6 +26,11 @@
     border-radius: 3px;
     text-decoration: none;
     color: inherit;
+    font-weight: 500;
+}
+
+.tab i{
+    margin-right: .5rem;
 }
 
 .tab:hover{

@@ -23,6 +23,9 @@ import {
  } from './components/index';
 
 import { mockServerService, JwtInterceptor } from "./services/index";
+import { EdicionComponent } from './components/edicion/edicion.component';
+import { CategoriesEditorComponent } from './components/categories-editor/categories-editor.component';
+import { CategoryEditableComponent } from './components/category-editable/category-editable.component';
 
 @NgModule({
   declarations: [
@@ -40,7 +43,10 @@ import { mockServerService, JwtInterceptor } from "./services/index";
     ArticleListComponent,
     ArticleViewComponent,
     AcountMenuComponent,
-    NewsComponent
+    NewsComponent,
+    EdicionComponent,
+    CategoriesEditorComponent,
+    CategoryEditableComponent
   ],
   imports: [
     BrowserModule,
