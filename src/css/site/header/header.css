@@ -42,15 +42,13 @@
 }
 
 .main_header .acountMenu{
-    position: relative;
+    padding-right: 1rem;
 }
 
 .main_header .acountMenu .acount{
     color: white;  
-    position: absolute;
-    top: .0rem;
-    right: .5rem;
     transition-delay: 50ms;
+    z-index: 3;
 }
 
 
@@ -64,17 +62,22 @@
     height: 0rem;
     width: 0rem;
 }
+.main_header .acountMenu .container .acount{
+    float: right;
+}
 
-.main_header .acountMenu .acount:hover + .container, .main_header .acountMenu .container:hover{
+.main_header .acountMenu:hover > .container , .main_header .acountMenu .container:hover{
     display: inline-block;
     height: 15rem;
     width: 15rem;   
     background-color: white;
     box-shadow: var(--shadow2);
-    z-index: 2;
+    z-index: 1;
     margin-top: -.5rem;
     padding: .5rem 1rem; 
     border-radius: 3px;
+    position: fixed;
+    right: calc(0% + 1rem);
 }
 
 .main_header .acountMenu .container:hover *{

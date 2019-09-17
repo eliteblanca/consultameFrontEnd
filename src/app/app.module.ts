@@ -5,6 +5,7 @@ import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { HttpClientModule } from '@angular/common/http';
 import { AppComponent } from './app.component';
+import { IconModule } from "@visurel/iconify-angular";
 
 import {
     ExplorarComponent,
@@ -62,7 +63,8 @@ import { TextInputComponent } from './components/text-input/text-input.component
         CommonModule,
         AppRoutingModule,
         HttpClientModule,
-        FormsModule
+        FormsModule,
+        IconModule
     ],
     providers: [
         JwtInterceptor,

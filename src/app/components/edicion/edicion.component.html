@@ -1,10 +1,11 @@
 <div class="editContainer">
     <div class="verticalColumn">
         <h3 class="columnTitle">Clientes</h3>
-        <app-lines-editor [lines]="lines"></app-lines-editor>
+        <app-lines-editor [lines]="lines" (onLineSelected)="onLineSelected($event)"></app-lines-editor>
     </div>
     <div class="verticalColumn">
         <h3 class="columnTitle">Categorias</h3>
+        <app-categories-editor [categories]="categories" [sublineSelected]="selectedSubline"></app-categories-editor>
     </div>
     <div class="verticalColumn">
         <h3 class="columnTitle">Articulos</h3>

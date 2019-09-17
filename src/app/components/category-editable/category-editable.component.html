@@ -1,1 +1,17 @@
-<p>category-editable works!</p>
+<header class="header">
+    <h4 class="title">{{category.name}}</h4>
+    <ic-icon [icon]="arrow_icon" size="24px" (click)="desplegarSubCategorias()"></ic-icon>
+</header>
+<div class="body" *ngIf="desplegado">
+    <header class="header">
+        <h4 class="title">{{category.name}}</h4>
+    </header>
+    <div class="body">
+        <header class="header">
+            <h4 class="title">{{category.name}}</h4>
+        </header>
+        <div class="body" >
+
+        </div>
+    </div>
+</div>

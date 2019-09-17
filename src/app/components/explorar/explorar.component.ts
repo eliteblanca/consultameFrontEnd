@@ -1,21 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { merge } from "rxjs";
-import { switchMap, map, filter, findIndex } from "rxjs/operators";
+import { filter, switchMap } from "rxjs/operators";
+import { ArticlesApiService } from "../../api/articles-api.service";
+import { CategoriesApiService, category } from "../../api/categories-api.service";
 import { Article } from "../../article";
 import { ApiService, EventsService } from "../../services";
-import { ArticlesApiService } from "../../api/articles-api.service";
-import { CategoriesApiService, categories } from "../../api/categories-api.service";
 
-type category = {
-    id: string;
-    name: string;
-    position: number;
-    icon: string;
-    group: string;
-    desplegado: boolean,
-    subcategories?: category[]
-}
+
 
 @Component({
     selector: 'app-explorar',
@@ -41,8 +32,7 @@ export class ExplorarComponent implements OnInit {
             filter(selectedLine => selectedLine.line != null && selectedLine.subLine != null),
             switchMap(selectedLine => this.categoriesApi.getCategories(selectedLine.subLine.id))
         ).subscribe(categories => {
-            this.categories = this.reorderCategories(categories);
-            console.log(this.categories)
+            this.categories = categories
             this.articles = [];
         })
     }
@@ -53,24 +43,5 @@ export class ExplorarComponent implements OnInit {
         })
     }
 
-    reorderCategories(categories: categories): category[] {
-
-        let categoriesAux = categories.map(category => { return { subcategories: [], desplegado: false, ...category } })
-
-        let categoriesToDelete = [];
-        while (categoriesAux.some(category => category.group != undefined)) {
-            for (let i = 0; i < categoriesAux.length; i++) {
-                if (!categoriesAux.some(category => category.group == categoriesAux[i].id)) {
-                    let groupIndex = categoriesAux.findIndex(category => category.id == categoriesAux[i].group)
-                    categoriesAux[groupIndex].subcategories.push(categoriesAux[i])
-                    categoriesToDelete.push(categoriesAux[i].id)
-                }
-            }
-
-            categoriesAux = categoriesAux.filter(category => !categoriesToDelete.includes(category.id))
-        }
-
-        return categoriesAux;
-    }
 }
 

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService, UserService } from 'src/app/services';
 import { Router } from '@angular/router';
-import { mergeMap, tap } from 'rxjs/operators';
+import { mergeMap, tap, filter } from 'rxjs/operators';
 import { Observable, forkJoin } from 'rxjs';
 import { UserApiService, AllowedLines } from "../../api/user-api.service";
 
@@ -27,7 +27,9 @@ export class AcountMenuComponent implements OnInit {
 
     ngOnInit() {
         this.userApi.getUserAllowedlines(this.userService.usuario.sub)
-            .subscribe(lines => {
+            .pipe(
+                filter(lines => !!lines && !!lines[0] && !!lines[0].sublines[0])
+            ).subscribe(lines => {
                 this.lines = lines;
                 this.selectedLine = lines[0];
                 this.selectedSubLine = this.selectedLine.sublines[0];

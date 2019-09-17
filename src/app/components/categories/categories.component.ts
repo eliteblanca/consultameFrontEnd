@@ -1,12 +1,11 @@
 import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 
-type category = {
+export type category = {
     id: string;
     name: string;
     position: number;
     icon: string;
     group: string;
-    desplegado: boolean,
     subcategories?: category[]
 }
 

@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { LinesApiService, lineWithSublines } from "../../api/lines-api.service";
 
 
@@ -12,7 +12,7 @@ export class LinesEditorComponent implements OnInit {
     constructor(private linesApi: LinesApiService) { }
 
     @Input() lines: lineWithSublines[];
-
+    @Output() onLineSelected = new EventEmitter();
     ngOnInit() {
     }
 
@@ -27,7 +27,10 @@ export class LinesEditorComponent implements OnInit {
     }
 
     lineaEliminada(lineId: string) {
-
         this.lines = this.lines.filter(line => line.id != lineId)
+    }
+
+    selectSubline(idSubline){
+        this.onLineSelected.next(idSubline);
     }
 }

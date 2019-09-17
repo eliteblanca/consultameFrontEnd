@@ -1,14 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-
-type category = {
-    id: string;
-    name: string;
-    position: number;
-    icon: string;
-    group: string;
-    desplegado: boolean,
-    subcategories?: category[]
-}
+import { category } from "../categories/categories.component";
 
 @Component({
     selector: 'app-categorie',

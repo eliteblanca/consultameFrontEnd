@@ -1,6 +1,6 @@
 <header class="main_header">
     <i class="material-icons logo" (click)="populateArticles()">photo_size_select_actual</i>
-    <app-search-box></app-search-box>    
+    <app-search-box></app-search-box>
     <a class="tab" routerLink="/app/explore">
         <i class="material-icons">category</i>
         <span>Explorar</span>
@@ -13,10 +13,14 @@
         <i class="material-icons">stars</i>
         <span>Favoritos</span>
     </a>
-    <a class="tab" routerLink="/app/edit">
+    <a class="tab">
         <i class="material-icons">edit</i>
         <span>Edicion</span>
     </a>
     <span class="separator"></span>
+    <a routerLink="/app/edit" class="mr1.5">
+        <ic-icon [icon]="settingsIcon" [size]="'24px'"></ic-icon>
+    </a>
+
     <app-acount-menu></app-acount-menu>
 </header>

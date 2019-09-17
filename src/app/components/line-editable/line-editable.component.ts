@@ -16,6 +16,7 @@ export class LineEditableComponent implements OnInit {
     ) { }
 
     @Output() onDeletedLine = new EventEmitter();
+    @Output() onLineSelected = new EventEmitter();
 
     @Input() line: lineWithSublines;
 
@@ -52,6 +53,10 @@ export class LineEditableComponent implements OnInit {
                 this.onDeletedLine.next(this.line.id);
             })
 
+    }
+
+    selectSubline(idSubline){
+        this.onLineSelected.next(idSubline);
     }
 
 }

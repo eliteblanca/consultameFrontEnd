@@ -1,0 +1,38 @@
+:host{
+    background-color: var(--terciaryDark);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    width: 100%;
+    margin-bottom: .5rem;
+    border-radius: 3px;
+    box-shadow: var(--shadow1);
+}
+
+:host .header{
+    display: flex;
+    width: 100%;
+    align-items: center;    
+    padding: .5rem; 
+    padding-left: 1rem;
+}
+
+:host .header .title{
+    margin: 0;
+    line-height: 1.5rem;
+    flex-grow: 1;
+}
+:host .header .title:hover{
+    color: var(--primary);
+    cursor: pointer;
+}   
+
+:host .body{
+    padding-left: 2rem;
+}
+
+ic-icon:hover{
+    cursor: pointer;
+    color: var(--primary);
+}
