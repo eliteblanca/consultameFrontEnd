@@ -32,6 +32,7 @@ import { LinesEditorComponent } from './components/lines-editor/lines-editor.com
 import { LineEditableComponent } from './components/line-editable/line-editable.component';
 import { ButtonComponent } from './components/button/button.component';
 import { TextInputComponent } from './components/text-input/text-input.component';
+import { IconPickerComponent } from './components/icon-picker/icon-picker.component';
 
 @NgModule({
     declarations: [
@@ -56,7 +57,8 @@ import { TextInputComponent } from './components/text-input/text-input.component
         LinesEditorComponent,
         LineEditableComponent,
         ButtonComponent,
-        TextInputComponent
+        TextInputComponent,
+        IconPickerComponent
     ],
     imports: [
         BrowserModule,

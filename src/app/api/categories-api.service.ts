@@ -29,6 +29,12 @@ type addCategoryDTO = {
     group?: string
 }
 
+type updateCategoryDTO = {
+    name: string;
+    position: number;
+    icon: string;
+}
+
 @Injectable({
     providedIn: 'root'
 })
@@ -39,7 +45,9 @@ export class CategoriesApiService {
     private host = "http://localhost:3001";
     private endPoints = {
         getCategories: (id: string) => `${this.host}/api/sublines/:idSubline/categories`.replace(':idSubline', id),
-        postCategory: `${this.host}/api/categories`
+        postCategory: `${this.host}/api/categories`,
+        updateCategory: (id: string) => `${this.host}/api/categories/:idCategory`.replace(':idCategory', id),
+        deleteCategory: (id: string) => `${this.host}/api/categories/:idCategory`.replace(':idCategory', id)
     };
 
     getCategories(sublineId: string): Observable<category[]> {
@@ -72,6 +80,22 @@ export class CategoriesApiService {
         return of(null).pipe(
             switchMap(val => {
                 return this.http.post<categoryRaw>(this.endPoints.postCategory, category, { observe: "body" })
+            })
+        )
+    }
+
+    updateCategory(categoryId: string, category: updateCategoryDTO): Observable<{ status: string }> {
+        return of(null).pipe(
+            switchMap(val => {
+                return this.http.put<{ status: string }>(this.endPoints.updateCategory(categoryId), category, { observe: "body" })
+            })
+        )
+    }
+
+    deleteCategory(categoryId: string): Observable<any> {
+        return of(null).pipe(
+            switchMap(val => {
+                return this.http.delete<any>(this.endPoints.deleteCategory(categoryId), { observe: "body" })
             })
         )
     }

@@ -1,17 +1,13 @@
-<header class="header">
-    <h4 class="title">{{category.name}}</h4>
-    <ic-icon [icon]="arrow_icon" size="24px" (click)="desplegarSubCategorias()"></ic-icon>
+<header class="header">        
+    <h4 class="title" *ngIf="!editCategoryNameMode">{{category.name}}</h4>
+    <ic-icon class="editIcon" [icon]="edit_icon" size="24px" (click)="editCategoryNameMode = true" *ngIf="!editCategoryNameMode"></ic-icon>
+    <ic-icon class="editIcon" [icon]="delete_icon" size="24px" (click)="eliminarCategoria()" *ngIf="!editCategoryNameMode"></ic-icon>
+    <ic-icon class="editIcon" [icon]="add_icon" size="24px" (click)="addCategoryMode = true" *ngIf="!editCategoryNameMode"></ic-icon>
+    <ic-icon class="ml.5" [icon]="arrow_icon" size="24px" (click)="desplegarSubCategorias()" *ngIf="!editCategoryNameMode && !!category.subcategories.length"></ic-icon>
+    <app-text-input [placeholder]="'Nombre Categoria'" [initialText]="category.name" (onConfirm)="actualizarNombre($event); editCategoryNameMode = false" (onCancel)="editCategoryNameMode = false"  *ngIf="editCategoryNameMode"> </app-text-input>
 </header>
-<div class="body" *ngIf="desplegado">
-    <header class="header">
-        <h4 class="title">{{category.name}}</h4>
-    </header>
-    <div class="body">
-        <header class="header">
-            <h4 class="title">{{category.name}}</h4>
-        </header>
-        <div class="body" >
-
-        </div>
-    </div>
+<div class="body" *ngIf="desplegado || addCategoryMode">
+    <app-text-input class="mb.5 mr.5" [placeholder]="'Nombre Nueva categoria'" [initialText]="''" (onConfirm)="agregarCategoria($event); addCategoryMode = false" (onCancel)="addCategoryMode = false"  *ngIf="addCategoryMode"> </app-text-input>
+    <app-category-editable *ngFor="let subcategory of category.subcategories" [category]="subcategory" [sublineSelected]="sublineSelected" (onCategoryDeleted)="subCategoriaEliminada($event)"> </app-category-editable>
 </div>
+<app-icon-picker></app-icon-picker>

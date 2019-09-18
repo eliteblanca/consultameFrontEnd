@@ -12,8 +12,8 @@ export class CategoriesEditorComponent implements OnInit {
     @Input() sublineSelected: string;
     @Input() group: string;
 
-    icon: string = "icono de prueba";
-
+    public nuevaCategoriaMode = false;
+    private icon = 'sin icono';
     constructor(private categoriesApi: CategoriesApiService) { }
 
     ngOnInit() {
@@ -46,4 +46,9 @@ export class CategoriesEditorComponent implements OnInit {
             this.categories.push(categoryToAdd);
         })
     }
+
+    categoryDeleted(categoryId: string) {
+        this.categories = this.categories.filter(category => category.id != categoryId)
+    }
+
 }

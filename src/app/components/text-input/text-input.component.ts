@@ -11,7 +11,7 @@ export class TextInputComponent implements OnInit {
 
     @Input() placeholder: string;
     @Input() initialText: string;
-    @Input() cancelButton: boolean;
+    @Input() cancelButton: boolean = true;
 
     @Output() onConfirm = new EventEmitter();
     @Output() onCancel = new EventEmitter();
