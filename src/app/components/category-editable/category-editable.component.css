@@ -27,7 +27,7 @@
     display: none;
 }
 :host .header:hover .editIcon{
-    display: inline-block;
+    display: flex;
 }
 
 :host .header .title{
@@ -47,19 +47,19 @@
     width: 100%;
 }
 
-:host .body .title{
-    margin: 0;
-}
-
 :host .body .body{
     padding-right: 0;
 }
 
-.header ic-icon{
+.header app-icon:first-child{
+    margin-left: 0;
+}
+
+.header app-icon{
     margin-left: 1rem;
 }
 
-ic-icon:hover{
+app-icon:hover{
     cursor: pointer;
     color: var(--primary);
 }

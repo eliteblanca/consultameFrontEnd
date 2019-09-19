@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { category } from "../categories/categories.component";
 import { CategoriesApiService } from "../../api/categories-api.service";
+import { ModalService } from "../../services/modal.service";
 @Component({
     selector: 'app-categories-editor',
     templateUrl: './categories-editor.component.html',
@@ -14,7 +15,10 @@ export class CategoriesEditorComponent implements OnInit {
 
     public nuevaCategoriaMode = false;
     private icon = 'sin icono';
-    constructor(private categoriesApi: CategoriesApiService) { }
+    constructor(
+        private categoriesApi: CategoriesApiService,
+        private modalService: ModalService
+    ) { }
 
     ngOnInit() {
         console.log(this.categories)
@@ -50,5 +54,17 @@ export class CategoriesEditorComponent implements OnInit {
     categoryDeleted(categoryId: string) {
         this.categories = this.categories.filter(category => category.id != categoryId)
     }
+
+    abrirModal(){
+        this.modalService.open('iconPickerCategories_1');
+    }
+
+    // openModal(id: string) {
+    //     this.modalService.open(id);
+    // }
+
+    // closeModal(id: string) {
+    //     this.modalService.close(id);
+    // }
 
 }

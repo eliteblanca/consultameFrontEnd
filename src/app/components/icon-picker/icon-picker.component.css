@@ -1,10 +1,10 @@
 :host{
-    box-shadow: var(--shadow3);
 }
 
 .iconPicker{    
     box-shadow: var(--shadow3);
     border-radius: 3px;
+    background-color: white;
 }
 
 .searchBox{
@@ -28,4 +28,35 @@
 
 .iconsList{
     padding: .5rem;
+}
+
+.categoryTitle{
+    margin-left: 1rem;
+}
+
+.icons{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+.icons .icon{
+    padding: 1rem;
+    border-radius: 3px;
+}
+
+.icons .icon:hover{
+    background-color: var(--primaryLight);
+    cursor: pointer;
+}
+
+.icons .icon.active{
+    cursor: pointer;
+    background-color: var(--primary);
+    color: white;
+}
+.footer{
+    padding-top: 1rem;
 }

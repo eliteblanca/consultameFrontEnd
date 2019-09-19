@@ -34,6 +34,9 @@ import { ButtonComponent } from './components/button/button.component';
 import { TextInputComponent } from './components/text-input/text-input.component';
 import { IconPickerComponent } from './components/icon-picker/icon-picker.component';
 import { DropDownComponent } from './components/drop-down/drop-down.component';
+import { IconComponent } from './components/icon/icon.component';
+import { PagerComponent } from './components/pager/pager.component';
+import { ModalComponent } from './components/modal/modal.component';
 
 @NgModule({
     declarations: [
@@ -60,7 +63,10 @@ import { DropDownComponent } from './components/drop-down/drop-down.component';
         ButtonComponent,
         TextInputComponent,
         IconPickerComponent,
-        DropDownComponent
+        DropDownComponent,
+        IconComponent,
+        PagerComponent,
+        ModalComponent
     ],
     imports: [
         BrowserModule,

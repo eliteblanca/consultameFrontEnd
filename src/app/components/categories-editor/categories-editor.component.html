@@ -2,5 +2,8 @@
 <h5 class="dafaultMessage" *ngIf="!!!categories.length && sublineSelected">No hay categorias en esta linea, agrega la primer categoria</h5>
 <app-text-input placeholder="Nombre nueva categoria" [cancelButton]="nuevaCategoriaMode" *ngIf="(!!!categories.length && sublineSelected) || nuevaCategoriaMode" (onConfirm)="agregarNuevaCategoria($event)" (onCancel)="nuevaCategoriaMode = false">  </app-text-input>
 <app-button [buttonText]="'Nueva categoria'" (click)="nuevaCategoriaMode = true" *ngIf="!!categories.length && !nuevaCategoriaMode">  </app-button>
+<app-button [buttonText]="'Abrir modal'" (click)="abrirModal()">  </app-button>
 
-<app-icon-picker></app-icon-picker>
+<jw-modal id="iconPickerCategories_1">
+    <app-icon-picker></app-icon-picker>
+</jw-modal>
