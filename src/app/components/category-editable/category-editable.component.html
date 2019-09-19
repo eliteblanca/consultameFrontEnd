@@ -10,4 +10,3 @@
     <app-text-input class="mb.5 mr.5" [placeholder]="'Nombre Nueva categoria'" [initialText]="''" (onConfirm)="agregarCategoria($event); addCategoryMode = false" (onCancel)="addCategoryMode = false"  *ngIf="addCategoryMode"> </app-text-input>
     <app-category-editable *ngFor="let subcategory of category.subcategories" [category]="subcategory" [sublineSelected]="sublineSelected" (onCategoryDeleted)="subCategoriaEliminada($event)"> </app-category-editable>
 </div>
-<app-icon-picker></app-icon-picker>

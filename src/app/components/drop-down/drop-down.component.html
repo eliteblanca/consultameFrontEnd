@@ -1,0 +1,11 @@
+<div class="dropDown">
+    <div class="header">
+        <span class="selection">{{textoInicial}}</span>
+        <span class="iconify" data-icon="mdi:arrow-down-drop" data-inline="false"></span>
+    </div>
+    <div class="values">
+        <div class="value" *ngFor="let value of values">
+            {{value[textField] || value}}
+        </div>
+    </div>
+</div>

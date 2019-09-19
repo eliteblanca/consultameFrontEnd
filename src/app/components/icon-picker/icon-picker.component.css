@@ -1,18 +1,31 @@
 :host{
-    background-color: red;
     box-shadow: var(--shadow3);
-    margin: 0;
-    padding: 0;
-    
 }
 
-.iconPicker .searchBox{
+.iconPicker{    
+    box-shadow: var(--shadow3);
+    border-radius: 3px;
+}
+
+.searchBox{
     display: flex;
+    align-items: center;
+    padding: .5rem;
+    border-bottom: 1px solid lightgray;
 }
 
-.iconPicker .searchInput{
-    border: 0;
-    background-color: white;
-    padding: .5rem;    
-    flex-grow: 1;
+.searchInput{
+    width: 100%;
+    border:0;
+    padding: .5rem;
+    outline: none !important;
+    background-color: transparent;
+}
+
+.iconify{
+    font-size: 1.5rem;
+}
+
+.iconsList{
+    padding: .5rem;
 }
