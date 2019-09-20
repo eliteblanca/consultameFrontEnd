@@ -9,6 +9,6 @@
         <app-pager [numberOfItems]="allIconsCount" [pageSize]="pageSize" (onPageSelected)="changeIconsPage($event)" #pager></app-pager>
     </div>
     <div class="footer" *ngIf="selectedIcon">
-        <app-button [buttonText]="'Usar icono'"></app-button>
+        <app-button [buttonText]="'Usar icono'" (click)="confirmarSeleccion()"></app-button>
     </div>
 </div>

@@ -33,11 +33,11 @@
     text-decoration: none;
     line-height: 1.5rem;;
     flex-grow: 1;
-    cursor: pointer;
 }
 
-:host .header .title:hover{
+:host .body .title:hover{
     color: var(--primary);
+    cursor: pointer;
 }
 
 :host .body.desplegado{

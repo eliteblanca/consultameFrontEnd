@@ -12,7 +12,12 @@ export class LinesEditorComponent implements OnInit {
     constructor(private linesApi: LinesApiService) { }
 
     @Input() lines: lineWithSublines[];
-    @Output() onLineSelected = new EventEmitter();
+    @Output() onSubLineSelected = new EventEmitter();
+    @Output() onLineDeleted = new EventEmitter();
+    @Output() onSubLineDeleted = new EventEmitter();
+
+    public newlineMode = false;
+
     ngOnInit() {
     }
 
@@ -28,9 +33,14 @@ export class LinesEditorComponent implements OnInit {
 
     lineaEliminada(lineId: string) {
         this.lines = this.lines.filter(line => line.id != lineId)
+        this.onLineDeleted.next(lineId);
+    }
+
+    sublineaEliminada(sublineId: string) {
+        this.onSubLineDeleted.next(sublineId)
     }
 
     selectSubline(idSubline){
-        this.onLineSelected.next(idSubline);
+        this.onSubLineSelected.next(idSubline);
     }
 }

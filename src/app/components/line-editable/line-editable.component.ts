@@ -16,11 +16,15 @@ export class LineEditableComponent implements OnInit {
     ) { }
 
     @Output() onDeletedLine = new EventEmitter();
+    @Output() onDeletedSubLine = new EventEmitter();
     @Output() onLineSelected = new EventEmitter();
 
     @Input() line: lineWithSublines;
 
     public desplegado: boolean = true;
+    public subLineOnEdition:string = '';
+    public newsublineMode = false;
+    public newlineMode = false;
 
     ngOnInit() {
         this.line.name
@@ -53,6 +57,15 @@ export class LineEditableComponent implements OnInit {
                 this.onDeletedLine.next(this.line.id);
             })
 
+    }
+
+    deleteSubline(subLineId:string) {
+        this.sublinesApi.deleteSubline(subLineId)
+            .subscribe(result => {
+                console.log(result);
+                this.line.sublines = this.line.sublines.filter(subline => subline.id != subLineId)
+                this.onDeletedSubLine.next(subLineId);
+            })
     }
 
     selectSubline(idSubline){

@@ -6,7 +6,9 @@ import arrow_drop_up from '@iconify/icons-mdi/arrow-drop-up';
 import pencil from '@iconify/icons-mdi/pencil';
 import trash from '@iconify/icons-mdi/trash';
 import plus_circle from '@iconify/icons-mdi/plus-circle';
-
+import { ModalService } from "../../services/modal.service";
+import { ArticlesApiService } from "../../api/articles-api.service";
+import { filter, map, switchMap, window } from 'rxjs/operators';
 @Component({
     selector: 'app-category-editable',
     templateUrl: './category-editable.component.html',
@@ -20,7 +22,10 @@ export class CategoryEditableComponent implements OnInit {
     public add_icon = plus_circle;
     //*icons
 
-    constructor(private categoriesApi: CategoriesApiService) { }
+    constructor(
+        private categoriesApi: CategoriesApiService,
+        private articlesApi:ArticlesApiService
+    ) { }
 
     @Input() category: category;
     @Input() sublineSelected: string;
@@ -31,6 +36,7 @@ export class CategoryEditableComponent implements OnInit {
 
     public editCategoryNameMode = false;
     public addCategoryMode = false;
+    public iconPickerOpen = false;
 
     ngOnInit() {
     }
@@ -64,15 +70,59 @@ export class CategoryEditableComponent implements OnInit {
     }
 
     agregarCategoria(nombre: string) {
-        this.categoriesApi.addCategory({
-            group: this.category.id,
-            icon: 'icono de prueba',
-            name: nombre,
-            position: 1,
-            sublinea: this.sublineSelected
-        }).subscribe(newCategory => {
+
+        this.articlesApi.getArticlesByCategory(this.category.id).pipe(
+            filter(articles => {
+                return articles.length <= 0
+            }),
+            switchMap((articles) => this.categoriesApi.addCategory({
+                group: this.category.id,
+                icon: 'mdi:circle-small',
+                name: nombre,
+                position: 1,
+                sublinea: this.sublineSelected
+            }))
+        ).subscribe(newCategory => {
             let { sublinea, ...categ } = newCategory;
             this.category.subcategories.push({ subcategories: [], ...categ })
         })
+
+    }
+
+    getIcon(){
+        //* retorna 'mdi:circle-small' solo en esta vista en la vista de agente debe mostrar mdi:circle-small cuando no tenga icono
+        if(this.category.icon == 'mdi:circle-small'){
+            return 'mdi:image-plus'
+        }else{
+            return this.category.icon
+        }
+    }
+
+    showIconPicker(){
+        this.iconPickerOpen = true;
+    }
+
+    updateIcon(iconName:string){
+        this.categoriesApi.updateCategory(
+            this.category.id,
+            {
+                icon: iconName,
+                name: this.category.name,
+                position: this.category.position
+            }
+        ).subscribe(Response => {
+            this.category.icon = iconName;
+            console.log(this.category)
+        })
+    }
+
+    seleccionarCategoria(category?:category){
+        if(!!!category){
+            if(!!!this.category.subcategories.length){
+                this.onCategorySelected.next(this.category)
+            }
+        }else{
+            this.onCategorySelected.next(category)
+        }                
     }
 }

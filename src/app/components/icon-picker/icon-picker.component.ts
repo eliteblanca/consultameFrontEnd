@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, OnInit, ViewChild, AfterViewInit, Output, EventEmitter } from '@angular/core';
 import icons from '../../../assets/materialDesignIcons.json';
 import { PagerComponent } from "../pager/pager.component";
 
@@ -21,13 +21,15 @@ export class IconPickerComponent implements OnInit {
     constructor() { }
 
     @ViewChild('pager',{ static: false }) pager:PagerComponent
+    @Output() onIconSelected = new EventEmitter();
+
 
     public pageSize = 30;
     public categorySelected = 'todas';
     public categories: string[];
     public allIconsCount = 0;
     public icons: icon[];
-    public selectedIcon = null;
+    public selectedIcon:icon = null;
 
     public ngOnInit() {
 
@@ -87,6 +89,10 @@ export class IconPickerComponent implements OnInit {
 
     selectIcon(icon:icon){
         this.selectedIcon = icon;
+    }
+
+    confirmarSeleccion(){
+        this.onIconSelected.next('mdi:' + this.selectedIcon.name)
     }
 
 }

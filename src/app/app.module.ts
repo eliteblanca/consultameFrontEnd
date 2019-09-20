@@ -37,6 +37,8 @@ import { DropDownComponent } from './components/drop-down/drop-down.component';
 import { IconComponent } from './components/icon/icon.component';
 import { PagerComponent } from './components/pager/pager.component';
 import { ModalComponent } from './components/modal/modal.component';
+import { ArticlesEditorListComponent } from './components/articles-editor-list/articles-editor-list.component';
+import { ArticleEditableComponent } from './components/article-editable/article-editable.component';
 
 @NgModule({
     declarations: [
@@ -66,7 +68,9 @@ import { ModalComponent } from './components/modal/modal.component';
         DropDownComponent,
         IconComponent,
         PagerComponent,
-        ModalComponent
+        ModalComponent,
+        ArticlesEditorListComponent,
+        ArticleEditableComponent
     ],
     imports: [
         BrowserModule,

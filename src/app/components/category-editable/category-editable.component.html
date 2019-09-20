@@ -1,6 +1,6 @@
 <header class="header">        
-    <app-icon class="editIcon" [iconName]="'mdi:image-plus'" *ngIf="!editCategoryNameMode"></app-icon>
-    <h4 class="title" *ngIf="!editCategoryNameMode">{{category.name}}</h4>
+    <app-icon [iconName]="getIcon()" *ngIf="!editCategoryNameMode" (click)="showIconPicker()"></app-icon>
+    <h4 class="title" *ngIf="!editCategoryNameMode" (click)="seleccionarCategoria()" [ngClass]="{'leaftCategory': !!!category.subcategories.length}">{{category.name}}</h4>
     <app-icon class="editIcon" [iconName]="'mdi:pencil'" (click)="editCategoryNameMode = true" *ngIf="!editCategoryNameMode"></app-icon>
     <app-icon class="editIcon" [iconName]="'mdi:trash'" (click)="eliminarCategoria()" *ngIf="!editCategoryNameMode"></app-icon>
     <app-icon class="editIcon" [iconName]="'mdi:plus-circle'" (click)="addCategoryMode = true" *ngIf="!editCategoryNameMode"></app-icon>
@@ -9,5 +9,8 @@
 </header>
 <div class="body" *ngIf="desplegado || addCategoryMode">
     <app-text-input class="mb.5 mr.5" [placeholder]="'Nombre Nueva categoria'" [initialText]="''" (onConfirm)="agregarCategoria($event); addCategoryMode = false" (onCancel)="addCategoryMode = false"  *ngIf="addCategoryMode"> </app-text-input>
-    <app-category-editable *ngFor="let subcategory of category.subcategories" [category]="subcategory" [sublineSelected]="sublineSelected" (onCategoryDeleted)="subCategoriaEliminada($event)"> </app-category-editable>
+    <app-category-editable *ngFor="let subcategory of category.subcategories" [category]="subcategory" [sublineSelected]="sublineSelected" (onCategoryDeleted)="subCategoriaEliminada($event)" (onCategorySelected)="seleccionarCategoria($event)"> </app-category-editable>
 </div>
+<jw-modal id="iconPickerCategories_1" *ngIf="iconPickerOpen" (onClose)="iconPickerOpen = false">
+    <app-icon-picker (onIconSelected)="updateIcon($event)"></app-icon-picker>
+</jw-modal>

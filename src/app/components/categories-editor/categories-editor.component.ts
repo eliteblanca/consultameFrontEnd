@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { category } from "../categories/categories.component";
 import { CategoriesApiService } from "../../api/categories-api.service";
 import { ModalService } from "../../services/modal.service";
@@ -9,12 +9,15 @@ import { ModalService } from "../../services/modal.service";
 })
 export class CategoriesEditorComponent implements OnInit {
 
+    @Output() onCategorySelected = new EventEmitter();
     @Input() categories: category[];
     @Input() sublineSelected: string;
     @Input() group: string;
 
     public nuevaCategoriaMode = false;
-    private icon = 'sin icono';
+
+    private icon = 'mdi:circle-small';
+
     constructor(
         private categoriesApi: CategoriesApiService,
         private modalService: ModalService
@@ -44,7 +47,6 @@ export class CategoriesEditorComponent implements OnInit {
         }
 
         this.categoriesApi.addCategory(category).subscribe(newCategory => {
-            console.log(newCategory)
             let { sublinea, ...newCat } = newCategory;
             let categoryToAdd = { subcategories: [], ...newCat };
             this.categories.push(categoryToAdd);
@@ -55,16 +57,8 @@ export class CategoriesEditorComponent implements OnInit {
         this.categories = this.categories.filter(category => category.id != categoryId)
     }
 
-    abrirModal(){
-        this.modalService.open('iconPickerCategories_1');
+    seleccionarCategoria(category:category) {
+        this.onCategorySelected.next(category)
     }
-
-    // openModal(id: string) {
-    //     this.modalService.open(id);
-    // }
-
-    // closeModal(id: string) {
-    //     this.modalService.close(id);
-    // }
 
 }

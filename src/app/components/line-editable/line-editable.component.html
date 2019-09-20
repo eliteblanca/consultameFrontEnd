@@ -13,10 +13,9 @@
         (onConfirm)="createSubLine($event);newsublineMode = false" (onCancel)="newsublineMode = false">
     </app-text-input>
     <header class="header" *ngFor="let subline of line.sublines">
-        <app-text-input [placeholder]="'Nombre sublinea'" [initialText]="subline.name" *ngIf="lineOnEdition == subline.id" (onConfirm)="updateSubline(subline.id, $event); lineOnEdition = ''" (onCancel)="lineOnEdition = ''"></app-text-input>
+        <app-text-input [placeholder]="'Nombre sublinea'" [initialText]="subline.name" *ngIf="subLineOnEdition == subline.id" (onConfirm)="updateSubline(subline.id, $event); subLineOnEdition = ''" (onCancel)="subLineOnEdition = ''"></app-text-input>
         <h4 class="title" *ngIf="!newsublineMode" (click)="selectSubline(subline.id)">{{subline.name}}</h4>
-        <i class="material-icons editButton" (click)="newSublineMode = true; lineOnEdition = subline.id" *ngIf="!newsublineMode">edit</i>
-        <i class="material-icons editButton" *ngIf="!newsublineMode">delete</i>
+        <i class="material-icons editButton" (click)="newSublineMode = true; subLineOnEdition = subline.id" *ngIf="!newsublineMode">edit</i>
+        <i class="material-icons editButton" *ngIf="!newsublineMode" (click)="deleteSubline(subline.id)">delete</i>
     </header>
-
 </div>

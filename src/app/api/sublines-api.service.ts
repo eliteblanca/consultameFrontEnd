@@ -17,19 +17,26 @@ export class SublinesApiService {
 
     private host = "http://localhost:3001";
     private endPoints = {
-        postSublines: (id: string) => `${this.host}/api/lines/:idLine/sublines`.replace(':idLine', id),
-        updateSublines: (id: string) => `${this.host}/api/sublines/:id`.replace(':id', id),
+        postSubline: (id: string) => `${this.host}/api/lines/:idLine/sublines`.replace(':idLine', id),
+        updateSubline: (id: string) => `${this.host}/api/sublines/:id`.replace(':id', id),
+        deleteSubline: (id: string) => `${this.host}/api/sublines/:id`.replace(':id', id)
     }
 
     createSubLine(idLine: string, name: string): Observable<subline> {
         return of(null).pipe(
-            switchMap(val => this.http.post<subline>(this.endPoints.postSublines(idLine), { name: name }, { observe: "body" }))
+            switchMap(val => this.http.post<subline>(this.endPoints.postSubline(idLine), { name: name }, { observe: "body" }))
         )
     }
 
     updateSubLine(id: string, name: string): Observable<string> {
         return of(null).pipe(
-            switchMap(val => this.http.put<string>(this.endPoints.updateSublines(id), { name: name }, { observe: "body" }))
+            switchMap(val => this.http.put<string>(this.endPoints.updateSubline(id), { name: name }, { observe: "body" }))
+        )
+    }
+
+    deleteSubline(idSubline:string): Observable<any> {
+        return of(null).pipe(
+            switchMap(val => this.http.delete<any>(this.endPoints.updateSubline(idSubline), { observe: "body" }))
         )
     }
 

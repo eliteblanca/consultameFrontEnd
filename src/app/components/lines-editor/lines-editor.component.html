@@ -1,4 +1,4 @@
-<app-line-editable *ngFor="let line of lines" [line]="line" (onDeletedLine)="lineaEliminada($event)" (onLineSelected)="selectSubline($event)">
+<app-line-editable *ngFor="let line of lines" [line]="line" (onDeletedLine)="lineaEliminada($event)" (onDeletedSubLine)="sublineaEliminada($event)" (onLineSelected)="selectSubline($event)">
 </app-line-editable>
 <app-button [buttonText]="'Nueva Linea'" (click)="newlineMode = true" *ngIf="!newlineMode"></app-button>
 <app-text-input [placeholder]="'Nombre nueva linea'" *ngIf="newlineMode"
