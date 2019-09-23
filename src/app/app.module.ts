@@ -25,7 +25,7 @@ import {
 } from './components/index';
 
 import { mockServerService, JwtInterceptor } from "./services/index";
-import { EdicionComponent } from './components/edicion/edicion.component';
+import { ConfigComponent } from './components/config/config.component';
 import { CategoriesEditorComponent } from './components/categories-editor/categories-editor.component';
 import { CategoryEditableComponent } from './components/category-editable/category-editable.component';
 import { LinesEditorComponent } from './components/lines-editor/lines-editor.component';
@@ -39,6 +39,14 @@ import { PagerComponent } from './components/pager/pager.component';
 import { ModalComponent } from './components/modal/modal.component';
 import { ArticlesEditorListComponent } from './components/articles-editor-list/articles-editor-list.component';
 import { ArticleEditableComponent } from './components/article-editable/article-editable.component';
+import { ArticleCreatorComponent } from './components/article-creator/article-creator.component';
+import { UsersAdminComponent } from './components/users-admin/users-admin.component';
+import { SearchInputComponent } from './components/search-input/search-input.component';
+import { UsersEditorListComponent } from './components/users-editor-list/users-editor-list.component';
+import { LinesAllowedComponent } from './components/lines-allowed/lines-allowed.component';
+import { LineAllowedComponent } from './components/line-allowed/line-allowed.component';
+import { LinesAllowedEditorComponent } from './components/lines-allowed-editor/lines-allowed-editor.component';
+import { LineAllowedEditorComponent } from './components/line-allowed-editor/line-allowed-editor.component';
 
 @NgModule({
     declarations: [
@@ -57,7 +65,7 @@ import { ArticleEditableComponent } from './components/article-editable/article-
         ArticleViewComponent,
         AcountMenuComponent,
         NewsComponent,
-        EdicionComponent,
+        ConfigComponent,
         CategoriesEditorComponent,
         CategoryEditableComponent,
         LinesEditorComponent,
@@ -70,7 +78,15 @@ import { ArticleEditableComponent } from './components/article-editable/article-
         PagerComponent,
         ModalComponent,
         ArticlesEditorListComponent,
-        ArticleEditableComponent
+        ArticleEditableComponent,
+        ArticleCreatorComponent,
+        UsersAdminComponent,
+        SearchInputComponent,
+        UsersEditorListComponent,
+        LinesAllowedComponent,
+        LineAllowedComponent,
+        LinesAllowedEditorComponent,
+        LineAllowedEditorComponent
     ],
     imports: [
         BrowserModule,

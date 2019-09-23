@@ -21,6 +21,12 @@ export type AllowedLines = {
     }[]
 }[];
 
+export interface user {
+    username:string;
+    rol:string;
+    id:string;
+}
+
 @Injectable({
     providedIn: 'root'
 })
@@ -29,13 +35,26 @@ export class UserApiService {
     constructor(private http: HttpClient) { }
 
     private host = "http://localhost:3001";
-    private endPoint = `${this.host}/api/users/:idUsuario/allowedlines`;
+    private endPoints = {
+        getUserAllowedlines:(id:string) => `${this.host}/api/users/:idUsuario/allowedlines`.replace(':idUsuario', id ),
+        getUsers: `${this.host}/api/users`
 
-    getUserAllowedlines(userId): Observable<AllowedLines> {
+    } 
+
+    getUserAllowedlines(idUsuario:string): Observable<AllowedLines> {
         return of(null).pipe(
             switchMap(val => {
-                return this.http.get<AllowedLines>(this.endPoint.replace(':idUsuario', userId), { observe: "body" })
+                return this.http.get<AllowedLines>(this.endPoints.getUserAllowedlines(idUsuario), { observe: "body" })
             })
         )
     }
+
+    getUsers():Observable<user[]>{
+        return of(null).pipe(
+            switchMap(val => {
+                return this.http.get<user[]>(this.endPoints.getUsers, { observe: "body" })
+            })
+        )
+    }
+
 }

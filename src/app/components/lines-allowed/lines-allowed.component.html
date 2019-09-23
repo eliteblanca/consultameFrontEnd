@@ -1,0 +1,6 @@
+<app-line-allowed *ngFor="let line of lines" [line]="line" (onDeletedLine)="lineaEliminada($event)" (onDeletedSubLine)="sublineaEliminada($event)">
+</app-line-allowed>
+<!-- <app-button [buttonText]="'Nueva Linea'" (click)="newlineMode = true" *ngIf="!newlineMode"></app-button>
+<app-text-input [placeholder]="'Nombre nueva linea'" *ngIf="newlineMode"
+    (onConfirm)="createLine($event);newlineMode = false" (onCancel)="newlineMode = false">
+</app-text-input> -->

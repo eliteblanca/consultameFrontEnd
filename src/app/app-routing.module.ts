@@ -1,7 +1,9 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { SearchComponent, ExplorarComponent, HomeComponent, AplicationComponent, LoginComponent, ArticleViewComponent, NewsComponent, EdicionComponent } from "./components/index";
-import { AuthGuard, HomeGuard, LineGuard } from "./guards/index";
+import { SearchComponent, ExplorarComponent, HomeComponent, AplicationComponent, LoginComponent, ArticleViewComponent, NewsComponent, ConfigComponent, UsersAdminComponent } from "./components/index";
+import { AuthGuard, HomeGuard } from "./guards/index";
+import { UsersResolverService } from "./services/users-resolver.service";
+
 
 const routes: Routes = [
 	{path: '', redirectTo: '/home', pathMatch:'full'},
@@ -14,7 +16,8 @@ const routes: Routes = [
 			{path: 'articles', redirectTo: 'explore'},
 			{path: 'articles/:id', component: ArticleViewComponent},
 			{path: 'news', component: NewsComponent},
-			{path: 'edit', component: EdicionComponent}
+			{path: 'admin', component: ConfigComponent},
+			{path: 'users', component: UsersAdminComponent, resolve: { users:UsersResolverService }}
 		]},
 	{ path: '**', redirectTo: '' }
 ];

@@ -1,0 +1,10 @@
+<div class="optionsHeader">
+    <app-search-input></app-search-input>
+    <div class="separator"></div>
+    <app-icon class="editIcon" [iconName]="'mdi:account-plus'"></app-icon>
+</div>
+
+<div class="user" *ngFor="let user of users">
+    <h4 class="title" (click)="selectUser(user)">{{user.username}}</h4>
+    <app-icon class="editIcon" [iconName]="'mdi:account-remove'"></app-icon>
+</div>

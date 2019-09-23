@@ -25,7 +25,7 @@ export class CategoryEditableComponent implements OnInit {
     constructor(
         private categoriesApi: CategoriesApiService,
         private articlesApi:ArticlesApiService
-    ) { }
+    )  {  }
 
     @Input() category: category;
     @Input() sublineSelected: string;

@@ -1,0 +1,32 @@
+<div class="verticalColumn">
+    <h3 class="columnTitle">Usuarios</h3>
+    <app-users-editor-list [users]="users" (onSelectedUser)="onSelectedUser($event)"></app-users-editor-list>
+</div>
+<div class="verticalColumn" *ngIf="selectedUser">
+    <div class="userCard">
+        <div class="cardTitle">
+            <h2 class="title">{{selectedUser.username}}</h2>
+        </div>
+        <div class="cardRow">
+            <div class="cardRowTitle">User name</div>
+            <app-icon [iconName]="'mdi:pencil'"></app-icon>
+            <div class="cardRowValue">{{selectedUser.username}}</div>
+        </div>
+        <div class="cardRow">
+            <div class="cardRowTitle">Rol</div>
+            <app-icon [iconName]="'mdi:pencil'"></app-icon>
+            <div class="cardRowValue">{{selectedUser.rol}}</div>
+        </div>
+        <div class="cardRow">
+            <div class="cardRowTitle">Password</div>
+            <app-icon [iconName]="'mdi:pencil'"></app-icon>
+            <div class="cardRowValue">.......</div>
+        </div>
+        <div class="cardRow vertical">
+            <h4 class="mt1 mb.5">Lineas habilitadas</h4>
+            <app-lines-allowed [lines]="allowedLines" *ngIf="allowedLines.length"></app-lines-allowed>
+            <app-button [buttonText]="'Habilitar Linea'"></app-button>
+            <app-lines-allowed-editor [lines]="lines"></app-lines-allowed-editor>
+        </div>
+    </div>
+</div>

@@ -4,11 +4,11 @@ import { CategoriesApiService, category } from "../../api/categories-api.service
 import { ArticlesApiService, } from "../../api/articles-api.service";
 import { Article } from "../../article";
 @Component({
-    selector: 'app-edicion',
-    templateUrl: './edicion.component.html',
-    styleUrls: ['./edicion.component.css']
+    selector: 'app-config',
+    templateUrl: './config.component.html',
+    styleUrls: ['./config.component.css']
 })
-export class EdicionComponent implements OnInit {
+export class ConfigComponent implements OnInit {
 
     public lines: lineWithSublines[];
     public categories: category[] = [];

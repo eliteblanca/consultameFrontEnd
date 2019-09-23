@@ -18,8 +18,11 @@
         <span>Edicion</span>
     </a>
     <span class="separator"></span>
-    <a routerLink="/app/edit" class="mr1.5">
-        <ic-icon [icon]="settingsIcon" [size]="'24px'"></ic-icon>
+    <a routerLink="/app/users" class="mr1.5">
+        <app-icon [iconName]="'mdi:account-settings-variant'"></app-icon>
+    </a>
+    <a routerLink="/app/admin" class="mr1.5">
+        <app-icon [iconName]="'mdi:settings'"></app-icon>
     </a>
 
     <app-acount-menu></app-acount-menu>
