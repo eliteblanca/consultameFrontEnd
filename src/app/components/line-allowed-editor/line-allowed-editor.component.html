@@ -9,5 +9,6 @@
 <div class="body" [ngClass]="{'desplegado': desplegado}">
     <header class="header" *ngFor="let subline of line.sublines">
         <h4 class="title" *ngIf="!newsublineMode">{{subline.name}}</h4>
+        <app-icon class="editButton" [ngClass]="{'active': sublinesSelected.includes(subline.id) }" [iconName]=" sublinesSelected.includes(subline.id) ? 'mdi:account-check' : 'mdi:account-check-outline'" (click)="subLineAllowed(subline)"></app-icon>
     </header>
 </div>

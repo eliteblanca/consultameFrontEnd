@@ -12,17 +12,21 @@ export class LinesAllowedEditorComponent implements OnInit {
   @Input() lines: lineWithSublines[];
   @Output() onLineDeleted = new EventEmitter();
   @Output() onSubLineDeleted = new EventEmitter();
+  @Output() onSubLineAllowed = new EventEmitter();
 
   ngOnInit() {
   }
 
   lineaEliminada(lineId: string) {
-      this.lines = this.lines.filter(line => line.id != lineId)
-      this.onLineDeleted.next(lineId);
+    this.lines = this.lines.filter(line => line.id != lineId)
+    this.onLineDeleted.next(lineId);
   }
 
   sublineaEliminada(sublineId: string) {
-      this.onSubLineDeleted.next(sublineId)
+    this.onSubLineDeleted.next(sublineId)
   }
 
+  subLineAllowed(subline:{ name: string, id: string }) {
+    this.onSubLineAllowed.next(subline);
+  }
 }

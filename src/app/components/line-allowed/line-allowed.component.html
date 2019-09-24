@@ -1,15 +1,13 @@
 <header class="header">
     <h4 class="title">{{line.name}}</h4>
-    <i class="material-icons editButton" (click)="deleteLine()">delete</i>
-    <i class="material-icons" *ngIf="!desplegado && line.sublines.length && !newlineMode"
-        (click)="desplegado = true">arrow_drop_down</i>
-    <i class="material-icons" *ngIf="desplegado && line.sublines.length && !newlineMode"
-        (click)="desplegado = false">arrow_drop_up</i>
+
+    <app-icon [iconName]=" desplegado ? 'mdi:arrow-up-drop-circle-outline' : 'mdi:arrow-down-drop-circle-outline'" (click)="desplegado = !desplegado" *ngIf="line.sublines.length"></app-icon>
+
 </header>
 
 <div class="body" [ngClass]="{'desplegado': desplegado}">
     <header class="header" *ngFor="let subline of line.sublines">
         <h4 class="title" *ngIf="!newsublineMode">{{subline.name}}</h4>
-        <i class="material-icons editButton" *ngIf="!newsublineMode" (click)="deleteSubline(subline.id)">delete</i>
+        <app-icon class="editIcon" [iconName]="'mdi:account-off'" *ngIf="!newsublineMode" (click)="deleteSubline(subline.id)"></app-icon>
     </header>
 </div>

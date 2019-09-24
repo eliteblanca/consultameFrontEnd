@@ -37,8 +37,12 @@ export class UserApiService {
     private host = "http://localhost:3001";
     private endPoints = {
         getUserAllowedlines:(id:string) => `${this.host}/api/users/:idUsuario/allowedlines`.replace(':idUsuario', id ),
-        getUsers: `${this.host}/api/users`
-
+        getUsers: `${this.host}/api/users`,
+        postUser: `${this.host}/api/users`,
+        updateUser: (id:string) => `${this.host}/api/users/:idUsuario`.replace(':idUsuario', id ),
+        postUserAllowedline:(id:string) => `${this.host}/api/users/:idUsuario/allowedlines`.replace(':idUsuario', id ),
+        deleteUserAllowedline:(idUsuario:string, idSublinea:string) => `${this.host}/api/users/:idUsuario/allowedlines/:idSubline`.replace(':idUsuario', idUsuario ).replace(':idSubline', idSublinea ),
+        deleteUser:(id:string) => `${this.host}/api/users/:idUsuario`.replace(':idUsuario', id )
     } 
 
     getUserAllowedlines(idUsuario:string): Observable<AllowedLines> {
@@ -49,6 +53,14 @@ export class UserApiService {
         )
     }
 
+    postUserAllowedLines(idUsuario:string, idSubline:string):Observable<{status:string}>{
+        return this.http.post<{status:string}>(this.endPoints.postUserAllowedline(idUsuario),{ subline:idSubline },{ observe: "body" })
+    }
+
+    deleteUserAllowedLine(idUsuario:string, idSubline:string):Observable<{ deleted: number }>{
+        return this.http.delete<{ deleted: number }>(this.endPoints.deleteUserAllowedline(idUsuario, idSubline), { observe: "body" })
+    }
+
     getUsers():Observable<user[]>{
         return of(null).pipe(
             switchMap(val => {
@@ -57,4 +69,15 @@ export class UserApiService {
         )
     }
 
+    deleteUser(idUser:string):Observable<{ deleted: number }>{
+        return this.http.delete<{ deleted: number }>(this.endPoints.deleteUser(idUser), { observe: "body" })
+    }
+
+    postUser(user:{ username:string, password:string, rol:string }):Observable<user>{
+        return this.http.post<user>(this.endPoints.postUser,user,{ observe: "body" })
+    }
+
+    updateUserRol(idUsuario:string, newRol:string):Observable<{ status: string }>{
+        return this.http.put<{ status: string }>(this.endPoints.updateUser(idUsuario),{ rol:newRol },{ observe: "body" })
+    }
 }

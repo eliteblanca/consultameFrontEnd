@@ -9,7 +9,6 @@ export class IconComponent implements OnInit , OnChanges{
 
     ngOnChanges(changes:SimpleChanges): void {
         if(!changes.iconName.isFirstChange()){
-            console.log(this.element.childNodes)
             this.renderer.removeChild(this.element,this.element.childNodes[0])
             let span = document.createElement('span');
             this.renderer.addClass(span,'iconify');

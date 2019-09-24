@@ -22,8 +22,17 @@
     display: none;    
 }
 
+:host .header .editButton.active{
+    display: flex;    
+}
+
+:host .header .editButton:hover{
+    cursor: pointer;
+    color: var(--primary);
+}
+
 :host .header:hover .editButton{
-    display: inline-block;    
+    display: flex;    
 }
 
 :host .header .title{
@@ -33,11 +42,6 @@
     text-decoration: none;
     line-height: 1.5rem;;
     flex-grow: 1;
-}
-
-:host .body .title:hover{
-    color: var(--primary);
-    cursor: pointer;
 }
 
 :host .body.desplegado{

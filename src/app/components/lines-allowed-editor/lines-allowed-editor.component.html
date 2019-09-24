@@ -1,4 +1,3 @@
-<app-line-allowed-editor *ngFor="let line of lines" [line]="line" (onDeletedLine)="lineaEliminada($event)"
-    (onDeletedSubLine)="sublineaEliminada($event)">
+<app-line-allowed-editor *ngFor="let line of lines" [line]="line" (onDeletedLine)="lineaEliminada($event)" (onDeletedSubLine)="sublineaEliminada($event)" (onSubLineAllowed)="subLineAllowed($event)">
 </app-line-allowed-editor>
 <!-- <app-button [buttonText]="'Nueva Linea'" (click)="newlineMode = true" *ngIf="!newlineMode"></app-button> -->

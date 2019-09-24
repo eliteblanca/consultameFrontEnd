@@ -16,7 +16,6 @@ export class LinesAllowedComponent implements OnInit {
     }
 
     lineaEliminada(lineId: string) {
-        this.lines = this.lines.filter(line => line.id != lineId)
         this.onLineDeleted.next(lineId);
     }
 

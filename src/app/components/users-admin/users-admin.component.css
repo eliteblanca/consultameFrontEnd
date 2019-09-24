@@ -59,9 +59,15 @@
 }
 
 .userCard .cardRow .cardRowTitle{
-    flex-grow: 1;    
+    width: 30%;
     line-height: 24px;
 }
+
+.cardRowsEditionArea{
+    display: flex;
+    flex-grow: 3;    
+}
+
 .userCard .cardRow:hover app-icon{
     display: flex;
 }
@@ -71,3 +77,27 @@
     margin-right: 2rem;
 }
 
+.cardRowValue{
+    line-height: 24px;
+}
+
+.editIcon:hover{
+    cursor: pointer;
+    color: var(--primary);
+}
+
+.cardRowInput{
+    background-color: white;
+    margin: 0;
+    padding: 1rem;
+    padding-left: 1rem;
+    border: 0;
+    border-radius: 3px;
+    outline: 0 !important;
+    box-shadow: var(--shadow1);
+    width: 100%;
+}
+
+.separador{
+    flex-grow: 1;
+}

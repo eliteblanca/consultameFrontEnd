@@ -33,12 +33,12 @@
     position: absolute;
     top: calc( 100% + .5rem);
     left: 0;
-    width: 100%;
+    min-width: 100%;
     background-color: white;
     box-shadow: var(--shadow1);
     border-radius: 3px;
     overflow: hidden;
-    height: 15rem;
+    max-height: 15rem;
     overflow-y: scroll;
     z-index: 5;
 }
