@@ -1,0 +1,11 @@
+<div class="verticalColumn">
+    <h3 class="columnTitle">Categorias</h3>
+    <app-categories [categories]="categories" (onCategorySelected)="categoriaSelecctionada($event)"></app-categories>
+</div>
+<div class="verticalColumn" *ngIf="categorySelected">
+    <h3 class="columnTitle" >{{categorySelected.name}}</h3>
+    <app-articles-editor-list [categorySelected]="categorySelected.id"></app-articles-editor-list>
+</div>
+<div class="verticalColumn">
+
+</div>

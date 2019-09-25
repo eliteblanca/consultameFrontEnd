@@ -1,4 +1,5 @@
 import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
+import { CategoriesApiService } from '../../api/categories-api.service';
 
 export type category = {
     id: string;
@@ -16,14 +17,25 @@ export type category = {
 })
 export class CategoriesComponent implements OnInit {
 
-    @Output() onSelected: EventEmitter<string> = new EventEmitter();
+    @Output() onCategorySelected = new EventEmitter();
     @Input() categories: category[];
+    @Input() sublineSelected: string;
+    @Input() group: string;
 
-    categoriaSeleccionada(categoria: string) {
-        this.onSelected.emit(categoria);
+    public nuevaCategoriaMode = false;
+
+    private icon = 'mdi:circle-small';
+
+    constructor(
+        private categoriesApi: CategoriesApiService,
+    ) { }
+
+    ngOnInit() {
+        console.log(this.categories)
     }
 
-    constructor() { }
+    seleccionarCategoria(category:category) {
+        this.onCategorySelected.next(category)
+    }
 
-    ngOnInit() { }
 }

@@ -30,7 +30,6 @@ export class PagerComponent implements OnInit, OnChanges {
 	}
 
 	ngOnChanges(changes: SimpleChanges){
-		console.log(changes)
 		if(changes.numberOfItems){
 			this.reset(changes.numberOfItems.currentValue, this.pageSize)
 		}

@@ -1,3 +1,12 @@
 .dafaultMessage{
     margin: 1rem;
 }
+
+.Listheader{
+    width: 100%;
+    display: flex;
+}
+.Listheader .editIcon:hover{
+    color: var(--primary);
+    cursor: pointer;
+}

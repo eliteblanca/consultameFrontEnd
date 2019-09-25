@@ -1,3 +1,6 @@
+<div class="Listheader">
+    <app-search-input></app-search-input>
+    <app-icon class="editIcon ma.5 ml1 mr1" [iconName]="'mdi:file-document-box-plus'" (click)="goToArticleCreation()"></app-icon>
+</div>
 <app-article-editable [article]="article" (onArticleDeleted)="articuloEliminado($event)" *ngFor="let article of articles"></app-article-editable>
 <h5 class="dafaultMessage" *ngIf="!!!articles.length && categorySelected">No hay articulos en esta categoria, agrega el primer articulo</h5>
-<app-button [buttonText]="'Agregar articulo'" *ngIf="categorySelected">  </app-button>   

@@ -40,9 +40,6 @@ export class ConfigComponent implements OnInit {
     onCategorySelected(category: category) {
         if (this.selectedCategory != category.id) {
             this.selectedCategory = category.id;
-            this.articlesApi.getArticlesByCategory(category.id).subscribe(articles => {
-                this.articles = articles;
-            })
         }
     }
 

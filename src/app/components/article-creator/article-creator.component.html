@@ -1,0 +1,19 @@
+<div class="articleTitle">
+    <input class="articleTitle_input" type="text" placeholder="Titulo del articulo">
+</div>
+<div>
+</div>
+<div class="articleEditor">
+    <app-rich-text-editor></app-rich-text-editor>
+</div>
+<div class="articleOps">
+    <app-text-input [placeholder]="'#Tag'" [cancelButton]="false" class="mb1" (onConfirm)="addTag($event)"></app-text-input>
+    <div class="tagList mb1">
+        <div class="tag" *ngFor="let tag of tags">
+            <span>#{{tag }}</span>
+            <app-icon [iconName]="'mdi:close-circle-outline'" (click)="deleteTag(tag)"></app-icon>
+        </div>
+    </div>
+    <app-button [buttonText]="'Publicar'" class="mb.5"></app-button>
+    <app-button [buttonText]="'Archivar'"></app-button>
+</div>

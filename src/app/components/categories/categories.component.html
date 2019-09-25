@@ -1,5 +1,2 @@
-<div class="categories">
-    <app-categorie *ngFor="let category of categories" [category]="category"
-        (onSelected)="categoriaSeleccionada($event)">
-    </app-categorie>
-</div>
+<app-categorie *ngFor="let category of categories" [category]="category" (onCategorySelected)="seleccionarCategoria($event)"></app-categorie>
+<h5 class="dafaultMessage" *ngIf="!!!categories.length">No hay categorias en esta linea</h5>

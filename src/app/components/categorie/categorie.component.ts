@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { category } from "../categories/categories.component";
+import { ArticlesApiService } from '../../api/articles-api.service';
 
 @Component({
     selector: 'app-categorie',
@@ -7,21 +8,32 @@ import { category } from "../categories/categories.component";
     styleUrls: ['./categorie.component.css']
 })
 export class CategorieComponent implements OnInit {
-
-    @Output() onSelected: EventEmitter<string> = new EventEmitter();
-    @Input() public category: category;
-
     constructor() { }
+
+    @Input() category: category;
+    @Output() onCategorySelected = new EventEmitter();
+
+    public desplegado = false;
 
     ngOnInit() {
     }
 
-    categoriaSeleccionada(categoria?: string): void {
-        if (typeof categoria == 'undefined') {
-            this.onSelected.emit(this.category.id);
+    getIcon() {
+        //* retorna 'mdi:circle-small' solo en esta vista en la vista de agente debe mostrar mdi:circle-small cuando no tenga icono
+        if (this.category.icon == 'mdi:circle-small') {
+            return 'mdi:image-plus'
         } else {
-            this.onSelected.emit(categoria);
+            return this.category.icon
         }
     }
 
+    seleccionarCategoria(category?: category) {
+        if (!!!category) {
+            if (!!!this.category.subcategories.length) {
+                this.onCategorySelected.next(this.category)
+            }
+        } else {
+            this.onCategorySelected.next(category)
+        }
+    }
 }

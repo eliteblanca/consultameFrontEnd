@@ -19,7 +19,7 @@ export class ArticlesApiService {
         deleteArticle: (id:string) => `${this.host}/articles/:idArticle`.replace(':idArticle', id),
     }
 
-    getArticles(params: { query?: string, category?: string, subline?: string }): Observable<Article[]> {
+    getArticles(): Observable<Article[]> {
         return of(null).pipe(
             switchMap(val => {
                 return this.http.get<Article[]>(this.endPoints.getArticles, { observe: "body" })
