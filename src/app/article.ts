@@ -9,13 +9,14 @@ export interface articleConf{
     disLikes?:string[];//user ids
     favorites?:string[];//user ids
     role?:"noticia"|"articulo";
-    publicationDate?:Date;
-    modificationDate?:Date;
+    publicationDate?:number;
+    modificationDate?:number;
     modificationUser?:string;
     creator?:string;
     commentsList?:string;
     line?:string;
     subLine?:string;
+    category?:string;
 }
 
 export class Article implements articleConf{
@@ -28,14 +29,15 @@ export class Article implements articleConf{
     public disLikes?:string[];//user ids
     public favorites?:string[];//user ids
     public role?:"noticia"|"articulo";
-    public publicationDate?:Date;
-    public modificationDate?:Date;
+    public publicationDate?:number;
+    public modificationDate?:number;
     public modificationUser?:string;
     public creator?:string;
     public commentsList?:string;
     public id?:string;
     public subLine?:string;
-    public line?:string;    
+    public line?:string;
+    public category?:string;
 
     constructor(config:articleConf){
         this.title = config.title;
@@ -84,6 +86,9 @@ export class Article implements articleConf{
         }
         if(config.subLine){
             this.subLine = config.subLine;
+        }
+        if(config.subLine){
+            this.category = config.category;
         }
     }
 }

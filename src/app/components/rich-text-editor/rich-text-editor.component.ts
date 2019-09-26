@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { ToolbarService, LinkService, ImageService, HtmlEditorService, QuickToolbarService, TableService,QuickToolbarSettingsModel  } from '@syncfusion/ej2-angular-richtexteditor';
+import { Component, OnInit, ViewChild, Input } from '@angular/core';
+import { ToolbarService, LinkService, ImageService, HtmlEditorService, QuickToolbarService, TableService,QuickToolbarSettingsModel, RichTextEditorComponent as RTE  } from '@syncfusion/ej2-angular-richtexteditor';
+import { inputs } from '@syncfusion/ej2-angular-richtexteditor/src/rich-text-editor/richtexteditor.component';
 
 @Component({
   selector: 'app-rich-text-editor',
@@ -11,10 +12,11 @@ export class RichTextEditorComponent implements OnInit {
 
   constructor() { }
 
+  @Input() content:string;
+  @ViewChild(RTE,{ static:false }) public RTE: RTE;
+
   ngOnInit() {
   }
-
-
 
   public tools = {
     enableFloating: true,
@@ -22,10 +24,10 @@ export class RichTextEditorComponent implements OnInit {
     items: ['Bold', 'Italic', 'Underline', 'StrikeThrough',
     'FontName', 'FontSize', 'FontColor', 'BackgroundColor',
     'LowerCase', 'UpperCase', '|',
-    'Formats', 'Alignments', 'OrderedList', 'UnorderedList',
+    'Alignments', 'OrderedList', 'UnorderedList',
     'Outdent', 'Indent', '|',
-    'CreateLink', 'Image', '|', 'ClearFormat', 'Print',
-    'SourceCode', 'FullScreen', '|', 'Undo', 'Redo']
+    'CreateLink', 'Image','Createtable', '|', 'ClearFormat', 'Print',
+    'SourceCode', '|', 'Undo', 'Redo']
   };
 
   public iframe = {
@@ -48,6 +50,8 @@ export class RichTextEditorComponent implements OnInit {
         'EditImageLink', 'RemoveImageLink', 'Display', 'AltText', 'Dimension'
     ],
     table:['tableHeader', 'tableRows', 'tableColumns', 'backgroundColor', 'tableRemove', 'alignments', 'tableCellVerticalAlign', 'styles']
-};
+  };
 
+  getHTML = () => this.RTE.getHtml();
+  setContent = (content) => this.RTE.value = content;
 }

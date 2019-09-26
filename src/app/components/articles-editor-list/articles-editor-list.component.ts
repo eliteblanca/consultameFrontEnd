@@ -1,7 +1,7 @@
-import { Component, OnInit, Input, Output, EventEmitter, OnChanges, SimpleChanges } from '@angular/core';
-import { Article } from "../../article";
+import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { Router } from '@angular/router';
 import { ArticlesApiService } from "../../api/articles-api.service";
-import { ActivatedRoute, Router } from '@angular/router';
+import { Article } from "../../article";
 
 @Component({
   selector: 'app-articles-editor-list',
@@ -33,7 +33,6 @@ export class ArticlesEditorListComponent implements OnInit,OnChanges {
   }
 
   goToArticleCreation(){
-    console.log(this.categorySelected)
     this.router.navigate(['/app/articlecreation'],{ queryParams: { category: this.categorySelected }, queryParamsHandling: 'merge' })
   }
 }

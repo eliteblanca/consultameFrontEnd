@@ -1,4 +1,4 @@
-<h4 class="title">{{article.title}}</h4>
+<h4 class="title" [routerLink]="['/app/articles/',article.id]" [state]="article" >{{article.title}}</h4>
 <app-icon [iconName]="'mdi:file-eye'"></app-icon>
 <h4 class="info">{{0}}</h4>
 <app-icon [iconName]="'mdi:star-circle'"></app-icon>
@@ -8,5 +8,5 @@
 <app-icon [iconName]="'mdi:thumb-down'"></app-icon>
 <h4 class="info">{{article.disLikes.length}}</h4>
 <span class="separator"></span>
-<app-icon class="editIcon" [iconName]="'mdi:pencil'"></app-icon>
+<app-icon class="editIcon" [iconName]="'mdi:pencil'" (click)="goToArticleEdition()"></app-icon>
 <app-icon class="editIcon" [iconName]="'mdi:trash'" (click)="deleteArticle()"></app-icon>

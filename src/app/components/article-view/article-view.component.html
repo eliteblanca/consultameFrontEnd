@@ -1,11 +1,19 @@
 <div class="articleContainer">
     <header class="header">
-
+        <app-icon [iconName]="'mdi:arrow-left'" (click)="fullScreen()"> </app-icon>
+        <h4 *ngIf="article" class="title">{{article.title}}</h4>
+        <app-icon [iconName]="'mdi:fullscreen'" (click)="fullScreen()"> </app-icon>
     </header>
     <div class="content" #content>
-        
     </div>
-    <div class="footer">
-
+    <div class="footer" *ngIf="article">
+        <app-icon [iconName]="'mdi:help-circle-outline'" (click)="fullScreen()" [title]="'Publicado el ' + publicationDate"> </app-icon>
+        <span  class="leyend">Ultima modificacion el: {{modificationDate}}</span>
+        <app-icon class="socialButton" [iconName]=" isFavorite() ? 'mdi:heart-multiple' : 'mdi:cards-heart'" (click)="fullScreen()" [title]="'Publicado el ' + publicationDate" [ngClass]="{ favorite : isFavorite()}"> </app-icon>
+        <span>{{0}}</span>
+        <app-icon class="socialButton" [iconName]="'mdi:thumb-up-outline'" (click)="fullScreen()" [title]="'Publicado el ' + publicationDate"> </app-icon>
+        <span>{{0}}</span>
+        <app-icon class="socialButton" [iconName]="'mdi:thumb-down-outline'" (click)="fullScreen()" [title]="'Publicado el ' + publicationDate"> </app-icon>
+        <span>{{0}}</span>
     </div>
 </div>

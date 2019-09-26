@@ -34,6 +34,7 @@ import { UsersEditorListComponent } from './components/users-editor-list/users-e
 import { JwtInterceptor, mockServerService } from "./services/index";
 import { EdicionComponent } from './components/edicion/edicion.component';
 import { RichTextEditorComponent } from './components/rich-text-editor/rich-text-editor.component';
+import { RichTextViewerComponent } from './components/rich-text-viewer/rich-text-viewer.component';
 @NgModule({
     declarations: [
         AppComponent,
@@ -74,7 +75,8 @@ import { RichTextEditorComponent } from './components/rich-text-editor/rich-text
         LinesAllowedEditorComponent,
         LineAllowedEditorComponent,
         EdicionComponent,
-        RichTextEditorComponent
+        RichTextEditorComponent,
+        RichTextViewerComponent
     ],
     imports: [
         BrowserModule,

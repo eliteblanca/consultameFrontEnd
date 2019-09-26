@@ -1,5 +1,5 @@
 <div class="articleTitle">
-    <input class="articleTitle_input" type="text" placeholder="Titulo del articulo">
+    <input class="articleTitle_input" type="text" placeholder="Titulo del articulo" #articleTitle>
 </div>
 <div>
 </div>
@@ -14,6 +14,6 @@
             <app-icon [iconName]="'mdi:close-circle-outline'" (click)="deleteTag(tag)"></app-icon>
         </div>
     </div>
-    <app-button [buttonText]="'Publicar'" class="mb.5"></app-button>
+    <app-button [buttonText]="'Publicar'" class="mb.5" (click)="saveArticle()"></app-button>
     <app-button [buttonText]="'Archivar'"></app-button>
 </div>
