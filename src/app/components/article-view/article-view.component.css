@@ -40,6 +40,7 @@
 :host .articleContainer .content{
     grid-row: 2 / 2;
     grid-column: 1 / 2;
+    overflow-y: auto;
 }
 
 :host .articleContainer .footer{

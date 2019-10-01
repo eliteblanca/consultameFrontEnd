@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { Article } from "../../article";
-import { DiccionarioEjemplo } from "../../diccionario-ejemplo";
 import { ApiService } from "../../services/index";
 import settingsIcon from '@iconify/icons-mdi/settings';
 
@@ -20,18 +19,6 @@ export class HeaderComponent implements OnInit {
     newSearchSubs: Subscription;
 
     ngOnInit() {
-    }
-
-    populateArticles(): void {
-        let diccionario = new DiccionarioEjemplo()
-        let newArticles: Article[] = [];
-        for (var i = 0; i < diccionario.diccionarioArticles.length; i++) {
-            newArticles.push(diccionario.diccionarioArticles[i]);
-        }
-
-        this.api.postArticles(newArticles).subscribe(val => {
-            console.log("articulos guardados");
-        })
     }
 
 }

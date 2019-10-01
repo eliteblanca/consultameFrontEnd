@@ -1,9 +1,43 @@
-<ejs-richtexteditor id='defaultRTE' 
-    [toolbarSettings]='tools' 
-    [height]="'100%'"
-    [enablePersistence]="true"
-    [(quickToolbarSettings)]='quickToolbarSettings'
-    placeholder="'Contenido del articulo'">
-    <ng-template #valueTemplate>
-    </ng-template>
-</ejs-richtexteditor>
+<quill-editor
+    [styles]="{'height': '600px'}"
+    (onContentChanged)="changedEditor($event)"
+    format="object"
+    [(ngModel)]="content"
+    [modules]="modules"
+    (onEditorChanged)="editorCreated($event)">
+    <div quill-editor-toolbar>
+    <span class="ql-formats">
+            <select class="ql-font">
+              <option selected></option>
+              <option value="serif"></option>
+              <option value="monospace"></option>
+            </select>
+          </span>
+          <span class="ql-formats">
+            <button class="ql-bold"></button>
+            <button class="ql-italic"></button>
+            <button class="ql-underline"></button>
+            <button class="ql-strike"></button>
+          </span>
+          <span class="ql-formats">
+            <select class="ql-color"></select>
+            <select class="ql-background"></select>
+          </span>
+          <span class="ql-formats">
+            <button class="ql-list" value="ordered"></button>
+            <button class="ql-list" value="bullet"></button>
+            <select class="ql-align">
+              <option selected></option>
+              <option value="center"></option>
+              <option value="right"></option>
+              <option value="justify"></option>
+            </select>
+          </span>
+          <span class="ql-formats">
+            <button class="ql-link"></button>
+            <button class="ql-image"></button>
+            <button class="ql-video"></button>            
+            <button id="custom-button">C</button>
+          </span>
+    </div>
+</quill-editor>

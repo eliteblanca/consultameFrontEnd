@@ -5,6 +5,7 @@
         <app-icon [iconName]="'mdi:fullscreen'" (click)="fullScreen()"> </app-icon>
     </header>
     <div class="content" #content>
+        <app-rteview [content]="articleContent"></app-rteview>
     </div>
     <div class="footer" *ngIf="article">
         <app-icon [iconName]="'mdi:help-circle-outline'" (click)="fullScreen()" [title]="'Publicado el ' + publicationDate"> </app-icon>

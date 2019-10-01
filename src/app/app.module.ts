@@ -4,8 +4,8 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { IconModule } from "@visurel/iconify-angular";
-import { RichTextEditorAllModule } from '@syncfusion/ej2-angular-richtexteditor';
 import { AppRoutingModule } from './app-routing.module';
+import { QuillModule } from 'ngx-quill';
 
 import { AppComponent } from './app.component';
 import { ArticleCreatorComponent } from './components/article-creator/article-creator.component';
@@ -34,7 +34,7 @@ import { UsersEditorListComponent } from './components/users-editor-list/users-e
 import { JwtInterceptor, mockServerService } from "./services/index";
 import { EdicionComponent } from './components/edicion/edicion.component';
 import { RichTextEditorComponent } from './components/rich-text-editor/rich-text-editor.component';
-import { RichTextViewerComponent } from './components/rich-text-viewer/rich-text-viewer.component';
+import { RTEViewComponent } from './components/rteview/rteview.component';
 @NgModule({
     declarations: [
         AppComponent,
@@ -76,7 +76,7 @@ import { RichTextViewerComponent } from './components/rich-text-viewer/rich-text
         LineAllowedEditorComponent,
         EdicionComponent,
         RichTextEditorComponent,
-        RichTextViewerComponent
+        RTEViewComponent,
     ],
     imports: [
         BrowserModule,
@@ -85,7 +85,7 @@ import { RichTextViewerComponent } from './components/rich-text-viewer/rich-text
         HttpClientModule,
         FormsModule,
         IconModule,
-        RichTextEditorAllModule
+        QuillModule.forRoot()
     ],
     providers: [
         JwtInterceptor,

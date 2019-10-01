@@ -2,6 +2,7 @@ export interface articleConf{
     id?:string;
     title:string;
     content:string;
+    obj:string;
     tags?:string[];
     resume?:string;
     attached?:string[];
@@ -38,6 +39,7 @@ export class Article implements articleConf{
     public subLine?:string;
     public line?:string;
     public category?:string;
+    public obj:string;
 
     constructor(config:articleConf){
         this.title = config.title;
@@ -89,6 +91,9 @@ export class Article implements articleConf{
         }
         if(config.subLine){
             this.category = config.category;
+        }
+        if(config.obj){
+            this.obj = config.obj;
         }
     }
 }

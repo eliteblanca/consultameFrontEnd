@@ -7,6 +7,7 @@ import { switchMap, concatMap } from 'rxjs/operators';
 export type postArticleDTO = {
     title: string;
     content: string;
+    obj:string;
     tags: string[];
     resume?: string;
     attached: string[];

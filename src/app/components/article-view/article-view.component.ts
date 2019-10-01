@@ -4,7 +4,6 @@ import { map, switchMap } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
 import { Article } from "../../article";
 import { ApiService } from 'src/app/services';
-import { RichTextViewerComponent } from "../rich-text-viewer/rich-text-viewer.component";
 import toDate from 'date-fns/toDate'
 import format from 'date-fns/format'
 import { UserService } from "../../services/user.service";
@@ -18,7 +17,6 @@ const cssDefault = `html{color:#222;font-size:16px;line-height:1.4;background-co
 })
 export class ArticleViewComponent implements OnInit, AfterViewInit {
   @ViewChild("content", {static:false}) content: ElementRef;
-  @ViewChild(RichTextViewerComponent, {static:false}) RTV: RichTextViewerComponent;
 
   constructor(
      public activatedRoute: ActivatedRoute,
@@ -28,8 +26,9 @@ export class ArticleViewComponent implements OnInit, AfterViewInit {
      
   ) { }
 
-  private articleUrl:string;
+  // private articleUrl:string;
   public article:Article;
+  public articleContent:object[];
   public modificationDate:string;
   public publicationDate:string;
 
@@ -44,51 +43,52 @@ export class ArticleViewComponent implements OnInit, AfterViewInit {
         })
       ).subscribe((article:Article)=>{
       this.article = article;
+      this.articleContent = JSON.parse(this.article.obj || "[]")
       this.modificationDate = format(toDate(this.article.modificationDate),'yyyy/MM/dd  HH:mm');
       this.publicationDate = format(toDate(this.article.publicationDate),'yyyy/MM/dd  HH:mm');
-      this.createArticle(article.content)
+      // this.createArticle(article.content)
     })
   }
 
-  createArticle(content){
-    let iframe = document.createElement('iframe');
-    iframe.src = this.getGeneratedPageURL({"html":content, css:"",js:"let prueba ="});
-    iframe.style.border = '0';    
-    iframe.style.height = '100%';    
-    iframe.style.width = '100%';    
+  // createArticle(content){
+  //   let iframe = document.createElement('iframe');
+  //   iframe.src = this.getGeneratedPageURL({"html":content, css:"",js:"let prueba ="});
+  //   iframe.style.border = '0';    
+  //   iframe.style.height = '100%';    
+  //   iframe.style.width = '100%';    
 
-    this.articleUrl = iframe.src;
-    this.renderer.appendChild(this.content.nativeElement,iframe);
-  }
+  //   this.articleUrl = iframe.src;
+  //   this.renderer.appendChild(this.content.nativeElement,iframe);
+  // }
 
-  getGeneratedPageURL = ({ html, css, js }) => {
-    const getBlobURL = (code, type) => {
-      const blob = new Blob([code], { type })
-      return URL.createObjectURL(blob)
-    }
+  // getGeneratedPageURL = ({ html, css, js }) => {
+  //   const getBlobURL = (code, type) => {
+  //     const blob = new Blob([code], { type })
+  //     return URL.createObjectURL(blob)
+  //   }
 
-    const cssURL = getBlobURL(css, 'text/css')
-    const jsURL = getBlobURL(js, 'text/javascript')
+  //   const cssURL = getBlobURL(css, 'text/css')
+  //   const jsURL = getBlobURL(js, 'text/javascript')
 
-    const source = `
-      <html>
-        <head>
-          <link rel="stylesheet" type="text/css" href="${cssURL}" />
-          <script  src="https://code.jquery.com/jquery-3.4.1.min.js"  integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="  crossorigin="anonymous"></script>
-          <script src="${jsURL}"></script>
-        </head>
-        <body>
-          ${html || ''}
-        </body>
-      </html>
-    `
+  //   const source = `
+  //     <html>
+  //       <head>
+  //         <link rel="stylesheet" type="text/css" href="${cssURL}" />
+  //         <script  src="https://code.jquery.com/jquery-3.4.1.min.js"  integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="  crossorigin="anonymous"></script>
+  //         <script src="${jsURL}"></script>
+  //       </head>
+  //       <body>
+  //         ${html || ''}
+  //       </body>
+  //     </html>
+  //   `
 
-    return getBlobURL(source, 'text/html')
-  }
+  //   return getBlobURL(source, 'text/html')
+  // }
 
-  fullScreen(){
-    window.open(this.articleUrl, '_blank');
-  }
+  // fullScreen(){
+  //   window.open(this.articleUrl, '_blank');
+  // }
 
   isFavorite(){
     return this.article.favorites.includes(this.UserService.usuario.sub)
