@@ -1,299 +1,304 @@
-import { Component, OnInit, Output ,EventEmitter, Input} from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import Quill from 'quill';
-import  * as quillBetterTable from "quill-better-table";
 
+var Font = Quill.import('formats/font');
+Font.whitelist = ['roboto', 'lato', 'raleway', 'montserrat', 'opensans'];
+Quill.register(Font, true);
 
 @Component({
-  selector: 'app-rich-text-editor',
-  templateUrl: './rich-text-editor.component.html',
-  styleUrls: ['./rich-text-editor.component.css']
+	selector: 'app-rich-text-editor',
+	templateUrl: './rich-text-editor.component.html',
+	styleUrls: ['./rich-text-editor.component.css']
 })
-export class RichTextEditorComponent implements OnInit {
+export class RichTextEditorComponent implements OnInit, AfterViewInit {
 
-  @Output() contentChange = new EventEmitter();
+	@Output() contentChange = new EventEmitter();
+    @ViewChild('RTE', { static: false }) RTE: ElementRef;
 
-  constructor() { }
+	constructor() { }
 
-  editor:any;
+	editor: any;
 
-  ngOnInit() {    
-  }
+	ngOnInit() { }
 
-  changedEditor({content, text}){
-    console.log(content)
-    this.contentChange.next({content:content, text:text})
-  }
+	ngAfterViewInit() {
+		this.editor = new Quill(this.RTE.nativeElement, this.options);
+		// Add fonts to whitelist
+	}
 
-  setContent(content){
-    this.content = content;
-  }
+	changedEditor({ content, text }) {
+		console.log(content)
+		this.contentChange.next({ content: content, text: text })
+	}
 
-  content = [];
+	setContent(content) {
+		this.editor.setContents(content)
+	}
 
-  colors = [
-    '#ffebee',
-    '#FCE4EC',
-    '#F3E5F5',
-    '#EDE7F6',
-    '#E8EAF6',
-    '#E3F2FD',
-    '#E1F5FE',
+	getContent():string{
+		return JSON.stringify(this.editor.getContents())
+	}
+	
+	getText():string{
+		return this.editor.getText()		
+	}
 
-    '#ffcdd2',
-    '#F8BBD0',
-    '#E1BEE7',
-    '#D1C4E9',
-    '#C5CAE9',
-    '#BBDEFB',
-    '#B3E5FC',
+	content = [];
 
-    '#ef9a9a',
-    '#F48FB1',
-    '#CE93D8',
-    '#B39DDB',
-    '#9FA8DA',
-    '#90CAF9',
-    '#81D4FA',
+	colors = [
+		'#ffebee',
+		'#FCE4EC',
+		'#F3E5F5',
+		'#EDE7F6',
+		'#E8EAF6',
+		'#E3F2FD',
+		'#E1F5FE',
 
-    '#e57373',
-    '#F06292',
-    '#BA68C8',
-    '#9575CD',
-    '#7986CB',
-    '#64B5F6',
-    '#4FC3F7',
+		'#ffcdd2',
+		'#F8BBD0',
+		'#E1BEE7',
+		'#D1C4E9',
+		'#C5CAE9',
+		'#BBDEFB',
+		'#B3E5FC',
 
-    '#ef5350',
-    '#EC407A',
-    '#AB47BC',
-    '#7E57C2',
-    '#5C6BC0',
-    '#42A5F5',
-    '#29B6F6',
+		'#ef9a9a',
+		'#F48FB1',
+		'#CE93D8',
+		'#B39DDB',
+		'#9FA8DA',
+		'#90CAF9',
+		'#81D4FA',
 
-    '#f44336',
-    '#E91E63',
-    '#9C27B0',
-    '#673AB7',
-    '#3F51B5',
-    '#2196F3',
-    '#03A9F4',
+		'#e57373',
+		'#F06292',
+		'#BA68C8',
+		'#9575CD',
+		'#7986CB',
+		'#64B5F6',
+		'#4FC3F7',
 
-    '#e53935',
-    '#D81B60',
-    '#8E24AA',
-    '#5E35B1',
-    '#3949AB',
-    '#1E88E5',
-    '#039BE5',
+		'#ef5350',
+		'#EC407A',
+		'#AB47BC',
+		'#7E57C2',
+		'#5C6BC0',
+		'#42A5F5',
+		'#29B6F6',
 
-    '#d32f2f',
-    '#C2185B',
-    '#7B1FA2',
-    '#512DA8',
-    '#303F9F',
-    '#1976D2',
-    '#0288D1',
+		'#f44336',
+		'#E91E63',
+		'#9C27B0',
+		'#673AB7',
+		'#3F51B5',
+		'#2196F3',
+		'#03A9F4',
 
-    '#c62828',
-    '#AD1457',
-    '#6A1B9A',
-    '#4527A0',
-    '#283593',
-    '#1565C0',
-    '#0277BD',
+		'#e53935',
+		'#D81B60',
+		'#8E24AA',
+		'#5E35B1',
+		'#3949AB',
+		'#1E88E5',
+		'#039BE5',
 
-    '#b71c1c',
-    '#880E4F',
-    '#4A148C',
-    '#311B92',
-    '#1A237E',
-    '#0D47A1',
-    '#01579B',
+		'#d32f2f',
+		'#C2185B',
+		'#7B1FA2',
+		'#512DA8',
+		'#303F9F',
+		'#1976D2',
+		'#0288D1',
 
-    '#E0F7FA',
-    '#E0F2F1',
-    '#E8F5E9',
-    '#F1F8E9',
-    '#F9FBE7',
-    '#FFFDE7',
-    '#FFF8E1',
+		'#c62828',
+		'#AD1457',
+		'#6A1B9A',
+		'#4527A0',
+		'#283593',
+		'#1565C0',
+		'#0277BD',
 
-    '#B2EBF2',
-    '#B2DFDB',
-    '#C8E6C9',
-    '#DCEDC8',
-    '#F0F4C3',
-    '#FFF9C4',
-    '#FFECB3',
+		'#b71c1c',
+		'#880E4F',
+		'#4A148C',
+		'#311B92',
+		'#1A237E',
+		'#0D47A1',
+		'#01579B',
 
-    '#80DEEA',
-    '#80CBC4',
-    '#A5D6A7',
-    '#C5E1A5',
-    '#E6EE9C',
-    '#FFF59D',
-    '#FFE082',
+		'#E0F7FA',
+		'#E0F2F1',
+		'#E8F5E9',
+		'#F1F8E9',
+		'#F9FBE7',
+		'#FFFDE7',
+		'#FFF8E1',
 
-    '#4DD0E1',
-    '#4DB6AC',
-    '#81C784',
-    '#AED581',
-    '#DCE775',
-    '#FFF176',
-    '#FFD54F',
+		'#B2EBF2',
+		'#B2DFDB',
+		'#C8E6C9',
+		'#DCEDC8',
+		'#F0F4C3',
+		'#FFF9C4',
+		'#FFECB3',
 
-    '#26C6DA',
-    '#26A69A',
-    '#66BB6A',
-    '#9CCC65',
-    '#D4E157',
-    '#FFEE58',
-    '#FFCA28',
+		'#80DEEA',
+		'#80CBC4',
+		'#A5D6A7',
+		'#C5E1A5',
+		'#E6EE9C',
+		'#FFF59D',
+		'#FFE082',
 
-    '#00BCD4',
-    '#009688',
-    '#4CAF50',
-    '#8BC34A',
-    '#CDDC39',
-    '#FFEB3B',
-    '#FFC107',
+		'#4DD0E1',
+		'#4DB6AC',
+		'#81C784',
+		'#AED581',
+		'#DCE775',
+		'#FFF176',
+		'#FFD54F',
 
-    '#00ACC1',
-    '#00897B',
-    '#43A047',
-    '#7CB342',
-    '#C0CA33',
-    '#FDD835',
-    '#FFB300',
+		'#26C6DA',
+		'#26A69A',
+		'#66BB6A',
+		'#9CCC65',
+		'#D4E157',
+		'#FFEE58',
+		'#FFCA28',
 
-    '#0097A7',
-    '#00796B',
-    '#388E3C',
-    '#689F38',
-    '#AFB42B',
-    '#FBC02D',
-    '#FFA000',
+		'#00BCD4',
+		'#009688',
+		'#4CAF50',
+		'#8BC34A',
+		'#CDDC39',
+		'#FFEB3B',
+		'#FFC107',
 
-    '#00838F',
-    '#00695C',
-    '#2E7D32',
-    '#558B2F',
-    '#9E9D24',
-    '#F9A825',
-    '#FF8F00',
+		'#00ACC1',
+		'#00897B',
+		'#43A047',
+		'#7CB342',
+		'#C0CA33',
+		'#FDD835',
+		'#FFB300',
 
-    '#006064',
-    '#004D40',
-    '#1B5E20',
-    '#33691E',
-    '#827717',
-    '#F57F17',
-    '#FF6F00',
+		'#0097A7',
+		'#00796B',
+		'#388E3C',
+		'#689F38',
+		'#AFB42B',
+		'#FBC02D',
+		'#FFA000',
 
-    '#FFF3E0',
-    '#FBE9E7',
-    '#EFEBE9',
-    '#FAFAFA',
-    '#ECEFF1',
-    '#FFFFFF',
-    '#C0C0C0',
+		'#00838F',
+		'#00695C',
+		'#2E7D32',
+		'#558B2F',
+		'#9E9D24',
+		'#F9A825',
+		'#FF8F00',
 
-    '#FFE0B2',
-    '#FFCCBC',
-    '#D7CCC8',
-    '#F5F5F5',
-    '#CFD8DC',
-    '#808080',
-    '#000000',
+		'#006064',
+		'#004D40',
+		'#1B5E20',
+		'#33691E',
+		'#827717',
+		'#F57F17',
+		'#FF6F00',
 
-    '#FFCC80',
-    '#FFAB91',
-    '#BCAAA4',
-    '#EEEEEE',
-    '#B0BEC5',
-    '#FF0000',
-    '#800000',
+		'#FFF3E0',
+		'#FBE9E7',
+		'#EFEBE9',
+		'#FAFAFA',
+		'#ECEFF1',
+		'#FFFFFF',
+		'#C0C0C0',
 
-    '#FFB74D',
-    '#FF8A65',
-    '#A1887F',
-    '#E0E0E0',
-    '#90A4AE',
-    '#FFFF00',
-    '#808000',
+		'#FFE0B2',
+		'#FFCCBC',
+		'#D7CCC8',
+		'#F5F5F5',
+		'#CFD8DC',
+		'#808080',
+		'#000000',
 
-    '#FFA726',
-    '#FF7043',
-    '#8D6E63',
-    '#BDBDBD',
-    '#78909C',
-    '#00FF00',
-    '#008000',
+		'#FFCC80',
+		'#FFAB91',
+		'#BCAAA4',
+		'#EEEEEE',
+		'#B0BEC5',
+		'#FF0000',
+		'#800000',
 
-    '#FF9800',
-    '#FF5722',
-    '#795548',
-    '#9E9E9E',
-    '#607D8B',
-    '#00FFFF',
-    '#008080',
+		'#FFB74D',
+		'#FF8A65',
+		'#A1887F',
+		'#E0E0E0',
+		'#90A4AE',
+		'#FFFF00',
+		'#808000',
 
-    '#FB8C00',
-    '#F4511E',
-    '#6D4C41',
-    '#757575',
-    '#546E7A',
-    '#0000FF',
-    '#000080',
+		'#FFA726',
+		'#FF7043',
+		'#8D6E63',
+		'#BDBDBD',
+		'#78909C',
+		'#00FF00',
+		'#008000',
 
-    '#F57C00',
-    '#E64A19',
-    '#5D4037',
-    '#616161',
-    '#455A64',
-    '#FF00FF',
-    '#800080',
+		'#FF9800',
+		'#FF5722',
+		'#795548',
+		'#9E9E9E',
+		'#607D8B',
+		'#00FFFF',
+		'#008080',
 
-    '#EF6C00',
-    '#D84315',
-    '#4E342E',
-    '#424242',
-    '#37474F',
-    '#000000',
-    '#000000',
+		'#FB8C00',
+		'#F4511E',
+		'#6D4C41',
+		'#757575',
+		'#546E7A',
+		'#0000FF',
+		'#000080',
 
-    '#E65100',
-    '#BF360C',
-    '#3E2723',
-    '#212121',
-    '#263238',
-    '#000000',
-    '#000000',
-  ];
+		'#F57C00',
+		'#E64A19',
+		'#5D4037',
+		'#616161',
+		'#455A64',
+		'#FF00FF',
+		'#800080',
 
-  toolbarOptions = [
-    ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
-    ['blockquote', 'code-block'],               // custom button values
-    [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-    [{ 'script': 'sub'}, { 'script': 'super' }],      // superscript/subscript
-    [{ 'indent': '-1'}, { 'indent': '+1' }],          // outdent/indent
-    [{ 'direction': 'rtl' }],                         // text direction  
-    [{ 'header': [1, 2, 3, 4, 5, 6, false] }],  
-    [{ 'color': this.colors }, { 'background': this.colors }],          // dropdown with defaults from theme
-    [{ 'font': [] }],
-    [{ 'align': [] }],  
-    ['clean']                                         // remove formatting button
-  ];
+		'#EF6C00',
+		'#D84315',
+		'#4E342E',
+		'#424242',
+		'#37474F',
+		'#000000',
+		'#000000',
 
-  modules = {
-    
-  }
+		'#E65100',
+		'#BF360C',
+		'#3E2723',
+		'#212121',
+		'#263238',
+		'#000000',
+		'#000000',
+	];
 
+	modules = {
+		toolbar: {
+			container: '#RTEtoolbar'
+		} 	
+	}
 
-  onEditorChanged({editor}){
-    this.editor = editor;
-
-    console.log("prueba")
-  }
+	options = {
+		debug: 'info',
+		modules: this.modules,
+		placeholder: 'Contenido del articulo ...',
+		readOnly: false,
+		theme: 'snow',
+		bounds: 'app-rich-text-editor'
+	};
 }

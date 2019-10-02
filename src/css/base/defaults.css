@@ -111,3 +111,51 @@ a{
     text-emphasis: none;
     text-decoration: none;
 }
+
+
+
+/* rich text editor */
+
+.ql-font span[data-label="Roboto"]::before {
+    font-family: "Roboto";
+}
+
+.ql-font-roboto{
+    font-family: 'Roboto', sans-serif !important;
+}
+
+
+.ql-font span[data-label="Lato"]::before {
+    font-family: "Lato";
+}
+
+.ql-font-lato{
+    font-family: 'Lato', sans-serif !important;
+}
+
+
+.ql-font span[data-label="Raleway"]::before {
+    font-family: "Raleway";
+}
+
+.ql-font-raleway{
+    font-family: 'Raleway', sans-serif !important;
+}
+
+
+.ql-font span[data-label="Montserrat"]::before {
+    font-family: "Montserrat";
+}
+
+.ql-font-montserrat{
+    font-family: 'Montserrat', sans-serif !important;
+}
+
+
+.ql-font span[data-label="Open Sans"]::before {
+    font-family: "Open Sans";
+}
+
+.ql-font-opensans{
+    font-family: 'Open Sans', sans-serif !important;
+}

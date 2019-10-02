@@ -68,8 +68,8 @@ export class ArticleCreatorComponent implements OnInit {
       let newArticle:postArticleDTO  = {
         attached:[],
         category:this.articleToEdit.category,
-        content:this.textOnEditor,
-        obj:JSON.stringify(this.contentOnEditor),
+        content:this.RTE.getText(),
+        obj:this.RTE.getContent(),
         role:"articulo",
         tags:this.tags,
         title:this.articleTitle.nativeElement.value
@@ -86,8 +86,8 @@ export class ArticleCreatorComponent implements OnInit {
       let newArticle:postArticleDTO  = {
         attached:[],
         category:this.seletedCategory,
-        content: this.textOnEditor,//! arreglar el contenido 🖐
-        obj:JSON.stringify(this.contentOnEditor),
+        content: this.RTE.getText(),//! arreglar el contenido 🖐
+        obj:this.RTE.getContent(),
         role:"articulo",
         tags:this.tags,
         title:this.articleTitle.nativeElement.value
