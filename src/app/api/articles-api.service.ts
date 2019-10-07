@@ -31,6 +31,13 @@ export class ArticlesApiService {
         deleteArticle: (id:string) => `${this.host}/articles/:idArticle`.replace(':idArticle', id),
         getArticle: (id:string) => `${this.host}/articles/:idArticle`.replace(':idArticle', id),
         updateArticle: (id:string) => `${this.host}/articles/:idArticle`.replace(':idArticle', id),
+        postFavorite: (id:string) => `${this.host}/articles/:idArticle/favorites`.replace(':idArticle', id),
+        deleteFavorite: (id:string) => `${this.host}/articles/:idArticle/favorites`.replace(':idArticle', id),
+        postLike: (id:string) => `${this.host}/articles/:idArticle/likes`.replace(':idArticle', id),
+        deleteLike: (id:string) => `${this.host}/articles/:idArticle/likes`.replace(':idArticle', id),
+        postDisLike: (id:string) => `${this.host}/articles/:idArticle/disLikes`.replace(':idArticle', id),
+        deleteDisLike: (id:string) => `${this.host}/articles/:idArticle/disLikes`.replace(':idArticle', id),
+        
     }
 
     getArticles(): Observable<Article[]> {
@@ -80,4 +87,29 @@ export class ArticlesApiService {
     updateArticle(articleId:string, article:postArticleDTO):Observable<{ status: string }>{
         return this.http.put<{ status: string }>(this.endPoints.updateArticle(articleId), article , { observe: "body" })
     }
+
+    postFavorite(articleId:string):Observable<{status:string}>{
+        return this.http.post<{status:string}>(this.endPoints.postFavorite(articleId), null , { observe: "body" })
+    }
+
+    deleteFavorite(articleId:string):Observable<any>{
+        return this.http.delete<any>(this.endPoints.postFavorite(articleId), { observe: "body" })
+    }
+
+    postLike(articleId:string):Observable<{status:string}>{
+        return this.http.post<{status:string}>(this.endPoints.postLike(articleId), null , { observe: "body" })
+    }
+
+    deleteLike(articleId:string):Observable<any>{
+        return this.http.delete<any>(this.endPoints.deleteLike(articleId), { observe: "body" })
+    }
+
+    postDisLike(articleId:string):Observable<{status:string}>{
+        return this.http.post<{status:string}>(this.endPoints.postDisLike(articleId), null , { observe: "body" })
+    }
+
+    deleteDisLike(articleId:string):Observable<any>{
+        return this.http.delete<any>(this.endPoints.deleteDisLike(articleId), { observe: "body" })
+    }
+
 }

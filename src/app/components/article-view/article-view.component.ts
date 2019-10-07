@@ -4,13 +4,12 @@ import { map, switchMap } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
 import { Article } from "../../article";
 import { ApiService } from 'src/app/services';
+import { ArticlesApiService } from "../../api/articles-api.service";
 import toDate from 'date-fns/toDate'
 import format from 'date-fns/format'
 import { UserService } from "../../services/user.service";
 import { RTEViewComponent } from "../rteview/rteview.component";
-
-const cssDefault = `html{color:#222;font-size:16px;line-height:1.4;background-color:#fdfdfd;padding:1rem}::-moz-selection{background:#b3d4fc;text-shadow:none}::selection{background:#b3d4fc;text-shadow:none}hr{display:block;height:1px;border:0;border-top:1px solid #ccc;margin:1em 0;padding:0}audio,canvas,iframe,img,svg,video{vertical-align:middle}fieldset{border:0;margin:0;padding:0}textarea{resize:vertical}.browserupgrade{margin:.2em 0;background:#ccc;color:#000;padding:.2em 0}*,::after,::before{box-sizing:border-box!important}font{color:var(--primaryText)!important;font:16px/1.4 'Segoe UI',Tahoma,Geneva,Verdana,sans-serif!important}html{line-height:1.15;height:100%;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;padding:1rem}body{margin:0;height:100%;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif}main{display:block}h1{font-size:2em;margin:.67em 0}hr{box-sizing:content-box;height:0;overflow:visible}pre{font:1em monospace,monospace}a{background-color:transparent}abbr[title]{border-bottom:none;text-decoration:underline}b,strong{font-weight:bolder}code,kbd,samp{font:1em monospace,monospace}small{font-size:80%}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sub{bottom:-.25em}sup{top:-.5em}img{border-style:none}button,input,optgroup,select,textarea{margin:0;font:100%/1.15 inherit}button,input{overflow:visible}button,select{text-transform:none}button::-moz-focus-inner,[type="button"]::-moz-focus-inner,[type="reset"]::-moz-focus-inner,[type="submit"]::-moz-focus-inner{border-style:none;padding:0}button:-moz-focusring,[type="button"]:-moz-focusring,[type="reset"]:-moz-focusring,[type="submit"]:-moz-focusring{outline:1px dotted ButtonText}fieldset{padding:.35em .75em .625em}legend{box-sizing:border-box;color:inherit;display:table;max-width:100%;padding:0;white-space:normal}progress{vertical-align:baseline}textarea{overflow:auto}[type="checkbox"],[type="radio"]{box-sizing:border-box;padding:0}[type="number"]::-webkit-inner-spin-button,[type="number"]::-webkit-outer-spin-button{height:auto}[type="search"]{outline-offset:-2px}::-webkit-file-upload-button{font:;font-style:normal;font-variant:normal;font-weight:normal;font-family:inherit}details{display:block}summary{display:list-item}template{display:none}[hidden]{display:none}`;
-
+import {Location} from '@angular/common';
 @Component({
   selector: 'app-article-view',
   templateUrl: './article-view.component.html',
@@ -23,15 +22,17 @@ export class ArticleViewComponent implements OnInit, AfterViewInit {
   constructor(
      public activatedRoute: ActivatedRoute,
      public renderer:Renderer2,
-     public api:ApiService,
-     public UserService:UserService
-     
+     public articlesApi:ArticlesApiService,
+     public UserService:UserService,
+     public Location:Location
   ) { }
 
   // private articleUrl:string;
   public article:Article;
   public modificationDate:string;
   public publicationDate:string;
+  public isFavoriteHover = false;
+
 
   ngOnInit(){
   }
@@ -40,7 +41,7 @@ export class ArticleViewComponent implements OnInit, AfterViewInit {
     this.activatedRoute.params.pipe(
         map(params => params.id),
         switchMap(articleId=>{
-          return this.api.getArticle(articleId)
+          return this.articlesApi.getArticle(articleId)
         })
       ).subscribe((article:Article)=>{
       this.article = article;
@@ -93,6 +94,68 @@ export class ArticleViewComponent implements OnInit, AfterViewInit {
 
   isFavorite(){
     return this.article.favorites.includes(this.UserService.usuario.sub)
+  }
+
+  isLike(){
+    return this.article.likes.includes(this.UserService.usuario.sub)
+  }
+
+  isDisLike(){
+    return this.article.disLikes.includes(this.UserService.usuario.sub)
+  }
+
+  addToFavorites(){
+    if(this.isFavorite()){
+      this.articlesApi.deleteFavorite(this.article.id).subscribe((result)=>{
+        this.article.favorites = this.article.favorites.filter( userId => userId != this.UserService.usuario.sub)
+      })
+    }else{
+      this.articlesApi.postFavorite(this.article.id).subscribe((result)=>{
+        this.article.favorites.push(this.UserService.usuario.sub)
+      })
+    }
+  }
+
+  favoriteIcon(){
+    if( this.isFavorite() ){
+      return 'mdi:heart-multiple'
+    }else {
+      return 'mdi:cards-heart'
+    }
+  }
+
+  addLike(){
+    if(this.isLike()){      
+      this.articlesApi.deleteLike(this.article.id).subscribe(()=>{
+        this.article.likes = this.article.likes.filter(userId => userId !=  this.UserService.usuario.sub )
+      })
+    }else{
+      this.articlesApi.postLike(this.article.id).subscribe(()=>{
+        this.article.likes.push(this.UserService.usuario.sub)
+      })
+    }
+
+    this.article.disLikes = this.article.disLikes.filter(userId => userId !=  this.UserService.usuario.sub )
+
+  }
+
+  addDisLike(){
+    if(this.isDisLike()){      
+      this.articlesApi.deleteDisLike(this.article.id).subscribe(()=>{
+        this.article.disLikes = this.article.disLikes.filter(userId => userId !=  this.UserService.usuario.sub )
+      })
+    }else{
+      this.articlesApi.postDisLike(this.article.id).subscribe(()=>{
+        this.article.disLikes.push(this.UserService.usuario.sub)
+      })
+    }
+
+    this.article.likes = this.article.likes.filter(userId => userId !=  this.UserService.usuario.sub )
+
+  }
+
+  goBack(){
+    this.Location.back();
   }
 
 }

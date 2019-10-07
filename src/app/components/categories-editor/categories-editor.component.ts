@@ -1,6 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { category } from "../categories/categories.component";
-import { CategoriesApiService } from "../../api/categories-api.service";
+import { CategoriesApiService, category } from "../../api/categories-api.service";
 import { ModalService } from "../../services/modal.service";
 @Component({
     selector: 'app-categories-editor',
@@ -24,7 +23,6 @@ export class CategoriesEditorComponent implements OnInit {
     ) { }
 
     ngOnInit() {
-        console.log(this.categories)
     }
 
     agregarNuevaCategoria(nombre: string) {

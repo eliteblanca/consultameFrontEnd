@@ -1,0 +1,15 @@
+<div class="Listheader mb1">
+    <app-search-input></app-search-input>
+    <app-icon class="ml1" [iconName]="'mdi:newspaper-plus'" (click)="addNews()">
+    </app-icon>
+</div>
+<div class="newsEditable" *ngFor="let news of newsList">
+    <h4 class="title">{{news.title}}</h4>
+    <div class="iconsContainer">
+        <span class="separator"></span>
+        <app-icon class="editIcon" [iconName]="'mdi:pencil'" (click)="goToArticleEdition()"></app-icon>
+        <app-icon class="editIcon" [iconName]="'mdi:trash'" (click)="deleteArticle()"></app-icon>
+    </div>
+</div>
+
+<h5 class="dafaultMessage" *ngIf="!!!newsList.length">No hay noticias, agrega la primer noticia</h5>

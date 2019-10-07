@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { of, from } from 'rxjs';
+import { from } from 'rxjs';
+import { map, mergeMap } from 'rxjs/operators';
 import { LinesApiService, lineWithSublines } from "../../api/lines-api.service";
 import { AllowedLines, user, UserApiService } from "../../api/user-api.service";
-import { mergeMap, map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-users-admin',

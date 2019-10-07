@@ -1,6 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { category } from "../categories/categories.component";
-import { CategoriesApiService } from "../../api/categories-api.service";
+import { CategoriesApiService, category } from "../../api/categories-api.service";
 import arrow_drop_down from '@iconify/icons-mdi/arrow-drop-down';
 import arrow_drop_up from '@iconify/icons-mdi/arrow-drop-up';
 import pencil from '@iconify/icons-mdi/pencil';
@@ -112,7 +111,6 @@ export class CategoryEditableComponent implements OnInit {
             }
         ).subscribe(Response => {
             this.category.icon = iconName;
-            console.log(this.category)
         })
     }
 

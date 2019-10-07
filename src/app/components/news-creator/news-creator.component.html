@@ -1,0 +1,17 @@
+<div class="selector">
+    <div class="tab active"> <app-icon class="mr.5" [iconName]="'mdi:newspaper'"></app-icon> Noticias</div> <h3 class="separator">  |  </h3> <div class="tab"> <app-icon class="mr.5" [iconName]="'mdi:archive'"></app-icon> Borradores</div>
+</div>
+<div class="list">
+    <app-news-list-editable [selectedSubline]="selectedSubline" *ngIf="selectedSubline" (onAddNews)="onAddNews()">
+    </app-news-list-editable>
+</div>
+<div class="articleTitle" *ngIf="addNewsMode">
+    <input class="articleTitle_input" type="text" placeholder="Titulo de la noticia" #articleTitle>
+</div>
+<div class="editor" *ngIf="addNewsMode">
+    <app-rich-text-editor></app-rich-text-editor>
+</div>
+<div class="footer" *ngIf="addNewsMode">
+    <app-button [buttonText]="'Guardar borrador'"></app-button>
+    <app-button class="ml.5" [buttonText]="'Publicar'" (click)="publishNews()"></app-button>
+</div>

@@ -27,7 +27,6 @@ export class RichTextEditorComponent implements OnInit, AfterViewInit {
 	}
 
 	changedEditor({ content, text }) {
-		console.log(content)
 		this.contentChange.next({ content: content, text: text })
 	}
 
@@ -290,11 +289,10 @@ export class RichTextEditorComponent implements OnInit, AfterViewInit {
 	modules = {
 		toolbar: {
 			container: '#RTEtoolbar'
-		} 	
+		}
 	}
 
 	options = {
-		debug: 'info',
 		modules: this.modules,
 		placeholder: 'Contenido del articulo ...',
 		readOnly: false,

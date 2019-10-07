@@ -53,7 +53,6 @@ export class LineEditableComponent implements OnInit {
     deleteLine() {
         this.linesApi.deleteLine(this.line.id)
             .subscribe(result => {
-                console.log(result);
                 this.onDeletedLine.next(this.line.id);
             })
 
@@ -62,7 +61,6 @@ export class LineEditableComponent implements OnInit {
     deleteSubline(subLineId:string) {
         this.sublinesApi.deleteSubline(subLineId)
             .subscribe(result => {
-                console.log(result);
                 this.line.sublines = this.line.sublines.filter(subline => subline.id != subLineId)
                 this.onDeletedSubLine.next(subLineId);
             })

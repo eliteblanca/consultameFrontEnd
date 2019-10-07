@@ -35,7 +35,6 @@ export class SearchComponent implements OnInit, AfterViewInit {
             filter(selectedLine => selectedLine.line != null && selectedLine.subLine != null),
             switchMap(selectedLine => {
                 if (selectedLine.subLine) {
-                    console.log({ ...this.params, subline: selectedLine.subLine.id })
                     return this.articlesApiService.getArticlesByQuery({ query: this.params.query, subline: selectedLine.subLine.id })
                 } else {
                     return of(null)

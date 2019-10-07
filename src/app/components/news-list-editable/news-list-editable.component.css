@@ -1,4 +1,19 @@
-:host{
+.Listheader{
+    display: flex;
+}
+
+.editIcon:hover{
+    color: var(--primary);
+    cursor: pointer;
+}
+
+/* asdsad
+
+
+*/
+
+
+.newsEditable{
     background-color: var(--terciaryDark);
     display: flex;
     align-items: center;
@@ -10,16 +25,16 @@
     padding-left: 1rem;
     margin-bottom: .5rem;
     position: relative;
+    height: 2.5rem;
 }
 
 .title{
     margin:0;
-    line-height: 1.5rem;
     white-space: nowrap;
     position: absolute;
     left: 1rem;
     z-index: 1;
-    max-width: 50%;
+    max-width: 90%;
     overflow: hidden;
     text-overflow: ellipsis;
 }
@@ -38,7 +53,7 @@
     color: var(--primary);
 }
 
-:host:hover .editIcon{
+.newsEditable:hover .editIcon{
     display: flex;
 }
 
@@ -46,7 +61,7 @@
     margin: 0 .5rem;
     margin-right: 1rem;
 }
-:host:hover .separator{
+.newsEditable:hover .separator{
     display: inline-block;
 }
 

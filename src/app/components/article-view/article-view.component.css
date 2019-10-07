@@ -68,6 +68,58 @@
     border: 0;
 }
 
-:host .articleContainer .content iframe *{
-    color: red;
+.socialButton.favorite{
+    color: crimson;
 }
+
+.socialButton:hover{
+    color: var(--primary);
+    cursor: pointer;
+}
+
+.socialButton.favoriteIcon:hover{
+    color: crimson;
+    cursor: pointer;    
+    -webkit-animation-name: pulse;
+    animation-name: pulse;
+    -webkit-animation-duration: 1s;
+    animation-duration: 1s;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+    -webkit-animation-iteration-count: infinite;
+    animation-iteration-count: infinite;
+}
+
+@-webkit-keyframes pulse {
+    from {
+      -webkit-transform: scale3d(1, 1, 1);
+      transform: scale3d(1, 1, 1);
+    }
+  
+    50% {
+      -webkit-transform: scale3d(1.25, 1.25, 1.25);
+      transform: scale3d(1.25, 1.25, 1.25);
+    }
+  
+    to {
+      -webkit-transform: scale3d(1, 1, 1);
+      transform: scale3d(1, 1, 1);
+    }
+  }
+  
+  @keyframes pulse {
+    from {
+      -webkit-transform: scale3d(1, 1, 1);
+      transform: scale3d(1, 1, 1);
+    }
+  
+    50% {
+      -webkit-transform: scale3d(1.25, 1.25, 1.25);
+      transform: scale3d(1.25, 1.25, 1.25);
+    }
+  
+    to {
+      -webkit-transform: scale3d(1, 1, 1);
+      transform: scale3d(1, 1, 1);
+    }
+  }

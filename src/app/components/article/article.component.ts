@@ -1,7 +1,7 @@
-import { Component, OnInit, Input, Renderer2, ElementRef, ViewChild , AfterViewInit} from '@angular/core';
+import { AfterViewInit, Component, Input, OnInit, Renderer2 } from '@angular/core';
+import { ApiService, UserService } from 'src/app/services';
 import { Article } from '../../article';
-import { UserService, ApiService } from 'src/app/services';
-import { forkJoin } from 'rxjs';
+import { ArticlesApiService } from "../../api/articles-api.service";
 
 @Component({
   selector: 'app-article',
@@ -9,11 +9,6 @@ import { forkJoin } from 'rxjs';
   styleUrls: ['./article.component.css']
 })
 export class ArticleComponent implements OnInit, AfterViewInit {
-
-  @ViewChild("imgHeader", {static:false}) imgHeader: ElementRef;
-  @ViewChild("resume", {static:false}) resume: ElementRef;
-  @ViewChild("resumeLists", {static:false}) resumeLists: ElementRef;
-  @ViewChild("links", {static:false}) links: ElementRef;
 
   @Input() Article:Article;
   private document:DocumentFragment;
@@ -25,147 +20,153 @@ export class ArticleComponent implements OnInit, AfterViewInit {
   public listDissmised = true;
   public hasLongList;
   
-  constructor(private renderer:Renderer2, private user:UserService, private api:ApiService) { }
+  constructor(
+    private renderer:Renderer2,
+    private user:UserService,
+    private api:ApiService,
+    private articlesApi:ArticlesApiService,
+    public UserService:UserService
 
+  ) { }
+ 
   ngOnInit() {
   }
 
+  public resumen:string[] = [];
+  public imageSrc:string;
+  public links:{href:string, text:string}[] = [];
+
   ngAfterViewInit(){
     setTimeout(() => {
-      this.document = this.stringToDocument(this.Article.content);
-      this.Images = this.document.querySelectorAll('img');
-      this.lists = this.document.querySelectorAll('ol, ul');
-      this.headings = this.document.querySelectorAll('h1,h2,h3,h4,h5,h6');
-      this.text = this.document.querySelectorAll('p');
-      this.attached = this.document.querySelectorAll('a[href]:not([target])');
-      this.buildCard();
+
+      console.log(this.Article)
+
+      let wordsHiglighted = [];
+
+      if(this.Article.highlight){
+
+        for(var i = 0; i < this.Article.highlight.content.length ; i++){
+          wordsHiglighted.push(this.Article.highlight.content[i].match(/<em>[a-zA-Z1-9áéíóú]*<\/em>/gm))
+        }
+
+        wordsHiglighted = wordsHiglighted.reduce((prev,current)=> [...prev,...current] ,[])
+
+        let wordsToReplace = wordsHiglighted.map(word => word.replace('<em>','').replace('</em>',''))
+
+        let resume = this.Article.content.split('.')
+
+        resume = resume.filter(frase => {
+          let alguna = wordsToReplace.some(word => {
+            let incluida = frase.includes(' ' + word + ' ')
+            return incluida
+          })
+
+          return alguna
+        })
+        
+        this.resumen = resume.map(frase => {
+          let nuevaFrase = frase;
+          wordsToReplace.forEach((word, index) =>{ nuevaFrase = nuevaFrase.replace(' ' + word + ' ',' ' + wordsHiglighted[index] + ' ') })
+          return nuevaFrase
+        }).slice(0,5);
+      }
+
+      if(this.resumen.length == 0){
+        this.resumen = this.Article.content.split('.').slice(0,2);
+      }
+
+      let articleObj = JSON.parse(this.Article.obj);
+
+      let images = articleObj.ops.filter( (op:{insert:object}) => op.insert['image'] )
+      
+      if(images.length){
+        images = images.map(image => image['insert']['image'])
+        this.imageSrc = images[0];
+      }
+
+      console.log(articleObj)
+
+      let links = articleObj.ops.filter( (op:{insert:Object,attributes:Object}) => {
+        return op.attributes && op.attributes['link']
+      })
+
+      if(links.length){
+        links = links.map(link => ({ href:link['attributes']['link'], text:link['insert'] }))
+        links = links.slice(0,3);
+        this.links = links;
+        console.log(this.links)
+      }
+
+      // attributes: {bold: true, color: "#3369a3", link: "https://www.grupobancolombia.com/wps/portal/personas/necesidades/mas-beneficios/"}
+      // insert: "Recibe beneficios exclusivos por tener tu Tarjeta Débito Bancolombia"
+      // __proto__: Object
+
+
+      console.log(links)
     })    
   }
 
-  getTextNodesIn(elem:Node, opt_fnFilter?): Node[] {
-    var textNodes = [];
-    if (elem) {
-      for (var nodes = elem.childNodes, i = nodes.length; i--;) {
-        var node = nodes[i], nodeType = node.nodeType;
-        if (nodeType == 3) {
-          if (!opt_fnFilter || opt_fnFilter(node, elem)) {
-            textNodes.push(node);
-          }
-        }
-        else if (nodeType == 1 || nodeType == 9 || nodeType == 11) {
-          textNodes = textNodes.concat(this.getTextNodesIn(node, opt_fnFilter));
-        }
-      }
-    }
-    return textNodes;
+  isFavorite(){
+    return this.Article.favorites.includes(this.UserService.usuario.sub)
   }
 
-  stringToDocument(htmlString:string):DocumentFragment{
-    let template = document.createElement('template');
-    template.innerHTML = htmlString.trim();
-    return template.content;
+  isLike(){
+    return this.Article.likes.includes(this.UserService.usuario.sub)
   }
 
-  buildCard():void{
-    if(this.Images.length){
-      this.renderer.appendChild(this.imgHeader.nativeElement,this.Images[0]);
-    }
-
-    if(this.Article.resume){
-      let p = document.createElement('p');      
-      p.innerText = this.Article.resume;
-      this.renderer.appendChild(this.resume.nativeElement,p);
-    }
-
-    else if(this.text.length ){
-      if(this.text[0].textContent.length > 27){
-          this.renderer.appendChild(this.resume.nativeElement,this.text[0]);
-      }
-    }
-
-    if(this.lists.length){
-      if(this.lists[0].childNodes.length > 5){
-        setTimeout(()=>{
-          let el = this.lists[0];
-          while(this.lists[0].childNodes.length > 5){
-            el.removeChild(el.childNodes[el.childNodes.length-1])
-          }
-          this.hasLongList = true;
-        },1000)
-      }
-      this.renderer.appendChild(this.resumeLists.nativeElement,this.lists[0]);
-    }
-
-    if(this.attached.length){
-      for(var i = 0; i<this.attached.length && i<5; i++){
-        let linkContainer = document.createElement("div");
-        linkContainer.classList.add('linkContainer');
-        linkContainer.appendChild(this.attached[i]);
-        this.renderer.appendChild(this.links.nativeElement,linkContainer);
-      }
-    }
+  isDisLike(){
+    return this.Article.disLikes.includes(this.UserService.usuario.sub)
   }
 
-  expandList(){
-    const childElements = this.resumeLists.nativeElement.childNodes;
-    for (let child of childElements) {
-      this.renderer.removeChild(this.resumeLists.nativeElement, child);
-    }
-
-    this.listDissmised = false;
-    this.document = this.stringToDocument(this.Article.content);
-    this.lists = this.document.querySelectorAll('ol, ul');
-    this.renderer.appendChild(this.resumeLists.nativeElement,this.lists[0]);
-  }
-
-  dismissList():void{
-    this.renderer.removeChild(this.resumeLists.nativeElement ,this.lists[0]);
-    this.listDissmised = true;
-    if(this.lists[0].childNodes.length > 5){
-      let el = this.lists[0]; 
-      while(this.lists[0].childNodes.length > 5){          
-        el.removeChild(el.childNodes[el.childNodes.length-1])
-      }
-      this.hasLongList = true;
-    }
-    this.renderer.appendChild(this.resumeLists.nativeElement,this.lists[0]);
-  }
-
-  like():void{    
-    if(this.liked()){
-      this.api.deleteLike(this.Article.id)
-      .subscribe(val=>{
-        this.Article.likes = val;
+  addToFavorites(){
+    if(this.isFavorite()){
+      this.articlesApi.deleteFavorite(this.Article.id).subscribe((result)=>{
+        this.Article.favorites = this.Article.favorites.filter( userId => userId != this.UserService.usuario.sub)
       })
     }else{
-      forkJoin(
-        this.api.postLike(this.Article.id),        
-        this.api.deleteDisLike(this.Article.id)
-      ).subscribe(val => {
-        this.Article.likes = val[0];
-        this.Article.disLikes = val[1];
+      this.articlesApi.postFavorite(this.Article.id).subscribe((result)=>{
+        this.Article.favorites.push(this.UserService.usuario.sub)
       })
     }
   }
 
-  disLike():void{
-    if(this.disLiked()){
-      this.api.deleteDisLike(this.Article.id)
-      .subscribe(val=>{
-        this.Article.disLikes = val;
+  favoriteIcon(){
+    if( this.isFavorite() ){
+      return 'mdi:heart-multiple'
+    }else {
+      return 'mdi:cards-heart'
+    }
+  }
+
+  addLike(){
+    if(this.isLike()){      
+      this.articlesApi.deleteLike(this.Article.id).subscribe(()=>{
+        this.Article.likes = this.Article.likes.filter(userId => userId !=  this.UserService.usuario.sub )
       })
     }else{
-      forkJoin(
-        this.api.postDisLike(this.Article.id),        
-        this.api.deleteLike(this.Article.id)
-      ).subscribe(val => {
-        this.Article.disLikes = val[0];
-        this.Article.likes = val[1];
+      this.articlesApi.postLike(this.Article.id).subscribe(()=>{
+        this.Article.likes.push(this.UserService.usuario.sub)
       })
     }
+
+    this.Article.disLikes = this.Article.disLikes.filter(userId => userId !=  this.UserService.usuario.sub )
+
   }
 
-  liked = () => this.Article.likes.some(x=>x == this.user.usuario.sub);
-  disLiked = () => this.Article.disLikes.some(x=>x == this.user.usuario.sub);
-    
+  addDisLike(){
+    if(this.isDisLike()){      
+      this.articlesApi.deleteDisLike(this.Article.id).subscribe(()=>{
+        this.Article.disLikes = this.Article.disLikes.filter(userId => userId !=  this.UserService.usuario.sub )
+      })
+    }else{
+      this.articlesApi.postDisLike(this.Article.id).subscribe(()=>{
+        this.Article.disLikes.push(this.UserService.usuario.sub)
+      })
+    }
+
+    this.Article.likes = this.Article.likes.filter(userId => userId !=  this.UserService.usuario.sub )
+
+  }
+
+
 }

@@ -115,7 +115,6 @@ export class ArticleCreatorComponent implements OnInit {
   }
 
   contentOnEditorChange(content){
-    console.log(content)
     this.contentOnEditor = content.content;
     this.textOnEditor = content.text;
   }

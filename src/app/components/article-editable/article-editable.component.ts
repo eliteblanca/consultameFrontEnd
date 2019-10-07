@@ -24,7 +24,6 @@ export class ArticleEditableComponent implements OnInit {
 
   deleteArticle(){
     this.articlesApi.deleteArticle(this.article.id).subscribe(result => {
-        console.log(result)
         this.onArticleDeleted.next(this.article.id)
     })
   }

@@ -24,9 +24,7 @@ export class ArticlesEditorListComponent implements OnInit,OnChanges {
 
   constructor(private articlesApi:ArticlesApiService, private router: Router) {  }
 
-  ngOnInit() {
-    
-  }
+  ngOnInit() {  }
 
   articuloEliminado(idArticulo:string){
     this.articles = this.articles.filter( article => article.id != idArticulo );

@@ -54,7 +54,6 @@ export class LocalStorage {
         articles.map(article=>{
             if(article.id == articleId){                
                 let index = article.likes.findIndex(x=>x == userid)
-                console.log(index);
                 if(index > -1){
                     article.likes.splice(index,1);
                 }

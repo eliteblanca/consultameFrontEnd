@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { category } from "../categories/categories.component";
+import { category } from "../../api/categories-api.service";
 import { ArticlesApiService } from '../../api/articles-api.service';
 
 @Component({

@@ -18,6 +18,7 @@ export interface articleConf{
     line?:string;
     subLine?:string;
     category?:string;
+    highlight: { content: string[] };
 }
 
 export class Article implements articleConf{
@@ -40,6 +41,7 @@ export class Article implements articleConf{
     public line?:string;
     public category?:string;
     public obj:string;
+    public highlight: { content: string[] };
 
     constructor(config:articleConf){
         this.title = config.title;
@@ -94,6 +96,9 @@ export class Article implements articleConf{
         }
         if(config.obj){
             this.obj = config.obj;
+        }
+        if(config.highlight){
+            this.highlight = config.highlight;
         }
     }
 }

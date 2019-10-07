@@ -1,29 +1,31 @@
-<header class="main_header">
-    <i class="material-icons logo" (click)="populateArticles()">photo_size_select_actual</i>
-    <app-search-box></app-search-box>
-    <a class="tab" routerLink="/app/explore">
-        <i class="material-icons">category</i>
-        <span>Explorar</span>
-    </a>
-    <a class="tab" routerLink="/app/news">
-        <i class="material-icons">new_releases</i>
-        <span>Noticias</span>
-    </a>
-    <a class="tab" routerLink="/app/explore">
-        <i class="material-icons">stars</i>
-        <span>Favoritos</span>
-    </a>
-    <a class="tab" routerLink="/app/edicion">
-        <i class="material-icons">edit</i>
-        <span>Edicion</span>
-    </a>
-    <span class="separator"></span>
-    <a routerLink="/app/users" class="mr1.5">
-        <app-icon [iconName]="'mdi:account-settings-variant'"></app-icon>
-    </a>
-    <a routerLink="/app/admin" class="mr1.5">
-        <app-icon [iconName]="'mdi:settings'"></app-icon>
-    </a>
+<i class="material-icons logo">photo_size_select_actual</i>
+<app-search-box></app-search-box>
+<a class="tab" routerLink="/app/explore">
+    <app-icon [iconName]="'mdi:file-tree'"></app-icon>
+    <span>Explorar</span>
+</a>
+<a class="tab" routerLink="/app/news">
+    <app-icon [iconName]="'mdi:alert-decagram'"></app-icon>
+    <span>Noticias</span>
+</a>
+<a class="tab" routerLink="/app/explore">
+    <app-icon [iconName]="'mdi:cards-heart'"></app-icon>
+    <span>Favoritos</span>
+</a>
+<a class="tab" routerLink="/app/edicion">
+    <app-icon [iconName]="'mdi:pencil'"></app-icon>
+    <span>Edicion</span>
+</a>
+<a class="tab" routerLink="/app/news">
+    <app-icon [iconName]="'mdi:newspaper-plus'"></app-icon>
+    <span>Crear Noticia</span>
+</a>
+<span class="separator"></span>
+<a routerLink="/app/users" class="mr1.5">
+    <app-icon [iconName]="'mdi:account-settings-variant'"></app-icon>
+</a>
+<a routerLink="/app/admin" class="mr1.5">
+    <app-icon [iconName]="'mdi:settings'"></app-icon>
+</a>
 
-    <app-acount-menu></app-acount-menu>
-</header>
+<app-acount-menu></app-acount-menu>

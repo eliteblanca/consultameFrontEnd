@@ -20,7 +20,6 @@ export class ArticleListComponent implements OnInit {
     for(let i = 0; i<this.columnsCount;i++){
       this.columns.push([])
     }
-    console.log(articles);
     if (typeof articles != 'undefined') {
       this._articles = articles;
       let i = 0;

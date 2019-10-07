@@ -1,11 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { filter, switchMap } from "rxjs/operators";
 import { ArticlesApiService } from "../../api/articles-api.service";
 import { CategoriesApiService, category } from "../../api/categories-api.service";
 import { Article } from "../../article";
-import { ApiService, EventsService } from "../../services";
-
+import { EventsService } from "../../services";
+import { filter, switchMap } from 'rxjs/operators';
 
 
 @Component({
@@ -19,26 +17,25 @@ export class ExplorarComponent implements OnInit {
     public categories: category[];
 
     constructor(
-        public route: ActivatedRoute,
-        public api: ApiService,
-        public router: Router,
         public events: EventsService,
-        private articlesApiService: ArticlesApiService,
-        private categoriesApi: CategoriesApiService
+        private articlesApi: ArticlesApiService,
+        private categoriesApi: CategoriesApiService,
+        private eventsService:EventsService
     ) { }
 
     ngOnInit() {
-        this.events.onNewSelectedLine$.pipe(
+        return this.eventsService.newSelectedLineSource.pipe(
             filter(selectedLine => selectedLine.line != null && selectedLine.subLine != null),
             switchMap(selectedLine => this.categoriesApi.getCategories(selectedLine.subLine.id))
-        ).subscribe(categories => {
-            this.categories = categories
-            this.articles = [];
-        })
+        ).subscribe(categories => this.categories = categories)
     }
 
-    categoriaSeleccionada(categoria: string) {
-        this.articlesApiService.getArticlesByCategory(categoria).subscribe(val => {
+    categoriaSeleccionada(categoria:category) {
+
+        console.log(categoria)
+
+        this.articlesApi.getArticlesByCategory(categoria.id).subscribe(val => {
+            console.log(val)
             this.articles = val;
         })
     }

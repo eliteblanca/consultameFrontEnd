@@ -1,34 +1,24 @@
 <div class="img_header" #imgHeader>
+    <img *ngIf="imageSrc" [src]="imageSrc">
 </div>
 <a class="title" [routerLink]="['/app/articles/',Article.id]" [state]="Article">{{Article.title}}</a>
 <div class="article_body">
 
     <div class="resumme" #resume>
-    
+        <p *ngFor="let frase of resumen" [innerHTML]="frase"></p>
     </div>
     <div class="resume_lists" #resumeLists>
         
     </div>
-    <div class="links" #links>
-
+    <div class="links">
+        <a *ngFor="let link of links" [href]="link.href" target="'_blank'">{{link.text}}</a>
     </div>
 </div>
-<div class="dissmissList" *ngIf="hasLongList">
-    <i class="material-icons" *ngIf="listDissmised" (click)="expandList()">expand_more</i>
-    <i class="material-icons" *ngIf="!listDissmised" (click)="dismissList()">expand_less</i>
-</div>
-<div class="footer">
-    <div class="tags">
-        <a class="tag" href="app/search?query=[TagDePrueba]">TagDePrueba</a>
-        <a class="tag" href="app/search?query=[TagPrueba]">TagPrueba</a>
-        <a class="tag" href="app/search?query=[TagDefault]">TagDefault</a>
-        <a class="tag" href="app/search?query=[Tag2]">Tag2</a>
-        <a class="tag" href="app/search?query=[Tag12234]">Tag12234</a>
-    </div>
-    <div class="votes">
-        <i class="material-icons" (click)="like()" [ngClass]="{'liked bounce animated': liked()}">thumb_up</i>
-        <span class="voteCount">{{Article.likes.length || 0}}</span>
-        <i class="material-icons" (click)="disLike()" [ngClass]="{'disLiked swing fadeOutDown animated': disLiked()}">thumb_down</i>
-        <span class="voteCount">{{Article.disLikes.length || 0}}</span>
-    </div>
+<div class="footer" *ngIf="Article">
+        <app-icon class="socialButton favoriteIcon" (click)="addToFavorites()" (mouseover)="isFavoriteHover = true" (mouseout)="isFavoriteHover = false" [iconName]="favoriteIcon()"  [ngClass]="{ favorite : isFavorite()}"> </app-icon>
+        <span>{{Article.favorites.length}}</span>
+        <app-icon class="socialButton" [iconName]="isLike() ? 'mdi:thumb-up' : 'mdi:thumb-up-outline'" (click)="addLike()" [title]="'Publicado el ' + publicationDate"> </app-icon>
+        <span>{{Article.likes.length}}</span>
+        <app-icon class="socialButton" [iconName]="isDisLike() ? 'mdi:thumb-down' : 'mdi:thumb-down-outline'" (click)="addDisLike()" [title]="'Publicado el ' + publicationDate"> </app-icon>
+        <span>{{Article.disLikes.length}}</span>
 </div>

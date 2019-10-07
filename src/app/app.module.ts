@@ -18,7 +18,7 @@ import { ConfigComponent } from './components/config/config.component';
 import { DropDownComponent } from './components/drop-down/drop-down.component';
 import { IconPickerComponent } from './components/icon-picker/icon-picker.component';
 import { IconComponent } from './components/icon/icon.component';
-import { AcountMenuComponent, AplicationComponent, ArticleComponent, ArticleListComponent, ArticleViewComponent, CategorieComponent, CategoriesComponent, ExplorarComponent, HeaderComponent, HomeComponent, LoginComponent, NewsComponent, SearchBoxComponent, SearchComponent } from './components/index';
+import { AcountMenuComponent, AplicationComponent, ArticleComponent, ArticleListComponent, ArticleViewComponent, CategorieComponent, CategoriesComponent, ExplorarComponent, HeaderComponent, HomeComponent, LoginComponent, SearchBoxComponent, SearchComponent } from './components/index';
 import { LineAllowedEditorComponent } from './components/line-allowed-editor/line-allowed-editor.component';
 import { LineAllowedComponent } from './components/line-allowed/line-allowed.component';
 import { LineEditableComponent } from './components/line-editable/line-editable.component';
@@ -35,6 +35,8 @@ import { JwtInterceptor, mockServerService } from "./services/index";
 import { EdicionComponent } from './components/edicion/edicion.component';
 import { RichTextEditorComponent } from './components/rich-text-editor/rich-text-editor.component';
 import { RTEViewComponent } from './components/rteview/rteview.component';
+import { NewsCreatorComponent } from './components/news-creator/news-creator.component';
+import { NewsListEditableComponent } from './components/news-list-editable/news-list-editable.component';
 @NgModule({
     declarations: [
         AppComponent,
@@ -51,7 +53,6 @@ import { RTEViewComponent } from './components/rteview/rteview.component';
         ArticleListComponent,
         ArticleViewComponent,
         AcountMenuComponent,
-        NewsComponent,
         ConfigComponent,
         CategoriesEditorComponent,
         CategoryEditableComponent,
@@ -77,6 +78,8 @@ import { RTEViewComponent } from './components/rteview/rteview.component';
         EdicionComponent,
         RichTextEditorComponent,
         RTEViewComponent,
+        NewsCreatorComponent,
+        NewsListEditableComponent,
     ],
     imports: [
         BrowserModule,

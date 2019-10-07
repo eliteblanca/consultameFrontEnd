@@ -1,20 +1,20 @@
 <div class="articleContainer">
     <header class="header">
-        <app-icon [iconName]="'mdi:arrow-left'" (click)="fullScreen()"> </app-icon>
+        <app-icon [iconName]="'mdi:arrow-left'" (click)="goBack()"> </app-icon>
         <h4 *ngIf="article" class="title">{{article.title}}</h4>
         <app-icon [iconName]="'mdi:fullscreen'" (click)="fullScreen()"> </app-icon>
     </header>
     <div class="content" #content>
-        <app-rteview [content]="articleContent"></app-rteview>
+        <app-rteview></app-rteview>
     </div>
     <div class="footer" *ngIf="article">
-        <app-icon [iconName]="'mdi:help-circle-outline'" (click)="fullScreen()" [title]="'Publicado el ' + publicationDate"> </app-icon>
+        <app-icon [iconName]="'mdi:help-circle-outline'" [title]="'Publicado el ' + publicationDate"></app-icon>
         <span  class="leyend">Ultima modificacion el: {{modificationDate}}</span>
-        <app-icon class="socialButton" [iconName]=" isFavorite() ? 'mdi:heart-multiple' : 'mdi:cards-heart'" (click)="fullScreen()" [title]="'Publicado el ' + publicationDate" [ngClass]="{ favorite : isFavorite()}"> </app-icon>
-        <span>{{0}}</span>
-        <app-icon class="socialButton" [iconName]="'mdi:thumb-up-outline'" (click)="fullScreen()" [title]="'Publicado el ' + publicationDate"> </app-icon>
-        <span>{{0}}</span>
-        <app-icon class="socialButton" [iconName]="'mdi:thumb-down-outline'" (click)="fullScreen()" [title]="'Publicado el ' + publicationDate"> </app-icon>
-        <span>{{0}}</span>
+        <app-icon class="socialButton favoriteIcon" (click)="addToFavorites()" (mouseover)="isFavoriteHover = true" (mouseout)="isFavoriteHover = false" [iconName]="favoriteIcon()"  [ngClass]="{ favorite : isFavorite()}"> </app-icon>
+        <span>{{article.favorites.length}}</span>
+        <app-icon class="socialButton" [iconName]="isLike() ? 'mdi:thumb-up' : 'mdi:thumb-up-outline'" (click)="addLike()" [title]="'Publicado el ' + publicationDate"> </app-icon>
+        <span>{{article.likes.length}}</span>
+        <app-icon class="socialButton" [iconName]="isDisLike() ? 'mdi:thumb-down' : 'mdi:thumb-down-outline'" (click)="addDisLike()" [title]="'Publicado el ' + publicationDate"> </app-icon>
+        <span>{{article.disLikes.length}}</span>
     </div>
 </div>

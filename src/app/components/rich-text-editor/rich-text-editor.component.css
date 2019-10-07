@@ -4,5 +4,5 @@
     /* background-color: red; */
     display: grid;
     grid-template-columns: 1fr;
-    grid-template-rows: 2.5rem 42rem;
+    grid-template-rows: 2.5rem 39rem;
 }
