@@ -10,34 +10,84 @@ import { of } from 'rxjs';
 })
 export class NewsListEditableComponent implements OnInit, OnChanges {
 
-  newsList:news[] = [];
+  newsList: news[] = [];
+  newsdraftList: news[] = [];
+
+  @Input() mode: 'news' | 'draft' = 'news';
+  @Input() selectedSubline: string;
+  @Input() isArticleOnEdition: boolean;
   @Output() onAddNews = new EventEmitter();
+  @Output() onNewsEdit = new EventEmitter();
+  @Output() onNewsDeleted = new EventEmitter();
 
-
-  constructor( private newsApi:NewsApiService ) { }
+  constructor(private newsApi: NewsApiService) { }
 
   ngOnChanges(changes: SimpleChanges) {
-    if(changes.selectedSubline){
+
+    console.log(changes)
+
+    if (changes.selectedSubline && changes.mode) {
       of(changes.selectedSubline.currentValue).pipe(
-        switchMap(selectedSublineId => this.newsApi.getNews(selectedSublineId))
-      ).subscribe(news =>{
+        switchMap(selectedSublineId => {
+          if (changes.mode.currentValue == 'news') {
+            return this.newsApi.getNews(selectedSublineId, 'published')
+          } else {
+            return this.newsApi.getNews(selectedSublineId, 'archived')
+          }
+        })
+      ).subscribe(news => {
         this.newsList = news
-        console.log(this.newsList)
+      })
+    } else if (changes.selectedSubline && this.mode == 'draft') {
+      of(changes.selectedSubline.currentValue).pipe(
+        switchMap(selectedSublineId => this.newsApi.getNews(selectedSublineId, 'archived'))
+      ).subscribe(news => {
+        this.newsList = news
+      })
+    } else if (changes.selectedSubline && this.mode == 'news') {
+      of(changes.selectedSubline.currentValue).pipe(
+        switchMap(selectedSublineId => this.newsApi.getNews(selectedSublineId, 'published'))
+      ).subscribe(news => {
+        this.newsList = news
+      })
+    } else if (changes.mode && changes.mode.currentValue == 'news') {
+      of(this.selectedSubline).pipe(
+        switchMap(selectedSublineId => this.newsApi.getNews(selectedSublineId, 'published'))
+      ).subscribe(news => {
+        this.newsList = news
+      })
+    } else if (changes.mode && changes.mode.currentValue == 'draft') {
+      of(this.selectedSubline).pipe(
+        switchMap(selectedSublineId => this.newsApi.getNews(selectedSublineId, 'archived'))
+      ).subscribe(news => {
+        this.newsList = news
       })
     }
   }
 
-  @Input() selectedSubline:string;
+  ngOnInit() { }
 
-  ngOnInit() {  }
-
-  addNews(){
+  addNews() {
     this.onAddNews.next()
   }
 
-  addNewsResponse(news:news){
-    console.log(news)
+  addNewsResponse(news: news) {
     this.newsList.push(news)
+  }
+
+  addAsDraftResponse(news: news) {
+    this.newsdraftList.push(news)
+  }
+
+  editNews(newsId: string) {
+    this.onNewsEdit.next(newsId)
+  }
+
+  deleteNews(newsId: string) {
+    this.newsApi.deleteNews(newsId).subscribe(result => {
+      this.newsList = this.newsList.filter(news => news.id != newsId)
+      this.onNewsDeleted.next(newsId)
+    })
   }
 
 }

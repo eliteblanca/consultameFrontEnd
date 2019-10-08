@@ -43,7 +43,7 @@
     cursor: pointer;
 }
 
-.editIcon{
+.newsEditable .editIcon{
     display: none;
     margin-left: 1rem;
 }
