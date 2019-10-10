@@ -1,7 +1,7 @@
-import { AfterViewInit, Component, Input, OnInit, Renderer2 } from '@angular/core';
-import { ApiService, UserService } from 'src/app/services';
-import { Article } from '../../article';
+import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
+import { UserService } from 'src/app/services';
 import { ArticlesApiService } from "../../api/articles-api.service";
+import { Article } from '../../article';
 
 @Component({
   selector: 'app-article',
@@ -11,22 +11,12 @@ import { ArticlesApiService } from "../../api/articles-api.service";
 export class ArticleComponent implements OnInit, AfterViewInit {
 
   @Input() Article:Article;
-  private document:DocumentFragment;
-  private Images:NodeList;
-  private lists:NodeList;
-  private headings:NodeList;
-  private text:NodeList;
-  private attached:NodeList;
   public listDissmised = true;
   public hasLongList;
   
   constructor(
-    private renderer:Renderer2,
-    private user:UserService,
-    private api:ApiService,
     private articlesApi:ArticlesApiService,
     public UserService:UserService
-
   ) { }
  
   ngOnInit() {
@@ -38,8 +28,6 @@ export class ArticleComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit(){
     setTimeout(() => {
-
-      console.log(this.Article)
 
       let wordsHiglighted = [];
 
@@ -84,8 +72,6 @@ export class ArticleComponent implements OnInit, AfterViewInit {
         this.imageSrc = images[0];
       }
 
-      console.log(articleObj)
-
       let links = articleObj.ops.filter( (op:{insert:Object,attributes:Object}) => {
         return op.attributes && op.attributes['link']
       })
@@ -94,15 +80,7 @@ export class ArticleComponent implements OnInit, AfterViewInit {
         links = links.map(link => ({ href:link['attributes']['link'], text:link['insert'] }))
         links = links.slice(0,3);
         this.links = links;
-        console.log(this.links)
       }
-
-      // attributes: {bold: true, color: "#3369a3", link: "https://www.grupobancolombia.com/wps/portal/personas/necesidades/mas-beneficios/"}
-      // insert: "Recibe beneficios exclusivos por tener tu Tarjeta Débito Bancolombia"
-      // __proto__: Object
-
-
-      console.log(links)
     })    
   }
 

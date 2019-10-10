@@ -1,0 +1,15 @@
+<div class="img_header" #imgHeader>
+    <img *ngIf="imageSrc" [src]="imageSrc">
+</div>
+<a class="title" [routerLink]="['/app/news',news.id]">{{news.title}}</a>
+<div class="article_body">
+    <div class="resumme" #resume>
+        <p *ngFor="let frase of resumen" [innerHTML]="frase"></p>
+    </div>
+    <div class="resume_lists" #resumeLists>
+
+    </div>
+    <div class="links">
+        <a *ngFor="let link of links" [href]="link.href" target="'_blank'">{{link.text}}</a>
+    </div>
+</div>

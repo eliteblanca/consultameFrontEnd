@@ -2,21 +2,20 @@ import { Component, OnInit, Input, AfterViewInit, ViewChild, ElementRef } from '
 import Quill from 'quill';
 
 @Component({
-  selector: 'app-rteview',
-  templateUrl: './rteview.component.html',
-  styleUrls: ['./rteview.component.css']
+	selector: 'app-rteview',
+	templateUrl: './rteview.component.html',
+	styleUrls: ['./rteview.component.css']
 })
-export class RTEViewComponent implements OnInit ,AfterViewInit{
+export class RTEViewComponent implements OnInit, AfterViewInit {
 
-  @Input() content;
-  @ViewChild('RTE', { static: false }) RTE: ElementRef;
+	@ViewChild('RTE', { static: false }) RTE: ElementRef;
 
-  editor:any;
+	editor: any;
 
-  constructor() {  }
+	constructor() { }
 
-  ngOnInit() {
-  }
+	ngOnInit() {
+	}
 
 	setContent(content) {
 		this.editor.setContents(content)
@@ -29,12 +28,11 @@ export class RTEViewComponent implements OnInit ,AfterViewInit{
 
 	modules = {
 		toolbar: {
-      enable:false
-		} 	
+			enable: false
+		}
 	}
 
 	options = {
-		debug: 'info',
 		modules: this.modules,
 		placeholder: 'Contenido del articulo ...',
 		readOnly: true,

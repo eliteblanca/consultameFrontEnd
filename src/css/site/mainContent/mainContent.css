@@ -1,4 +1,4 @@
 .mainContent{
     grid-area: "mainContent";
-    overflow-y: hidden;
+    overflow: hidden;
 }

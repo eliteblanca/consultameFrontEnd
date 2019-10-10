@@ -21,6 +21,7 @@
     "@angular/router": "~8.0.0",
     "@auth0/angular-jwt": "^2.1.1",
     "@iconify/icons-mdi": "^1.0.10",
+    "@syncfusion/ej2-angular-calendars": "^17.3.14",
     "@visurel/iconify-angular": "0.0.7",
     "date-fns": "^2.3.0",
     "imagesloaded": "^4.1.4",

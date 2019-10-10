@@ -6,6 +6,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { IconModule } from "@visurel/iconify-angular";
 import { AppRoutingModule } from './app-routing.module';
 import { QuillModule } from 'ngx-quill';
+import { CalendarModule } from '@syncfusion/ej2-angular-calendars';
 
 import { AppComponent } from './app.component';
 import { ArticleCreatorComponent } from './components/article-creator/article-creator.component';
@@ -37,6 +38,10 @@ import { RichTextEditorComponent } from './components/rich-text-editor/rich-text
 import { RTEViewComponent } from './components/rteview/rteview.component';
 import { NewsCreatorComponent } from './components/news-creator/news-creator.component';
 import { NewsListEditableComponent } from './components/news-list-editable/news-list-editable.component';
+import { NewsComponent } from './components/news/news.component';
+import { NewsListComponent } from './components/news-list/news-list.component';
+import { NewsCardComponent } from './components/news-card/news-card.component';
+import { NewsViewComponent } from './components/news-view/news-view.component';
 @NgModule({
     declarations: [
         AppComponent,
@@ -80,6 +85,10 @@ import { NewsListEditableComponent } from './components/news-list-editable/news-
         RTEViewComponent,
         NewsCreatorComponent,
         NewsListEditableComponent,
+        NewsComponent,
+        NewsListComponent,
+        NewsCardComponent,
+        NewsViewComponent,
     ],
     imports: [
         BrowserModule,
@@ -88,7 +97,8 @@ import { NewsListEditableComponent } from './components/news-list-editable/news-
         HttpClientModule,
         FormsModule,
         IconModule,
-        QuillModule.forRoot()
+        QuillModule.forRoot(),
+        CalendarModule
     ],
     providers: [
         JwtInterceptor,

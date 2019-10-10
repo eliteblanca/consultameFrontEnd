@@ -1,0 +1,16 @@
+<div class="newsContainer">
+    <div class="header" *ngIf="currentNews">
+            <app-icon [iconName]="'mdi:arrow-left'" (click)="goBack()"></app-icon>
+            <h4 class="title">{{currentNews.title}}</h4>
+    </div>
+    <div class="newsContent" #news>
+            <app-rteview >
+                
+            </app-rteview>
+    </div>
+</div>
+<div class="index">
+    <div class="indice">
+        <div *ngFor="let el of indexElements; index as i" [innerHTML]="el.innerHTML" [ngClass]="[el.tagName, calculateActive(i)]" (click)="scrollTo(el)"></div>
+    </div>
+</div>

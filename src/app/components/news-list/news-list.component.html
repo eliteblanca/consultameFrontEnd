@@ -1,0 +1,12 @@
+<h2 class="columnsContainer_title">Hoy</h2>
+<div class="columnsContainer">
+    <div class="column" *ngFor="let column of columns">
+        <app-news-card *ngFor="let news of column" [news]="news"></app-news-card>
+    </div>
+</div>
+<h2 class="columnsContainer_title">Ayer</h2>
+<div class="columnsContainer">
+    <div class="column" *ngFor="let column of columns">
+        <app-news-card *ngFor="let news of column" [news]="news"></app-news-card>
+    </div>
+</div>
