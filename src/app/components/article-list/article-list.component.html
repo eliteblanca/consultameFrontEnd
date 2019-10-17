@@ -1,3 +1,7 @@
-<div class="column" *ngFor="let column of columns">
+<!-- <div class="column" *ngFor="let column of columns">
     <app-article *ngFor="let article of column" [Article]="article"></app-article>
-</div>
+</div> -->
+
+<ngx-masonry [options]="{ gutter: 15}">
+    <app-article  ngxMasonryItem  class="masonry-item" *ngFor="let article of _articles" [Article]="article"></app-article>
+</ngx-masonry>

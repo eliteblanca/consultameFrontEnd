@@ -1,12 +1,13 @@
-<h2 class="columnsContainer_title">Hoy</h2>
-<div class="columnsContainer">
-    <div class="column" *ngFor="let column of columns">
-        <app-news-card *ngFor="let news of column" [news]="news"></app-news-card>
-    </div>
-</div>
-<h2 class="columnsContainer_title">Ayer</h2>
-<div class="columnsContainer">
-    <div class="column" *ngFor="let column of columns">
-        <app-news-card *ngFor="let news of column" [news]="news"></app-news-card>
+<div class="newsScroll"
+    infiniteScroll
+    (scrolled)="onScroll($event)"        
+    [infiniteScrollDistance]="2"
+    [infiniteScrollThrottle]="50" 
+    [scrollWindow]="false">
+
+    <div class="timeLapse">
+        <ngx-masonry [options]="{ gutter: 15, horizontalOrder: true}">
+            <app-news-card  ngxMasonryItem  class="masonry-item" *ngFor="let news of _news" [news]="news"></app-news-card>
+        </ngx-masonry>
     </div>
 </div>

@@ -7,6 +7,8 @@ import { IconModule } from "@visurel/iconify-angular";
 import { AppRoutingModule } from './app-routing.module';
 import { QuillModule } from 'ngx-quill';
 import { CalendarModule } from '@syncfusion/ej2-angular-calendars';
+import { InfiniteScrollModule } from 'ngx-infinite-scroll';
+import { NgxMasonryModule } from 'ngx-masonry';
 
 import { AppComponent } from './app.component';
 import { ArticleCreatorComponent } from './components/article-creator/article-creator.component';
@@ -42,6 +44,7 @@ import { NewsComponent } from './components/news/news.component';
 import { NewsListComponent } from './components/news-list/news-list.component';
 import { NewsCardComponent } from './components/news-card/news-card.component';
 import { NewsViewComponent } from './components/news-view/news-view.component';
+import { FavoritesComponent } from './components/favorites/favorites.component';
 @NgModule({
     declarations: [
         AppComponent,
@@ -89,6 +92,7 @@ import { NewsViewComponent } from './components/news-view/news-view.component';
         NewsListComponent,
         NewsCardComponent,
         NewsViewComponent,
+        FavoritesComponent,
     ],
     imports: [
         BrowserModule,
@@ -98,7 +102,9 @@ import { NewsViewComponent } from './components/news-view/news-view.component';
         FormsModule,
         IconModule,
         QuillModule.forRoot(),
-        CalendarModule
+        CalendarModule,
+        InfiniteScrollModule,
+        NgxMasonryModule
     ],
     providers: [
         JwtInterceptor,

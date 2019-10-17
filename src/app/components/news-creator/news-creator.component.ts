@@ -5,6 +5,7 @@ import { NewsApiService, news, newsDTO, UpdateNewsDTO } from "../../api/news-api
 import { RichTextEditorComponent } from "../rich-text-editor/rich-text-editor.component";
 import { NewsListEditableComponent } from "../news-list-editable/news-list-editable.component";
 import { of } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-news-creator',
@@ -27,7 +28,8 @@ export class NewsCreatorComponent implements OnInit {
 
   constructor(
     private eventsService: EventsService,
-    private newsApi: NewsApiService
+    private newsApi: NewsApiService,
+    private router: Router
   ) { }
 
   ngOnInit() {
@@ -57,7 +59,7 @@ export class NewsCreatorComponent implements OnInit {
 
       this.newsApi.updateNews(this.newsOnEdition.id, newsToUpdate).subscribe(result => {
         this.listMode = 'news'
-        console.log('navegar a la noticia')
+        this.router.navigate(['/app/news', this.newsOnEdition.id ])
       })
     } else {
       let newsToSave: newsDTO = {
@@ -72,7 +74,8 @@ export class NewsCreatorComponent implements OnInit {
       this.newsApi.postNews(newsToSave).subscribe(newsAdded => {
         this.listMode = 'news'
         this.newsOnEdition = newsAdded;
-        this.newslist.addNewsResponse(newsAdded)
+        this.newslist.addNewsResponse(newsAdded)        
+        this.router.navigate(['/app/news', newsAdded.id ])
       })
     }
 
@@ -93,7 +96,6 @@ export class NewsCreatorComponent implements OnInit {
       })
     } else {
       this.newsApi.postNews(newsToSave).subscribe(newsAdded => {
-        this.newslist.addAsDraftResponse(newsAdded)
         this.newsOnEdition = newsAdded;
         this.listMode = 'draft';
       })

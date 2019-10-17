@@ -28,10 +28,10 @@ export interface newsDTO {
 }
 
 export interface UpdateNewsDTO {
-  title:string;
-  content:string;
-  obj:string;
-  state:string;
+  title: string;
+  content: string;
+  obj: string;
+  state: string;
 }
 
 @Injectable({
@@ -50,9 +50,10 @@ export class NewsApiService {
     deleteNews: (idNews: string) => `${this.host}/api/news/:idNews`.replace(':idNews', idNews),
   }
 
-  public getNews(idSubline: string, state:'published'|'archived'): Observable<news[]> {
-    return this.http.get<news[]>(this.endPoints.getNews(idSubline), { params: { state: state }, observe: "body" })
+  public getNews(idSubline: string, state: 'published' | 'archived', from: string = '0', size: string = '20', date:string = new Date().getTime().toString() ): Observable<news[]> {
+    return this.http.get<news[]>(this.endPoints.getNews(idSubline), { params: { state: state, from: from, size: size, date: date }, observe: "body" })
   }
+
 
   public postNews(news: newsDTO): Observable<news> {
     return this.http.post<news>(this.endPoints.postNews, news, { observe: "body" })
@@ -62,11 +63,11 @@ export class NewsApiService {
     return this.http.get<news>(this.endPoints.getSingleNews(idNews), { observe: "body" })
   }
 
-  public updateNews(idNews: string, news:UpdateNewsDTO): Observable<{ status:string}>{
-    return this.http.put<{ status:string}>(this.endPoints.updateNews(idNews), news, { observe: "body" }) 
+  public updateNews(idNews: string, news: UpdateNewsDTO): Observable<{ status: string }> {
+    return this.http.put<{ status: string }>(this.endPoints.updateNews(idNews), news, { observe: "body" })
   }
 
-  public deleteNews(idNews: string): Observable<{ status:string}>{
-    return this.http.delete<{ status:string}>(this.endPoints.deleteNews(idNews),{ observe: "body" })
+  public deleteNews(idNews: string): Observable<{ status: string }> {
+    return this.http.delete<{ status: string }>(this.endPoints.deleteNews(idNews), { observe: "body" })
   }
 }

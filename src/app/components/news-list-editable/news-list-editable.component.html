@@ -3,13 +3,21 @@
     <app-icon class="editIcon ml1" [iconName]="'mdi:newspaper-plus'" (click)="addNews()" *ngIf="mode == 'news'">
     </app-icon>
 </div>
-<div class="newsEditable" *ngFor="let news of newsList">
-    <h4 class="title">{{news.title}}</h4>
-    <div class="iconsContainer">
-        <span class="separator"></span>
-        <app-icon class="editIcon" [iconName]="'mdi:pencil'" (click)="editNews(news.id)"></app-icon>
-        <app-icon class="editIcon" [iconName]="'mdi:trash'" (click)="deleteNews(news.id)"></app-icon>
+
+<div class="list"
+    infiniteScroll
+    (scrolled)="onScroll($event)"
+    [infiniteScrollDistance]="2"
+    [infiniteScrollThrottle]="50" 
+    [scrollWindow]="false" >
+    <div class="newsEditable" *ngFor="let news of newsList">
+        <h4 class="title">{{news.title}}</h4>
+        <div class="iconsContainer">
+            <span class="separator"></span>
+            <app-icon class="editIcon" [iconName]="'mdi:pencil'" (click)="editNews(news.id)"></app-icon>
+            <app-icon class="editIcon" [iconName]="'mdi:trash'" (click)="deleteNews(news.id)"></app-icon>
+        </div>
     </div>
 </div>
-
+    
 <h5 class="dafaultMessage" *ngIf="!!!newsList.length">No hay noticias, agrega la primer noticia</h5>

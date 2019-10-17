@@ -8,32 +8,32 @@ import { Article, articleConf } from "../../article";
 })
 export class ArticleListComponent implements OnInit {
 
-  _articles:Article[];
-  public columns:Article[][];
-  private columnsCount:number = 3;
+  _articles:Article[] = [];
+  // public columns:Article[][];
+  // private columnsCount:number = 3;
 
 
   @Input()
   set articles(articles: Article[]) {
-    this._articles = [];
-    this.columns = [];
-    for(let i = 0; i<this.columnsCount;i++){
-      this.columns.push([])
-    }
-    if (typeof articles != 'undefined') {
-      this._articles = articles;
-      let i = 0;
-      let row = 0;
-      while (i < this._articles.length) {
-        for (let k = 0; k < this.columnsCount && i < this._articles.length; k++) {
-          this.columns[k][row] = this._articles[i];
-          i++;
-        }
-        row++;
-      }
-    }else{
+    this._articles = articles;
+    // this._articles = [];
+    // this.columns = [];
+    // for(let i = 0; i<this.columnsCount;i++){
+    //   this.columns.push([])
+    // }
+    // if (typeof articles != 'undefined') {
+    //   this._articles = articles;
+    //   let i = 0;
+    //   let row = 0;
+    //   while (i < this._articles.length) {
+    //     for (let k = 0; k < this.columnsCount && i < this._articles.length; k++) {
+    //       this.columns[k].push(this._articles[i]);
+    //       i++;
+    //     }
+    //   }
+    // }else{
       
-    }
+    // }
   }
 
   get articles():Article[]{
@@ -41,13 +41,26 @@ export class ArticleListComponent implements OnInit {
   }
 
   constructor() { 
-    this.columns = [];
-    for(let i = 0; i<this.columnsCount;i++){
-      this.columns.push([])
-    }
+    // this.columns = [];
+    // for(let i = 0; i<this.columnsCount;i++){
+    //   this.columns.push([])
+    // }
   }
 
   ngOnInit() {
+  }
+
+  concatArticles(articles: Article[]){
+    this._articles = this._articles.concat(articles)
+    // let i = 0;
+    // let row = this.columns.length;
+    // while (i < articles.length) {
+    //   for (let k = 0; k < this.columnsCount && i < articles.length; k++) {        
+    //       this.columns[k].push(articles[i])
+    //     console.log(this.columns)
+    //     i++;
+    //   }
+    // }
   }
 
 }

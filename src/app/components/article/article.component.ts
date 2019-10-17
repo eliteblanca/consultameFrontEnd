@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
+import { AfterViewInit, Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { UserService } from 'src/app/services';
 import { ArticlesApiService } from "../../api/articles-api.service";
 import { Article } from '../../article';
@@ -11,6 +11,16 @@ import { Article } from '../../article';
 export class ArticleComponent implements OnInit, AfterViewInit {
 
   @Input() Article:Article;
+
+  @Output() onPostLike = new EventEmitter<Article>();
+  @Output() onDeleteLike = new EventEmitter<Article>();
+  
+  @Output() onPostDisLike = new EventEmitter<Article>();
+  @Output() onDeleteDisLike = new EventEmitter<Article>();
+
+  @Output() onPostFavorite = new EventEmitter<Article>();
+  @Output() onDeleteFavorite = new EventEmitter<Article>();
+
   public listDissmised = true;
   public hasLongList;
   
@@ -100,10 +110,12 @@ export class ArticleComponent implements OnInit, AfterViewInit {
     if(this.isFavorite()){
       this.articlesApi.deleteFavorite(this.Article.id).subscribe((result)=>{
         this.Article.favorites = this.Article.favorites.filter( userId => userId != this.UserService.usuario.sub)
+        this.onDeleteFavorite.next(this.Article)
       })
     }else{
       this.articlesApi.postFavorite(this.Article.id).subscribe((result)=>{
         this.Article.favorites.push(this.UserService.usuario.sub)
+        this.onPostFavorite.next(this.Article)
       })
     }
   }
@@ -120,10 +132,12 @@ export class ArticleComponent implements OnInit, AfterViewInit {
     if(this.isLike()){      
       this.articlesApi.deleteLike(this.Article.id).subscribe(()=>{
         this.Article.likes = this.Article.likes.filter(userId => userId !=  this.UserService.usuario.sub )
+        this.onDeleteLike.next(this.Article)
       })
     }else{
       this.articlesApi.postLike(this.Article.id).subscribe(()=>{
         this.Article.likes.push(this.UserService.usuario.sub)
+        this.onPostLike.next(this.Article)
       })
     }
 
@@ -132,19 +146,20 @@ export class ArticleComponent implements OnInit, AfterViewInit {
   }
 
   addDisLike(){
-    if(this.isDisLike()){      
+    if(this.isDisLike()){
       this.articlesApi.deleteDisLike(this.Article.id).subscribe(()=>{
         this.Article.disLikes = this.Article.disLikes.filter(userId => userId !=  this.UserService.usuario.sub )
+        this.onDeleteDisLike.next(this.Article)
       })
     }else{
       this.articlesApi.postDisLike(this.Article.id).subscribe(()=>{
         this.Article.disLikes.push(this.UserService.usuario.sub)
+        this.onPostDisLike.next(this.Article)
       })
     }
 
     this.Article.likes = this.Article.likes.filter(userId => userId !=  this.UserService.usuario.sub )
 
   }
-
 
 }

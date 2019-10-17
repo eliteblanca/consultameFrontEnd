@@ -2,7 +2,6 @@
     padding: 2rem 3rem;
     height: 100% !important;
     width: 100%;
-    overflow-y: scroll;
 
     display: grid;
     grid-template-columns: repeat(3,1fr);
@@ -22,4 +21,10 @@
     margin: 0;
     margin-bottom: 1rem;
     padding: 0;
+}
+
+.articlesColumn{
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 2rem auto;
 }

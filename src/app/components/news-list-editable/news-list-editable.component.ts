@@ -19,46 +19,61 @@ export class NewsListEditableComponent implements OnInit, OnChanges {
   @Output() onAddNews = new EventEmitter();
   @Output() onNewsEdit = new EventEmitter();
   @Output() onNewsDeleted = new EventEmitter();
+  private currentPage = 1; 
 
   constructor(private newsApi: NewsApiService) { }
 
   ngOnChanges(changes: SimpleChanges) {
 
-    console.log(changes)
-
     if (changes.selectedSubline && changes.mode) {
+
+      this.currentPage = 1;
+
       of(changes.selectedSubline.currentValue).pipe(
         switchMap(selectedSublineId => {
           if (changes.mode.currentValue == 'news') {
-            return this.newsApi.getNews(selectedSublineId, 'published')
+            console.log('prueba 2')
+            return this.newsApi.getNews(selectedSublineId, 'published', '0','20')
           } else {
-            return this.newsApi.getNews(selectedSublineId, 'archived')
+            return this.newsApi.getNews(selectedSublineId, 'archived', '0','20')
           }
         })
       ).subscribe(news => {
         this.newsList = news
       })
     } else if (changes.selectedSubline && this.mode == 'draft') {
+
+      this.currentPage = 1;
+
       of(changes.selectedSubline.currentValue).pipe(
-        switchMap(selectedSublineId => this.newsApi.getNews(selectedSublineId, 'archived'))
+        switchMap(selectedSublineId => this.newsApi.getNews(selectedSublineId, 'archived', '0','20'))
       ).subscribe(news => {
         this.newsList = news
       })
     } else if (changes.selectedSubline && this.mode == 'news') {
+
+      this.currentPage = 1;
+
       of(changes.selectedSubline.currentValue).pipe(
-        switchMap(selectedSublineId => this.newsApi.getNews(selectedSublineId, 'published'))
+        switchMap(selectedSublineId => this.newsApi.getNews(selectedSublineId, 'published', '0','20'))
       ).subscribe(news => {
         this.newsList = news
       })
     } else if (changes.mode && changes.mode.currentValue == 'news') {
+
+      this.currentPage = 1;
+
       of(this.selectedSubline).pipe(
-        switchMap(selectedSublineId => this.newsApi.getNews(selectedSublineId, 'published'))
+        switchMap(selectedSublineId => this.newsApi.getNews(selectedSublineId, 'published', '0','20'))
       ).subscribe(news => {
         this.newsList = news
       })
     } else if (changes.mode && changes.mode.currentValue == 'draft') {
+
+      this.currentPage = 1;
+
       of(this.selectedSubline).pipe(
-        switchMap(selectedSublineId => this.newsApi.getNews(selectedSublineId, 'archived'))
+        switchMap(selectedSublineId => this.newsApi.getNews(selectedSublineId, 'archived', '0','20'))
       ).subscribe(news => {
         this.newsList = news
       })
@@ -75,10 +90,6 @@ export class NewsListEditableComponent implements OnInit, OnChanges {
     this.newsList.push(news)
   }
 
-  addAsDraftResponse(news: news) {
-    this.newsdraftList.push(news)
-  }
-
   editNews(newsId: string) {
     this.onNewsEdit.next(newsId)
   }
@@ -88,6 +99,23 @@ export class NewsListEditableComponent implements OnInit, OnChanges {
       this.newsList = this.newsList.filter(news => news.id != newsId)
       this.onNewsDeleted.next(newsId)
     })
+  }
+
+  onScroll(){
+
+    console.log(this.newsList )
+
+    if(this.mode == 'draft'){
+      this.newsApi.getNews(this.selectedSubline, 'archived', (this.currentPage*20).toString(), '20').subscribe(news => {
+        this.newsList = this.newsList.concat(news)
+        this.currentPage++;
+      })
+    }else{
+      this.newsApi.getNews(this.selectedSubline, 'published', (this.currentPage*20).toString(), '20').subscribe(news => {
+        this.newsList = this.newsList.concat(news)
+        this.currentPage++;
+      })
+    }
   }
 
 }

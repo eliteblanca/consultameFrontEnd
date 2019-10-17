@@ -1,8 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { filter, switchMap } from 'rxjs/operators';
 import { news, NewsApiService } from "../../api/news-api.service";
-import { EventsService } from "../../services/events.service";
-
 
 @Component({
   selector: 'app-news',
@@ -15,21 +12,14 @@ export class NewsComponent implements OnInit {
   newsList:news[] = [];
   public maxDate: Date = new Date();
   public minDate: Date = new Date(2019, 9 , 30);
+  public selectedDate:Date;
 
 
-  constructor(
-    private eventsService:EventsService,
-    private newsApiService:NewsApiService
-  ){  }
+  constructor(){  }
   
-  ngOnInit(){
-    return this.eventsService.newSelectedLineSource.pipe(
-      filter(selectedLine => selectedLine.line != null && selectedLine.subLine != null),
-      switchMap(selectedLine => this.newsApiService.getNews(selectedLine.subLine.id,'published'))
-    ).subscribe(newsList => this.newsList = newsList)
-  }
+  ngOnInit(){  }
 
   onChange(event){
-    console.log(event)
+    this.selectedDate = event.value;
   }
 }

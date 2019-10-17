@@ -1,17 +1,26 @@
+:host{
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 4rem 38rem;
+    padding: .1rem;
+    overflow-x: hidden;
+}
+
 .Listheader{
     display: flex;
+    align-items: center;
+}
+
+.list{
+    overflow-y: scroll;
+    margin-right: -1.2rem;    
+    padding: .1rem;
 }
 
 .editIcon:hover{
     color: var(--primary);
     cursor: pointer;
 }
-
-/* asdsad
-
-
-*/
-
 
 .newsEditable{
     background-color: var(--terciaryDark);
@@ -38,6 +47,7 @@
     overflow: hidden;
     text-overflow: ellipsis;
 }
+
 .title:hover{
     color: var(--primary);
     cursor: pointer;
@@ -61,6 +71,7 @@
     margin: 0 .5rem;
     margin-right: 1rem;
 }
+
 .newsEditable:hover .separator{
     display: inline-block;
 }

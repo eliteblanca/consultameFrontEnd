@@ -1,6 +1,11 @@
-<div class="exploreContainer">
+<div class="categoriesContainer">    
     <app-categories *ngIf="categories" (onCategorySelected)="categoriaSeleccionada($event)" [categories]="categories"></app-categories>
-    <div class="articles_container">
-        <app-article-list [articles]="articles"></app-article-list>
-    </div>
+</div>
+<div infiniteScroll
+    (scrolled)="onScroll($event)"        
+    [infiniteScrollDistance]="2"
+    [infiniteScrollThrottle]="50" 
+    [scrollWindow]="false"
+    class="searchContainer">
+    <app-article-list [articles]="articles"></app-article-list>
 </div>

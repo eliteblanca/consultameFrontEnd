@@ -5,6 +5,7 @@
     display: grid;
     grid-template-columns: auto 22%;
     grid-template-rows: auto auto;
+    column-gap: 1rem;
 }
 
 :host .articleContainer{
@@ -123,3 +124,46 @@
       transform: scale3d(1, 1, 1);
     }
   }
+
+
+  
+.H1,.H2{
+  overflow: hidden;
+  padding: .5rem 1rem;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  width: 100%;
+  
+  font-weight: 500;
+  position: relative;
+}
+
+.H1:hover:after,.H2:hover:after,.H1.active:after,.H2.active:after{
+  content: '';
+  position: absolute;
+  top: .7rem;
+  left: 0rem;
+  width: .5rem;
+  height: .5rem;
+  background-color: var(--primary);
+  border-radius: 50%;
+}
+
+.H1::before,.H2::before{
+  content: '';
+  position: absolute;
+  top: 0;
+  left: .2rem;
+  width: 1px;
+  height: 100%;
+  background-color: lightgray;
+}
+
+.H2{
+  padding-left: 2rem;
+}
+
+.H1:hover,.H2:hover{
+  color: var(--primary);
+  cursor: pointer;
+}

@@ -18,3 +18,11 @@
         <span>{{article.disLikes.length}}</span>
     </div>
 </div>
+<div class="index">
+    <div class="indice">
+        <div *ngFor="let el of indexElements; index as i" [innerHTML]="el.innerHTML" [ngClass]="[el.tagName, calculateActive(i)]" (click)="scrollTo(el)"></div>
+    </div>
+</div>
+<div class="comments">
+    comments
+</div>

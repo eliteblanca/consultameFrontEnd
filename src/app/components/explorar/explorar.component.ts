@@ -1,10 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ArticlesApiService } from "../../api/articles-api.service";
 import { CategoriesApiService, category } from "../../api/categories-api.service";
 import { Article } from "../../article";
 import { EventsService } from "../../services";
 import { filter, switchMap } from 'rxjs/operators';
-
+import { ArticleListComponent } from "../article-list/article-list.component";
 
 @Component({
     selector: 'app-explorar',
@@ -15,6 +15,11 @@ export class ExplorarComponent implements OnInit {
 
     public articles: Article[];
     public categories: category[];
+    private categorySelected:category;
+    private pageNumber:number = 0;
+
+    @ViewChild(ArticleListComponent, { static: false })
+    articleList: ArticleListComponent;
 
     constructor(
         public events: EventsService,
@@ -31,14 +36,22 @@ export class ExplorarComponent implements OnInit {
     }
 
     categoriaSeleccionada(categoria:category) {
-
-        console.log(categoria)
-
-        this.articlesApi.getArticlesByCategory(categoria.id).subscribe(val => {
-            console.log(val)
+        this.pageNumber = 0;
+        this.categorySelected = categoria;
+        this.articlesApi.getArticlesByCategory(categoria.id,'0','10').subscribe(val => {
             this.articles = val;
+        })
+    }
+    
+    onScroll(event){
+        this.pageNumber++;
+
+        console.log(this.pageNumber)
+
+        this.articlesApi.getArticlesByCategory(this.categorySelected.id, (this.pageNumber*10).toString(), '10').subscribe(val => {
+            console.log(val)
+            this.articleList.concatArticles(val);
         })
     }
 
 }
-

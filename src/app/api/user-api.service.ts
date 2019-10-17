@@ -80,4 +80,5 @@ export class UserApiService {
     updateUserRol(idUsuario:string, newRol:string):Observable<{ status: string }>{
         return this.http.put<{ status: string }>(this.endPoints.updateUser(idUsuario),{ rol:newRol },{ observe: "body" })
     }
+
 }

@@ -10,9 +10,11 @@ import { Article } from "../../article";
 })
 export class ArticlesEditorListComponent implements OnInit,OnChanges {
 
+  private currentPage:number = 0;
+
   ngOnChanges(changes:SimpleChanges){
     if(changes.categorySelected.currentValue){
-      this.articlesApi.getArticlesByCategory( this.categorySelected ).subscribe( articles => {
+      this.articlesApi.getArticlesByCategory( this.categorySelected, '0', '20' ).subscribe( articles => {
         this.articles = articles;
       })
     }
@@ -32,5 +34,13 @@ export class ArticlesEditorListComponent implements OnInit,OnChanges {
 
   goToArticleCreation(){
     this.router.navigate(['/app/articlecreation'],{ queryParams: { category: this.categorySelected }, queryParamsHandling: 'merge' })
+  }
+
+  onScroll(event){
+    this.currentPage++;
+    this.articlesApi.getArticlesByCategory( this.categorySelected, ( this.currentPage * 20 ).toString(), '20' ).subscribe( articles => {
+      console.log(articles)
+      this.articles = this.articles.concat(articles);
+    })
   }
 }

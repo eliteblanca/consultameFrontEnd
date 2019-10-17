@@ -1,15 +1,14 @@
-import { Component, OnInit, AfterViewInit, ElementRef, ViewChild, Renderer2 } from '@angular/core';
-import { Observable } from 'rxjs';
-import { map, switchMap } from 'rxjs/operators';
+import { Location } from '@angular/common';
+import { AfterViewInit, Component, ElementRef, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Article } from "../../article";
-import { ApiService } from 'src/app/services';
+import format from 'date-fns/format';
+import toDate from 'date-fns/toDate';
+import { fromEvent } from 'rxjs';
+import { map, switchMap } from 'rxjs/operators';
 import { ArticlesApiService } from "../../api/articles-api.service";
-import toDate from 'date-fns/toDate'
-import format from 'date-fns/format'
+import { Article } from "../../article";
 import { UserService } from "../../services/user.service";
 import { RTEViewComponent } from "../rteview/rteview.component";
-import {Location} from '@angular/common';
 @Component({
   selector: 'app-article-view',
   templateUrl: './article-view.component.html',
@@ -18,6 +17,8 @@ import {Location} from '@angular/common';
 export class ArticleViewComponent implements OnInit, AfterViewInit {
   // @ViewChild("content", {static:false}) content: ElementRef;
   @ViewChild(RTEViewComponent, { static: false }) rteview: RTEViewComponent;
+  @ViewChild('content', { static: false } ) 
+  newsContainer:ElementRef;
 
   constructor(
      public activatedRoute: ActivatedRoute,
@@ -33,6 +34,9 @@ export class ArticleViewComponent implements OnInit, AfterViewInit {
   public publicationDate:string;
   public isFavoriteHover = false;
 
+  public container:Element;
+  public indexElements:Element[];
+  public currentScoll:number = 0;
 
   ngOnInit(){
   }
@@ -48,49 +52,20 @@ export class ArticleViewComponent implements OnInit, AfterViewInit {
       this.rteview.setContent(JSON.parse(this.article.obj || "[]")) 
       this.modificationDate = format(toDate(this.article.modificationDate),'yyyy/MM/dd  HH:mm');
       this.publicationDate = format(toDate(this.article.publicationDate),'yyyy/MM/dd  HH:mm');
-      // this.createArticle(article.content)
+      
+      this.indexElements = Array.from((this.newsContainer.nativeElement as HTMLElement).querySelectorAll('h1,h2'))
+
+      this.indexElements = this.indexElements.filter( el => el['innerText']['length'] > 1 )
+
+      this.container = Array.from( (this.newsContainer.nativeElement as HTMLElement).querySelectorAll('.ql-editor'))[0]
+
+      fromEvent(this.container, 'scroll').pipe(
+        map(event=> event.srcElement['scrollTop'])
+      ).subscribe(event=>{
+        this.currentScoll = event
+      })
     })
   }
-
-  // createArticle(content){
-  //   let iframe = document.createElement('iframe');
-  //   iframe.src = this.getGeneratedPageURL({"html":content, css:"",js:"let prueba ="});
-  //   iframe.style.border = '0';    
-  //   iframe.style.height = '100%';    
-  //   iframe.style.width = '100%';    
-
-  //   this.articleUrl = iframe.src;
-  //   this.renderer.appendChild(this.content.nativeElement,iframe);
-  // }
-
-  // getGeneratedPageURL = ({ html, css, js }) => {
-  //   const getBlobURL = (code, type) => {
-  //     const blob = new Blob([code], { type })
-  //     return URL.createObjectURL(blob)
-  //   }
-
-  //   const cssURL = getBlobURL(css, 'text/css')
-  //   const jsURL = getBlobURL(js, 'text/javascript')
-
-  //   const source = `
-  //     <html>
-  //       <head>
-  //         <link rel="stylesheet" type="text/css" href="${cssURL}" />
-  //         <script  src="https://code.jquery.com/jquery-3.4.1.min.js"  integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="  crossorigin="anonymous"></script>
-  //         <script src="${jsURL}"></script>
-  //       </head>
-  //       <body>
-  //         ${html || ''}
-  //       </body>
-  //     </html>
-  //   `
-
-  //   return getBlobURL(source, 'text/html')
-  // }
-
-  // fullScreen(){
-  //   window.open(this.articleUrl, '_blank');
-  // }
 
   isFavorite(){
     return this.article.favorites.includes(this.UserService.usuario.sub)
@@ -156,6 +131,23 @@ export class ArticleViewComponent implements OnInit, AfterViewInit {
 
   goBack(){
     this.Location.back();
+  }
+
+  scrollTo(el:Element){
+    // container.scrollTop = nodeList[2]['offsetTop']
+    this.container.scrollTop = el['offsetTop'];
+  }
+
+  calculateActive(index){
+    if(this.indexElements[index + 1]){
+      if( this.indexElements[index]['offsetTop'] - 100 < this.currentScoll && this.indexElements[index + 1]['offsetTop'] - 100 > this.currentScoll  ){
+        return 'active';
+      }else{
+        return 'na'
+      }
+    }else{
+      return 'na';
+    }
   }
 
 }
