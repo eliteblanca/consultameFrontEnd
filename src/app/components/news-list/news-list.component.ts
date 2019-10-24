@@ -35,7 +35,7 @@ export class NewsListComponent implements OnInit, OnChanges {
     this.eventsService.newSelectedLineSource.pipe(
       filter( selectedLine => selectedLine.line != null && selectedLine.subLine != null ),
       map( selectedSubline => selectedSubline.subLine.id ),
-      switchMap( selectedSublineId => this.newsApiService.getNews( selectedSublineId,'published','0','20', new Date().getTime().toString() ) )
+      switchMap( selectedSublineId => this.newsApiService.getNews( selectedSublineId,'published',0,20, new Date().getTime().toString() ) )
     ).subscribe( news => {
       this._news = news
     })
@@ -44,11 +44,11 @@ export class NewsListComponent implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     if(!changes.date.isFirstChange()){
       if( changes.date.currentValue.getDate() == new Date().getDate() && changes.date.currentValue.getFullYear() == new Date().getFullYear() && changes.date.currentValue.getMonth() == new Date().getMonth()  ){
-        this.newsApiService.getNews( this.eventsService.newSelectedLineSource.getValue().subLine.id ,'published','0','20', new Date().getTime().toString() ).subscribe(news => {
+        this.newsApiService.getNews( this.eventsService.newSelectedLineSource.getValue().subLine.id ,'published',0,20, new Date().getTime().toString() ).subscribe(news => {
           this._news = news
         })
       }else{
-        this.newsApiService.getNews( this.eventsService.newSelectedLineSource.getValue().subLine.id ,'published','0','20', changes.date.currentValue.getTime().toString() ).subscribe(news => {
+        this.newsApiService.getNews( this.eventsService.newSelectedLineSource.getValue().subLine.id ,'published',0,20, changes.date.currentValue.getTime().toString() ).subscribe(news => {
           this._news = news
         })
       }
@@ -63,8 +63,8 @@ export class NewsListComponent implements OnInit, OnChanges {
     this.newsApiService.getNews(
        this.eventsService.newSelectedLineSource.getValue().subLine.id,
        'published',
-       (this.currentPage*20).toString(),
-       '20',
+       this.currentPage*20,
+       20,
        this.date.getTime().toString()
     ).subscribe(news => {
       this._news = this._news.concat(news)

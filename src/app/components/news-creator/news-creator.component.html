@@ -19,6 +19,6 @@
     <app-rich-text-editor></app-rich-text-editor>
 </div>
 <div class="footer">
-    <app-button *ngIf="!!!newsOnEdition || newsOnEdition.state == 'archived'" [buttonText]="'Guardar borrador'" (click)="saveAsDraft()"></app-button>
-    <app-button class="ml.5" [buttonText]="newsOnEdition && newsOnEdition.state == 'published' ? 'Actualizar':'Publicar'" (click)="publishNews()"></app-button>
+    <app-button #saveAsDraftButton *ngIf="!!!newsOnEdition || newsOnEdition.state == 'archived'" [buttonText]="'Guardar borrador'"></app-button>
+    <app-button #publishNewsButton class="ml.5" [buttonText]="newsOnEdition && newsOnEdition.state == 'published' ? 'Actualizar':'Publicar'"></app-button>
 </div>

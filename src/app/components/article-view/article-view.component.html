@@ -1,12 +1,16 @@
+
 <div class="articleContainer">
     <header class="header">
         <app-icon [iconName]="'mdi:arrow-left'" (click)="goBack()"> </app-icon>
         <h4 *ngIf="article" class="title">{{article.title}}</h4>
         <app-icon [iconName]="'mdi:fullscreen'" (click)="fullScreen()"> </app-icon>
     </header>
-    <div class="content" #content>
-        <app-rteview></app-rteview>
-    </div>
+    <ng-scrollbar class="content" >
+        <div #content>
+
+            <app-rteview></app-rteview>
+        </div>
+    </ng-scrollbar>
     <div class="footer" *ngIf="article">
         <app-icon [iconName]="'mdi:help-circle-outline'" [title]="'Publicado el ' + publicationDate"></app-icon>
         <span  class="leyend">Ultima modificacion el: {{modificationDate}}</span>
@@ -23,6 +27,6 @@
         <div *ngFor="let el of indexElements; index as i" [innerHTML]="el.innerHTML" [ngClass]="[el.tagName, calculateActive(i)]" (click)="scrollTo(el)"></div>
     </div>
 </div>
-<div class="comments">
-    comments
+<div class="comments" *ngIf="article">
+        <app-comment-list [articleId]="article.id"></app-comment-list>
 </div>

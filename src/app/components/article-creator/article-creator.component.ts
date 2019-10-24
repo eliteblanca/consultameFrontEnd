@@ -23,10 +23,17 @@ export class ArticleCreatorComponent implements OnInit {
   private seletedCategory:string;
   private contentOnEditor:Object[];
   private textOnEditor:string;
+  public newFiles:string[] = [];
 
   @ViewChild(RichTextEditorComponent,{ static:false }) RTE:RichTextEditorComponent;
   @ViewChild('articleTitle',{ static:false }) public articleTitle:ElementRef ;
+
   public articleToEdit:Article;
+
+  public path = {
+    saveUrl: ``,
+    removeUrl: ``
+  };
 
   ngAfterViewInit(){
     let editArticleObservable = this.route.queryParamMap.pipe(
@@ -35,6 +42,12 @@ export class ArticleCreatorComponent implements OnInit {
       switchMap(articleId => this.articlesApi.getArticle(articleId))
     ).subscribe(article => {
       this.articleToEdit = article;
+
+      this.path = {
+        saveUrl: `http://localhost:3001/files/${this.articleToEdit.id}`,
+        removeUrl: `http://localhost:3001/files/${this.articleToEdit.id}`
+      };
+
       this.articleTitle.nativeElement.value = this.articleToEdit.title;
       this.tags = this.articleToEdit.tags;    
       this.RTE.setContent( JSON.parse((this.articleToEdit.obj || "[]")) )
@@ -65,8 +78,8 @@ export class ArticleCreatorComponent implements OnInit {
   saveArticle(){
 
     if(!!this.articleToEdit){
-      let newArticle:postArticleDTO  = {
-        attached:[],
+      let newArticle:postArticleDTO = {
+        attached:[ ...this.articleToEdit.attached, ...this.newFiles ],
         category:this.articleToEdit.category,
         content:this.RTE.getText(),
         obj:this.RTE.getContent(),
@@ -118,4 +131,16 @@ export class ArticleCreatorComponent implements OnInit {
     this.contentOnEditor = content.content;
     this.textOnEditor = content.text;
   }
+
+  onFileSelected(filesData){
+    console.log(filesData)
+    if(filesData.operation == "upload"){
+      this.newFiles.push(filesData.file.name)
+      console.log(this.newFiles)
+    }else if(false){
+
+    }
+    // this.newFiles = this.newFiles filesData.filter(fileData => fileData.statusCode != '2').map(fileData=> fileData.name )
+  }
+
 }

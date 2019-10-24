@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, OnChanges, SimpleChanges, Output, EventEmitter } from '@angular/core';
 import { NewsApiService, news } from "../../api/news-api.service";
-import { switchMap } from 'rxjs/operators';
+import { switchMap, tap } from 'rxjs/operators';
 import { of } from 'rxjs';
 
 @Component({
@@ -19,7 +19,6 @@ export class NewsListEditableComponent implements OnInit, OnChanges {
   @Output() onAddNews = new EventEmitter();
   @Output() onNewsEdit = new EventEmitter();
   @Output() onNewsDeleted = new EventEmitter();
-  private currentPage = 1; 
 
   constructor(private newsApi: NewsApiService) { }
 
@@ -27,15 +26,12 @@ export class NewsListEditableComponent implements OnInit, OnChanges {
 
     if (changes.selectedSubline && changes.mode) {
 
-      this.currentPage = 1;
-
       of(changes.selectedSubline.currentValue).pipe(
         switchMap(selectedSublineId => {
-          if (changes.mode.currentValue == 'news') {
-            console.log('prueba 2')
-            return this.newsApi.getNews(selectedSublineId, 'published', '0','20')
+          if (changes.mode.currentValue == 'news') {            
+            return this.newsApi.getNews(selectedSublineId, 'published', 0, 20)
           } else {
-            return this.newsApi.getNews(selectedSublineId, 'archived', '0','20')
+            return this.newsApi.getNews(selectedSublineId, 'archived', 0, 20)
           }
         })
       ).subscribe(news => {
@@ -43,37 +39,29 @@ export class NewsListEditableComponent implements OnInit, OnChanges {
       })
     } else if (changes.selectedSubline && this.mode == 'draft') {
 
-      this.currentPage = 1;
-
       of(changes.selectedSubline.currentValue).pipe(
-        switchMap(selectedSublineId => this.newsApi.getNews(selectedSublineId, 'archived', '0','20'))
+        switchMap(selectedSublineId => this.newsApi.getNews(selectedSublineId, 'archived', 0, 20))
       ).subscribe(news => {
         this.newsList = news
       })
-    } else if (changes.selectedSubline && this.mode == 'news') {
-
-      this.currentPage = 1;
+    } else if (changes.selectedSubline && this.mode == 'news') {      
 
       of(changes.selectedSubline.currentValue).pipe(
-        switchMap(selectedSublineId => this.newsApi.getNews(selectedSublineId, 'published', '0','20'))
+        switchMap(selectedSublineId => this.newsApi.getNews(selectedSublineId, 'published', 0, 20))
       ).subscribe(news => {
         this.newsList = news
       })
     } else if (changes.mode && changes.mode.currentValue == 'news') {
 
-      this.currentPage = 1;
-
       of(this.selectedSubline).pipe(
-        switchMap(selectedSublineId => this.newsApi.getNews(selectedSublineId, 'published', '0','20'))
+        switchMap(selectedSublineId => this.newsApi.getNews(selectedSublineId, 'published', 0, 20))
       ).subscribe(news => {
         this.newsList = news
       })
     } else if (changes.mode && changes.mode.currentValue == 'draft') {
 
-      this.currentPage = 1;
-
       of(this.selectedSubline).pipe(
-        switchMap(selectedSublineId => this.newsApi.getNews(selectedSublineId, 'archived', '0','20'))
+        switchMap(selectedSublineId => this.newsApi.getNews(selectedSublineId, 'archived', 0, 20))
       ).subscribe(news => {
         this.newsList = news
       })
@@ -95,27 +83,35 @@ export class NewsListEditableComponent implements OnInit, OnChanges {
   }
 
   deleteNews(newsId: string) {
-    this.newsApi.deleteNews(newsId).subscribe(result => {
-      this.newsList = this.newsList.filter(news => news.id != newsId)
+    this.newsApi.deleteNews(newsId).pipe(
+      tap(result => this.newsList = this.newsList.filter(news => news.id != newsId)),
+      switchMap(result => {
+        if (this.mode == 'draft') {
+          return this.newsApi.getNews(this.selectedSubline, 'archived', this.newsList.length + 1, 1)
+        } else {
+          return this.newsApi.getNews(this.selectedSubline, 'published', this.newsList.length + 1, 1)
+        }
+      })
+    ).subscribe(news => {
+      this.newsList = this.newsList.concat(news)
       this.onNewsDeleted.next(newsId)
     })
   }
 
-  onScroll(){
-
-    console.log(this.newsList )
-
-    if(this.mode == 'draft'){
-      this.newsApi.getNews(this.selectedSubline, 'archived', (this.currentPage*20).toString(), '20').subscribe(news => {
-        this.newsList = this.newsList.concat(news)
-        this.currentPage++;
+  onScroll() {
+    if (this.mode == 'draft') {
+      this.newsApi.getNews(this.selectedSubline, 'archived', this.newsList.length, 20).subscribe(news => {
+        this.newsList = this.newsList.concat(news)        
       })
-    }else{
-      this.newsApi.getNews(this.selectedSubline, 'published', (this.currentPage*20).toString(), '20').subscribe(news => {
+    } else {
+      this.newsApi.getNews(this.selectedSubline, 'published', this.newsList.length, 20).subscribe(news => {
         this.newsList = this.newsList.concat(news)
-        this.currentPage++;
       })
     }
+  }
+
+  concatNews(news:news){
+    this.newsList.push(news)
   }
 
 }

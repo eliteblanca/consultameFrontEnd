@@ -18,7 +18,7 @@ export class AppComponent implements OnInit {
         this.events.onNewSearch$.subscribe(newSearch => {
             if (newSearch) {
                 this.title.setTitle(newSearch);
-                this.router.navigate(['/app/search'], { queryParams: { query: newSearch }, queryParamsHandling: 'merge' })
+                this.router.navigate(['/app/search'], { queryParams: { query: newSearch } })
             }
         })
 

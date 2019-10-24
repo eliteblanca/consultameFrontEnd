@@ -14,6 +14,8 @@ export class ArticleEditableComponent implements OnInit {
   @Input() article:Article;
   @Output() onArticleDeleted = new EventEmitter();
 
+  public isDeleted = false;
+
   constructor(
     private articlesApi:ArticlesApiService,
     private router:Router
@@ -23,6 +25,7 @@ export class ArticleEditableComponent implements OnInit {
   }
 
   deleteArticle(){
+    this.isDeleted = true;
     this.articlesApi.deleteArticle(this.article.id).subscribe(result => {
         this.onArticleDeleted.next(this.article.id)
     })

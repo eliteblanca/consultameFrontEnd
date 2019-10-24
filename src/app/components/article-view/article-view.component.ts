@@ -9,6 +9,9 @@ import { ArticlesApiService } from "../../api/articles-api.service";
 import { Article } from "../../article";
 import { UserService } from "../../services/user.service";
 import { RTEViewComponent } from "../rteview/rteview.component";
+import { NgScrollbar } from 'ngx-scrollbar';
+
+
 @Component({
   selector: 'app-article-view',
   templateUrl: './article-view.component.html',
@@ -16,9 +19,15 @@ import { RTEViewComponent } from "../rteview/rteview.component";
 })
 export class ArticleViewComponent implements OnInit, AfterViewInit {
   // @ViewChild("content", {static:false}) content: ElementRef;
-  @ViewChild(RTEViewComponent, { static: false }) rteview: RTEViewComponent;
+  @ViewChild(RTEViewComponent, { static: false })
+  rteview: RTEViewComponent;
+
   @ViewChild('content', { static: false } ) 
   newsContainer:ElementRef;
+
+  @ViewChild(NgScrollbar, { static: true })
+  scrollbarRef: NgScrollbar;
+
 
   constructor(
      public activatedRoute: ActivatedRoute,
@@ -48,6 +57,7 @@ export class ArticleViewComponent implements OnInit, AfterViewInit {
           return this.articlesApi.getArticle(articleId)
         })
       ).subscribe((article:Article)=>{
+
       this.article = article;
       this.rteview.setContent(JSON.parse(this.article.obj || "[]")) 
       this.modificationDate = format(toDate(this.article.modificationDate),'yyyy/MM/dd  HH:mm');
@@ -59,11 +69,12 @@ export class ArticleViewComponent implements OnInit, AfterViewInit {
 
       this.container = Array.from( (this.newsContainer.nativeElement as HTMLElement).querySelectorAll('.ql-editor'))[0]
 
-      fromEvent(this.container, 'scroll').pipe(
+      this.scrollbarRef.scrolled.pipe(
         map(event=> event.srcElement['scrollTop'])
       ).subscribe(event=>{
         this.currentScoll = event
       })
+
     })
   }
 
@@ -135,7 +146,8 @@ export class ArticleViewComponent implements OnInit, AfterViewInit {
 
   scrollTo(el:Element){
     // container.scrollTop = nodeList[2]['offsetTop']
-    this.container.scrollTop = el['offsetTop'];
+    // this.container.scrollTop = el['offsetTop'];
+    this.scrollbarRef.scrollTo({top:el['offsetTop']})
   }
 
   calculateActive(index){

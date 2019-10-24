@@ -49,12 +49,13 @@ export class ArticlesApiService {
         )
     }
 
-    getArticlesByCategory(categoryId: string, from?:string, size?:string): Observable<Article[]> {
+    getArticlesByCategory(categoryId: string, from?:number, size?:number): Observable<Article[]> {
 
-        if(!!from && !!size){
+
+        if(typeof from != undefined &&  typeof size != undefined){
             return of(null).pipe(
                 switchMap(val => {
-                    return this.http.get<Article[]>(this.endPoints.getByCategory(categoryId), { params: { from: from, size: size }, observe: "body" })
+                    return this.http.get<Article[]>(this.endPoints.getByCategory(categoryId), { params: { from: from.toString(), size: size.toString() }, observe: "body" })
                 })
             )
             
@@ -69,11 +70,21 @@ export class ArticlesApiService {
 
     }
 
-    getArticlesByQuery(params: { query: string, subline: string, from?:string, size?:string }): Observable<Article[]> {
+    getArticlesByQuery(params: { subline: string, query?: string, tag?:string, from?:number, size?:number }): Observable<Article[]> {
+
+        let paramsObj = {
+            query: params.query,
+            from: params.from.toString(),
+            size: params.size.toString(),
+            tag: params.tag
+        }
+    
+        Object.keys(paramsObj).forEach(key => paramsObj[key] === undefined ? delete paramsObj[key] : '');
+
         return of(null).pipe(
             switchMap(val => {
-                if(params.from && params.size){
-                    return this.http.get<Article[]>(this.endPoints.getByQuery(params.subline), { params: { query: params.query ,from: params.from,size: params.size  }, observe: "body" })
+                if(typeof params.from != 'undefined' && typeof params.size != 'undefined'){
+                    return this.http.get<Article[]>(this.endPoints.getByQuery(params.subline), { params: paramsObj, observe: "body" })
                 }else{
                     return this.http.get<Article[]>(this.endPoints.getByQuery(params.subline), { params: { query: params.query }, observe: "body" })
                 }
@@ -129,8 +140,8 @@ export class ArticlesApiService {
         return this.http.delete<any>(this.endPoints.deleteDisLike(articleId), { observe: "body" })
     }
 
-    getSelfFavorites(from?:string, size?:string): Observable<Article[]> {
-        return this.http.get<Article[]>(this.endPoints.getSelfFavorites, { params: { from: from, size: size }, observe: "body" })
+    getSelfFavorites(from?:number, size?:number): Observable<Article[]> {
+        return this.http.get<Article[]>(this.endPoints.getSelfFavorites, { params: { from: from.toString(), size: size.toString() }, observe: "body" })
     }
 
 }

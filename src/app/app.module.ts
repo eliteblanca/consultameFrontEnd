@@ -9,6 +9,10 @@ import { QuillModule } from 'ngx-quill';
 import { CalendarModule } from '@syncfusion/ej2-angular-calendars';
 import { InfiniteScrollModule } from 'ngx-infinite-scroll';
 import { NgxMasonryModule } from 'ngx-masonry';
+import { AutosizeModule } from 'ngx-autosize';
+import { NgScrollbarModule } from 'ngx-scrollbar';
+import { PickerModule } from '@ctrl/ngx-emoji-mart';
+import { UploaderModule  } from '@syncfusion/ej2-angular-inputs';
 
 import { AppComponent } from './app.component';
 import { ArticleCreatorComponent } from './components/article-creator/article-creator.component';
@@ -45,6 +49,9 @@ import { NewsListComponent } from './components/news-list/news-list.component';
 import { NewsCardComponent } from './components/news-card/news-card.component';
 import { NewsViewComponent } from './components/news-view/news-view.component';
 import { FavoritesComponent } from './components/favorites/favorites.component';
+import { CommentListComponent } from './components/comment-list/comment-list.component';
+import { CommentComponent } from './components/comment/comment.component';
+import { ArticlePrevComponent } from './components/article-prev/article-prev.component';
 @NgModule({
     declarations: [
         AppComponent,
@@ -93,6 +100,9 @@ import { FavoritesComponent } from './components/favorites/favorites.component';
         NewsCardComponent,
         NewsViewComponent,
         FavoritesComponent,
+        CommentListComponent,
+        CommentComponent,
+        ArticlePrevComponent,
     ],
     imports: [
         BrowserModule,
@@ -104,7 +114,11 @@ import { FavoritesComponent } from './components/favorites/favorites.component';
         QuillModule.forRoot(),
         CalendarModule,
         InfiniteScrollModule,
-        NgxMasonryModule
+        NgxMasonryModule,
+        AutosizeModule,
+        NgScrollbarModule,
+        PickerModule,
+        UploaderModule
     ],
     providers: [
         JwtInterceptor,
@@ -112,4 +126,6 @@ import { FavoritesComponent } from './components/favorites/favorites.component';
     ],
     bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+
+}

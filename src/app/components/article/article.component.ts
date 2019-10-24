@@ -2,6 +2,7 @@ import { AfterViewInit, Component, Input, OnInit, Output, EventEmitter } from '@
 import { UserService } from 'src/app/services';
 import { ArticlesApiService } from "../../api/articles-api.service";
 import { Article } from '../../article';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-article',
@@ -26,7 +27,8 @@ export class ArticleComponent implements OnInit, AfterViewInit {
   
   constructor(
     private articlesApi:ArticlesApiService,
-    public UserService:UserService
+    public UserService:UserService,
+    public router: Router
   ) { }
  
   ngOnInit() {
@@ -160,6 +162,10 @@ export class ArticleComponent implements OnInit, AfterViewInit {
 
     this.Article.likes = this.Article.likes.filter(userId => userId !=  this.UserService.usuario.sub )
 
+  }
+
+  searchTag(tag){    
+    this.router.navigate(['/app/search'], { queryParams: { tag: tag } })
   }
 
 }

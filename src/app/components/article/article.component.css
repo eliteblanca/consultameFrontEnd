@@ -93,23 +93,29 @@
     padding-top: 0;
 }
 
-.footer .tags{
+.tagList{
     display: flex;
     flex-wrap: wrap;
     align-items: center;
     justify-content: flex-start;
     flex-grow: 1;
+    padding: 1rem;
 }
 
-.footer .tag{
-    padding: .4rem 1rem;
-    border-radius: 50px;
+.tag{
+    padding: .2rem .5rem;
+    border-radius: 5px;
     background-color: var(--primaryLight);
-    font-size: .85rem;
+    font-size: .75rem;
     margin-right: .3rem;
     margin-bottom: .3rem;
     text-decoration: none;
     color: inherit;
+}
+
+.tag:hover{
+    cursor: pointer;
+    box-shadow: var(--shadow2);
 }
 
 .footer .socialButton{

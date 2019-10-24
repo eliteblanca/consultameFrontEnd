@@ -11,8 +11,7 @@ import { ArticlesApiService } from "../../api/articles-api.service";
 export class FavoritesComponent implements OnInit {
   
   public articles: Article[];
-  private currentPage: number = 1;
-  private offset = 0;
+  private pagesize = 20;
 
   @ViewChild(ArticleListComponent, { static: false })
   articleList: ArticleListComponent;
@@ -22,22 +21,22 @@ export class FavoritesComponent implements OnInit {
   ) {  }
 
   ngOnInit() {
-    this.articlesApi.getSelfFavorites('0','10').subscribe(articles => {
+    this.articlesApi.getSelfFavorites(0,this.pagesize).subscribe(articles => {
       this.articles = articles
     })
   }
 
   onScroll(){
-    console.log(this.currentPage);
-    
-    this.articlesApi.getSelfFavorites((this.currentPage*10).toString(),'10').subscribe(articles => {
+    this.articlesApi.getSelfFavorites(this.articles.length,this.pagesize).subscribe(articles => {
       this.articles = this.articles.concat(articles)
-      this.currentPage++;
     })
   }
 
   onDeleteFavorite(article:Article){
-    this.articles.findIndex
+    this.articles = this.articles.filter( _article => _article.id != article.id)
+    this.articlesApi.getSelfFavorites(this.articles.length + 1 , 1).subscribe(articles => {
+      this.articles = this.articles.concat(articles)
+    })
   }
 
 }

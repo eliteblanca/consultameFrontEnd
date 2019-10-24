@@ -23,6 +23,7 @@ export class EdicionComponent implements OnInit {
       switchMap(selectedLine => this.categoriesApi.getCategories( selectedLine.subLine.id ) )
     ).subscribe(categories => {
       this.categories = categories;
+      this.categorySelected = undefined;
     })
   }
 

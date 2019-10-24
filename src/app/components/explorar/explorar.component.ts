@@ -16,7 +16,7 @@ export class ExplorarComponent implements OnInit {
     public articles: Article[];
     public categories: category[];
     private categorySelected:category;
-    private pageNumber:number = 0;
+    private pagesize = 20;
 
     @ViewChild(ArticleListComponent, { static: false })
     articleList: ArticleListComponent;
@@ -32,25 +32,22 @@ export class ExplorarComponent implements OnInit {
         return this.eventsService.newSelectedLineSource.pipe(
             filter(selectedLine => selectedLine.line != null && selectedLine.subLine != null),
             switchMap(selectedLine => this.categoriesApi.getCategories(selectedLine.subLine.id))
-        ).subscribe(categories => this.categories = categories)
+        ).subscribe(categories => {
+            this.articles = [];
+            this.categories = categories
+        })
     }
 
     categoriaSeleccionada(categoria:category) {
-        this.pageNumber = 0;
         this.categorySelected = categoria;
-        this.articlesApi.getArticlesByCategory(categoria.id,'0','10').subscribe(val => {
-            this.articles = val;
+        this.articlesApi.getArticlesByCategory(categoria.id, 0, this.pagesize).subscribe(articles => {
+            this.articles = this.articles.concat(articles)
         })
     }
     
     onScroll(event){
-        this.pageNumber++;
-
-        console.log(this.pageNumber)
-
-        this.articlesApi.getArticlesByCategory(this.categorySelected.id, (this.pageNumber*10).toString(), '10').subscribe(val => {
-            console.log(val)
-            this.articleList.concatArticles(val);
+        this.articlesApi.getArticlesByCategory(this.categorySelected.id, this.articleList.articles.length, this.pagesize).subscribe(articles => {
+            this.articles = this.articles.concat(articles)
         })
     }
 

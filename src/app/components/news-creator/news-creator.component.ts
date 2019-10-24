@@ -1,10 +1,10 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { EventsService } from "../../services/events.service";
-import { filter, switchMap } from 'rxjs/operators';
+import { filter, switchMap, tap, map } from 'rxjs/operators';
 import { NewsApiService, news, newsDTO, UpdateNewsDTO } from "../../api/news-api.service";
 import { RichTextEditorComponent } from "../rich-text-editor/rich-text-editor.component";
 import { NewsListEditableComponent } from "../news-list-editable/news-list-editable.component";
-import { of } from 'rxjs';
+import { of, fromEvent, Observable } from 'rxjs';
 import { Router } from '@angular/router';
 
 @Component({
@@ -12,7 +12,7 @@ import { Router } from '@angular/router';
   templateUrl: './news-creator.component.html',
   styleUrls: ['./news-creator.component.css']
 })
-export class NewsCreatorComponent implements OnInit {
+export class NewsCreatorComponent implements OnInit, AfterViewInit {
 
   @ViewChild(RichTextEditorComponent, { static: false })
   RTE: RichTextEditorComponent
@@ -23,8 +23,24 @@ export class NewsCreatorComponent implements OnInit {
   @ViewChild('articleTitle', { static: false })
   articleTitle: ElementRef
 
+  @ViewChild('saveAsDraftButton', { read: ElementRef, static: false })
+  saveAsDraftButton: ElementRef
+
+  @ViewChild('publishNewsButton', { read: ElementRef, static: false })
+  publishNewsButton: ElementRef
+
   newsOnEdition: news;
   listMode: 'news' | 'draft' = 'news';
+
+  postDraftDTO$: Observable<newsDTO>;
+
+  postDraft$: Observable<news>;
+
+  updateDraft$: Observable<{ status: string; }>;
+
+  updateNews$: Observable<any>;
+
+  postNews$: Observable<news>;
 
   constructor(
     private eventsService: EventsService,
@@ -38,6 +54,86 @@ export class NewsCreatorComponent implements OnInit {
     ).subscribe(selectedLine => this.selectedSubline = selectedLine.subLine.id)
   }
 
+  ngAfterViewInit(): void {
+    this.postDraftDTO$ = fromEvent(this.saveAsDraftButton.nativeElement, 'click').pipe(
+      map<any, newsDTO>(event => {
+        return {
+          attached: [],
+          content: this.RTE.getText(),
+          obj: this.RTE.getContent(),
+          state: 'archived',
+          subline: this.selectedSubline,
+          title: this.articleTitle.nativeElement.value
+        }
+      })
+    )
+
+    this.postNews$ = fromEvent(this.publishNewsButton.nativeElement, 'click').pipe(
+      filter(event => !!!this.newsOnEdition),
+      map<any, newsDTO>(event => {
+        return {
+          attached: [],
+          content: this.RTE.getText(),
+          obj: this.RTE.getContent(),
+          state: 'published',
+          subline: this.selectedSubline,
+          title: this.articleTitle.nativeElement.value
+        }
+      }),
+      switchMap(newsToSave => this.newsApi.postNews(newsToSave)),
+      tap( newsAdded => {
+        this.listMode = 'news'
+        this.newsOnEdition = newsAdded;
+        this.newslist.addNewsResponse(newsAdded)
+        this.router.navigate(['/app/news', newsAdded.id])
+      })
+    )
+
+    this.updateNews$ = fromEvent(this.publishNewsButton.nativeElement, 'click').pipe(
+      filter(event => !!this.newsOnEdition),
+      map<any, UpdateNewsDTO>(event => {
+        return {
+          content: this.RTE.getText(),
+          obj: this.RTE.getContent(),
+          state: 'published',
+          title: this.articleTitle.nativeElement.value
+        }
+      }),
+      switchMap(newsToUpdate => this.newsApi.updateNews(this.newsOnEdition.id, newsToUpdate)),
+      tap( newsAdded => {
+        this.listMode = 'news'
+        this.router.navigate(['/app/news', this.newsOnEdition.id])
+      })
+    )
+
+    this.postDraft$ = this.postDraftDTO$.pipe(
+      filter(newsToSave => !!!this.newsOnEdition),
+      switchMap(newsToSave => this.newsApi.postNews(newsToSave)),
+      tap(newsAdded => {
+        this.newsOnEdition = newsAdded;
+        this.listMode = 'draft';
+        this.newslist.concatNews(newsAdded)
+      })
+    )
+
+    this.updateDraft$ = this.postDraftDTO$.pipe(
+      filter(newsToSave => !!this.newsOnEdition),
+      switchMap(newsToSave => this.newsApi.updateNews(this.newsOnEdition.id, newsToSave)),
+      tap(result => {
+        window.alert('borrador actualizado')
+      })
+    )
+
+    this.postDraft$.subscribe()
+
+    this.updateDraft$.subscribe()
+
+    this.postNews$.subscribe()
+
+    this.updateNews$.subscribe()
+
+  }
+
   selectedSubline: string;
 
   addNewsMode = false;
@@ -48,59 +144,67 @@ export class NewsCreatorComponent implements OnInit {
     this.newsOnEdition = undefined;
   }
 
-  publishNews() {
-    if (this.newsOnEdition) {
-      let newsToUpdate: UpdateNewsDTO = {
-        content: this.RTE.getText(),
-        obj: this.RTE.getContent(),
-        state: 'published',
-        title: this.articleTitle.nativeElement.value
-      }
+  // publishNews() {
+  //   if (this.newsOnEdition) {
+  //     let newsToUpdate: UpdateNewsDTO = {
+  //       content: this.RTE.getText(),
+  //       obj: this.RTE.getContent(),
+  //       state: 'published',
+  //       title: this.articleTitle.nativeElement.value
+  //     }
 
-      this.newsApi.updateNews(this.newsOnEdition.id, newsToUpdate).subscribe(result => {
-        this.listMode = 'news'
-        this.router.navigate(['/app/news', this.newsOnEdition.id ])
-      })
-    } else {
-      let newsToSave: newsDTO = {
-        attached: [],
-        content: this.RTE.getText(),
-        obj: this.RTE.getContent(),
-        state: 'published',
-        subline: this.selectedSubline,
-        title: this.articleTitle.nativeElement.value
-      }
+  //     this.newsApi.updateNews(this.newsOnEdition.id, newsToUpdate).subscribe(result => {
+  //       this.listMode = 'news'
+  //       this.router.navigate(['/app/news', this.newsOnEdition.id])
+  //     })
+  //   } else {
+  //     let newsToSave: newsDTO = {
+  //       attached: [],
+  //       content: this.RTE.getText(),
+  //       obj: this.RTE.getContent(),
+  //       state: 'published',
+  //       subline: this.selectedSubline,
+  //       title: this.articleTitle.nativeElement.value
+  //     }
 
-      this.newsApi.postNews(newsToSave).subscribe(newsAdded => {
-        this.listMode = 'news'
-        this.newsOnEdition = newsAdded;
-        this.newslist.addNewsResponse(newsAdded)        
-        this.router.navigate(['/app/news', newsAdded.id ])
-      })
-    }
+  //     this.newsApi.postNews(newsToSave).subscribe(newsAdded => {
+  //       this.listMode = 'news'
+  //       this.newsOnEdition = newsAdded;
+  //       this.newslist.addNewsResponse(newsAdded)
+  //       this.router.navigate(['/app/news', newsAdded.id])
+  //     })
+  //   }
 
-  }
+  // }
 
-  saveAsDraft() {
-    let newsToSave: newsDTO = {
-      attached: [],
-      content: this.RTE.getText(),
-      obj: this.RTE.getContent(),
-      state: 'archived',
-      subline: this.selectedSubline,
-      title: this.articleTitle.nativeElement.value
-    }
-    if (this.newsOnEdition) {
-      this.newsApi.updateNews(this.newsOnEdition.id,newsToSave).subscribe(newsAdded => {
-        console.log('borrador actualizado')
-      })
-    } else {
-      this.newsApi.postNews(newsToSave).subscribe(newsAdded => {
-        this.newsOnEdition = newsAdded;
-        this.listMode = 'draft';
-      })
-    }
-  }
+
+
+
+
+
+
+  // saveAsDraft() {
+  //   let newsToSave: newsDTO = {
+  //     attached: [],
+  //     content: this.RTE.getText(),
+  //     obj: this.RTE.getContent(),
+  //     state: 'archived',
+  //     subline: this.selectedSubline,
+  //     title: this.articleTitle.nativeElement.value
+  //   }
+  //   if (this.newsOnEdition) {
+  //     this.newsApi.updateNews(this.newsOnEdition.id, newsToSave)
+  //       .subscribe(result => {
+  //         window.alert('borrador actualizado')
+  //       })
+  //   } else {
+  //     this.newsApi.postNews(newsToSave).subscribe(newsAdded => {
+  //       this.newsOnEdition = newsAdded;
+  //       this.listMode = 'draft';
+  //       this.newslist.concatNews(newsAdded)
+  //     })
+  //   }
+  // }
 
   onNewsEdit(newsId: string) {
     this.addNewsMode = true;

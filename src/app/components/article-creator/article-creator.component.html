@@ -15,5 +15,14 @@
         </div>
     </div>
     <app-button [buttonText]="'Publicar'" class="mb.5" (click)="saveArticle()"></app-button>
-    <app-button [buttonText]="'Archivar'"></app-button>
+    <app-button class="mb2" [buttonText]="'Archivar'"></app-button>
+    <div *ngIf="articleToEdit">
+        <h4>Archivos adjuntos</h4>
+        <app-article-prev *ngFor="let file of articleToEdit.attached" [fileName]="file" [articleId]="articleToEdit.id"></app-article-prev>
+    </div>
+
+    <div *ngFor="let file of newFiles">
+        {{file}}
+    </div>
+    <ejs-uploader [asyncSettings]='path' #defaultupload [multiple] = 'false' (success)="onFileSelected($event)"></ejs-uploader>
 </div>

@@ -1,10 +1,10 @@
 import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Params } from '@angular/router';
 import { ArticlesApiService } from "../../api/articles-api.service";
-import { switchMap, tap, filter } from "rxjs/operators";
+import { switchMap, tap, filter, map, publishBehavior, refCount } from "rxjs/operators";
 import { Article, articleConf } from "../../article";
 import { EventsService } from "../../services/events.service";
-import { of } from 'rxjs';
+import { of, Observable, combineLatest, merge } from 'rxjs';
 import { ArticleListComponent } from "../article-list/article-list.component";
 @Component({
     selector: 'app-search',
@@ -13,10 +13,14 @@ import { ArticleListComponent } from "../article-list/article-list.component";
 })
 export class SearchComponent implements OnInit, AfterViewInit {
 
-    public busqueda: string = "";
-    public articles: Article[];
-    private params: any;
-    private currentPage: number = 0;
+    public articles:Article[] = [];
+    private newQuery$:Observable<any>;
+    private newSeledtedSublineId$:Observable<any>;
+    private newTag$:Observable<any>;
+
+    private currentQuery;
+    private currenttag;
+    private selectedSublineId = '';
 
     @ViewChild(ArticleListComponent, { static: false })
     articleList: ArticleListComponent;
@@ -27,50 +31,110 @@ export class SearchComponent implements OnInit, AfterViewInit {
         private articlesApiService: ArticlesApiService
     ) { }
 
-    ngOnInit() {
-        this.route.queryParams.pipe(
-            tap(params => {
-                this.params = params
-            }),
-            switchMap(params => {
-                return this.eventsService.newSelectedLineSource
-            }),
-            filter(selectedLine => selectedLine.line != null && selectedLine.subLine != null),
-            switchMap(selectedLine => {
-                if (selectedLine.subLine) {
-                    return this.articlesApiService.getArticlesByQuery({
-                        query: this.params.query,
-                        subline: selectedLine.subLine.id,
-                        from: (this.currentPage * 10).toString(),
-                        size: '10'
-                    })
-                } else {
-                    return of(null)
-                }
-            })
-        ).subscribe((articles) => {
-            if (articles) {
-                this.articles = articles;
-                this.currentPage = 0;
-            }
-        })
-    }
-
+    ngOnInit() {  }
+    
     ngAfterViewInit() {
-        //setTimeout(()=>this._masonry.reOrderItems(),1000);    
-    }
+        this.newQuery$ = this.route.queryParams.pipe(
+            filter(params => {
+                return !!params.query
+            }),
+            map(params => params.query),
+            tap(query => {
+                this.currentQuery = query
+                this.currenttag = null;
+            }),
+            switchMap(query => this.eventsService.newSelectedLineSource),
+            filter(selectedLine => selectedLine.line != null && selectedLine.subLine != null),
+            map(selectedLine => selectedLine.subLine.id),
+            switchMap(selectedSubLineid =>               
+                this.articlesApiService.getArticlesByQuery({
+                    from:0,
+                    size:10,
+                    subline:selectedSubLineid,
+                    query:this.currentQuery
+                })
+            ),
+            tap(articles => {
+                this.articles = articles
+            })
+        )
+    
+        this.newSeledtedSublineId$ = this.eventsService.newSelectedLineSource.pipe(
+            filter(selectedLine => selectedLine.line != null && selectedLine.subLine != null),
+            map(selectedLine => selectedLine.subLine.id),
+            tap(selectedSublineId => this.selectedSublineId = selectedSublineId),
+            switchMap(selectedSublineId => {
+                if(this.currentQuery){
+                    return this.articlesApiService.getArticlesByQuery({
+                        from:0,
+                        size:10,
+                        subline:selectedSublineId,
+                        query:this.currentQuery
+                    })
+                }else if(this.currenttag){
+                    return this.articlesApiService.getArticlesByQuery({
+                        from:0,
+                        size:10,
+                        subline:selectedSublineId,
+                        tag:this.currenttag
+                    })
+                }
+            }),
+            tap(articles=>{
+                this.articles = articles
+            })
+        )
+    
+        this.newTag$ = this.route.queryParams.pipe(
+            filter(params => {
+                return !!params.tag
+            }),
+            map(params => params.tag),
+            tap( tag => {
+                this.currenttag = tag 
+                this.currentQuery = null;
+            }),
+            switchMap(query => this.eventsService.newSelectedLineSource),
+            filter(selectedLine => selectedLine.line != null && selectedLine.subLine != null),
+            map(selectedLine => selectedLine.subLine.id),
+            switchMap(selectedSubLineid =>               
+                this.articlesApiService.getArticlesByQuery({
+                    from:0,
+                    size:10,
+                    subline:selectedSubLineid,
+                    tag:this.currenttag
+                })
+            ),
+            tap(articles => {
+                this.articles = articles
+            })
+        )
+
+        this.newTag$.subscribe()
+        this.newQuery$.subscribe()
+        this.newSeledtedSublineId$.subscribe()
+     }
 
     onScroll(event) {
-        this.currentPage++;
-        this.articlesApiService.getArticlesByQuery({
-            query: this.params.query,
-            subline: this.eventsService.newSelectedLineSource.getValue().subLine.id,
-            from: (this.currentPage * 10).toString(),
-            size: '10'
-        }).pipe(
-            filter(articles => articles.length > 0)
-        ).subscribe(newArticles => {
-            this.articleList.concatArticles(newArticles)
-        })
+        if(this.currentQuery){
+            this.articlesApiService.getArticlesByQuery({
+                from:this.articles.length,
+                size:10,
+                subline:this.selectedSublineId,
+                query:this.currentQuery
+            }).pipe(
+                tap(articles => this.articles = this.articles.concat(articles))                
+            ).subscribe()
+
+        }else if(this.currenttag){
+            this.articlesApiService.getArticlesByQuery({
+                from:this.articles.length,
+                size:10,
+                subline:this.selectedSublineId,
+                tag:this.currenttag
+            }).pipe(
+                tap(articles => this.articles = this.articles.concat(articles))                
+            ).subscribe()
+        }
     }
 }

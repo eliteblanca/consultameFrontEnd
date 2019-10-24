@@ -11,5 +11,6 @@
     <h4 class="info">{{article.disLikes.length}}</h4>
     <span class="separator"></span>
     <app-icon class="editIcon" [iconName]="'mdi:pencil'" (click)="goToArticleEdition()"></app-icon>
-    <app-icon class="editIcon" [iconName]="'mdi:trash'" (click)="deleteArticle()"></app-icon>
+    <app-icon class="editIcon" [iconName]="'mdi:delete'" (click)="deleteArticle()" *ngIf="!isDeleted" ></app-icon>
+    <app-icon class="editIcon" [iconName]="'mdi:timer-sand'" [style.display]="isDeleted ? 'flex' : 'none'"></app-icon>
 </div>

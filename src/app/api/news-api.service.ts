@@ -50,8 +50,8 @@ export class NewsApiService {
     deleteNews: (idNews: string) => `${this.host}/api/news/:idNews`.replace(':idNews', idNews),
   }
 
-  public getNews(idSubline: string, state: 'published' | 'archived', from: string = '0', size: string = '20', date:string = new Date().getTime().toString() ): Observable<news[]> {
-    return this.http.get<news[]>(this.endPoints.getNews(idSubline), { params: { state: state, from: from, size: size, date: date }, observe: "body" })
+  public getNews(idSubline: string, state: 'published' | 'archived', from: number = 0, size: number = 20, date:string = new Date().getTime().toString() ): Observable<news[]> {
+    return this.http.get<news[]>(this.endPoints.getNews(idSubline), { params: { state: state, from: from.toString(), size: size.toString(), date: date }, observe: "body" })
   }
 
 

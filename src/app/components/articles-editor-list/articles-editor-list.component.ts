@@ -10,11 +10,12 @@ import { Article } from "../../article";
 })
 export class ArticlesEditorListComponent implements OnInit,OnChanges {
 
-  private currentPage:number = 0;
+  private pagesize = 20;
+
 
   ngOnChanges(changes:SimpleChanges){
     if(changes.categorySelected.currentValue){
-      this.articlesApi.getArticlesByCategory( this.categorySelected, '0', '20' ).subscribe( articles => {
+      this.articlesApi.getArticlesByCategory( this.categorySelected, 0, this.pagesize ).subscribe( articles => {
         this.articles = articles;
       })
     }
@@ -30,6 +31,9 @@ export class ArticlesEditorListComponent implements OnInit,OnChanges {
 
   articuloEliminado(idArticulo:string){
     this.articles = this.articles.filter( article => article.id != idArticulo );
+    this.articlesApi.getArticlesByCategory( this.categorySelected, this.articles.length + 1, 1 ).subscribe( articles => {
+      this.articles = this.articles.concat(articles);
+    })
   }
 
   goToArticleCreation(){
@@ -37,9 +41,7 @@ export class ArticlesEditorListComponent implements OnInit,OnChanges {
   }
 
   onScroll(event){
-    this.currentPage++;
-    this.articlesApi.getArticlesByCategory( this.categorySelected, ( this.currentPage * 20 ).toString(), '20' ).subscribe( articles => {
-      console.log(articles)
+    this.articlesApi.getArticlesByCategory( this.categorySelected, this.articles.length, this.pagesize ).subscribe( articles => {
       this.articles = this.articles.concat(articles);
     })
   }

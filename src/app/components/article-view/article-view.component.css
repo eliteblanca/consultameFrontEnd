@@ -4,7 +4,7 @@
     padding: 2rem 3rem;
     display: grid;
     grid-template-columns: auto 22%;
-    grid-template-rows: auto auto;
+    grid-template-rows: 40% 60%;
     column-gap: 1rem;
 }
 
@@ -166,4 +166,10 @@
 .H1:hover,.H2:hover{
   color: var(--primary);
   cursor: pointer;
+}
+
+.comments{
+  overflow: hidden;
+  
+  margin-right: .1rem;
 }
