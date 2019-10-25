@@ -24,5 +24,6 @@
     <div *ngFor="let file of newFiles">
         {{file}}
     </div>
-    <ejs-uploader [asyncSettings]='path' #defaultupload [multiple] = 'false' (success)="onFileSelected($event)"></ejs-uploader>
+    <ejs-uploader (change)="onFileSelected($event)" [autoUpload]="false" [asyncSettings]='path' #defaultupload [multiple] = 'false'></ejs-uploader>
 </div>
+

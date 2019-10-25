@@ -9,7 +9,7 @@ export interface articleConf{
     likes?:string[];//user ids
     disLikes?:string[];//user ids
     favorites?:string[];//user ids
-    role?:"noticia"|"articulo";
+    state?:"published"|"archived";
     publicationDate?:number;
     modificationDate?:number;
     modificationUser?:string;
@@ -30,7 +30,7 @@ export class Article implements articleConf{
     public likes?:string[];//user ids
     public disLikes?:string[];//user ids
     public favorites?:string[];//user ids
-    public role?:"noticia"|"articulo";
+    public state?:"published"|"archived";
     public publicationDate?:number;
     public modificationDate?:number;
     public modificationUser?:string;
@@ -64,8 +64,8 @@ export class Article implements articleConf{
         if(config.favorites){
             this.favorites = config.favorites;
         }
-        if(config.role){
-            this.role = config.role;
+        if(config.state){
+            this.state = config.state;
         }
         if(config.publicationDate){
             this.publicationDate = config.publicationDate;
