@@ -47,12 +47,13 @@ export class SearchComponent implements OnInit, AfterViewInit {
             filter(selectedLine => selectedLine.line != null && selectedLine.subLine != null),
             map(selectedLine => selectedLine.subLine.id),
             switchMap(selectedSubLineid =>               
-                this.articlesApiService.getArticlesByQuery({
-                    from:0,
-                    size:10,
-                    subline:selectedSubLineid,
-                    query:this.currentQuery
-                })
+                this.articlesApiService.getArticlesByQuery(
+                    selectedSubLineid,
+                    'published',
+                    0,
+                    10,
+                    {query:this.currentQuery}
+                )
             ),
             tap(articles => {
                 this.articles = articles
@@ -65,19 +66,21 @@ export class SearchComponent implements OnInit, AfterViewInit {
             tap(selectedSublineId => this.selectedSublineId = selectedSublineId),
             switchMap(selectedSublineId => {
                 if(this.currentQuery){
-                    return this.articlesApiService.getArticlesByQuery({
-                        from:0,
-                        size:10,
-                        subline:selectedSublineId,
-                        query:this.currentQuery
-                    })
+                    return this.articlesApiService.getArticlesByQuery(
+                        selectedSublineId,
+                        'published',
+                        0,
+                        10,
+                        {query:this.currentQuery}
+                    )
                 }else if(this.currenttag){
-                    return this.articlesApiService.getArticlesByQuery({
-                        from:0,
-                        size:10,
-                        subline:selectedSublineId,
-                        tag:this.currenttag
-                    })
+                    return this.articlesApiService.getArticlesByQuery(
+                        selectedSublineId,
+                        'published',
+                        0,
+                        10,
+                        {tag:this.currenttag}
+                    )
                 }
             }),
             tap(articles=>{
@@ -98,12 +101,13 @@ export class SearchComponent implements OnInit, AfterViewInit {
             filter(selectedLine => selectedLine.line != null && selectedLine.subLine != null),
             map(selectedLine => selectedLine.subLine.id),
             switchMap(selectedSubLineid =>               
-                this.articlesApiService.getArticlesByQuery({
-                    from:0,
-                    size:10,
-                    subline:selectedSubLineid,
-                    tag:this.currenttag
-                })
+                this.articlesApiService.getArticlesByQuery(
+                    selectedSubLineid,
+                    'published',
+                    0,
+                    10,
+                    {tag:this.currenttag}
+                )
             ),
             tap(articles => {
                 this.articles = articles
@@ -117,22 +121,24 @@ export class SearchComponent implements OnInit, AfterViewInit {
 
     onScroll(event) {
         if(this.currentQuery){
-            this.articlesApiService.getArticlesByQuery({
-                from:this.articles.length,
-                size:10,
-                subline:this.selectedSublineId,
-                query:this.currentQuery
-            }).pipe(
+            this.articlesApiService.getArticlesByQuery(
+                this.selectedSublineId,
+                'published',
+                this.articles.length,
+                10,
+                { query:this.currentQuery }
+            ).pipe(
                 tap(articles => this.articles = this.articles.concat(articles))                
             ).subscribe()
 
         }else if(this.currenttag){
-            this.articlesApiService.getArticlesByQuery({
-                from:this.articles.length,
-                size:10,
-                subline:this.selectedSublineId,
-                tag:this.currenttag
-            }).pipe(
+            this.articlesApiService.getArticlesByQuery(
+                this.selectedSublineId,
+                'published',
+                this.articles.length,
+                10,
+               { tag:this.currenttag}
+            ).pipe(
                 tap(articles => this.articles = this.articles.concat(articles))                
             ).subscribe()
         }

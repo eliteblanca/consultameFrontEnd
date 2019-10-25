@@ -3,35 +3,29 @@
     <app-users-editor-list [users]="users" (onNewUser)="onNewUser()" (onSelectedUser)="onSelectedUser($event)"></app-users-editor-list>
 </div>
 <div class="verticalColumn" *ngIf="selectedUser || newUserMode">
-    <div class="userCard">
+    <div class="userCard mb2">
         <div class="cardTitle">
-            <h2 class="title" *ngIf="!newUserMode">{{selectedUser.username}}</h2>
-            <h2 class="title" *ngIf="newUserMode">{{newUsername}}</h2>
+            <h2 class="title">{{username}}</h2>
         </div>
         <div class="cardRow">
             <div class="cardRowTitle">Nombre de usuario</div>
             <div class="cardRowsEditionArea">
                 <div class="separador"></div>
-                <div class="cardRowValue" *ngIf="!newUserMode">{{selectedUser.username}}</div>
-                <input type="text" class="cardRowInput" placeholder="Nombre de usuario" [(ngModel)]="newUsername" *ngIf="newUserMode && !editUsernameMode" >
+                <input type="text" class="cardRowInput" placeholder="Nombre de usuario" [(ngModel)]="username">
             </div>
         </div>
         <div class="cardRow">
-            <div class="cardRowTitle">Rol</div>     
-            <div class="cardRowsEditionArea">                
+            <div class="cardRowTitle">Rol</div>
+            <div class="cardRowsEditionArea">
                 <div class="separador"></div>
-                <app-icon class="editIcon" [iconName]="'mdi:pencil'" *ngIf="!newUserMode && !newRolMode" (click)="newRolMode = true"></app-icon>
-                <div class="cardRowValue" *ngIf="!newUserMode && !newRolMode">{{selectedUser.rol}}</div>
-                <app-drop-down [values]="roles" *ngIf="!newUserMode && newRolMode" (onValueSelected)="editUserRole($event); newRolMode = false"></app-drop-down>
-                <app-drop-down [values]="roles" *ngIf="newUserMode" (onValueSelected)="newUserRol = $event"></app-drop-down>
+                <app-drop-down [values]="roles" (onValueSelected)="userRol = $event" [textoInicial]="userRol ? userRol : 'Seleccionar'"></app-drop-down>
             </div>       
         </div>
         <div class="cardRow" *ngIf="newUserMode" >
             <div class="cardRowTitle">Password</div>
             <div class="cardRowsEditionArea">
                 <div class="separador"></div>
-                <div class="cardRowValue" *ngIf="!newUserMode">.......</div>
-                <input type="password" class="cardRowInput" placeholder="Password" [(ngModel)]="newUserpassword" *ngIf="newUserMode" >
+                <input type="password" class="cardRowInput" placeholder="Password" [(ngModel)]="passWord">
             </div>
         </div>
         <div class="cardRow vertical">
@@ -41,8 +35,9 @@
             <app-button [buttonText]="'Habilitar Linea'" (click)="allowLinesMode = true" *ngIf="!allowLinesMode"></app-button>
             <app-button [buttonText]="'confirmar'" (click)=" confirmSublinesToAllow(); allowLinesMode = false" *ngIf="allowLinesMode && !newUserMode"></app-button>
         </div>
-        <div class="cardTitle" *ngIf="newUserMode && newUsername && newUserpassword && newUserRol && sublinesToAllow.length">
-            <app-button [buttonText]="'Agregar usuario'" (click)="confirmarUsuarioNuevo()"></app-button>
+
+        <div class="cardTitle" *ngIf="username && passWord && userRol">
+            <app-button [buttonText]="'Confirmar'" (click)="confirmarCambios()"></app-button>
         </div>
     </div>
 </div>

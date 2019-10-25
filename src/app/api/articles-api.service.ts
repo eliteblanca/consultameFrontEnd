@@ -13,6 +13,7 @@ export type postArticleDTO = {
     attached: string[];
     role: string;
     category: string;
+    state: 'published'|'archived';
 }
 
 @Injectable({
@@ -37,8 +38,7 @@ export class ArticlesApiService {
         deleteLike: (id:string) => `${this.host}/articles/:idArticle/likes`.replace(':idArticle', id),
         postDisLike: (id:string) => `${this.host}/articles/:idArticle/disLikes`.replace(':idArticle', id),
         deleteDisLike: (id:string) => `${this.host}/articles/:idArticle/disLikes`.replace(':idArticle', id),
-        getSelfFavorites: `${this.host}/users/me/favorites`,
-        
+        getSelfFavorites: `${this.host}/users/me/favorites`,        
     }
 
     getArticles(): Observable<Article[]> {
@@ -49,45 +49,24 @@ export class ArticlesApiService {
         )
     }
 
-    getArticlesByCategory(categoryId: string, from?:number, size?:number): Observable<Article[]> {
+    getArticlesByCategory(categoryId: string, state:postArticleDTO["state"] = 'published' , from:number = 0, size:number = 10): Observable<Article[]> {
 
 
         if(typeof from != undefined &&  typeof size != undefined){
             return of(null).pipe(
                 switchMap(val => {
-                    return this.http.get<Article[]>(this.endPoints.getByCategory(categoryId), { params: { from: from.toString(), size: size.toString() }, observe: "body" })
+                    return this.http.get<Article[]>(this.endPoints.getByCategory(categoryId), { params: { from: from.toString(), size: size.toString(), state: state }, observe: "body" })
                 })
             )
             
-        }else{
-            return of(null).pipe(
-                switchMap(val => {
-                    return this.http.get<Article[]>(this.endPoints.getByCategory(categoryId), { observe: "body" })
-                })
-            )
-
         }
 
     }
 
-    getArticlesByQuery(params: { subline: string, query?: string, tag?:string, from?:number, size?:number }): Observable<Article[]> {
-
-        let paramsObj = {
-            query: params.query,
-            from: params.from.toString(),
-            size: params.size.toString(),
-            tag: params.tag
-        }
-    
-        Object.keys(paramsObj).forEach(key => paramsObj[key] === undefined ? delete paramsObj[key] : '');
-
+    getArticlesByQuery(subline: string, state:postArticleDTO["state"] = 'published' , from:number = 0, size:number = 10, query:{ tag: string } | { query: string } ): Observable<Article[]> {
         return of(null).pipe(
             switchMap(val => {
-                if(typeof params.from != 'undefined' && typeof params.size != 'undefined'){
-                    return this.http.get<Article[]>(this.endPoints.getByQuery(params.subline), { params: paramsObj, observe: "body" })
-                }else{
-                    return this.http.get<Article[]>(this.endPoints.getByQuery(params.subline), { params: { query: params.query }, observe: "body" })
-                }
+                return this.http.get<Article[]>(this.endPoints.getByQuery(subline), { params: { from:from.toString(), size:size.toString(), state:state, ...query }, observe: "body" })
             })
         )
     }

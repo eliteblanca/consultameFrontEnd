@@ -3,9 +3,10 @@
     <app-categories [categories]="categories" (onCategorySelected)="categoriaSelecctionada($event)"></app-categories>
 </div>
 <div class="verticalColumn articlesColumn" *ngIf="categorySelected">
-    <h3 class="columnTitle" >{{categorySelected.name}}</h3>
-    <app-articles-editor-list [categorySelected]="categorySelected.id"></app-articles-editor-list>
+    <h3 class="columnTitle" >Articulos publicados</h3>
+    <app-articles-editor-list [categorySelected]="categorySelected.id" [state]="'published'" ></app-articles-editor-list>
 </div>
-<div class="verticalColumn">
-
+<div class="verticalColumn" *ngIf="categorySelected">
+    <h3 class="columnTitle" >Articulos archivados</h3>
+    <app-articles-editor-list [categorySelected]="categorySelected.id" [state]="'archived'"></app-articles-editor-list>
 </div>

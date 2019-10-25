@@ -1,0 +1,34 @@
+:host{
+    display: flex;
+    border: 1px solid lightgray;
+    border-radius: 3px;    
+    align-items: center;
+    padding-left: .5rem;
+    padding-right: .5rem;
+}
+
+:host:hover{
+    background-color: var(--terciaryDark);
+}
+
+.icon{
+    margin-right: 1rem;
+}
+
+a{
+    padding: .75rem;
+    flex-grow: 1;
+}
+
+.deleteIcon{
+    display: none;
+}
+
+:host:hover .deleteIcon{
+    display: flex;
+}
+
+.deleteIcon:hover{
+    color: crimson;
+    cursor: pointer;
+}

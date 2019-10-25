@@ -1,13 +1,13 @@
 <div class="editContainer">
     <div class="verticalColumn">
         <h3 class="columnTitle">Clientes</h3>
-        <app-lines-editor [lines]="lines" (onSubLineSelected)="onSubLineSelected($event)" (onLineDeleted)="onLineDelete($event)" (onSubLineDeleted)="onSubLineDeleted($event)"></app-lines-editor>
+        <app-lines-editor class="mb2" [lines]="lines" (onSubLineSelected)="onSubLineSelected($event)" (onLineDeleted)="onLineDelete($event)" (onSubLineDeleted)="onSubLineDeleted($event)"></app-lines-editor>
     </div>
     <div class="verticalColumn">
         <h3 class="columnTitle">Categorias</h3>
         <app-categories-editor [categories]="categories" [sublineSelected]="selectedSubline" (onCategorySelected)="onCategorySelected($event)"></app-categories-editor>
     </div>
-    <div class="verticalColumn">
+    <div class="verticalColumn" *ngIf="selectedCategory">
         <h3 class="columnTitle">Articulos</h3>
         <app-articles-editor-list [categorySelected]="selectedCategory"></app-articles-editor-list>
     </div>

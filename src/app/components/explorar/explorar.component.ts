@@ -40,13 +40,13 @@ export class ExplorarComponent implements OnInit {
 
     categoriaSeleccionada(categoria:category) {
         this.categorySelected = categoria;
-        this.articlesApi.getArticlesByCategory(categoria.id, 0, this.pagesize).subscribe(articles => {
+        this.articlesApi.getArticlesByCategory(categoria.id, 'published' , 0, this.pagesize).subscribe(articles => {
             this.articles = this.articles.concat(articles)
         })
     }
     
     onScroll(event){
-        this.articlesApi.getArticlesByCategory(this.categorySelected.id, this.articleList.articles.length, this.pagesize).subscribe(articles => {
+        this.articlesApi.getArticlesByCategory(this.categorySelected.id, 'published' ,this.articleList.articles.length, this.pagesize).subscribe(articles => {
             this.articles = this.articles.concat(articles)
         })
     }

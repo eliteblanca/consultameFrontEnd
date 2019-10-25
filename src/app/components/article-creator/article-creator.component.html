@@ -15,15 +15,21 @@
         </div>
     </div>
     <app-button [buttonText]="'Publicar'" class="mb.5" (click)="saveArticle()"></app-button>
-    <app-button class="mb2" [buttonText]="'Archivar'"></app-button>
+    <app-button class="mb2" [buttonText]="'Archivar'" (click)="saveAsDraft()"></app-button>
     <div *ngIf="articleToEdit">
-        <h4>Archivos adjuntos</h4>
-        <app-article-prev *ngFor="let file of articleToEdit.attached" [fileName]="file" [articleId]="articleToEdit.id"></app-article-prev>
+        <h4>{{articleToEdit.attached.length}} Archivos adjuntos</h4>
+        <app-file-prev class="mb.5" *ngFor="let file of articleToEdit.attached" [fileName]="file" [articleId]="articleToEdit.id" (onFileDeleted)="fileDeleted(file)"></app-file-prev>
     </div>
-
-    <div *ngFor="let file of newFiles">
-        {{file}}
-    </div>
-    <ejs-uploader (change)="onFileSelected($event)" [autoUpload]="false" [asyncSettings]='path' #defaultupload [multiple] = 'false'></ejs-uploader>
+    
+    <ejs-uploader [autoUpload]="false" *ngIf="articleToEdit" (selected)="onFileSelect($event)" (success)="onFileUploaded($event)" [showFileList]="true"  [asyncSettings]='path' #defaultupload [multiple] = 'false'>
+        <ng-template #template let-data="">
+            <div class="fileStatus">                   
+                <app-file-prev class="mb.5" [fileName]="status" [articleId]="articleToEdit.id" [mode]="'notDelete'" *ngIf="status != 'Cargado con exito'"></app-file-prev>
+                <span class="success" *ngIf="status == 'Cargado con exito'">
+                    Agregado con exito ✔️
+                </span>
+            </div>
+        </ng-template>
+    </ejs-uploader>
 </div>
 

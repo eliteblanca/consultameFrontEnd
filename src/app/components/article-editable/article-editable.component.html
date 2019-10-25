@@ -1,5 +1,5 @@
 <h4 class="title" [routerLink]="['/app/articles/',article.id]" [state]="article" >{{article.title}}</h4>
-<div class="iconsContainer">
+<div class="iconsContainer" *ngIf="article.state == 'published'">
 
     <app-icon [iconName]="'mdi:file-eye'"></app-icon>
     <h4 class="info">{{0}}</h4>
@@ -10,6 +10,11 @@
     <app-icon [iconName]="'mdi:thumb-down'"></app-icon>
     <h4 class="info">{{article.disLikes.length}}</h4>
     <span class="separator"></span>
+    <app-icon class="editIcon" [iconName]="'mdi:pencil'" (click)="goToArticleEdition()"></app-icon>
+    <app-icon class="editIcon" [iconName]="'mdi:delete'" (click)="deleteArticle()" *ngIf="!isDeleted" ></app-icon>
+    <app-icon class="editIcon" [iconName]="'mdi:timer-sand'" [style.display]="isDeleted ? 'flex' : 'none'"></app-icon>
+</div>
+<div class="iconsContainer" *ngIf="article.state == 'archived'">
     <app-icon class="editIcon" [iconName]="'mdi:pencil'" (click)="goToArticleEdition()"></app-icon>
     <app-icon class="editIcon" [iconName]="'mdi:delete'" (click)="deleteArticle()" *ngIf="!isDeleted" ></app-icon>
     <app-icon class="editIcon" [iconName]="'mdi:timer-sand'" [style.display]="isDeleted ? 'flex' : 'none'"></app-icon>

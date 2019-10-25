@@ -19,8 +19,7 @@ export class DropDownComponent implements OnInit {
 
     unfolded: boolean = false;
 
-    ngOnInit() {
-    }
+    ngOnInit() {  }
 
     seleccionar(seleccion: any) {
         this.seleccion = seleccion;

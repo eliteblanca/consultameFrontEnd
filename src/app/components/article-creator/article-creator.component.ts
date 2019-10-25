@@ -24,6 +24,8 @@ export class ArticleCreatorComponent implements OnInit {
   private contentOnEditor:Object[];
   private textOnEditor:string;
   public newFiles:string[] = [];
+  public status = '';
+
 
   @ViewChild(RichTextEditorComponent,{ static:false }) RTE:RichTextEditorComponent;
   @ViewChild('articleTitle',{ static:false }) public articleTitle:ElementRef ;
@@ -45,7 +47,7 @@ export class ArticleCreatorComponent implements OnInit {
 
       this.path = {
         saveUrl: `http://localhost:3001/files/${this.articleToEdit.id}`,
-        removeUrl: `http://localhost:3001/files/${this.articleToEdit.id}`
+        removeUrl: `http://localhost:3001/files/${this.articleToEdit.id}/delete`
       };
 
       this.articleTitle.nativeElement.value = this.articleToEdit.title;
@@ -83,6 +85,7 @@ export class ArticleCreatorComponent implements OnInit {
         category:this.articleToEdit.category,
         content:this.RTE.getText(),
         obj:this.RTE.getContent(),
+        state:'published',
         role:"articulo",
         tags:this.tags,
         title:this.articleTitle.nativeElement.value
@@ -102,6 +105,7 @@ export class ArticleCreatorComponent implements OnInit {
         content: this.RTE.getText(),//! arreglar el contenido 🖐
         obj:this.RTE.getContent(),
         role:"articulo",
+        state:'published',
         tags:this.tags,
         title:this.articleTitle.nativeElement.value
       };
@@ -111,6 +115,49 @@ export class ArticleCreatorComponent implements OnInit {
         concatMap(() => this.articlesApi.postArticle(newArticle))
       ).subscribe(newArticle => {
         this.goToArticle(newArticle.id)
+      })
+    }
+  }
+
+  saveAsDraft(){
+    if(!!this.articleToEdit){
+      let newArticle:postArticleDTO = {
+        attached:[ ...this.articleToEdit.attached, ...this.newFiles ],
+        category:this.articleToEdit.category,
+        content:this.RTE.getText(),
+        obj:this.RTE.getContent(),
+        role:"articulo",
+        state:'archived',
+        tags:this.tags,
+        title:this.articleTitle.nativeElement.value
+      };
+  
+      of(null).pipe(
+        throttle(() => interval(700)),
+        concatMap(() => this.articlesApi.updateArticle(this.articleToEdit.id, newArticle).pipe())
+      ).subscribe(newArticle => {
+        window.alert('Articulo guardado')
+      })
+
+    }else if(!!this.seletedCategory){
+      let newArticle:postArticleDTO  = {
+        attached:[],
+        category:this.seletedCategory,
+        content: this.RTE.getText(),//! arreglar el contenido 🖐
+        obj:this.RTE.getContent(),
+        role:"articulo",        
+        state:'archived',
+        tags:this.tags,
+        title:this.articleTitle.nativeElement.value
+      };
+
+      of(null).pipe(
+        throttle(() => interval(700)),
+        concatMap(() => this.articlesApi.postArticle(newArticle))
+      ).subscribe(newArticle => {
+        this.articleToEdit = newArticle 
+        this.router.navigate(['/app/articlecreation'],{ queryParams: { articleId: newArticle.id }})       
+        window.alert('Articulo guardado')
       })
     }
   }
@@ -132,15 +179,29 @@ export class ArticleCreatorComponent implements OnInit {
     this.textOnEditor = content.text;
   }
 
-  onFileSelected(filesData){
-    console.log(filesData)
+  onFileUploaded(filesData){
     if(filesData.operation == "upload"){
-      this.newFiles.push(filesData.file.name)
-      console.log(this.newFiles)
-    }else if(false){
-
+      this.articleToEdit.attached.push(filesData.file.name)
+      this.saveAsDraft()
+      this.status = 'Cargado con exito'
     }
-    // this.newFiles = this.newFiles filesData.filter(fileData => fileData.statusCode != '2').map(fileData=> fileData.name )
+  }
+
+  fileDeleted(fileName){
+    this.articleToEdit.attached = this.articleToEdit.attached.filter(file => file != fileName )    
+  }
+
+  onFileSelect(event){
+    console.log('prueba')
+    if(event.filesData.length){
+      let duplicateIndex = this.articleToEdit.attached.find(fileName => fileName == event.filesData[0].name )
+      if(duplicateIndex){
+        event.isCanceled = true;
+        this.status = 'archivo duplicado'
+      }else{
+        this.status = event.filesData[0].name
+      }
+    }
   }
 
 }

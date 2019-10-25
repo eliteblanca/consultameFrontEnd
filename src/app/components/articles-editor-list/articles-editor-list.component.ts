@@ -12,26 +12,31 @@ export class ArticlesEditorListComponent implements OnInit,OnChanges {
 
   private pagesize = 20;
 
-
   ngOnChanges(changes:SimpleChanges){
-    if(changes.categorySelected.currentValue){
-      this.articlesApi.getArticlesByCategory( this.categorySelected, 0, this.pagesize ).subscribe( articles => {
+    if(!changes.categorySelected.isFirstChange() && changes.categorySelected.currentValue){
+      this.articlesApi.getArticlesByCategory( this.categorySelected, this.state, 0, this.pagesize ).subscribe( articles => {
         this.articles = articles;
       })
     }
   }
 
   @Input() categorySelected:string;
+  @Input() state:Article['state'];
+
 
   public articles:Article[] = [];
 
   constructor(private articlesApi:ArticlesApiService, private router: Router) {  }
 
-  ngOnInit() {  }
+  ngOnInit() { 
+    this.articlesApi.getArticlesByCategory( this.categorySelected, this.state, 0, this.pagesize ).subscribe( articles => {
+      this.articles = articles;
+    })
+  }
 
   articuloEliminado(idArticulo:string){
     this.articles = this.articles.filter( article => article.id != idArticulo );
-    this.articlesApi.getArticlesByCategory( this.categorySelected, this.articles.length + 1, 1 ).subscribe( articles => {
+    this.articlesApi.getArticlesByCategory( this.categorySelected, this.state,this.articles.length + 1, 1 ).subscribe( articles => {
       this.articles = this.articles.concat(articles);
     })
   }
@@ -41,7 +46,7 @@ export class ArticlesEditorListComponent implements OnInit,OnChanges {
   }
 
   onScroll(event){
-    this.articlesApi.getArticlesByCategory( this.categorySelected, this.articles.length, this.pagesize ).subscribe( articles => {
+    this.articlesApi.getArticlesByCategory( this.categorySelected, this.state,this.articles.length, this.pagesize ).subscribe( articles => {
       this.articles = this.articles.concat(articles);
     })
   }

@@ -25,8 +25,8 @@ export class UsersAdminComponent implements OnInit {
   public allowedLines: AllowedLines = [];
   public sublinesToAllow: { name: string, id: string }[] = [];
   public roles = [
-    "admin",
     "user",
+    "admin",
     "publicador"
   ];
 
@@ -34,10 +34,9 @@ export class UsersAdminComponent implements OnInit {
   public newUserMode = false;
   public newRolMode = false;
 
-  public newUsername;
-  public newUserpassword;
-  public newUserRol = this.roles[0];
-
+  public username;
+  public passWord;
+  public userRol;
 
   ngOnInit() {
     this.route.data.subscribe(({ users }: { users: user[] }) => {
@@ -50,15 +49,18 @@ export class UsersAdminComponent implements OnInit {
   }
 
   onSelectedUser(user: user) {
-    this.newUserMode = false;
-    this.selectedUser = user; 
-    this.allowLinesMode = false;
-    if(user){
-      this.userApi.getUserAllowedlines(user.id).subscribe(lines => {
-        this.allowedLines = lines;
-        this.filterLinesAllowed(this.allowedLines)
-      })
-    }
+    this.newUserMode = false
+    this.selectedUser = user
+    this.allowLinesMode = false
+    
+    this.username = user.username
+    this.userRol = user.rol
+    this.passWord = user.username
+
+    this.userApi.getUserAllowedlines(user.id).subscribe(lines => {
+      this.allowedLines = lines
+      this.filterLinesAllowed(this.allowedLines)
+    })
   }
 
   private filterLinesAllowed(allowedLines: AllowedLines) {
@@ -149,29 +151,29 @@ export class UsersAdminComponent implements OnInit {
   }
 
   onNewUser() {
-    this.selectedUser = {
-      username: "",
-      rol: "admin",
-      id: ""
-    }
     this.newUserMode = true;
     this.allowLinesMode = true;
-    this.newUsername = ""
-    this.newUserpassword = ""
-    this.newUserRol = this.roles[0]
+    this.username = ''
+    this.passWord = ''
+    this.userRol = ''
     this.allowedLines = [];
     this.filterLinesAllowed(this.allowedLines)
   }
 
-  confirmarUsuarioNuevo() {
+  confirmarCambios() {
+    if(){
+
+    }else if(){
+
+    }
     this.userApi.postUser({
-      username: this.newUsername,
-      password: this.newUserpassword,
-      rol: this.newUserRol
+      username: this.username,
+      password: this.passWord,
+      rol: this.userRol
     }).subscribe(newUser=>{
       this.users.push(newUser);
       this.newUserMode = false;
-      this.selectedUser = newUser;
+      this.selectedUser = null;
       this.confirmSublinesToAllow()
     })
   }

@@ -51,7 +51,7 @@ import { NewsViewComponent } from './components/news-view/news-view.component';
 import { FavoritesComponent } from './components/favorites/favorites.component';
 import { CommentListComponent } from './components/comment-list/comment-list.component';
 import { CommentComponent } from './components/comment/comment.component';
-import { ArticlePrevComponent } from './components/article-prev/article-prev.component';
+import { ArticlePrevComponent } from './components/file-prev/file-prev.component';
 @NgModule({
     declarations: [
         AppComponent,
