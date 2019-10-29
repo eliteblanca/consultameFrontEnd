@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
+import endPoint from "./endPoint";
 
 export type postCommentDTO = {
   replyTo?:string;
@@ -24,12 +25,12 @@ export type comment = {
 })
 export class CommentsApiService {
 
-  private host = "http://localhost:3001";
+  private host = "http://172.20.20.24:3001";
 
   private endPoints = {
-      postComment: ( articleId:string) => `${this.host}/api/articles/${articleId}/comments`,
-      getComments: ( articleId:string) => `${this.host}/api/articles/${articleId}/comments`,
-      getReplies: ( commentId:string) => `${this.host}/api/comments/${commentId}/replies`
+      postComment: ( articleId:string) => `${endPoint}/api/articles/${articleId}/comments`,
+      getComments: ( articleId:string) => `${endPoint}/api/articles/${articleId}/comments`,
+      getReplies: ( commentId:string) => `${endPoint}/api/comments/${commentId}/replies`
   };
 
   constructor(private http: HttpClient) { }

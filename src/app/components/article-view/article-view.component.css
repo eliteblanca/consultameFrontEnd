@@ -173,3 +173,20 @@
   
   margin-right: .1rem;
 }
+
+.adjuntosButton{
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.adjuntosButton:hover{
+  cursor: pointer;
+  color: var(--primary);
+}
+
+.fileList{
+  display: flex;
+  flex-direction: column;
+
+}

@@ -160,12 +160,7 @@ export class UsersAdminComponent implements OnInit {
     this.filterLinesAllowed(this.allowedLines)
   }
 
-  confirmarCambios() {
-    if(){
-
-    }else if(){
-
-    }
+  confirmarCambios() {    
     this.userApi.postUser({
       username: this.username,
       password: this.passWord,

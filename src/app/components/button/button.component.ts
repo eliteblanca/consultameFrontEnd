@@ -10,6 +10,7 @@ export class ButtonComponent implements OnInit {
     constructor() { }
 
     @Input() buttonText: string;
+    @Input() iconName: string;
 
     ngOnInit() {
     }

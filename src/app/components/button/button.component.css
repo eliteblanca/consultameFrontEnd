@@ -23,6 +23,6 @@
     background-color: rgb(0, 128, 233);
 }
 
-:host i{
+:host app-icon{
     margin-right: .3rem;
 }
