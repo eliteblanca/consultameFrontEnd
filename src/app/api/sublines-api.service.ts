@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
+import endPoint from "./endPoint";
 
 export interface subline {
     id: string;
@@ -15,11 +16,10 @@ export class SublinesApiService {
 
     constructor(private http: HttpClient) { }
 
-    private host = "http://localhost:3001";
     private endPoints = {
-        postSubline: (id: string) => `${this.host}/api/lines/:idLine/sublines`.replace(':idLine', id),
-        updateSubline: (id: string) => `${this.host}/api/sublines/:id`.replace(':id', id),
-        deleteSubline: (id: string) => `${this.host}/api/sublines/:id`.replace(':id', id)
+        postSubline: (id: string) => `${endPoint}/api/lines/:idLine/sublines`.replace(':idLine', id),
+        updateSubline: (id: string) => `${endPoint}/api/sublines/:id`.replace(':id', id),
+        deleteSubline: (id: string) => `${endPoint}/api/sublines/:id`.replace(':id', id)
     }
 
     createSubLine(idLine: string, name: string): Observable<subline> {

@@ -22,8 +22,19 @@
         <span>{{article.disLikes.length}}</span>
     </div>
 </div>
-<div class="index">
-    <div class="indice">
+<div class="index" *ngIf="article">
+    <div class="adjuntosButton" (click)="adjuntosMode = true" *ngIf="!adjuntosMode">
+        <app-icon class="mr.5" [iconName]="'mdi:file-multiple-outline'"></app-icon>
+        <h4>{{article.attached.length}} adjuntos</h4>
+    </div>
+    <div class="adjuntosButton" (click)="adjuntosMode = false" *ngIf="adjuntosMode">
+        <app-icon class="mr.5" [iconName]="'mdi:format-list-bulleted'"></app-icon>
+        <h4>Indice</h4>
+    </div>
+    <div class="fileList" *ngIf="adjuntosMode">
+        <app-file-prev *ngFor="let file of article.attached" [fileName]="file" [articleId]="article.id" [mode]="'notDelete'"></app-file-prev>
+    </div>
+    <div class="indice" *ngIf="!adjuntosMode">
         <div *ngFor="let el of indexElements; index as i" [innerHTML]="el.innerHTML" [ngClass]="[el.tagName, calculateActive(i)]" (click)="scrollTo(el)"></div>
     </div>
 </div>

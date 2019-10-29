@@ -14,8 +14,8 @@
             <app-icon [iconName]="'mdi:close-circle-outline'" (click)="deleteTag(tag)"></app-icon>
         </div>
     </div>
-    <app-button [buttonText]="'Publicar'" class="mb.5" (click)="saveArticle()"></app-button>
-    <app-button class="mb2" [buttonText]="'Archivar'" (click)="saveAsDraft()"></app-button>
+    <app-button [buttonText]="'Publicar'" class="mb.5" (click)="saveArticle()" [iconName]="'mdi:publish'"></app-button>
+    <app-button class="mb2" [buttonText]="'Archivar'" (click)="saveAsDraft()" [iconName]="'mdi:archive'"></app-button>
     <div *ngIf="articleToEdit">
         <h4>{{articleToEdit.attached.length}} Archivos adjuntos</h4>
         <app-file-prev class="mb.5" *ngFor="let file of articleToEdit.attached" [fileName]="file" [articleId]="articleToEdit.id" (onFileDeleted)="fileDeleted(file)"></app-file-prev>

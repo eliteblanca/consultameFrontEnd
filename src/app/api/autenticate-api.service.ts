@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { switchMap, tap, map } from "rxjs/operators";
+import endPoint from "./endPoint";
 
 @Injectable({
     providedIn: 'root'
@@ -10,8 +11,7 @@ export class AutenticateApiService {
 
     constructor(private http: HttpClient) { }
 
-    private host = "http://localhost:3001";
-    private endPoint = `${this.host}/api/authenticate`;
+    private endPoint = `${endPoint}/api/authenticate`;
 
     login(user: string, pass: string): Observable<boolean> {
         return of(null).pipe(

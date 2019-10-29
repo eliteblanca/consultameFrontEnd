@@ -47,6 +47,8 @@ export class ArticleViewComponent implements OnInit, AfterViewInit {
   public indexElements:Element[];
   public currentScoll:number = 0;
 
+  public adjuntosMode = false;
+
   ngOnInit(){
   }
 

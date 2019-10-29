@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
+import endPoint from "./endPoint";
+
 interface line {
     name: string;
 }
@@ -34,15 +36,14 @@ export class UserApiService {
 
     constructor(private http: HttpClient) { }
 
-    private host = "http://localhost:3001";
     private endPoints = {
-        getUserAllowedlines:(id:string) => `${this.host}/api/users/:idUsuario/allowedlines`.replace(':idUsuario', id ),
-        getUsers: `${this.host}/api/users`,
-        postUser: `${this.host}/api/users`,
-        updateUser: (id:string) => `${this.host}/api/users/:idUsuario`.replace(':idUsuario', id ),
-        postUserAllowedline:(id:string) => `${this.host}/api/users/:idUsuario/allowedlines`.replace(':idUsuario', id ),
-        deleteUserAllowedline:(idUsuario:string, idSublinea:string) => `${this.host}/api/users/:idUsuario/allowedlines/:idSubline`.replace(':idUsuario', idUsuario ).replace(':idSubline', idSublinea ),
-        deleteUser:(id:string) => `${this.host}/api/users/:idUsuario`.replace(':idUsuario', id )
+        getUserAllowedlines:(id:string) => `${endPoint}/api/users/:idUsuario/allowedlines`.replace(':idUsuario', id ),
+        getUsers: `${endPoint}/api/users`,
+        postUser: `${endPoint}/api/users`,
+        updateUser: (id:string) => `${endPoint}/api/users/:idUsuario`.replace(':idUsuario', id ),
+        postUserAllowedline:(id:string) => `${endPoint}/api/users/:idUsuario/allowedlines`.replace(':idUsuario', id ),
+        deleteUserAllowedline:(idUsuario:string, idSublinea:string) => `${endPoint}/api/users/:idUsuario/allowedlines/:idSubline`.replace(':idUsuario', idUsuario ).replace(':idSubline', idSublinea ),
+        deleteUser:(id:string) => `${endPoint}/api/users/:idUsuario`.replace(':idUsuario', id )
     } 
 
     getUserAllowedlines(idUsuario:string): Observable<AllowedLines> {

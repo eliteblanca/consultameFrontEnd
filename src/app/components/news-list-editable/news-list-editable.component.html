@@ -3,7 +3,7 @@
     <app-icon class="editIcon ml1" [iconName]="'mdi:newspaper-plus'" (click)="addNews()" *ngIf="mode == 'news'">
     </app-icon>
 </div>
-
+<h5 class="dafaultMessage" *ngIf="!!!newsList.length">No hay noticias, agrega la primer noticia</h5>
 <div class="list"
     infiniteScroll
     (scrolled)="onScroll($event)"
@@ -20,4 +20,3 @@
     </div>
 </div>
     
-<h5 class="dafaultMessage" *ngIf="!!!newsList.length">No hay noticias, agrega la primer noticia</h5>
