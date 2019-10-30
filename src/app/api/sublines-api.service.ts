@@ -16,6 +16,7 @@ export class SublinesApiService {
 
     constructor(private http: HttpClient) { }
 
+    private host = "http://172.20.20.24:3001";
     private endPoints = {
         postSubline: (id: string) => `${endPoint}/api/lines/:idLine/sublines`.replace(':idLine', id),
         updateSubline: (id: string) => `${endPoint}/api/sublines/:id`.replace(':id', id),

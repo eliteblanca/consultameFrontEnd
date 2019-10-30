@@ -43,6 +43,7 @@ export class CategoriesApiService {
 
     constructor(private http: HttpClient) { }
 
+    private host = "http://172.20.20.24:3001";
     private endPoints = {
         getCategories: (id: string) => `${endPoint}/api/sublines/:idSubline/categories`.replace(':idSubline', id),
         postCategory: `${endPoint}/api/categories`,

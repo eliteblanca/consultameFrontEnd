@@ -23,6 +23,7 @@ export class LinesApiService {
 
     constructor(private http: HttpClient) { }
 
+    private host = "http://172.20.20.24:3001";
     private endPoints = {
         getLineas: `${endPoint}/api/lines`,
         postLine: `${endPoint}/api/lines`,

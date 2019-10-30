@@ -25,6 +25,8 @@ export type comment = {
 })
 export class CommentsApiService {
 
+  private host = "http://172.20.20.24:3001";
+
   private endPoints = {
       postComment: ( articleId:string) => `${endPoint}/api/articles/${articleId}/comments`,
       getComments: ( articleId:string) => `${endPoint}/api/articles/${articleId}/comments`,

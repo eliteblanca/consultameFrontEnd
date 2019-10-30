@@ -24,8 +24,9 @@ export class FilesApiService {
 
     constructor(private http: HttpClient) { }
 
+    private host = "http://172.20.20.24:3001/files";
     private endPoints = {
-        deleteFile:(idArticle, fileName) => `${endPoint}/files/${idArticle}/${fileName}`,
+        deleteFile:(idArticle, fileName) => `${endPoint}/${idArticle}/${fileName}`,
     }
 
     deletFile(idArticle:string, fileName:string): Observable<Article[]> {

@@ -36,6 +36,7 @@ export class UserApiService {
 
     constructor(private http: HttpClient) { }
 
+    private host = "http://172.20.20.24:3001";
     private endPoints = {
         getUserAllowedlines:(id:string) => `${endPoint}/api/users/:idUsuario/allowedlines`.replace(':idUsuario', id ),
         getUsers: `${endPoint}/api/users`,

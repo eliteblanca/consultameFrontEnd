@@ -42,6 +42,7 @@ export class NewsApiService {
 
   constructor(private http: HttpClient) { }
 
+  private host = "http://172.20.20.24:3001";
   private endPoints = {
     getNews: (idSubline: string) => `${endPoint}/api/sublines/:idSubline/news`.replace(':idSubline', idSubline),
     getSingleNews: (idNews: string) => `${endPoint}/api/news/:idNews`.replace(':idNews', idNews),
