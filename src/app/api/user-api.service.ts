@@ -38,13 +38,13 @@ export class UserApiService {
 
     private host = "http://172.20.20.24:3001";
     private endPoints = {
-        getUserAllowedlines:(id:string) => `${endPoint}/api/users/:idUsuario/allowedlines`.replace(':idUsuario', id ),
-        getUsers: `${endPoint}/api/users`,
-        postUser: `${endPoint}/api/users`,
-        updateUser: (id:string) => `${endPoint}/api/users/:idUsuario`.replace(':idUsuario', id ),
-        postUserAllowedline:(id:string) => `${endPoint}/api/users/:idUsuario/allowedlines`.replace(':idUsuario', id ),
-        deleteUserAllowedline:(idUsuario:string, idSublinea:string) => `${endPoint}/api/users/:idUsuario/allowedlines/:idSubline`.replace(':idUsuario', idUsuario ).replace(':idSubline', idSublinea ),
-        deleteUser:(id:string) => `${endPoint}/api/users/:idUsuario`.replace(':idUsuario', id )
+        getUserAllowedlines:(id:string) => `/api/users/:idUsuario/allowedlines`.replace(':idUsuario', id ),
+        getUsers: `/api/users`,
+        postUser: `/api/users`,
+        updateUser: (id:string) => `/api/users/:idUsuario`.replace(':idUsuario', id ),
+        postUserAllowedline:(id:string) => `/api/users/:idUsuario/allowedlines`.replace(':idUsuario', id ),
+        deleteUserAllowedline:(idUsuario:string, idSublinea:string) => `/api/users/:idUsuario/allowedlines/:idSubline`.replace(':idUsuario', idUsuario ).replace(':idSubline', idSublinea ),
+        deleteUser:(id:string) => `/api/users/:idUsuario`.replace(':idUsuario', id )
     } 
 
     getUserAllowedlines(idUsuario:string): Observable<AllowedLines> {

@@ -45,10 +45,10 @@ export class CategoriesApiService {
 
     private host = "http://172.20.20.24:3001";
     private endPoints = {
-        getCategories: (id: string) => `${endPoint}/api/sublines/:idSubline/categories`.replace(':idSubline', id),
-        postCategory: `${endPoint}/api/categories`,
-        updateCategory: (id: string) => `${endPoint}/api/categories/:idCategory`.replace(':idCategory', id),
-        deleteCategory: (id: string) => `${endPoint}/api/categories/:idCategory`.replace(':idCategory', id)
+        getCategories: (id: string) => `/api/sublines/:idSubline/categories`.replace(':idSubline', id),
+        postCategory: `/api/categories`,
+        updateCategory: (id: string) => `/api/categories/:idCategory`.replace(':idCategory', id),
+        deleteCategory: (id: string) => `/api/categories/:idCategory`.replace(':idCategory', id)
     };
 
     getCategories(sublineId: string): Observable<category[]> {

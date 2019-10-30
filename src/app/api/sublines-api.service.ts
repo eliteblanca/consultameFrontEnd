@@ -18,9 +18,9 @@ export class SublinesApiService {
 
     private host = "http://172.20.20.24:3001";
     private endPoints = {
-        postSubline: (id: string) => `${endPoint}/api/lines/:idLine/sublines`.replace(':idLine', id),
-        updateSubline: (id: string) => `${endPoint}/api/sublines/:id`.replace(':id', id),
-        deleteSubline: (id: string) => `${endPoint}/api/sublines/:id`.replace(':id', id)
+        postSubline: (id: string) => `/api/lines/:idLine/sublines`.replace(':idLine', id),
+        updateSubline: (id: string) => `/api/sublines/:id`.replace(':id', id),
+        deleteSubline: (id: string) => `/api/sublines/:id`.replace(':id', id)
     }
 
     createSubLine(idLine: string, name: string): Observable<subline> {

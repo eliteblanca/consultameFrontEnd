@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { Article } from "../../article";
-import { ApiService } from "../../services/index";
 import settingsIcon from '@iconify/icons-mdi/settings';
 
 
@@ -12,7 +11,7 @@ import settingsIcon from '@iconify/icons-mdi/settings';
 })
 export class HeaderComponent implements OnInit {
 
-    constructor(public api: ApiService) { }
+    constructor() { }
 
     settingsIcon = settingsIcon;
 

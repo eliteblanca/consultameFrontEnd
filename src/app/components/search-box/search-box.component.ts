@@ -2,7 +2,8 @@ import { Component, OnInit, AfterViewInit, ViewChild, ElementRef, EventEmitter, 
 import { DiccionarioEjemplo } from "../../diccionario-ejemplo";
 import { Observable, fromEvent } from 'rxjs';
 import { filter, map, distinctUntilChanged } from "rxjs/operators";
-import { ApiService, EventsService } from "../../services/index";
+import { 
+    EventsService } from "../../services/index";
 
 
 @Component({
@@ -136,15 +137,16 @@ export class SearchBoxComponent implements OnInit, AfterViewInit {
         }
     }
 
+    //!arreglar este metodo , crear el api en el front end y en eal back end
     getSuggestions(input?: string) {
         //:{selected:boolean,value:string}[]  
-        this.api.getSuggestions(input).pipe(
-            map(suggestions => suggestions.map((suggestion) => {
-                return { selected: false, value: suggestion['query'] }
-            }))
-        ).subscribe(suggestions => {
-            this.suggestions = suggestions.slice(0, 10);
-        })
+        // this.api.getSuggestions(input).pipe(
+        //     map(suggestions => suggestions.map((suggestion) => {
+        //         return { selected: false, value: suggestion['query'] }
+        //     }))
+        // ).subscribe(suggestions => {
+        //     this.suggestions = suggestions.slice(0, 10);
+        // })
     }
 
     onFocus() {
@@ -197,6 +199,6 @@ export class SearchBoxComponent implements OnInit, AfterViewInit {
         }
     }
 
-    constructor(public api: ApiService, public events: EventsService) { }
+    constructor(public events: EventsService) { }
 
 }

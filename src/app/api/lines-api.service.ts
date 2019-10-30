@@ -25,10 +25,10 @@ export class LinesApiService {
 
     private host = "http://172.20.20.24:3001";
     private endPoints = {
-        getLineas: `${endPoint}/api/lines`,
-        postLine: `${endPoint}/api/lines`,
-        updateLine: (id: string) => `${endPoint}/api/lines/:id`.replace(':id', id),
-        deleteLine: (id: string) => `${endPoint}/api/lines/:id`.replace(':id', id),
+        getLineas: `/api/lines`,
+        postLine: `/api/lines`,
+        updateLine: (id: string) => `/api/lines/:id`.replace(':id', id),
+        deleteLine: (id: string) => `/api/lines/:id`.replace(':id', id),
     }
 
     getLines(includeSublines: boolean = true): Observable<lineWithSublines[]> {

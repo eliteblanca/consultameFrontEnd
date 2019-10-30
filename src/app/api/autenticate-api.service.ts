@@ -11,7 +11,7 @@ export class AutenticateApiService {
 
     constructor(private http: HttpClient) { }
 
-    private endPoint = `${endPoint}/api/authenticate`;
+    private endPoint = `/api/authenticate`;
 
     login(user: string, pass: string): Observable<boolean> {
         return of(null).pipe(

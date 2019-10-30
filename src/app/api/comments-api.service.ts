@@ -28,9 +28,9 @@ export class CommentsApiService {
   private host = "http://172.20.20.24:3001";
 
   private endPoints = {
-      postComment: ( articleId:string) => `${endPoint}/api/articles/${articleId}/comments`,
-      getComments: ( articleId:string) => `${endPoint}/api/articles/${articleId}/comments`,
-      getReplies: ( commentId:string) => `${endPoint}/api/comments/${commentId}/replies`
+      postComment: ( articleId:string) => `/api/articles/${articleId}/comments`,
+      getComments: ( articleId:string) => `/api/articles/${articleId}/comments`,
+      getReplies: ( commentId:string) => `/api/comments/${commentId}/replies`
   };
 
   constructor(private http: HttpClient) { }
