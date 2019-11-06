@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 import { Article } from '../article';
-import { switchMap, concatMap } from 'rxjs/operators';
-import endPoint from "./endPoint";
+import { environment } from '../../environments/environment';
 
 export type postArticleDTO = {
     title: string;
@@ -24,9 +23,8 @@ export class FilesApiService {
 
     constructor(private http: HttpClient) { }
 
-    private host = "http://172.20.20.24:3001/files";
     private endPoints = {
-        deleteFile:(idArticle, fileName) => `/${idArticle}/${fileName}`,
+        deleteFile:(idArticle, fileName) => `${environment.endpoint}/${idArticle}/${fileName}`,
     }
 
     deletFile(idArticle:string, fileName:string): Observable<Article[]> {

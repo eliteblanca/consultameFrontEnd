@@ -52,6 +52,7 @@ import { FavoritesComponent } from './components/favorites/favorites.component';
 import { CommentListComponent } from './components/comment-list/comment-list.component';
 import { CommentComponent } from './components/comment/comment.component';
 import { ArticlePrevComponent } from './components/file-prev/file-prev.component';
+import { UserRoleIsDirective } from './user-role-is.directive';
 @NgModule({
     declarations: [
         AppComponent,
@@ -103,6 +104,7 @@ import { ArticlePrevComponent } from './components/file-prev/file-prev.component
         CommentListComponent,
         CommentComponent,
         ArticlePrevComponent,
+        UserRoleIsDirective,
     ],
     imports: [
         BrowserModule,

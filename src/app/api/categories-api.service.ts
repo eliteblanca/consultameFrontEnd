@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { switchMap, map } from 'rxjs/operators';
-import endPoint from "./endPoint";
+import { environment } from '../../environments/environment';
 
 export type categoryRaw = {
     sublinea: string;
@@ -43,12 +43,11 @@ export class CategoriesApiService {
 
     constructor(private http: HttpClient) { }
 
-    private host = "http://172.20.20.24:3001";
     private endPoints = {
-        getCategories: (id: string) => `/api/sublines/:idSubline/categories`.replace(':idSubline', id),
-        postCategory: `/api/categories`,
-        updateCategory: (id: string) => `/api/categories/:idCategory`.replace(':idCategory', id),
-        deleteCategory: (id: string) => `/api/categories/:idCategory`.replace(':idCategory', id)
+        getCategories: (id: string) => `${environment.endpoint}/api/sublines/:idSubline/categories`.replace(':idSubline', id),
+        postCategory: `${environment.endpoint}/api/categories`,
+        updateCategory: (id: string) => `${environment.endpoint}/api/categories/:idCategory`.replace(':idCategory', id),
+        deleteCategory: (id: string) => `${environment.endpoint}/api/categories/:idCategory`.replace(':idCategory', id)
     };
 
     getCategories(sublineId: string): Observable<category[]> {

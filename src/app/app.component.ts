@@ -10,11 +10,10 @@ import { Title } from "@angular/platform-browser";
     providers: [Title]
 })
 export class AppComponent implements OnInit {
-    constructor(public events: EventsService, public router: Router, public route: ActivatedRoute, public title: Title) {
-
-    }
+    constructor(public events: EventsService, public router: Router, public route: ActivatedRoute, public title: Title) {  }
 
     ngOnInit() {
+        
         this.events.onNewSearch$.subscribe(newSearch => {
             if (newSearch) {
                 this.title.setTitle(newSearch);

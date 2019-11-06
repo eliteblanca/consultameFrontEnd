@@ -1,30 +1,30 @@
 <i class="material-icons logo">photo_size_select_actual</i>
 <app-search-box></app-search-box>
-<a class="tab" routerLink="/app/explore">
+<a class="tab" routerLink="/app/explore" *appUserRoleIsIn="['publicador','admin','user']">
     <app-icon [iconName]="'mdi:map-search-outline'"></app-icon>
     <span>Explorar</span>
 </a>
-<a class="tab" routerLink="/app/news">
+<a class="tab" routerLink="/app/news" *appUserRoleIsIn="['publicador','admin','user']">
     <app-icon [iconName]="'mdi:bell-outline'"></app-icon>
     <span>Noticias</span>
 </a>
-<a class="tab" routerLink="/app/favorites">
+<a class="tab" routerLink="/app/favorites" *appUserRoleIsIn="['publicador','admin','user']">
     <app-icon [iconName]="'mdi:star'"></app-icon>
     <span>Favoritos</span>
 </a>
-<a class="tab" routerLink="/app/edicion">
+<a class="tab" routerLink="/app/edicion" *appUserRoleIsIn="['publicador','admin']">
     <app-icon [iconName]="'mdi:pencil'"></app-icon>
     <span>Edicion</span>
 </a>
-<a class="tab" routerLink="/app/newseditor">
+<a class="tab" routerLink="/app/newseditor" *appUserRoleIsIn="['publicador','admin']">
     <app-icon [iconName]="'mdi:plus-circle'"></app-icon>
     <span>Crear Noticia</span>
 </a>
 <span class="separator"></span>
-<a routerLink="/app/users" class="mr1.5">
+<a routerLink="/app/users" class="mr1.5" *appUserRoleIsIn="['admin']">
     <app-icon [iconName]="'mdi:account-edit'"></app-icon>
 </a>
-<a routerLink="/app/admin" class="mr1.5">
+<a routerLink="/app/admin" class="mr1.5" *appUserRoleIsIn="['admin']">
     <app-icon [iconName]="'mdi:settings'"></app-icon>
 </a>
 

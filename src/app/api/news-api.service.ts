@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
-import endPoint from "./endPoint";
+import { environment } from '../../environments/environment';
 
 export interface news {
   id: string;
@@ -42,13 +41,12 @@ export class NewsApiService {
 
   constructor(private http: HttpClient) { }
 
-  private host = "http://172.20.20.24:3001";
   private endPoints = {
-    getNews: (idSubline: string) => `/api/sublines/:idSubline/news`.replace(':idSubline', idSubline),
-    getSingleNews: (idNews: string) => `/api/news/:idNews`.replace(':idNews', idNews),
+    getNews: (idSubline: string) => `${environment.endpoint}/api/sublines/:idSubline/news`.replace(':idSubline', idSubline),
+    getSingleNews: (idNews: string) => `${environment.endpoint}/api/news/:idNews`.replace(':idNews', idNews),
     postNews: `/api/news`,
-    updateNews: (idNews: string) => `/api/news/:idNews`.replace(':idNews', idNews),
-    deleteNews: (idNews: string) => `/api/news/:idNews`.replace(':idNews', idNews),
+    updateNews: (idNews: string) => `${environment.endpoint}/api/news/:idNews`.replace(':idNews', idNews),
+    deleteNews: (idNews: string) => `${environment.endpoint}/api/news/:idNews`.replace(':idNews', idNews),
   }
 
   public getNews(idSubline: string, state: 'published' | 'archived', from: number = 0, size: number = 20, date:string = new Date().getTime().toString() ): Observable<news[]> {

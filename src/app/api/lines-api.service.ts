@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
-import endPoint from "./endPoint";
+import { environment } from '../../environments/environment';
 
 export interface line {
     id: string;
@@ -23,12 +23,11 @@ export class LinesApiService {
 
     constructor(private http: HttpClient) { }
 
-    private host = "http://172.20.20.24:3001";
     private endPoints = {
-        getLineas: `/api/lines`,
-        postLine: `/api/lines`,
-        updateLine: (id: string) => `/api/lines/:id`.replace(':id', id),
-        deleteLine: (id: string) => `/api/lines/:id`.replace(':id', id),
+        getLineas: `${environment.endpoint}/api/lines`,
+        postLine: `${environment.endpoint}/api/lines`,
+        updateLine: (id: string) => `${environment.endpoint}/api/lines/:id`.replace(':id', id),
+        deleteLine: (id: string) => `${environment.endpoint}/api/lines/:id`.replace(':id', id),
     }
 
     getLines(includeSublines: boolean = true): Observable<lineWithSublines[]> {

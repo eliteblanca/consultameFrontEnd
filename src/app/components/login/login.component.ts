@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { AutenticateApiService } from "../../api/autenticate-api.service";
-
+import { JwtHelperService } from '@auth0/angular-jwt';
 import { Router } from '@angular/router';
 
 @Component({
@@ -24,6 +24,13 @@ export class LoginComponent implements OnInit {
             this.autenticateApi.login(this.usuario.nativeElement.value, this.password.nativeElement.value)
                 .subscribe(autenticated => {
                     if (autenticated) {
+                        // window.setTimeout(()=>{
+                        //     localStorage.removeItem('token')
+                        //     this.router.navigate(['login'])
+                        // },
+                        //     (new JwtHelperService()).getTokenExpirationDate(localStorage.getItem("token")).getTime()
+                        // )
+
                         this.router.navigate(['/app']);
                     }
                 })

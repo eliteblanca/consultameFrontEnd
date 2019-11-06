@@ -3,7 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { Article } from '../article';
 import { switchMap, concatMap } from 'rxjs/operators';
-import endPoint from "./endPoint";
+import { environment } from '../../environments/environment';
 
 export type postArticleDTO = {
     title: string;
@@ -25,20 +25,20 @@ export class ArticlesApiService {
     constructor(private http: HttpClient) { }
     
     private endPoints = {
-        getArticles:`/api/articles`,
-        postArticle:`/api/articles`,
-        getByCategory: (id:string) => `/api/categories/:idCategory/articles`.replace(':idCategory', id),
-        getByQuery: (id:string) => `/api/sublines/:idSubline/articles`.replace(':idSubline', id),
-        deleteArticle: (id:string) => `/api/articles/:idArticle`.replace(':idArticle', id),
-        getArticle: (id:string) => `/api/articles/:idArticle`.replace(':idArticle', id),
-        updateArticle: (id:string) => `/api/articles/:idArticle`.replace(':idArticle', id),
-        postFavorite: (id:string) => `/api/articles/:idArticle/favorites`.replace(':idArticle', id),
-        deleteFavorite: (id:string) => `/api/articles/:idArticle/favorites`.replace(':idArticle', id),
-        postLike: (id:string) => `/api/articles/:idArticle/likes`.replace(':idArticle', id),
-        deleteLike: (id:string) => `/api/articles/:idArticle/likes`.replace(':idArticle', id),
-        postDisLike: (id:string) => `/api/articles/:idArticle/disLikes`.replace(':idArticle', id),
-        deleteDisLike: (id:string) => `/api/articles/:idArticle/disLikes`.replace(':idArticle', id),
-        getSelfFavorites: `/api/users/me/favorites`,        
+        getArticles:`${environment.endpoint}/api/articles`,
+        postArticle:`${environment.endpoint}/api/articles`,
+        getByCategory: (id:string) => `${environment.endpoint}/api/categories/:idCategory/articles`.replace(':idCategory', id),
+        getByQuery: (id:string) => `${environment.endpoint}/api/sublines/:idSubline/articles`.replace(':idSubline', id),
+        deleteArticle: (id:string) => `${environment.endpoint}/api/articles/:idArticle`.replace(':idArticle', id),
+        getArticle: (id:string) => `${environment.endpoint}/api/articles/:idArticle`.replace(':idArticle', id),
+        updateArticle: (id:string) => `${environment.endpoint}/api/articles/:idArticle`.replace(':idArticle', id),
+        postFavorite: (id:string) => `${environment.endpoint}/api/articles/:idArticle/favorites`.replace(':idArticle', id),
+        deleteFavorite: (id:string) => `${environment.endpoint}/api/articles/:idArticle/favorites`.replace(':idArticle', id),
+        postLike: (id:string) => `${environment.endpoint}/api/articles/:idArticle/likes`.replace(':idArticle', id),
+        deleteLike: (id:string) => `${environment.endpoint}/api/articles/:idArticle/likes`.replace(':idArticle', id),
+        postDisLike: (id:string) => `${environment.endpoint}/api/articles/:idArticle/disLikes`.replace(':idArticle', id),
+        deleteDisLike: (id:string) => `${environment.endpoint}/api/articles/:idArticle/disLikes`.replace(':idArticle', id),
+        getSelfFavorites: `${environment.endpoint}/api/users/me/favorites`,        
     }
 
     getArticles(): Observable<Article[]> {

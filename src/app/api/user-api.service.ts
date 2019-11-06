@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
-import endPoint from "./endPoint";
+import { environment } from '../../environments/environment';
 
 interface line {
     name: string;
@@ -36,15 +36,14 @@ export class UserApiService {
 
     constructor(private http: HttpClient) { }
 
-    private host = "http://172.20.20.24:3001";
     private endPoints = {
-        getUserAllowedlines:(id:string) => `/api/users/:idUsuario/allowedlines`.replace(':idUsuario', id ),
-        getUsers: `/api/users`,
-        postUser: `/api/users`,
-        updateUser: (id:string) => `/api/users/:idUsuario`.replace(':idUsuario', id ),
-        postUserAllowedline:(id:string) => `/api/users/:idUsuario/allowedlines`.replace(':idUsuario', id ),
-        deleteUserAllowedline:(idUsuario:string, idSublinea:string) => `/api/users/:idUsuario/allowedlines/:idSubline`.replace(':idUsuario', idUsuario ).replace(':idSubline', idSublinea ),
-        deleteUser:(id:string) => `/api/users/:idUsuario`.replace(':idUsuario', id )
+        getUserAllowedlines:(id:string) => `${environment.endpoint}/api/users/:idUsuario/allowedlines`.replace(':idUsuario', id ),
+        getUsers: `${environment.endpoint}/api/users`,
+        postUser: `${environment.endpoint}/api/users`,
+        updateUser: (id:string) => `${environment.endpoint}/api/users/:idUsuario`.replace(':idUsuario', id ),
+        postUserAllowedline:(id:string) => `${environment.endpoint}/api/users/:idUsuario/allowedlines`.replace(':idUsuario', id ),
+        deleteUserAllowedline:(idUsuario:string, idSublinea:string) => `${environment.endpoint}/api/users/:idUsuario/allowedlines/:idSubline`.replace(':idUsuario', idUsuario ).replace(':idSubline', idSublinea ),
+        deleteUser:(id:string) => `${environment.endpoint}/api/users/:idUsuario`.replace(':idUsuario', id )
     } 
 
     getUserAllowedlines(idUsuario:string): Observable<AllowedLines> {
