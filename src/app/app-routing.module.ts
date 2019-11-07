@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule, ExtraOptions } from '@angular/router';
-import { SearchComponent, ExplorarComponent, HomeComponent, AplicationComponent, LoginComponent, ArticleViewComponent, ConfigComponent, UsersAdminComponent } from "./components/index";
+import { SearchComponent, ExplorarComponent, HomeComponent, AplicationComponent, LoginComponent, ArticleViewComponent, ConfigComponent } from "./components/index";
 import { AuthGuard, HomeGuard } from "./guards/index";
 import { UsersResolverService } from "./services/users-resolver.service";
 import { EdicionComponent } from "./components/edicion/edicion.component";
@@ -26,7 +26,7 @@ const routes: Routes = [
 			{ path: 'news', component: NewsComponent },
 			{ path: 'news/:id', component: NewsViewComponent },
 			{ path: 'admin', component: ConfigComponent },
-			{ path: 'users', component: UsersAdminComponent, resolve: { users: UsersResolverService } },
+			// { path: 'users', component: UsersAdminComponent, resolve: { users: UsersResolverService } },
 			{ path: 'edicion', component: EdicionComponent },
 			{ path: 'articlecreation', component: ArticleCreatorComponent },
 			{ path: 'favorites', component: FavoritesComponent }

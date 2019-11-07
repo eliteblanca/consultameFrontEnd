@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { LinesApiService, lineWithSublines } from "../../api/lines-api.service";
 import { CategoriesApiService, category } from "../../api/categories-api.service";
 import { ArticlesApiService, } from "../../api/articles-api.service";
 import { Article } from "../../article";
@@ -7,6 +6,7 @@ import { EventsService } from "../../services";
 import { filter, switchMap } from 'rxjs/operators';
 import { UserApiService, AllowedLines } from "../../api/user-api.service";
 import { UserService } from 'src/app/services';
+import { PcrcApiService, cliente } from "../../api/pcrc-api.service";
 
 @Component({
     selector: 'app-config',
@@ -15,22 +15,21 @@ import { UserService } from 'src/app/services';
 })
 export class ConfigComponent implements OnInit {
 
-    public lines: lineWithSublines[];
+    public clientes: cliente[];
     public categories: category[] = [];
     public articles: Article[] = [];
-    public selectedSubline: string;
+    public selectedPcrc: string;
     public selectedCategory: string;
 
     constructor(
-        private linesApi: LinesApiService,
         private categoriesApi: CategoriesApiService,
-        private userApi: UserApiService,
-        public userService: UserService
+        public userService: UserService,
+        private pcrcApi:PcrcApiService,
     ) { }
 
     ngOnInit() {
-        this.linesApi.getLines().subscribe(lines => {
-            this.lines = lines;
+        this.pcrcApi.getUserPcrc(this.userService.usuario.sub).subscribe(clientes => {
+            this.clientes = clientes;
         })
 
         // this.userApi.getUserAllowedlines(this.userService.usuario.sub)
@@ -42,9 +41,9 @@ export class ConfigComponent implements OnInit {
 
     }
 
-    onSubLineSelected(sublineId: string) {
-        if (this.selectedSubline != sublineId) {
-            this.selectedSubline = sublineId;
+    onPcrcSelected(sublineId: string) {
+        if (this.selectedPcrc != sublineId) {
+            this.selectedPcrc = sublineId;
             this.categoriesApi.getCategories(sublineId).subscribe(categories => {
                 this.categories = categories;
                 this.selectedCategory = undefined;
@@ -57,23 +56,9 @@ export class ConfigComponent implements OnInit {
             this.selectedCategory = category.id;
         }
     }
-
-    onLineDelete(lineId: string) {
-        let LineDeleted = this.lines.find(line => line.id == lineId)
-        let contieneSublinea = LineDeleted.sublines.some(subline => subline.id == this.selectedSubline)
-        if (contieneSublinea) {
-            this.reset()
-        }
-    }
-
-    onSubLineDeleted(sublineId: string) {
-        if (this.selectedSubline == sublineId) {
-            this.reset()
-        }
-    }
     
     private reset(){
-        this.selectedSubline = undefined;
+        this.selectedPcrc = undefined;
         this.selectedCategory = undefined;
         this.categories = [];
         this.articles = [];

@@ -13,6 +13,7 @@ import { AutosizeModule } from 'ngx-autosize';
 import { NgScrollbarModule } from 'ngx-scrollbar';
 import { PickerModule } from '@ctrl/ngx-emoji-mart';
 import { UploaderModule  } from '@syncfusion/ej2-angular-inputs';
+import { TreeViewModule } from '@syncfusion/ej2-ng-navigations';
 
 import { AppComponent } from './app.component';
 import { ArticleCreatorComponent } from './components/article-creator/article-creator.component';
@@ -26,17 +27,10 @@ import { DropDownComponent } from './components/drop-down/drop-down.component';
 import { IconPickerComponent } from './components/icon-picker/icon-picker.component';
 import { IconComponent } from './components/icon/icon.component';
 import { AcountMenuComponent, AplicationComponent, ArticleComponent, ArticleListComponent, ArticleViewComponent, CategorieComponent, CategoriesComponent, ExplorarComponent, HeaderComponent, HomeComponent, LoginComponent, SearchBoxComponent, SearchComponent } from './components/index';
-import { LineAllowedEditorComponent } from './components/line-allowed-editor/line-allowed-editor.component';
-import { LineAllowedComponent } from './components/line-allowed/line-allowed.component';
-import { LineEditableComponent } from './components/line-editable/line-editable.component';
-import { LinesAllowedEditorComponent } from './components/lines-allowed-editor/lines-allowed-editor.component';
-import { LinesAllowedComponent } from './components/lines-allowed/lines-allowed.component';
-import { LinesEditorComponent } from './components/lines-editor/lines-editor.component';
 import { ModalComponent } from './components/modal/modal.component';
 import { PagerComponent } from './components/pager/pager.component';
 import { SearchInputComponent } from './components/search-input/search-input.component';
 import { TextInputComponent } from './components/text-input/text-input.component';
-import { UsersAdminComponent } from './components/users-admin/users-admin.component';
 import { UsersEditorListComponent } from './components/users-editor-list/users-editor-list.component';
 import { JwtInterceptor, mockServerService } from "./services/index";
 import { EdicionComponent } from './components/edicion/edicion.component';
@@ -53,6 +47,9 @@ import { CommentListComponent } from './components/comment-list/comment-list.com
 import { CommentComponent } from './components/comment/comment.component';
 import { ArticlePrevComponent } from './components/file-prev/file-prev.component';
 import { UserRoleIsDirective } from './user-role-is.directive';
+import { SideSheetComponent } from './components/side-sheet/side-sheet.component';
+import { TreeViewComponent } from './components/tree-view/tree-view.component';
+import { TreeViewRowComponent } from './tree-view-row/tree-view-row.component';
 @NgModule({
     declarations: [
         AppComponent,
@@ -72,8 +69,6 @@ import { UserRoleIsDirective } from './user-role-is.directive';
         ConfigComponent,
         CategoriesEditorComponent,
         CategoryEditableComponent,
-        LinesEditorComponent,
-        LineEditableComponent,
         ButtonComponent,
         TextInputComponent,
         IconPickerComponent,
@@ -84,13 +79,8 @@ import { UserRoleIsDirective } from './user-role-is.directive';
         ArticlesEditorListComponent,
         ArticleEditableComponent,
         ArticleCreatorComponent,
-        UsersAdminComponent,
         SearchInputComponent,
         UsersEditorListComponent,
-        LinesAllowedComponent,
-        LineAllowedComponent,
-        LinesAllowedEditorComponent,
-        LineAllowedEditorComponent,
         EdicionComponent,
         RichTextEditorComponent,
         RTEViewComponent,
@@ -105,6 +95,9 @@ import { UserRoleIsDirective } from './user-role-is.directive';
         CommentComponent,
         ArticlePrevComponent,
         UserRoleIsDirective,
+        SideSheetComponent,
+        TreeViewComponent,
+        TreeViewRowComponent,
     ],
     imports: [
         BrowserModule,
@@ -120,7 +113,8 @@ import { UserRoleIsDirective } from './user-role-is.directive';
         AutosizeModule,
         NgScrollbarModule,
         PickerModule,
-        UploaderModule
+        UploaderModule,
+        TreeViewModule
     ],
     providers: [
         JwtInterceptor,

@@ -1,0 +1,13 @@
+<div class="sheet">
+    <header>
+        <h4>{{userName}}</h4>
+    </header>
+    <div class="treeView">
+        <ng-scrollbar>
+            <app-tree-view [data]="state.userPcrc$ | async" [childs]="'pcrcs'" [text]=""></app-tree-view>
+        </ng-scrollbar>
+    </div>
+</div>
+<div class="drawer">
+
+</div>
