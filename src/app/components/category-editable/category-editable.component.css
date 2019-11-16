@@ -24,10 +24,11 @@
 }
 
 :host .header .editIcon{
-    display: none;
+    color: transparent;
+    transition: all 200ms ease-in-out;
 }
 :host .header:hover .editIcon{
-    display: flex;
+    color: var(--primaryText);
 }
 
 :host .header .title{

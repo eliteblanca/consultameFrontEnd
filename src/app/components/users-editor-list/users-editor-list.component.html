@@ -3,8 +3,16 @@
     <div class="separator"></div>
     <app-icon class="editIcon" [iconName]="'mdi:account-plus'" (click)="newUser()"></app-icon>
 </div>
-
-<div class="user" *ngFor="let user of users">
-    <h4 class="title" (click)="selectUser(user)">{{user.username}}</h4>
-    <app-icon class="editIcon" [iconName]="'mdi:account-remove'" (click)="deleteUser(user.id)"></app-icon>
-</div>
+<ng-scrollbar>
+    <div class="scroll ml.5 mr1 mt.5 mb2" *ngIf="state.userslist$ | loading | async as response " >
+        <ng-template [ngIf]="response.state == 'finish'">
+            <div class="user" *ngFor="let user of response.value">
+                <h4 class="title" (click)="selectUser(user)">{{user.nombre}}</h4>
+                <app-icon class="editIcon" [iconName]="'mdi:account-remove'" (click)="deleteUser(user.id)"></app-icon>
+            </div>
+        </ng-template>
+        <ng-template [ngIf]="response.state == 'loading'" >
+            ...Cargando
+        </ng-template>
+    </div>
+</ng-scrollbar>

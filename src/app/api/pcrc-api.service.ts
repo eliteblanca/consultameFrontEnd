@@ -31,4 +31,6 @@ export class PcrcApiService {
     getUserPcrc = (cedula:string, from:number = 0, size:number = 10) => {
         return this.http.get<cliente[]>(this.endPoints.getUserPcrc(cedula), { params: { from: from.toString(), size: size.toString() }, observe: "body" })
     }
+
+    
 }

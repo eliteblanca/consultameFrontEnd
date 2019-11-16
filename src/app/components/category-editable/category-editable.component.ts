@@ -1,13 +1,13 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { CategoriesApiService, category } from "../../api/categories-api.service";
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import arrow_drop_down from '@iconify/icons-mdi/arrow-drop-down';
 import arrow_drop_up from '@iconify/icons-mdi/arrow-drop-up';
 import pencil from '@iconify/icons-mdi/pencil';
-import trash from '@iconify/icons-mdi/trash';
 import plus_circle from '@iconify/icons-mdi/plus-circle';
-import { ModalService } from "../../services/modal.service";
+import trash from '@iconify/icons-mdi/trash';
+import { filter, switchMap } from 'rxjs/operators';
 import { ArticlesApiService } from "../../api/articles-api.service";
-import { filter, map, switchMap, window } from 'rxjs/operators';
+import { CategoriesApiService, category } from "../../api/categories-api.service";
+import { StateService } from "../../services/state.service";
 @Component({
     selector: 'app-category-editable',
     templateUrl: './category-editable.component.html',
@@ -23,11 +23,11 @@ export class CategoryEditableComponent implements OnInit {
 
     constructor(
         private categoriesApi: CategoriesApiService,
-        private articlesApi:ArticlesApiService
+        private articlesApi:ArticlesApiService,
+        private state:StateService
     )  {  }
 
     @Input() category: category;
-    @Input() sublineSelected: string;
     @Output() onCategoryDeleted = new EventEmitter();
     @Output() onCategorySelected = new EventEmitter();
 
@@ -74,16 +74,16 @@ export class CategoryEditableComponent implements OnInit {
             filter(articles => {
                 return articles.length <= 0
             }),
-            switchMap((articles) => this.categoriesApi.addCategory({
+            switchMap(articles => this.state.selectedPcrc$),
+            switchMap(({id_dp_pcrc}) => this.categoriesApi.addCategory({
                 group: this.category.id,
                 icon: 'mdi:circle-small',
                 name: nombre,
                 position: 1,
-                sublinea: this.sublineSelected
+                pcrc: id_dp_pcrc.toString()
             }))
         ).subscribe(newCategory => {
-            let { sublinea, ...categ } = newCategory;
-            this.category.subcategories.push({ subcategories: [], ...categ })
+            this.category.subcategories.push({ subcategories: [], ...newCategory })
         })
 
     }

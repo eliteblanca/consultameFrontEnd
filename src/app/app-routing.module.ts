@@ -1,15 +1,14 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule, ExtraOptions } from '@angular/router';
-import { SearchComponent, ExplorarComponent, HomeComponent, AplicationComponent, LoginComponent, ArticleViewComponent, ConfigComponent } from "./components/index";
+import { SearchComponent, ExplorarComponent, HomeComponent, AplicationComponent, LoginComponent, ArticleViewComponent } from "./components/index";
 import { AuthGuard, HomeGuard } from "./guards/index";
-import { UsersResolverService } from "./services/users-resolver.service";
 import { EdicionComponent } from "./components/edicion/edicion.component";
 import { ArticleCreatorComponent } from "./components/article-creator/article-creator.component";
 import { NewsCreatorComponent } from "./components/news-creator/news-creator.component";
 import { NewsComponent } from "./components/news/news.component";
 import { NewsViewComponent } from "./components/news-view/news-view.component";
 import { FavoritesComponent } from "./components/favorites/favorites.component";
-
+import { UsersconfigComponent } from "./components/usersconfig/usersconfig.component";
 
 const routes: Routes = [
 	{ path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -25,11 +24,10 @@ const routes: Routes = [
 			{ path: 'newseditor', component: NewsCreatorComponent },
 			{ path: 'news', component: NewsComponent },
 			{ path: 'news/:id', component: NewsViewComponent },
-			{ path: 'admin', component: ConfigComponent },
-			// { path: 'users', component: UsersAdminComponent, resolve: { users: UsersResolverService } },
 			{ path: 'edicion', component: EdicionComponent },
 			{ path: 'articlecreation', component: ArticleCreatorComponent },
-			{ path: 'favorites', component: FavoritesComponent }
+			{ path: 'favorites', component: FavoritesComponent },
+			{ path: 'users', component: UsersconfigComponent },
 		]
 	},
 	{ path: '**', redirectTo: '' }

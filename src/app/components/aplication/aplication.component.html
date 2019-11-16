@@ -4,5 +4,5 @@
         <router-outlet></router-outlet>
         <!-- Routed components go here -->
     </div>
-    <app-side-sheet></app-side-sheet>
+    <app-side-sheet [ngClass]="{'open':state.sideSheetOpen$ | async}"></app-side-sheet>
 </div>

@@ -10,5 +10,3 @@ export * from './home/home.component';
 export * from './login/login.component';
 export * from './search/search.component';
 export * from './search-box/search-box.component';
-export * from './acount-menu/acount-menu.component';
-export * from './config/config.component';

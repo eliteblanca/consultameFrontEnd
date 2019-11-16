@@ -1,13 +1,17 @@
-<div class="sheet">
+<div class="sheet" >
     <header>
-        <h4>{{userName}}</h4>
+        <h3>{{userName}}</h3>
+        <h3>{{rol}}</h3>
     </header>
+    <div class="mb1">
+        <span>{{(state.selectedCliente$ | async).cliente }} / {{(state.selectedPcrc$ | async).pcrc }}</span>
+    </div>
     <div class="treeView">
         <ng-scrollbar>
-            <app-tree-view [data]="state.userPcrc$ | async" [childs]="'pcrcs'" [text]=""></app-tree-view>
+            <app-tree-view *ngIf="state.userPcrc$ | async" [data]="state.userPcrc$ | async" [child]="'pcrcs'" [childText]="'pcrc'" [dataText]="'cliente'" (onChildSeleccionado)="onPcrcSeleccionado($event)"></app-tree-view>
         </ng-scrollbar>
     </div>
 </div>
-<div class="drawer">
+<div class="drawer" *ngIf="state.sideSheetOpen$ | async" (click)="state.toogleSideSheet()">
 
 </div>

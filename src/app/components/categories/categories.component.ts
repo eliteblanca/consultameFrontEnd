@@ -10,7 +10,6 @@ export class CategoriesComponent implements OnInit {
 
     @Output() onCategorySelected = new EventEmitter();
     @Input() categories: category[];
-    @Input() sublineSelected: string;
     @Input() group: string;
 
     public nuevaCategoriaMode = false;

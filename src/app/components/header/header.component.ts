@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { Article } from "../../article";
 import settingsIcon from '@iconify/icons-mdi/settings';
-
+import { StateService } from "../../services/state.service";
 
 @Component({
     selector: 'app-header',
@@ -11,13 +11,16 @@ import settingsIcon from '@iconify/icons-mdi/settings';
 })
 export class HeaderComponent implements OnInit {
 
-    constructor() { }
+    constructor(public state:StateService) {  }
 
     settingsIcon = settingsIcon;
 
     newSearchSubs: Subscription;
 
-    ngOnInit() {
+    ngOnInit() {  }
+
+    toggleSideSheet(){
+        this.state.toogleSideSheet()
     }
 
 }

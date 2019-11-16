@@ -42,3 +42,7 @@
 :host .separator{
     flex-grow: 1;
 }
+
+.accountIcon:hover{
+    cursor: pointer;
+}

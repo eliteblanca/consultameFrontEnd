@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { AllowedLines } from "../api/user-api.service";
+import { AllowedLines } from '../api/user-api.service';
 
 @Injectable({
     providedIn: 'root'

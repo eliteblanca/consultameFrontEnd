@@ -18,6 +18,7 @@ export class SideSheetComponent implements OnInit {
   public clienteSeleccionado: cliente;
   public pcrcSeleccionado: cliente['pcrcs'][0];
   public userName:string;
+  public rol:string;
   public userPcrc$:Observable<cliente[]>;
 
   constructor(
@@ -31,8 +32,9 @@ export class SideSheetComponent implements OnInit {
   ngOnInit() {
 
     this.userName = this.userService.usuario.name
+    this.rol = this.userService.usuario.rol
 
-    this.PcrcApiService.getUserPcrc(this.userService.usuario.sub).pipe(
+    this.PcrcApiService.getUserPcrc(this.userService.usuario.sub,0,1000).pipe(
           tap(clientes => {
               this.state.newUserPcrc(clientes)
               this.state.newSelectedCliente(clientes[0])
@@ -48,5 +50,11 @@ export class SideSheetComponent implements OnInit {
 
   changeSubLine(pcrc:cliente['pcrcs'][0]) {
     this.state.newSelectedPcrc(pcrc)    
+  }
+
+  onPcrcSeleccionado(cliente:cliente){
+    console.log(cliente)
+    this.state.newSelectedPcrc(cliente.pcrcs[0])
+    this.state.newSelectedCliente(cliente)
   }
 }

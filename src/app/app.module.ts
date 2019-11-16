@@ -22,11 +22,10 @@ import { ArticlesEditorListComponent } from './components/articles-editor-list/a
 import { ButtonComponent } from './components/button/button.component';
 import { CategoriesEditorComponent } from './components/categories-editor/categories-editor.component';
 import { CategoryEditableComponent } from './components/category-editable/category-editable.component';
-import { ConfigComponent } from './components/config/config.component';
 import { DropDownComponent } from './components/drop-down/drop-down.component';
 import { IconPickerComponent } from './components/icon-picker/icon-picker.component';
 import { IconComponent } from './components/icon/icon.component';
-import { AcountMenuComponent, AplicationComponent, ArticleComponent, ArticleListComponent, ArticleViewComponent, CategorieComponent, CategoriesComponent, ExplorarComponent, HeaderComponent, HomeComponent, LoginComponent, SearchBoxComponent, SearchComponent } from './components/index';
+import { AplicationComponent, ArticleComponent, ArticleListComponent, ArticleViewComponent, CategorieComponent, CategoriesComponent, ExplorarComponent, HeaderComponent, HomeComponent, LoginComponent, SearchBoxComponent, SearchComponent } from './components/index';
 import { ModalComponent } from './components/modal/modal.component';
 import { PagerComponent } from './components/pager/pager.component';
 import { SearchInputComponent } from './components/search-input/search-input.component';
@@ -49,7 +48,9 @@ import { ArticlePrevComponent } from './components/file-prev/file-prev.component
 import { UserRoleIsDirective } from './user-role-is.directive';
 import { SideSheetComponent } from './components/side-sheet/side-sheet.component';
 import { TreeViewComponent } from './components/tree-view/tree-view.component';
-import { TreeViewRowComponent } from './tree-view-row/tree-view-row.component';
+import { TreeViewRowComponent } from './components/tree-view-row/tree-view-row.component';
+import { LoadingPipe } from './pipes/loading.pipe';
+import { UsersconfigComponent } from './components/usersconfig/usersconfig.component';
 @NgModule({
     declarations: [
         AppComponent,
@@ -65,8 +66,6 @@ import { TreeViewRowComponent } from './tree-view-row/tree-view-row.component';
         CategorieComponent,
         ArticleListComponent,
         ArticleViewComponent,
-        AcountMenuComponent,
-        ConfigComponent,
         CategoriesEditorComponent,
         CategoryEditableComponent,
         ButtonComponent,
@@ -98,6 +97,8 @@ import { TreeViewRowComponent } from './tree-view-row/tree-view-row.component';
         SideSheetComponent,
         TreeViewComponent,
         TreeViewRowComponent,
+        LoadingPipe,
+        UsersconfigComponent,
     ],
     imports: [
         BrowserModule,

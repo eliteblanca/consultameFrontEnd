@@ -1,17 +1,18 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
-import { switchMap } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
+import { startWith, map } from 'rxjs/operators';
 
-interface line {
-    name: string;
+export interface user {
+    id: string;
+    cedula: string;
+    nombre: string;
+    rol: 'admin' | 'user' | 'publicador';
+    pcrc: string[];
 }
 
-interface subline {
-    name: string;
-    line: string;
-}
+type queryStatus = 'finish' | 'loading';
 
 export type AllowedLines = {
     name: string;
@@ -23,12 +24,6 @@ export type AllowedLines = {
     }[]
 }[];
 
-export interface user {
-    username:string;
-    rol:string;
-    id:string;
-}
-
 @Injectable({
     providedIn: 'root'
 })
@@ -37,49 +32,41 @@ export class UserApiService {
     constructor(private http: HttpClient) { }
 
     private endPoints = {
-        getUserAllowedlines:(id:string) => `${environment.endpoint}/api/users/:idUsuario/allowedlines`.replace(':idUsuario', id ),
         getUsers: `${environment.endpoint}/api/users`,
         postUser: `${environment.endpoint}/api/users`,
-        updateUser: (id:string) => `${environment.endpoint}/api/users/:idUsuario`.replace(':idUsuario', id ),
-        postUserAllowedline:(id:string) => `${environment.endpoint}/api/users/:idUsuario/allowedlines`.replace(':idUsuario', id ),
-        deleteUserAllowedline:(idUsuario:string, idSublinea:string) => `${environment.endpoint}/api/users/:idUsuario/allowedlines/:idSubline`.replace(':idUsuario', idUsuario ).replace(':idSubline', idSublinea ),
-        deleteUser:(id:string) => `${environment.endpoint}/api/users/:idUsuario`.replace(':idUsuario', id )
-    } 
-
-    getUserAllowedlines(idUsuario:string): Observable<AllowedLines> {
-        return of(null).pipe(
-            switchMap(val => {
-                return this.http.get<AllowedLines>(this.endPoints.getUserAllowedlines(idUsuario), { observe: "body" })
-            })
-        )
+        updateUser: (idUsuario: string) => `${environment.endpoint}/api/users/${idUsuario}`,
+        deleteUser: (idUsuario: string) => `${environment.endpoint}/api/users/${idUsuario}`,
+        getPcrcUsers: (idPcrc: string) => `${environment.endpoint}/api/pcrc/${idPcrc}/usuarios`,
+        postUsersPcrc: (idUsuario: string) => `${environment.endpoint}/api/users/${idUsuario}/pcrc`
     }
 
-    postUserAllowedLines(idUsuario:string, idSubline:string):Observable<{status:string}>{
-        return this.http.post<{status:string}>(this.endPoints.postUserAllowedline(idUsuario),{ subline:idSubline },{ observe: "body" })
+    postUserPcrc(idUsuario: string, idPcrc: string): Observable<{ status: string }> {
+        return this.http.post<{ status: string }>(this.endPoints.postUsersPcrc(idUsuario), { pcrc: idPcrc }, { observe: "body" })
     }
 
-    deleteUserAllowedLine(idUsuario:string, idSubline:string):Observable<{ deleted: number }>{
-        return this.http.delete<{ deleted: number }>(this.endPoints.deleteUserAllowedline(idUsuario, idSubline), { observe: "body" })
+    getUsers(): Observable<user[]> {
+        return this.http.get<user[]>(this.endPoints.getUsers, { observe: "body" })
     }
 
-    getUsers():Observable<user[]>{
-        return of(null).pipe(
-            switchMap(val => {
-                return this.http.get<user[]>(this.endPoints.getUsers, { observe: "body" })
-            })
-        )
-    }
-
-    deleteUser(idUser:string):Observable<{ deleted: number }>{
+    deleteUser(idUser: string): Observable<{ deleted: number }> {
         return this.http.delete<{ deleted: number }>(this.endPoints.deleteUser(idUser), { observe: "body" })
     }
 
-    postUser(user:{ username:string, password:string, rol:string }):Observable<user>{
-        return this.http.post<user>(this.endPoints.postUser,user,{ observe: "body" })
+    postUser(user: { username: string, password: string, rol: string }): Observable<user> {
+        return this.http.post<user>(this.endPoints.postUser, user, { observe: "body" })
     }
 
-    updateUserRol(idUsuario:string, newRol:string):Observable<{ status: string }>{
-        return this.http.put<{ status: string }>(this.endPoints.updateUser(idUsuario),{ rol:newRol },{ observe: "body" })
+    updateUserRol(idUsuario: string, newRol: string): Observable<{ status: string }> {
+        return this.http.put<{ status: string }>(this.endPoints.updateUser(idUsuario), { rol: newRol }, { observe: "body" })
+    }
+
+    getPcrcUsers(idPcrc: string): Observable<{ state: queryStatus, value?: user[] }> {
+
+        return this.http.get<user[]>(this.endPoints.getPcrcUsers(idPcrc), { observe: "body" }).pipe(
+            map<user[],{ state: queryStatus, value?: user[]}  >(users => ({ state: "finish", value: users })),
+            startWith({ state: "loading" })
+        )
+
     }
 
 }

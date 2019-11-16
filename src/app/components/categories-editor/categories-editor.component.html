@@ -1,4 +1,11 @@
-<app-category-editable *ngFor="let category of categories" [category]="category" [sublineSelected]="sublineSelected" (onCategoryDeleted)="categoryDeleted($event)" (onCategorySelected)="seleccionarCategoria($event)"></app-category-editable>
-<h5 class="dafaultMessage" *ngIf="!!!categories.length && sublineSelected">No hay categorias en esta linea, agrega la primer categoria</h5>
-<app-text-input placeholder="Nombre nueva categoria" [cancelButton]="nuevaCategoriaMode" *ngIf="(!!!categories.length && sublineSelected) || nuevaCategoriaMode" (onConfirm)="agregarNuevaCategoria($event)" (onCancel)="nuevaCategoriaMode = false">  </app-text-input>
-<app-button [buttonText]="'Nueva categoria'" (click)="nuevaCategoriaMode = true" *ngIf="!!categories.length && !nuevaCategoriaMode">  </app-button>
+<div *ngIf="state.selectedPcrcCategories$ | loading | async as response">
+    <ng-template [ngIf]="response.state == 'finish'">
+        <app-category-editable *ngFor="let category of response.value" [category]="category" (onCategoryDeleted)="categoryDeleted($event)" (onCategorySelected)="seleccionarCategoria($event)"></app-category-editable>
+        <h5 class="dafaultMessage" *ngIf="!!!response.value.length">No hay categorias en esta linea, agrega la primer categoria</h5>    
+        <app-text-input placeholder="Nombre nueva categoria" [cancelButton]="nuevaCategoriaMode" *ngIf="(!!!response.value.length) || nuevaCategoriaMode" (onConfirm)="agregarNuevaCategoria($event)" (onCancel)="nuevaCategoriaMode = false">  </app-text-input>
+        <app-button [buttonText]="'Nueva categoria'" (click)="nuevaCategoriaMode = true" *ngIf="!!response.value.length && !nuevaCategoriaMode">  </app-button>
+    </ng-template>
+    <ng-template [ngIf]="response.state == 'loading'" >
+        ...Cargando
+    </ng-template>
+</div>

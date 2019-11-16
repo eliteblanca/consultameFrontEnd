@@ -34,7 +34,7 @@ export class ExplorarComponent implements OnInit {
             switchMap(selectedLine => this.categoriesApi.getCategories(selectedLine.subLine.id))
         ).subscribe(categories => {
             this.articles = [];
-            this.categories = categories
+            this.categories = categories.value
         })
     }
 

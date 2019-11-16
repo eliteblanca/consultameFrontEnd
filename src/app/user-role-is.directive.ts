@@ -9,7 +9,6 @@ export class UserRoleIsDirective implements OnInit {
   @Input() appUserRoleIsIn: string[];
 
   ngOnInit(): void {
-    console.log(`%c rol ${this.UserService.usuario.rol}`,'font-weight: 700; text-shadow: 3px 3px 3px lightgray; font-size: 16px;')
     if ( this.appUserRoleIsIn.includes(this.UserService.usuario.rol) ) {
       this.viewContainerRef.createEmbeddedView(this.templateRef);
     } else {

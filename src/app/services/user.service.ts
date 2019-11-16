@@ -9,7 +9,7 @@ const helper = new JwtHelperService();
 type user = {
     sub: string,
     name: string,
-    rol: string
+    rol: 'admin' | 'user' | 'publicador'
 }
 
 @Injectable({

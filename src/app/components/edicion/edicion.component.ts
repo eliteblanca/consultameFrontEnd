@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { category,CategoriesApiService } from "../../api/categories-api.service";
-import { EventsService } from "../../services/events.service";
-import { filter, switchMap } from 'rxjs/operators';
+import { CategoriesApiService, category } from "../../api/categories-api.service";
+import { cliente } from "../../api/pcrc-api.service";
+import { Article } from "../../article";
+import { StateService } from "../../services/state.service";
+import { Observable } from 'rxjs';
+import { switchMap, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-edicion',
@@ -10,27 +13,26 @@ import { filter, switchMap } from 'rxjs/operators';
 })
 export class EdicionComponent implements OnInit {
 
+  public clientes: cliente[];
+  public articles: Article[] = [];
+  public selectedCategory: string;
+  public categories:Observable<category[]>
+
   constructor(
-    private categoriesApi:CategoriesApiService,
-    private EventsService:EventsService 
+      private categoriesApi: CategoriesApiService,
+      public state:StateService
   ) { }
 
-  public categorySelected:category;
+  ngOnInit() {  }
 
-  ngOnInit() {
-    this.EventsService.onNewSelectedLine$.pipe(
-      filter(selectedLine => !!selectedLine.line),
-      switchMap(selectedLine => this.categoriesApi.getCategories( selectedLine.subLine.id ) )
-    ).subscribe(categories => {
-      this.categories = categories;
-      this.categorySelected = undefined;
-    })
+  onCategorySelected(category: category) {
+      if (this.selectedCategory != category.id) {
+          this.selectedCategory = category.id;
+      }
   }
 
-  public categories:category[] = [];
-
-  categoriaSelecctionada(category:category){
-    this.categorySelected = category;
+  private reset(){
+      this.selectedCategory = undefined;
+      this.articles = [];
   }
-
 }

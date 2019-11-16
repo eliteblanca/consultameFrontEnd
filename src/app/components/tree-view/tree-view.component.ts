@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-tree-view',
@@ -11,9 +11,14 @@ export class TreeViewComponent implements OnInit {
   @Input() child
   @Input() childText
   @Input() dataText
+  @Output() onChildSeleccionado = new EventEmitter();
 
   constructor() {  }
 
   ngOnInit() {  }
+
+  childSeleccionado(event){
+    this.onChildSeleccionado.next(event)
+  }
 
 }

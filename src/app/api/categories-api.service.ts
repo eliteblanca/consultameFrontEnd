@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
-import { switchMap, map } from 'rxjs/operators';
+import { switchMap, map, startWith } from 'rxjs/operators';
 import { environment } from '../../environments/environment';
 
 export type categoryRaw = {
-    sublinea: string;
+    pcrcId: string;
     name: string;
     position: number;
     icon: string;
@@ -19,6 +19,7 @@ export type category = {
     position: number;
     icon: string;
     group: string;
+    pcrcId: string;
     subcategories?: category[]
 }
 
@@ -26,7 +27,7 @@ type addCategoryDTO = {
     name: string;
     position: number;
     icon: string;
-    sublinea: string;
+    pcrc: string;
     group?: string
 }
 
@@ -36,6 +37,8 @@ type updateCategoryDTO = {
     icon: string;
 }
 
+type queryStatus = 'finish'|'loading';
+
 @Injectable({
     providedIn: 'root'
 })
@@ -44,18 +47,18 @@ export class CategoriesApiService {
     constructor(private http: HttpClient) { }
 
     private endPoints = {
-        getCategories: (id: string) => `${environment.endpoint}/api/sublines/:idSubline/categories`.replace(':idSubline', id),
+        getCategories: (idPcrc: string) => `${environment.endpoint}/api/pcrc/${idPcrc}/categories`,
         postCategory: `${environment.endpoint}/api/categories`,
-        updateCategory: (id: string) => `${environment.endpoint}/api/categories/:idCategory`.replace(':idCategory', id),
-        deleteCategory: (id: string) => `${environment.endpoint}/api/categories/:idCategory`.replace(':idCategory', id)
+        updateCategory: (idCategory: string) => `${environment.endpoint}/api/categories/${idCategory}`,
+        deleteCategory: (idCategory: string) => `${environment.endpoint}/api/categories/${idCategory}`
     };
 
-    getCategories(sublineId: string): Observable<category[]> {
+    getCategories(pcrcId: string):Observable<{ state: queryStatus, value?:category[]}> {
         return of(null).pipe(
             switchMap(val => {
-                return this.http.get<categoryRaw[]>(this.endPoints.getCategories(sublineId), { observe: "body" })
+                return this.http.get<categoryRaw[]>(this.endPoints.getCategories(pcrcId), { observe: "body" })
             }),
-            map(categories => {
+            map<categoryRaw[],{ state: queryStatus, value?:category[]}>(categories => {
                 let categoriesAux = categories.map(category => { return { subcategories: [], ...category } })
 
                 let categoriesToDelete = [];
@@ -71,8 +74,9 @@ export class CategoriesApiService {
                     categoriesAux = categoriesAux.filter(category => !categoriesToDelete.includes(category.id))
                 }
 
-                return categoriesAux;
-            })
+                return { state: "finish", value:categoriesAux }
+            }),
+            startWith({ state: "loading"})
         )
     }
 
