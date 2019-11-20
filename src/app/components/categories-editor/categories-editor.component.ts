@@ -1,8 +1,7 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { CategoriesApiService, category } from "../../api/categories-api.service";
-import { cliente } from "../../api/pcrc-api.service";
-import { StateService } from "../../services/state.service";
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { tap } from 'rxjs/operators';
+import { CategoriesApiService, category, categoryRaw } from "../../api/categories-api.service";
+import { StateService } from "../../services/state.service";
 
 @Component({
     selector: 'app-categories-editor',
@@ -46,6 +45,10 @@ export class CategoriesEditorComponent implements OnInit {
 
     seleccionarCategoria(category:category) {
         this.onCategorySelected.next(category)
+    }
+
+    getFirstCategories(categories:categoryRaw[]){
+        return categories.filter(category => !!!category.group)
     }
 
 }

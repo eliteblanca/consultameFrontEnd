@@ -6,7 +6,7 @@ import plus_circle from '@iconify/icons-mdi/plus-circle';
 import trash from '@iconify/icons-mdi/trash';
 import { filter, switchMap } from 'rxjs/operators';
 import { ArticlesApiService } from "../../api/articles-api.service";
-import { CategoriesApiService, category } from "../../api/categories-api.service";
+import { CategoriesApiService, category, categoryRaw } from "../../api/categories-api.service";
 import { StateService } from "../../services/state.service";
 @Component({
     selector: 'app-category-editable',
@@ -27,7 +27,8 @@ export class CategoryEditableComponent implements OnInit {
         private state:StateService
     )  {  }
 
-    @Input() category: category;
+    @Input() category: categoryRaw;
+    @Input() allCategories: categoryRaw[];
     @Output() onCategoryDeleted = new EventEmitter();
     @Output() onCategorySelected = new EventEmitter();
 
@@ -65,7 +66,7 @@ export class CategoryEditableComponent implements OnInit {
     }
 
     subCategoriaEliminada(subategoryId: string) {
-        this.category.subcategories = this.category.subcategories.filter(subcategory => subcategory.id != subategoryId)
+        this.allCategories = this.allCategories.filter(category => category.id != subategoryId)
     }
 
     agregarCategoria(nombre: string) {
@@ -83,7 +84,7 @@ export class CategoryEditableComponent implements OnInit {
                 pcrc: id_dp_pcrc.toString()
             }))
         ).subscribe(newCategory => {
-            this.category.subcategories.push({ subcategories: [], ...newCategory })
+            this.allCategories.push( newCategory )
         })
 
     }
@@ -123,4 +124,9 @@ export class CategoryEditableComponent implements OnInit {
             this.onCategorySelected.next(category)
         }                
     }
+
+    getSubCategories(){
+        return this.allCategories.filter(category => category.group == this.category.id)
+    }
+
 }

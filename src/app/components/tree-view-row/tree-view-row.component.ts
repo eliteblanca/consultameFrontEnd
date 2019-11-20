@@ -27,4 +27,5 @@ export class TreeViewRowComponent implements OnInit {
     data[this.child] = [data[this.child][index] ]
     this.onChildSeleccionado.next(data)
   }
+  
 }

@@ -20,17 +20,19 @@ export type cliente = {
 export class PcrcApiService {
 
     constructor(private http: HttpClient) { }
-    
+
     private endPoints = {
         getAllPcrc:`${environment.endpoint}/api/pcrc`,
         getUserPcrc: (cedula:string) => `${environment.endpoint}/api/users/${cedula}/pcrc`,
-        postUserPcrc: (cedula:string) => `${environment.endpoint}/api/users/${cedula}/pcrc`,
-        deleteUserPcrc: (cedula:string, pcrc:string) => `${environment.endpoint}/api/users/${cedula}/pcrc/${pcrc}`,
+        postUserPcrc: (cedula:string) => `${environment.endpoint}/api/users/${cedula}/pcrc`
     }
 
     getUserPcrc = (cedula:string, from:number = 0, size:number = 10) => {
         return this.http.get<cliente[]>(this.endPoints.getUserPcrc(cedula), { params: { from: from.toString(), size: size.toString() }, observe: "body" })
     }
 
-    
+    getAllPcrc = ( ) => {
+        return this.http.get<cliente[]>(this.endPoints.getAllPcrc, { observe: "body" })
+    }   
+
 }

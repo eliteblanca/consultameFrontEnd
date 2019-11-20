@@ -23,6 +23,7 @@
     "@auth0/angular-jwt": "^2.1.1",
     "@ctrl/ngx-emoji-mart": "^1.0.2",
     "@iconify/icons-mdi": "^1.0.10",
+    "@syncfusion/ej2-angular-buttons": "^17.3.27",
     "@syncfusion/ej2-angular-calendars": "^17.3.14",
     "@syncfusion/ej2-angular-inputs": "^17.3.20",
     "@syncfusion/ej2-ng-navigations": "^16.2.50",

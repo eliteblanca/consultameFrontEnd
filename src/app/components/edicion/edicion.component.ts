@@ -4,7 +4,6 @@ import { cliente } from "../../api/pcrc-api.service";
 import { Article } from "../../article";
 import { StateService } from "../../services/state.service";
 import { Observable } from 'rxjs';
-import { switchMap, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-edicion',

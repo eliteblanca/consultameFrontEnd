@@ -57,4 +57,9 @@ export class SideSheetComponent implements OnInit {
     this.state.newSelectedPcrc(cliente.pcrcs[0])
     this.state.newSelectedCliente(cliente)
   }
+
+  logOut = () => {
+    this.userService.logOut()
+  }
+
 }

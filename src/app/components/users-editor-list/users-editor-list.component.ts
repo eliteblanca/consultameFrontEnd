@@ -21,10 +21,6 @@ export class UsersEditorListComponent implements OnInit {
     this.state.userslist$.subscribe(result => console.log('ngOnInit',result))
   }
 
-  selectUser(user:user){
-    // this.onSelectedUser.next(user)
-  }
-
   deleteUser(idUsuario:string){
     // this.userApi.deleteUser(idUsuario).subscribe(result => {
     //   this.selectUser(null);

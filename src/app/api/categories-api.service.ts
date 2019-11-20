@@ -53,28 +53,13 @@ export class CategoriesApiService {
         deleteCategory: (idCategory: string) => `${environment.endpoint}/api/categories/${idCategory}`
     };
 
-    getCategories(pcrcId: string):Observable<{ state: queryStatus, value?:category[]}> {
+    getCategories(pcrcId: string):Observable<{ state: queryStatus, value?:categoryRaw[]}> {
         return of(null).pipe(
             switchMap(val => {
                 return this.http.get<categoryRaw[]>(this.endPoints.getCategories(pcrcId), { observe: "body" })
             }),
             map<categoryRaw[],{ state: queryStatus, value?:category[]}>(categories => {
-                let categoriesAux = categories.map(category => { return { subcategories: [], ...category } })
-
-                let categoriesToDelete = [];
-                while (categoriesAux.some(category => category.group != undefined)) {
-                    for (let i = 0; i < categoriesAux.length; i++) {
-                        if (!categoriesAux.some(category => category.group == categoriesAux[i].id)) {
-                            let groupIndex = categoriesAux.findIndex(category => category.id == categoriesAux[i].group)
-                            categoriesAux[groupIndex].subcategories.push(categoriesAux[i])
-                            categoriesToDelete.push(categoriesAux[i].id)
-                        }
-                    }
-
-                    categoriesAux = categoriesAux.filter(category => !categoriesToDelete.includes(category.id))
-                }
-
-                return { state: "finish", value:categoriesAux }
+                return { state: "finish", value:categories }
             }),
             startWith({ state: "loading"})
         )

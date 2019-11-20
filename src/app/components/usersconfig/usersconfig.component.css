@@ -9,3 +9,16 @@
     grid-row-gap: 0;
     grid-column-gap: 1rem;
 }
+
+.userCard{
+    display: flex;
+    flex-direction: column;
+}
+
+.radio{
+    border-color: var(--primary);
+}
+
+.pcrcPicker{
+    height: 300px;
+}

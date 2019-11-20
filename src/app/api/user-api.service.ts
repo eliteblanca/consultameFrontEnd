@@ -37,8 +37,9 @@ export class UserApiService {
         updateUser: (idUsuario: string) => `${environment.endpoint}/api/users/${idUsuario}`,
         deleteUser: (idUsuario: string) => `${environment.endpoint}/api/users/${idUsuario}`,
         getPcrcUsers: (idPcrc: string) => `${environment.endpoint}/api/pcrc/${idPcrc}/usuarios`,
-        postUsersPcrc: (idUsuario: string) => `${environment.endpoint}/api/users/${idUsuario}/pcrc`
-    }
+        postUsersPcrc: (idUsuario: string) => `${environment.endpoint}/api/users/${idUsuario}/pcrc`,
+        deleteUserPcrc: (cedula:string, pcrc:string) => `${environment.endpoint}/api/users/${cedula}/pcrc/${pcrc}`,
+    }    
 
     postUserPcrc(idUsuario: string, idPcrc: string): Observable<{ status: string }> {
         return this.http.post<{ status: string }>(this.endPoints.postUsersPcrc(idUsuario), { pcrc: idPcrc }, { observe: "body" })
@@ -67,6 +68,10 @@ export class UserApiService {
             startWith({ state: "loading" })
         )
 
+    }
+
+    deleteUserPcrc = (cedula:string, idPcrc:string) => {
+        return this.http.delete<any>(this.endPoints.deleteUserPcrc(cedula, idPcrc),{ observe: "body" })
     }
 
 }

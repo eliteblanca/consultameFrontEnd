@@ -13,7 +13,7 @@ import { AutosizeModule } from 'ngx-autosize';
 import { NgScrollbarModule } from 'ngx-scrollbar';
 import { PickerModule } from '@ctrl/ngx-emoji-mart';
 import { UploaderModule  } from '@syncfusion/ej2-angular-inputs';
-import { TreeViewModule } from '@syncfusion/ej2-ng-navigations';
+import { RadioButtonModule } from '@syncfusion/ej2-angular-buttons';
 
 import { AppComponent } from './app.component';
 import { ArticleCreatorComponent } from './components/article-creator/article-creator.component';
@@ -51,6 +51,8 @@ import { TreeViewComponent } from './components/tree-view/tree-view.component';
 import { TreeViewRowComponent } from './components/tree-view-row/tree-view-row.component';
 import { LoadingPipe } from './pipes/loading.pipe';
 import { UsersconfigComponent } from './components/usersconfig/usersconfig.component';
+import { TreeViewMultiComponent } from './components/tree-view-multi/tree-view-multi.component';
+import { TreeViewMultiRowComponent } from './components/tree-view-multi-row/tree-view-multi-row.component';
 @NgModule({
     declarations: [
         AppComponent,
@@ -99,6 +101,8 @@ import { UsersconfigComponent } from './components/usersconfig/usersconfig.compo
         TreeViewRowComponent,
         LoadingPipe,
         UsersconfigComponent,
+        TreeViewMultiComponent,
+        TreeViewMultiRowComponent,
     ],
     imports: [
         BrowserModule,
@@ -115,7 +119,7 @@ import { UsersconfigComponent } from './components/usersconfig/usersconfig.compo
         NgScrollbarModule,
         PickerModule,
         UploaderModule,
-        TreeViewModule
+        RadioButtonModule
     ],
     providers: [
         JwtInterceptor,

@@ -1,3 +1,34 @@
-<input type="text" placeholder="Usuario" #usuario>
-<input type="password" placeholder="Contraseña" #password>
-<input type="button" value="login" (click)="login()">
+<div class="imageBackGround">
+
+    <div class="formContainer ">
+
+        <div class="acrylic">
+        </div>
+        <div class="formActions">
+            
+            <img class="imagotipo" src="/assets/Imagotipo.png">
+            
+            <div class="username">
+                <app-icon [iconName]="'mdi:account'"></app-icon>
+                <input type="text" placeholder="Usuario" #usuario>
+            </div>
+            
+            <div class="password">
+                <app-icon [iconName]="'mdi:lock'"></app-icon>
+                <input type="password" placeholder="Contraseña" #password>
+            </div>
+            
+
+            <input class="submitButton" type="button" (click)="login()" value="Entrar">
+            
+        </div>
+    </div>
+
+    <div class="pieDePagina">
+        <h2 class="textoBlanco">"Estar </h2>
+        <h2 class="textoMorado">Konectado </h2>
+        <h2 class="textoBlanco"> es mantener </h2>
+        <h2 class="textoMorado">informado"</h2>
+    </div>
+
+</div>

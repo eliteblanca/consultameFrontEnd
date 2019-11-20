@@ -1,0 +1,3 @@
+<div *ngIf="allpcrc$ | async as combinedData">    
+    <app-tree-view-multi-row *ngFor="let cliente of combinedData.allPcrc" [cliente]="cliente" [clienteData]="combinedData" (onChildSeleccionado)="childSeleccionado($event)"></app-tree-view-multi-row>
+</div>
