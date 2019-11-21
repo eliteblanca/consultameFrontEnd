@@ -1,10 +1,10 @@
-<header class="header">        
+<header class="header">
     <app-icon [iconName]="getIcon()" *ngIf="!editCategoryNameMode" (click)="showIconPicker()"></app-icon>
-    <h4 class="title" *ngIf="!editCategoryNameMode" (click)="seleccionarCategoria()" [ngClass]="{'leaftCategory': !!!category.subcategories.length}">{{category.name}}</h4>
+    <h4 class="title" *ngIf="!editCategoryNameMode" (click)="seleccionarCategoria()" [ngClass]="{'leaftCategory': !!!getSubCategories().length}">{{category.name}}</h4>
     <app-icon class="editIcon" [iconName]="'mdi:pencil'" (click)="editCategoryNameMode = true" *ngIf="!editCategoryNameMode"></app-icon>
     <app-icon class="editIcon" [iconName]="'mdi:trash'" (click)="eliminarCategoria()" *ngIf="!editCategoryNameMode"></app-icon>
     <app-icon class="editIcon" [iconName]="'mdi:plus-circle'" (click)="addCategoryMode = true" *ngIf="!editCategoryNameMode"></app-icon>
-    <app-icon  [iconName]="'mdi:arrow-down-drop'" (click)="desplegarSubCategorias()" *ngIf="!editCategoryNameMode && !!category.subcategories.length"></app-icon>
+    <app-icon  [iconName]="'mdi:arrow-down-drop'" (click)="desplegarSubCategorias()" *ngIf="!editCategoryNameMode && !!getSubCategories().length"></app-icon>
     <app-text-input [placeholder]="'Nombre Categoria'" [initialText]="category.name" (onConfirm)="actualizarNombre($event); editCategoryNameMode = false" (onCancel)="editCategoryNameMode = false"  *ngIf="editCategoryNameMode"> </app-text-input>
 </header>
 <div class="body" *ngIf="desplegado || addCategoryMode">

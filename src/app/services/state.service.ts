@@ -16,7 +16,8 @@ type state = {
     selectedPcrcCategories: { state: 'finish' | 'loading', value?: categoryRaw[] },
     userslist: { state: 'finish' | 'loading', value?: user[] },
     selectedUser: user,
-    selectedUserPcrcs: cliente[]
+    selectedUserPcrcs: cliente[],
+    editionSelectedCategory: categoryRaw,
 }
 
 @Injectable({
@@ -39,7 +40,8 @@ export class StateService {
         selectedPcrcCategories: { state: 'loading' },
         userslist: { state: 'loading' },
         selectedUser: null,
-        selectedUserPcrcs: []
+        selectedUserPcrcs: [],
+        editionSelectedCategory: null
     }
 
     private store = new BehaviorSubject<state>(this._state)
@@ -53,6 +55,7 @@ export class StateService {
     public userslist$ = this.state$.pipe(map(_state => _state.userslist), distinctUntilChanged())
     public selectedUser$ = this.state$.pipe(map(_state => _state.selectedUser), distinctUntilChanged(), filter(user => !!user))
     public selectedUserPcrcs$ = this.state$.pipe(map(_state => _state.selectedUserPcrcs), distinctUntilChanged())
+    public editionSelectedCategory$ = this.state$.pipe(map(_state => _state.editionSelectedCategory), distinctUntilChanged())
 
     constructor(
         public route: ActivatedRoute,
@@ -115,6 +118,10 @@ export class StateService {
 
     selectUser(user: user) {
         this.store.next(this._state = { ...this._state, ...{ selectedUser: user } })
+    }
+
+    newEditionSelectedCategory(category:categoryRaw){
+        this.store.next(this._state = { ...this._state, editionSelectedCategory: category })
     }
 
     getSelectedUser = () => this._state.selectedUser

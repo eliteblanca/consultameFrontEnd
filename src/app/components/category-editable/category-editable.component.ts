@@ -117,7 +117,7 @@ export class CategoryEditableComponent implements OnInit {
 
     seleccionarCategoria(category?:category){
         if(!!!category){
-            if(!!!this.category.subcategories.length){
+            if(!!!this.getSubCategories().length){
                 this.onCategorySelected.next(this.category)
             }
         }else{
