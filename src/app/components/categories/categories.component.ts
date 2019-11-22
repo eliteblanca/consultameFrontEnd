@@ -1,5 +1,8 @@
 import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
-import { CategoriesApiService,category } from '../../api/categories-api.service';
+import { category } from '../../api/categories-api.service';
+import { categoryRaw } from "../../api/categories-api.service";
+import { StateService } from "../../services/state.service";
+import { tap } from 'rxjs/operators';
 
 @Component({
     selector: 'app-categories',
@@ -9,21 +12,22 @@ import { CategoriesApiService,category } from '../../api/categories-api.service'
 export class CategoriesComponent implements OnInit {
 
     @Output() onCategorySelected = new EventEmitter();
-    @Input() categories: category[];
     @Input() group: string;
 
     public nuevaCategoriaMode = false;
 
     private icon = 'mdi:circle-small';
 
-    constructor(
-        private categoriesApi: CategoriesApiService,
-    ) { }
+    constructor(public state: StateService) {  }
 
-    ngOnInit() {
-    }
+    ngOnInit() {  }
 
     seleccionarCategoria(category:category) {
         this.onCategorySelected.next(category)
     }
+
+    getFirstCategories(categories:categoryRaw[]){
+        return categories.filter(category => !!!category.group)
+    }
+    
 }

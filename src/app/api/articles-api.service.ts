@@ -23,21 +23,21 @@ export type postArticleDTO = {
 export class ArticlesApiService {
 
     constructor(private http: HttpClient) { }
-    
+
     private endPoints = {
         getArticles:`${environment.endpoint}/api/articles`,
         postArticle:`${environment.endpoint}/api/articles`,
-        getByCategory: (id:string) => `${environment.endpoint}/api/categories/:idCategory/articles`.replace(':idCategory', id),
-        getByQuery: (id:string) => `${environment.endpoint}/api/sublines/:idSubline/articles`.replace(':idSubline', id),
-        deleteArticle: (id:string) => `${environment.endpoint}/api/articles/:idArticle`.replace(':idArticle', id),
-        getArticle: (id:string) => `${environment.endpoint}/api/articles/:idArticle`.replace(':idArticle', id),
-        updateArticle: (id:string) => `${environment.endpoint}/api/articles/:idArticle`.replace(':idArticle', id),
-        postFavorite: (id:string) => `${environment.endpoint}/api/articles/:idArticle/favorites`.replace(':idArticle', id),
-        deleteFavorite: (id:string) => `${environment.endpoint}/api/articles/:idArticle/favorites`.replace(':idArticle', id),
-        postLike: (id:string) => `${environment.endpoint}/api/articles/:idArticle/likes`.replace(':idArticle', id),
-        deleteLike: (id:string) => `${environment.endpoint}/api/articles/:idArticle/likes`.replace(':idArticle', id),
-        postDisLike: (id:string) => `${environment.endpoint}/api/articles/:idArticle/disLikes`.replace(':idArticle', id),
-        deleteDisLike: (id:string) => `${environment.endpoint}/api/articles/:idArticle/disLikes`.replace(':idArticle', id),
+        getByCategory: (idCategory:string) => `${environment.endpoint}/api/categories/${idCategory}/articles`,
+        getByQuery: (idPcrc:string) => `${environment.endpoint}/api/pcrc/${idPcrc}/articles`,
+        deleteArticle: (idArticle:string) => `${environment.endpoint}/api/articles/${idArticle}`,
+        getArticle: (idArticle:string) => `${environment.endpoint}/api/articles/${idArticle}`,
+        updateArticle: (idArticle:string) => `${environment.endpoint}/api/articles/${idArticle}`,
+        postFavorite: (idArticle:string) => `${environment.endpoint}/api/articles/${idArticle}/favorites`,
+        deleteFavorite: (idArticle:string) => `${environment.endpoint}/api/articles/${idArticle}/favorites`,
+        postLike: (idArticle:string) => `${environment.endpoint}/api/articles/${idArticle}/likes`,
+        deleteLike: (idArticle:string) => `${environment.endpoint}/api/articles/${idArticle}/likes`,
+        postDisLike: (idArticle:string) => `${environment.endpoint}/api/articles/${idArticle}/disLikes`,
+        deleteDisLike: (idArticle:string) => `${environment.endpoint}/api/articles/${idArticle}/disLikes`,
         getSelfFavorites: `${environment.endpoint}/api/users/me/favorites`,        
     }
 
@@ -50,17 +50,13 @@ export class ArticlesApiService {
     }
 
     getArticlesByCategory(categoryId: string, state:postArticleDTO["state"] = 'published' , from:number = 0, size:number = 10): Observable<Article[]> {
-
-
         if(typeof from != undefined &&  typeof size != undefined){
             return of(null).pipe(
                 switchMap(val => {
                     return this.http.get<Article[]>(this.endPoints.getByCategory(categoryId), { params: { from: from.toString(), size: size.toString(), state: state }, observe: "body" })
                 })
             )
-            
         }
-
     }
 
     getArticlesByQuery(subline: string, state:postArticleDTO["state"] = 'published' , from:number = 0, size:number = 10, query:{ tag: string } | { query: string } ): Observable<Article[]> {
@@ -70,7 +66,7 @@ export class ArticlesApiService {
             })
         )
     }
-    
+
     deleteArticle(idArticulo:string) :Observable<any> {
         return of(null).pipe(
             switchMap(val => {

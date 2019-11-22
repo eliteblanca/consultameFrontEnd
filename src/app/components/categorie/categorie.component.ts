@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { category } from "../../api/categories-api.service";
+import { category, categoryRaw } from "../../api/categories-api.service";
 import { ArticlesApiService } from '../../api/articles-api.service';
 
 @Component({
@@ -10,13 +10,13 @@ import { ArticlesApiService } from '../../api/articles-api.service';
 export class CategorieComponent implements OnInit {
     constructor() { }
 
-    @Input() category: category;
+    @Input() category: categoryRaw;
+    @Input() allCategories: categoryRaw[];
     @Output() onCategorySelected = new EventEmitter();
 
     public desplegado = false;
 
-    ngOnInit() {
-    }
+    ngOnInit() {  }
 
     getIcon() {
         //* retorna 'mdi:circle-small' solo en esta vista en la vista de agente debe mostrar mdi:circle-small cuando no tenga icono
@@ -36,4 +36,9 @@ export class CategorieComponent implements OnInit {
             this.onCategorySelected.next(category)
         }
     }
+
+    getSubCategories(){
+        return this.allCategories.filter(category => category.group == this.category.id)
+    }
+
 }

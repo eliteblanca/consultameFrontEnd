@@ -1,2 +1,9 @@
-<app-categorie *ngFor="let category of categories" [category]="category" (onCategorySelected)="seleccionarCategoria($event)"></app-categorie>
-<h5 class="dafaultMessage" *ngIf="!!!categories.length">No hay categorias en esta linea</h5>
+<div *ngIf="state.selectedPcrcCategories$ | loading | async as response">
+    <ng-template [ngIf]="response.state == 'finish'">
+        <app-categorie *ngFor="let category of getFirstCategories(response.value)" [category]="category" [allCategories]="response.value" (onCategorySelected)="seleccionarCategoria($event)"></app-categorie>
+        <h5 class="dafaultMessage" *ngIf="!!!categories.length">No hay categorias en esta linea</h5>
+    </ng-template>
+    <ng-template [ngIf]="response.state == 'loading'" >
+        ...Cargando
+    </ng-template>
+</div>

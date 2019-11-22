@@ -1,11 +1,9 @@
-import { Component, OnInit, AfterViewInit, ViewChild, ElementRef, EventEmitter, Output } from '@angular/core';
-import { DiccionarioEjemplo } from "../../diccionario-ejemplo";
-import { Observable, fromEvent } from 'rxjs';
-import { filter, map, distinctUntilChanged } from "rxjs/operators";
-import { 
-    EventsService } from "../../services/index";
-
-
+import { AfterViewInit, Component, ElementRef, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
+import { fromEvent, Observable } from 'rxjs';
+import { filter, map, switchMap, tap } from "rxjs/operators";
+import { PcrcApiService } from "../../api/pcrc-api.service";
+import { EventsService } from "../../services/index";
+import { StateService } from "../../services/state.service";
 @Component({
     selector: 'app-search-box',
     templateUrl: './search-box.component.html',
@@ -19,7 +17,6 @@ export class SearchBoxComponent implements OnInit, AfterViewInit {
     nextWord: string = "";
     lastWord: string = "";
     suggestions: { selected: boolean, value: string }[] = [];
-    diccionario: string[] = new DiccionarioEjemplo().listadoPalabras;
     public onkeydown$: Observable<KeyboardEvent>;
     public onArrows$: Observable<KeyboardEvent>;
     public onEnter$: Observable<KeyboardEvent>;
@@ -27,101 +24,39 @@ export class SearchBoxComponent implements OnInit, AfterViewInit {
     public onWordCountChange$: Observable<string>;
     public onValueChange$: Observable<string>;
 
-    ngOnInit() {
+    constructor(
+        public events: EventsService,
+        public PcrcApiService: PcrcApiService,
+        public state: StateService
+    ) { }
 
-    }
+    ngOnInit() { }
 
     ngAfterViewInit() {
         this.onkeydown$ = fromEvent(this.busqueda.nativeElement, 'keydown');
-        this.onArrows$ = this.onkeydown$.pipe(
-            filter(({ code }) => code == 'ArrowDown' || code == "ArrowUp" || code == "ArrowLeft" || code == "ArrowRight")
-        );
+
         this.onEnter$ = this.onkeydown$.pipe(
             filter(({ code }) => code == 'Enter')
-        );
+        )
 
         this.onWordCountChange$ = this.onkeydown$.pipe(
-            filter(({ code }) => code == 'Space' || code == 'Backspace'),
-            map($event => {
-                return [$event, this.getInputValue($event).trim().split(' ').length]
-            }),
-            distinctUntilChanged((prev, curr) => prev[1] === curr[1]),
-            map((val: [KeyboardEvent, number]) => {
-                return this.getInputValue(val[0])
+            map(event => this.getInputValue(event).trim()),
+            tap(text => {
+                this.getSuggestions(text)
             })
         )
 
-        this.onkeydown$.subscribe(($event) => {
-            let { code } = $event;
-            if (code == "Space" || code == "Enter") {
-                this.nextWord = "";
-            } else {
-                this.nextWord = this.findNextWord($event);
-            }
+        this.onWordCountChange$.subscribe()       
 
-            if (code == "Tab") {
-                $event.preventDefault();
-                $event.stopPropagation();
-                if (this.nextWord) {
-                    let aux = this.getInputValue($event).split(' ').filter((x) => x != '');
-                    aux.pop();
-                    aux.push(this.nextWord.toLowerCase());
-                    this.busqueda.nativeElement.value = aux.join(' ');
-                    this.nextWord = this.findNextWord($event);
-                    this.setCaretToPos(this.busqueda.nativeElement, 10000);
-                }
-            }
-        });
-        this.onArrows$.subscribe(($event) => {
-            let { code } = $event;
-            $event.preventDefault();
-            if (this.suggestions.length > 0) {
-                if (code == 'ArrowDown') {
-                    this.suggestions = this.suggestions.map((x, index) => {
-                        if (index == 0 && this.suggestions[this.suggestions.length - 1].selected) {
-                            return { selected: true, value: x.value }
-                        }
-                        if (index == this.suggestions.length - 1 && x.selected) {
-                            return { selected: false, value: x.value }
-                        }
-                        if (index - 1 >= 0 && this.suggestions[index - 1].selected) {
-                            return { selected: true, value: x.value }
-                        }
-                        if (index == 0 && this.suggestions.findIndex(x => x.selected) == -1) {
-                            return { selected: true, value: x.value }
-                        }
-                        return { selected: false, value: x.value }
-                    })
-                }
-                if (code == 'ArrowUp') {
-                    this.suggestions = this.suggestions.map((x, index) => {
-                        if (index == 0 && x.selected) {
-                            this.setCaretToPos(this.busqueda.nativeElement, 10000);
-                            return { selected: false, value: x.value }
-                        }
-                        if (index + 1 <= this.suggestions.length - 1 && this.suggestions[index + 1].selected) {
-                            return { selected: true, value: x.value }
-                        }
-                        if (index == this.suggestions.length - 1 && x.selected) {
-                            return { selected: false, value: x.value }
-                        }
-                        return { selected: false, value: x.value }
-                    })
-                }
-            }
-        });
         this.onEnter$.subscribe(val => {
             if (this.suggestions.find(x => x.selected)) {
                 this.busqueda.nativeElement.value = this.suggestions.find(x => x.selected).value;
                 this.suggestions[this.suggestions.findIndex(x => x.selected)].selected = false;
-                this.getSuggestions(this.busqueda.nativeElement.value.trim())
+                this.getSuggestions(this.busqueda.nativeElement.value.trim());
             } else if (this.getInputValue()) {
                 this.buscar();
             }
         });
-        this.onWordCountChange$.subscribe(val => {
-            this.getSuggestions(val.trim());
-        })
 
         this.events.onNewQuery$.subscribe(query => {
             this.buscar(query);
@@ -137,16 +72,18 @@ export class SearchBoxComponent implements OnInit, AfterViewInit {
         }
     }
 
-    //!arreglar este metodo , crear el api en el front end y en eal back end
     getSuggestions(input?: string) {
-        //:{selected:boolean,value:string}[]  
-        // this.api.getSuggestions(input).pipe(
-        //     map(suggestions => suggestions.map((suggestion) => {
-        //         return { selected: false, value: suggestion['query'] }
-        //     }))
-        // ).subscribe(suggestions => {
-        //     this.suggestions = suggestions.slice(0, 10);
-        // })
+        this.state.selectedPcrc$.pipe(
+            tap(pcrc => console.log(pcrc)),
+            switchMap(pcrc => this.PcrcApiService.getSuggestions(pcrc.id_dp_pcrc.toString(), input)),
+            map(suggestions => suggestions.map((suggestion) => {
+                return { selected: false, value: suggestion['query'] }
+            })),
+            tap(suggestions => {
+                console.log({ suggestions })
+                this.suggestions = suggestions.slice(0, 10);
+            })
+        ).subscribe()
     }
 
     onFocus() {
@@ -187,18 +124,5 @@ export class SearchBoxComponent implements OnInit, AfterViewInit {
             return this.busqueda.nativeElement.value
         }
     }
-
-    findNextWord($event: KeyboardEvent): string {
-        let cantidadPalabras = this.getInputValue($event).split(' ').filter((x) => x != '').length;
-        if (cantidadPalabras > 0 && this.getInputValue($event).length > 1) {
-            return this.diccionario.find((x) => {
-                return this.compareWords(this.getInputValue($event).split(' ')[cantidadPalabras - 1], x)
-            });
-        } else {
-            return "";
-        }
-    }
-
-    constructor(public events: EventsService) { }
 
 }

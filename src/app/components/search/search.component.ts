@@ -6,6 +6,7 @@ import { Article, articleConf } from "../../article";
 import { EventsService } from "../../services/events.service";
 import { of, Observable, combineLatest, merge } from 'rxjs';
 import { ArticleListComponent } from "../article-list/article-list.component";
+import { StateService } from "../../services/state.service";
 @Component({
     selector: 'app-search',
     templateUrl: './search.component.html',
@@ -15,6 +16,8 @@ export class SearchComponent implements OnInit, AfterViewInit {
 
     public articles:Article[] = [];
     private newQuery$:Observable<any>;
+    private articles$:Observable<any>;
+    private newQueryParam$:Observable<any>;
     private newSeledtedSublineId$:Observable<any>;
     private newTag$:Observable<any>;
 
@@ -28,12 +31,45 @@ export class SearchComponent implements OnInit, AfterViewInit {
     constructor(
         public route: ActivatedRoute,
         private eventsService: EventsService,
-        private articlesApiService: ArticlesApiService
-    ) { }
+        private articlesApiService: ArticlesApiService,
+        private state: StateService,
+    ) {  }
 
     ngOnInit() {  }
-    
+
     ngAfterViewInit() {
+
+        this.newQueryParam$ = this.route.queryParams.pipe(
+            filter(params => {
+                return !!params.query
+            }),
+            map(params => params.query),
+            tap(query => {
+                this.currentQuery = query
+                this.currenttag = null;
+            }))
+
+        this.articles$ = combineLatest(this.state.selectedPcrc$,this.newQueryParam$).pipe(         
+            tap(articles => {
+                console.log(articles)
+            }),
+            switchMap(( [ {id_dp_pcrc}, query ]) =>
+                this.articlesApiService.getArticlesByQuery(
+                    id_dp_pcrc.toString(),
+                    'published',
+                    0,
+                    10,
+                    { query: query }
+                )
+            ),
+            tap(articles => {
+                this.articles = articles
+                console.log(articles)
+            })
+        )
+
+        this.articles$.subscribe( )
+
         this.newQuery$ = this.route.queryParams.pipe(
             filter(params => {
                 return !!params.query
@@ -52,7 +88,7 @@ export class SearchComponent implements OnInit, AfterViewInit {
                     'published',
                     0,
                     10,
-                    {query:this.currentQuery}
+                    { query:this.currentQuery }
                 )
             ),
             tap(articles => {

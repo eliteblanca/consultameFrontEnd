@@ -18,20 +18,20 @@ export class EdicionComponent implements OnInit {
   public categories:Observable<category[]>
 
   constructor(
-      private categoriesApi: CategoriesApiService,
-      public state:StateService
+    private categoriesApi: CategoriesApiService,
+    public state:StateService
   ) { }
 
   ngOnInit() {  }
 
   onCategorySelected(category: category) {
-      if (this.selectedCategory != category.id) {
-          this.selectedCategory = category.id;
-      }
+    if (this.selectedCategory != category.id) {
+      this.selectedCategory = category.id;
+    }
   }
 
   private reset(){
-      this.selectedCategory = undefined;
-      this.articles = [];
+    this.selectedCategory = undefined;
+    this.articles = [];
   }
 }

@@ -4,5 +4,9 @@
 </div>
 <div class="verticalColumn" *ngIf="selectedCategory">
     <h3 class="columnTitle">Articulos</h3>
-    <app-articles-editor-list [categorySelected]="selectedCategory"></app-articles-editor-list>
+    <app-articles-editor-list [categorySelected]="selectedCategory" [state]="'published'"></app-articles-editor-list>
+</div>
+<div class="verticalColumn" *ngIf="selectedCategory">
+    <h3 class="columnTitle">Borradores</h3>
+    <app-articles-editor-list [categorySelected]="selectedCategory" [state]="'archived'"></app-articles-editor-list>
 </div>
