@@ -40,7 +40,7 @@ export class CategoriesEditorComponent implements OnInit {
     }
 
     categoryDeleted(categoryId: string) {
-        // this.categories = this.categories.filter(category => category.id != categoryId)
+        this.state.newDeletedCategory(categoryId)
     }
 
     seleccionarCategoria(category:category) {

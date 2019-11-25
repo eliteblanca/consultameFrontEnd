@@ -1,9 +1,13 @@
 import { Component, OnInit, Output, EventEmitter, Input, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import Quill from 'quill';
+import BlotFormatter from 'quill-blot-formatter';
+import { ImageDrop } from 'quill-image-drop-module';
 
 var Font = Quill.import('formats/font');
 Font.whitelist = ['roboto', 'lato', 'raleway', 'montserrat', 'opensans'];
 Quill.register(Font, true);
+Quill.register('modules/blotFormatter', BlotFormatter);
+Quill.register('modules/imageDrop', ImageDrop);
 
 @Component({
 	selector: 'app-rich-text-editor',
@@ -289,7 +293,9 @@ export class RichTextEditorComponent implements OnInit, AfterViewInit {
 	modules = {
 		toolbar: {
 			container: '#RTEtoolbar'
-		}
+		},
+		blotFormatter: { },
+		imageDrop: true
 	}
 
 	options = {

@@ -9,11 +9,13 @@ import { NewsComponent } from "./components/news/news.component";
 import { NewsViewComponent } from "./components/news-view/news-view.component";
 import { FavoritesComponent } from "./components/favorites/favorites.component";
 import { UsersconfigComponent } from "./components/usersconfig/usersconfig.component";
+import { FullScreenComponent } from "./components/full-screen/full-screen.component";
 
 const routes: Routes = [
 	{ path: '', redirectTo: '/home', pathMatch: 'full' },
 	{ path: 'home', component: HomeComponent, canActivate: [HomeGuard] },
 	{ path: 'login', component: LoginComponent, canActivate: [HomeGuard] },
+	{ path: 'fullScreen/:id', component: FullScreenComponent, canActivate: [AuthGuard] },
 	{
 		path: 'app', component: AplicationComponent, canActivate: [AuthGuard],
 		children: [

@@ -1,13 +1,14 @@
 
 <div class="articleContainer">
-    <header class="header">
+    <header class="header" *ngIf="article">
         <app-icon [iconName]="'mdi:arrow-left'" (click)="goBack()"> </app-icon>
-        <h4 *ngIf="article" class="title">{{article.title}}</h4>
-        <app-icon [iconName]="'mdi:fullscreen'" (click)="fullScreen()"> </app-icon>
+        <h4 class="title">{{article.title}}</h4>
+        <a [routerLink]="['/fullScreen/',article.id]">
+            <app-icon [iconName]="'mdi:fullscreen'"> </app-icon>
+        </a>
     </header>
     <ng-scrollbar class="content" >
         <div #content>
-
             <app-rteview></app-rteview>
         </div>
     </ng-scrollbar>

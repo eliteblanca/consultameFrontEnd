@@ -126,4 +126,8 @@ export class StateService {
 
     getSelectedUser = () => this._state.selectedUser
 
+    newDeletedCategory = (categoryId:string) => {
+        this.store.next(this._state = { ...this._state, selectedPcrcCategories: { value:this._state.selectedPcrcCategories.value.filter(category => category.id != categoryId) , state:"finish"} })
+    }
+
 }

@@ -1,8 +1,37 @@
 :host{
     height: 100%;
     width: 100%;
-    /* background-color: red; */
     display: grid;
     grid-template-columns: 1fr;
-    grid-template-rows: 2.5rem 39rem;
+    grid-template-rows: 2.5rem 41rem;
+}
+
+@media only screen and (max-height:870px) { 
+    :host{
+        height: 100%;
+        width: 100%;
+        display: grid;
+        grid-template-columns: 1fr;
+        grid-template-rows: 2.5rem 37rem;
+    }
+}
+
+@media only screen and (max-height:808px) { 
+    :host{
+        height: 100%;
+        width: 100%;
+        display: grid;
+        grid-template-columns: 1fr;
+        grid-template-rows: 2.5rem 33rem;
+    }
+}
+
+@media only screen and (max-height:750px) { 
+    :host{
+        height: 100%;
+        width: 100%;
+        display: grid;
+        grid-template-columns: 1fr;
+        grid-template-rows: 2.5rem 24rem;
+    }
 }

@@ -53,6 +53,7 @@ import { LoadingPipe } from './pipes/loading.pipe';
 import { UsersconfigComponent } from './components/usersconfig/usersconfig.component';
 import { TreeViewMultiComponent } from './components/tree-view-multi/tree-view-multi.component';
 import { TreeViewMultiRowComponent } from './components/tree-view-multi-row/tree-view-multi-row.component';
+import { FullScreenComponent } from './components/full-screen/full-screen.component';
 @NgModule({
     declarations: [
         AppComponent,
@@ -103,6 +104,7 @@ import { TreeViewMultiRowComponent } from './components/tree-view-multi-row/tree
         UsersconfigComponent,
         TreeViewMultiComponent,
         TreeViewMultiRowComponent,
+        FullScreenComponent,
     ],
     imports: [
         BrowserModule,
