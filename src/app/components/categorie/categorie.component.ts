@@ -1,6 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { category, categoryRaw } from "../../api/categories-api.service";
-import { ArticlesApiService } from '../../api/articles-api.service';
 
 @Component({
     selector: 'app-categorie',
@@ -29,7 +28,7 @@ export class CategorieComponent implements OnInit {
 
     seleccionarCategoria(category?: category) {
         if (!!!category) {
-            if (!!!this.category.subcategories.length) {
+            if (!!!this.getSubCategories().length) {
                 this.onCategorySelected.next(this.category)
             }
         } else {

@@ -1,5 +1,5 @@
 <div class="categoriesContainer">    
-    <app-categories *ngIf="categories" (onCategorySelected)="categoriaSeleccionada($event)"></app-categories>
+    <app-categories (onCategorySelected)="categoriaSeleccionada($event)"></app-categories>
 </div>
 <div infiniteScroll
     (scrolled)="onScroll($event)"        

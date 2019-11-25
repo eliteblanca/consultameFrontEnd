@@ -42,17 +42,16 @@ export class NewsApiService {
   constructor(private http: HttpClient) { }
 
   private endPoints = {
-    getNews: (idSubline: string) => `${environment.endpoint}/api/sublines/:idSubline/news`.replace(':idSubline', idSubline),
-    getSingleNews: (idNews: string) => `${environment.endpoint}/api/news/:idNews`.replace(':idNews', idNews),
-    postNews: `/api/news`,
-    updateNews: (idNews: string) => `${environment.endpoint}/api/news/:idNews`.replace(':idNews', idNews),
-    deleteNews: (idNews: string) => `${environment.endpoint}/api/news/:idNews`.replace(':idNews', idNews),
+    getNews: (idPcrc: string) => `${environment.endpoint}/api/pcrc/${idPcrc}/news`,
+    getSingleNews: (idNews: string) => `${environment.endpoint}/api/news/${idNews}`,
+    postNews: `${environment.endpoint}/api/news`,
+    updateNews: (idNews: string) => `${environment.endpoint}/api/news/${idNews}`,
+    deleteNews: (idNews: string) => `${environment.endpoint}/api/news/${idNews}`
   }
 
   public getNews(idSubline: string, state: 'published' | 'archived', from: number = 0, size: number = 20, date:string = new Date().getTime().toString() ): Observable<news[]> {
     return this.http.get<news[]>(this.endPoints.getNews(idSubline), { params: { state: state, from: from.toString(), size: size.toString(), date: date }, observe: "body" })
   }
-
 
   public postNews(news: newsDTO): Observable<news> {
     return this.http.post<news>(this.endPoints.postNews, news, { observe: "body" })

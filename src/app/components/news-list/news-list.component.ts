@@ -1,7 +1,9 @@
 import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { news,NewsApiService } from "../../api/news-api.service";
 import { EventsService } from "../../services/events.service";
-import { filter, switchMap, map } from 'rxjs/operators';
+import { filter, switchMap, map, tap } from 'rxjs/operators';
+import { StateService } from "../../services/state.service";
+
 
 @Component({
   selector: 'app-news-list',
@@ -27,15 +29,13 @@ export class NewsListComponent implements OnInit, OnChanges {
   }
 
   constructor(
-    private eventsService:EventsService,
-    private newsApiService:NewsApiService
+    private newsApiService:NewsApiService,
+    private state:StateService
   ) {  }
 
   ngOnInit() {
-    this.eventsService.newSelectedLineSource.pipe(
-      filter( selectedLine => selectedLine.line != null && selectedLine.subLine != null ),
-      map( selectedSubline => selectedSubline.subLine.id ),
-      switchMap( selectedSublineId => this.newsApiService.getNews( selectedSublineId,'published',0,20, new Date().getTime().toString() ) )
+    this.state.selectedPcrc$.pipe(
+      switchMap(({id_dp_pcrc}) => this.newsApiService.getNews( id_dp_pcrc.toString(),'published',0,20, new Date().getTime().toString()))
     ).subscribe( news => {
       this._news = news
     })
@@ -44,13 +44,21 @@ export class NewsListComponent implements OnInit, OnChanges {
   ngOnChanges(changes: SimpleChanges): void {
     if(!changes.date.isFirstChange()){
       if( changes.date.currentValue.getDate() == new Date().getDate() && changes.date.currentValue.getFullYear() == new Date().getFullYear() && changes.date.currentValue.getMonth() == new Date().getMonth()  ){
-        this.newsApiService.getNews( this.eventsService.newSelectedLineSource.getValue().subLine.id ,'published',0,20, new Date().getTime().toString() ).subscribe(news => {
-          this._news = news
-        })
-      }else{
-        this.newsApiService.getNews( this.eventsService.newSelectedLineSource.getValue().subLine.id ,'published',0,20, changes.date.currentValue.getTime().toString() ).subscribe(news => {
-          this._news = news
-        })
+        this.state.selectedPcrc$.pipe(
+          switchMap( ({id_dp_pcrc}) => this.newsApiService.getNews( id_dp_pcrc.toString(),'published',0,20, new Date().getTime().toString() ) ),
+          tap(news => {
+            this._news = news
+          })
+        ).subscribe()
+        
+      } else {
+          this.state.selectedPcrc$.pipe(
+            switchMap( ({id_dp_pcrc}) => this.newsApiService.getNews( id_dp_pcrc.toString(),'published',0,20, changes.date.currentValue.getTime().toString() ) ),
+            tap(news => {
+              this._news = news
+            })
+          ).subscribe()
+
       }
     }
   }
@@ -60,15 +68,21 @@ export class NewsListComponent implements OnInit, OnChanges {
       this.date = new Date()
     }
 
-    this.newsApiService.getNews(
-       this.eventsService.newSelectedLineSource.getValue().subLine.id,
-       'published',
-       this.currentPage*20,
-       20,
-       this.date.getTime().toString()
-    ).subscribe(news => {
-      this._news = this._news.concat(news)
-      this.currentPage++;
-    })
+    this.state.selectedPcrc$.pipe(
+      switchMap( ({id_dp_pcrc}) =>
+        this.newsApiService.getNews(
+            id_dp_pcrc.toString(),
+           'published',
+           this.currentPage*20,
+           20,
+           this.date.getTime().toString()
+        )
+      ),
+      tap(news => {
+        this._news = this._news.concat(news)
+        this.currentPage++;
+      })
+    )
+
   }
 }

@@ -8,8 +8,8 @@
          Borradores
     </div>
 </div>
-<div class="list">
-    <app-news-list-editable [mode]="listMode" [selectedSubline]="selectedSubline" *ngIf="selectedSubline" (onAddNews)="onAddNews()" (onNewsEdit)="onNewsEdit($event)" (onNewsDeleted)="onNewsDeleted($event)">
+<div class="list" >
+    <app-news-list-editable [mode]="listMode" [selectedSubline]="(state.selectedPcrc$ | async).id_dp_pcrc" (onAddNews)="onAddNews()" (onNewsEdit)="onNewsEdit($event)" (onNewsDeleted)="onNewsDeleted($event)">
     </app-news-list-editable>
 </div>
 <div class="articleTitle" >

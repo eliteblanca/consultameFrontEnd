@@ -1,8 +1,6 @@
-import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
-import { category } from '../../api/categories-api.service';
-import { categoryRaw } from "../../api/categories-api.service";
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { category, categoryRaw } from '../../api/categories-api.service';
 import { StateService } from "../../services/state.service";
-import { tap } from 'rxjs/operators';
 
 @Component({
     selector: 'app-categories',
