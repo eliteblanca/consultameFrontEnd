@@ -15,7 +15,7 @@
     <div class="footer" *ngIf="article">
         <app-icon [iconName]="'mdi:help-circle-outline'" [title]="'Publicado el ' + publicationDate"></app-icon>
         <span  class="leyend">Ultima modificacion el: {{modificationDate}}</span>
-        <app-icon class="socialButton favoriteIcon" (click)="addToFavorites()" (mouseover)="isFavoriteHover = true" (mouseout)="isFavoriteHover = false" [iconName]="favoriteIcon()"  [ngClass]="{ favorite : isFavorite()}"> </app-icon>
+        <app-icon class="socialButton favoriteIcon" (click)="addToFavorites()" (mouseover)="isFavoriteHover = true" (mouseout)="isFavoriteHover = false" [iconName]="'mdi:star'"  [ngClass]="{ favorite : isFavorite()}"> </app-icon>
         <span>{{article.favorites.length}}</span>
         <app-icon class="socialButton" [iconName]="isLike() ? 'mdi:thumb-up' : 'mdi:thumb-up-outline'" (click)="addLike()" [title]="'Publicado el ' + publicationDate"> </app-icon>
         <span>{{article.likes.length}}</span>

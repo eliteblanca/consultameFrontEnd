@@ -124,7 +124,7 @@
 }
 
 .socialButton.favorite{
-    color: crimson;
+    color: gold;
 }
 
 .socialButton:hover{
@@ -133,7 +133,7 @@
 }
 
 .socialButton.favoriteIcon:hover{
-    color: crimson;
+    color: gold;
     cursor: pointer;    
     -webkit-animation-name: pulse;
     animation-name: pulse;

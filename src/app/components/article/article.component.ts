@@ -122,14 +122,6 @@ export class ArticleComponent implements OnInit, AfterViewInit {
     }
   }
 
-  favoriteIcon(){
-    if( this.isFavorite() ){
-      return 'mdi:heart-multiple'
-    }else {
-      return 'mdi:cards-heart'
-    }
-  }
-
   addLike(){
     if(this.isLike()){      
       this.articlesApi.deleteLike(this.Article.id).subscribe(()=>{
