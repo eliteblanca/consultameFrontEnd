@@ -26,7 +26,7 @@ export class FavoritesComponent implements OnInit {
     })
   }
 
-  onScroll(){
+  onScroll(event){
     this.articlesApi.getSelfFavorites(this.articles.length,this.pagesize).subscribe(articles => {
       this.articles = this.articles.concat(articles)
     })

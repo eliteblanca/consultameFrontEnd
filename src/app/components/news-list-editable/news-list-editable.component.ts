@@ -98,7 +98,7 @@ export class NewsListEditableComponent implements OnInit, OnChanges {
     })
   }
 
-  onScroll() {
+  onScroll(event) {
     if (this.mode == 'draft') {
       this.newsApi.getNews(this.selectedSubline, 'archived', this.newsList.length, 20).subscribe(news => {
         this.newsList = this.newsList.concat(news)        

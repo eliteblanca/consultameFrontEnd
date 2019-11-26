@@ -31,7 +31,7 @@ import { PagerComponent } from './components/pager/pager.component';
 import { SearchInputComponent } from './components/search-input/search-input.component';
 import { TextInputComponent } from './components/text-input/text-input.component';
 import { UsersEditorListComponent } from './components/users-editor-list/users-editor-list.component';
-import { JwtInterceptor, mockServerService } from "./services/index";
+import { JwtInterceptor } from "./services/index";
 import { EdicionComponent } from './components/edicion/edicion.component';
 import { RichTextEditorComponent } from './components/rich-text-editor/rich-text-editor.component';
 import { RTEViewComponent } from './components/rteview/rteview.component';
@@ -124,8 +124,7 @@ import { FullScreenComponent } from './components/full-screen/full-screen.compon
         RadioButtonModule
     ],
     providers: [
-        JwtInterceptor,
-        mockServerService
+        JwtInterceptor
     ],
     bootstrap: [AppComponent]
 })

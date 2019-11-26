@@ -16,7 +16,7 @@ export class TreeViewRowComponent implements OnInit {
   @Input() dataText
   @Output() onChildSeleccionado = new EventEmitter();
 
-  public isDesplegado:false;
+  public isDesplegado = false;
 
   constructor(public state:StateService) {  }
 

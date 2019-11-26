@@ -13,6 +13,7 @@ export class CategorieComponent implements OnInit {
     @Input() allCategories: categoryRaw[];
     @Output() onCategorySelected = new EventEmitter();
 
+    public editCategoryNameMode = false;
     public desplegado = false;
 
     ngOnInit() {  }

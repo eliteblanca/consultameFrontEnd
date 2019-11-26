@@ -7,7 +7,7 @@ import { StateService } from "../../services/state.service";
 })
 export class AplicationComponent implements OnInit {
 
-    constructor(private state:StateService) { }
+    constructor(public state:StateService) { }
 
     ngOnInit() {  }
 

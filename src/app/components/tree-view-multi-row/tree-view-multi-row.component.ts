@@ -24,7 +24,7 @@ export class TreeViewMultiRowComponent implements OnInit {
     public userApi:UserApiService
   ){  }
 
-  public isDesplegado:false;
+  public isDesplegado = false;
 
   ngOnInit() {  }
 

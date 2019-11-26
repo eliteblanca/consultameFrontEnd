@@ -33,7 +33,8 @@ export class ExplorarComponent implements OnInit {
         console.log(categoria)
 
         this.articlesApi.getArticlesByCategory(categoria.id, 'published' , 0, this.pagesize).subscribe(articles => {
-            this.articles = this.articles.concat(articles)
+            this.articles = []; // recetear los articulos
+            this.articles = this.articles.concat(articles);
         })
     }
 

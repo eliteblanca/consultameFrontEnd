@@ -6,7 +6,7 @@ import { UserService } from './user.service';
 @Injectable({
   providedIn: 'root'
 })
-class JwtInterceptorService implements HttpInterceptor {
+export class JwtInterceptorService implements HttpInterceptor {
 
   constructor(private userService:UserService) { }
 

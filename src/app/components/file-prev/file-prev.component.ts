@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, OnChanges, Output, EventEmitter } from '@angular/core';
 import { FilesApiService } from "../../api/files-api.service";
-
+import { environment } from "../../../environments/environment";
 @Component({
   selector: 'app-file-prev',
   templateUrl: './file-prev.component.html',
@@ -71,7 +71,7 @@ export class ArticlePrevComponent implements OnInit {
     return iconData ? iconData.icon : defaultIcon
   }
 
-  getLink = () => `http://localhost:3001/files/${this.articleId}/${this.fileName}`
+  getLink = () => `${environment.endpoint}/files/${this.articleId}/${this.fileName}`
 
   deleteFile = () => {
     this.filesApi.deletFile(this.articleId, this.fileName).subscribe( result => {
