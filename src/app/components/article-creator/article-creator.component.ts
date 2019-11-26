@@ -1,11 +1,15 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { ActivatedRoute, ParamMap, Router } from '@angular/router';
+import { interval, of } from 'rxjs';
+import { concatMap, filter, map, switchMap, throttle } from 'rxjs/operators';
 import { ArticlesApiService, postArticleDTO } from "../../api/articles-api.service";
 import { Article } from "../../article";
 import { RichTextEditorComponent } from "../rich-text-editor/rich-text-editor.component";
+import { environment } from '../../../environments/environment';
 
-import { of, timer, interval } from 'rxjs';
-import { exhaustMap, concatMap, startWith, throttle, switchMap, filter, map, tap } from 'rxjs/operators';
-import { Router,ActivatedRoute, ParamMap } from '@angular/router';
+
+
+
 @Component({
   selector: 'app-article-creator',
   templateUrl: './article-creator.component.html',
@@ -46,12 +50,12 @@ export class ArticleCreatorComponent implements OnInit {
       this.articleToEdit = article;
 
       this.path = {
-        saveUrl: `http://localhost:3001/files/${this.articleToEdit.id}`,
-        removeUrl: `http://localhost:3001/files/${this.articleToEdit.id}/delete`
+        saveUrl: `${environment.endpoint}/files/${this.articleToEdit.id}`,
+        removeUrl: `${environment.endpoint}/files/${this.articleToEdit.id}/delete`
       };
 
       this.articleTitle.nativeElement.value = this.articleToEdit.title;
-      this.tags = this.articleToEdit.tags;    
+      this.tags = this.articleToEdit.tags;
       this.RTE.setContent( JSON.parse((this.articleToEdit.obj || "[]")) )
     })
   
