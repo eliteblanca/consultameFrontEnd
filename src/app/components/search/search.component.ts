@@ -15,10 +15,8 @@ import { StateService } from "../../services/state.service";
 export class SearchComponent implements OnInit, AfterViewInit {
 
     public articles:Article[] = [];
-    private newQuery$:Observable<any>;
     private articles$:Observable<any>;
-    private newQueryParam$:Observable<any>;
-    private newSeledtedSublineId$:Observable<any>;
+    private newQuery$:Observable<any>;
     private newTag$:Observable<any>;
 
     private currentQuery;
@@ -39,126 +37,52 @@ export class SearchComponent implements OnInit, AfterViewInit {
 
     ngAfterViewInit() {
 
-        this.newQueryParam$ = this.route.queryParams.pipe(
+        this.newQuery$ = this.route.queryParams.pipe(
             filter(params => {
                 return !!params.query
             }),
-            map(params => params.query),
+            map(params => ({query:params.query})),
             tap(query => {
                 this.currentQuery = query
                 this.currenttag = null;
             }))
 
-        this.articles$ = combineLatest(this.state.selectedPcrc$,this.newQueryParam$).pipe(         
-            tap(articles => {
-                console.log(articles)
+        this.newTag$ = this.route.queryParams.pipe(
+            filter(params => {
+                return !!params.tag
             }),
-            switchMap(( [ {id_dp_pcrc}, query ]) =>
+            map(params => ({ tag:params.tag})),
+            tap(tag => {
+                this.currentQuery = null
+                this.currenttag = tag.tag;
+            }))
+
+        this.articles$ = merge(this.newQuery$, this.newTag$).pipe(
+            switchMap(query =>
                 this.articlesApiService.getArticlesByQuery(
-                    id_dp_pcrc.toString(),
+                    this.state.getValueOf("selectedPcrc").id_dp_pcrc.toString(),
                     'published',
                     0,
                     10,
-                    { query: query }
+                    query
                 )
             ),
             tap(articles => {
                 this.articles = articles
-                console.log(articles)
             })
         )
 
         this.articles$.subscribe( )
 
-        this.newQuery$ = this.route.queryParams.pipe(
-            filter(params => {
-                return !!params.query
-            }),
-            map(params => params.query),
-            tap(query => {
-                this.currentQuery = query
-                this.currenttag = null;
-            }),
-            switchMap(query => this.eventsService.newSelectedLineSource),
-            filter(selectedLine => selectedLine.line != null && selectedLine.subLine != null),
-            map(selectedLine => selectedLine.subLine.id),
-            switchMap(selectedSubLineid =>               
-                this.articlesApiService.getArticlesByQuery(
-                    selectedSubLineid,
-                    'published',
-                    0,
-                    10,
-                    { query:this.currentQuery }
-                )
-            ),
-            tap(articles => {
-                this.articles = articles
-            })
-        )
-    
-        this.newSeledtedSublineId$ = this.eventsService.newSelectedLineSource.pipe(
-            filter(selectedLine => selectedLine.line != null && selectedLine.subLine != null),
-            map(selectedLine => selectedLine.subLine.id),
-            tap(selectedSublineId => this.selectedSublineId = selectedSublineId),
-            switchMap(selectedSublineId => {
-                if(this.currentQuery){
-                    return this.articlesApiService.getArticlesByQuery(
-                        selectedSublineId,
-                        'published',
-                        0,
-                        10,
-                        {query:this.currentQuery}
-                    )
-                }else if(this.currenttag){
-                    return this.articlesApiService.getArticlesByQuery(
-                        selectedSublineId,
-                        'published',
-                        0,
-                        10,
-                        {tag:this.currenttag}
-                    )
-                }
-            }),
-            tap(articles=>{
-                this.articles = articles
-            })
-        )
-    
-        this.newTag$ = this.route.queryParams.pipe(
-            filter(params => {
-                return !!params.tag
-            }),
-            map(params => params.tag),
-            tap( tag => {
-                this.currenttag = tag 
-                this.currentQuery = null;
-            }),
-            switchMap(query => this.eventsService.newSelectedLineSource),
-            filter(selectedLine => selectedLine.line != null && selectedLine.subLine != null),
-            map(selectedLine => selectedLine.subLine.id),
-            switchMap(selectedSubLineid =>               
-                this.articlesApiService.getArticlesByQuery(
-                    selectedSubLineid,
-                    'published',
-                    0,
-                    10,
-                    {tag:this.currenttag}
-                )
-            ),
-            tap(articles => {
-                this.articles = articles
-            })
-        )
-
         this.newTag$.subscribe()
+        
         this.newQuery$.subscribe()
-        this.newSeledtedSublineId$.subscribe()
-     }
+    }
 
     onScroll(event) {
         if(this.currentQuery){
             this.articlesApiService.getArticlesByQuery(
-                this.selectedSublineId,
+                this.state.getValueOf("selectedPcrc").id_dp_pcrc.toString(),
                 'published',
                 this.articles.length,
                 10,
@@ -169,7 +93,7 @@ export class SearchComponent implements OnInit, AfterViewInit {
 
         }else if(this.currenttag){
             this.articlesApiService.getArticlesByQuery(
-                this.selectedSublineId,
+                this.state.getValueOf("selectedPcrc").id_dp_pcrc.toString(),
                 'published',
                 this.articles.length,
                 10,

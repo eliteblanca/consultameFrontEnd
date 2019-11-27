@@ -130,4 +130,7 @@ export class StateService {
         this.store.next(this._state = { ...this._state, selectedPcrcCategories: { value:this._state.selectedPcrcCategories.value.filter(category => category.id != categoryId) , state:"finish"} })
     }
 
+    getValueOf = <K extends keyof state>(key: K) => {
+        return this._state[key]
+    }
 }
