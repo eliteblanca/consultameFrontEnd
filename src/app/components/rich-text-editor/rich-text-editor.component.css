@@ -22,7 +22,7 @@
         width: 100%;
         display: grid;
         grid-template-columns: 1fr;
-        grid-template-rows: 2.5rem 33rem;
+        grid-template-rows: 2.5rem 30rem;
     }
 }
 

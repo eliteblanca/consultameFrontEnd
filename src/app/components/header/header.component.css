@@ -23,6 +23,11 @@
     /* background-color: white; */
 }
 
+.tab.active-link{
+    box-shadow: var(--shadow1);
+    border: 2px solid rgba(255, 255, 255, 0.63);
+}
+
 .tab{
     display: flex;
     align-items: center;
@@ -36,6 +41,7 @@
     color: inherit;
     font-weight: 500;
 
+    border: 2px solid transparent;
 
 }
 

@@ -6,9 +6,7 @@ import { ArticlesApiService, postArticleDTO } from "../../api/articles-api.servi
 import { Article } from "../../article";
 import { RichTextEditorComponent } from "../rich-text-editor/rich-text-editor.component";
 import { environment } from '../../../environments/environment';
-
-
-
+import { NgxSpinnerService } from "ngx-spinner";
 
 @Component({
   selector: 'app-article-creator',
@@ -29,7 +27,8 @@ export class ArticleCreatorComponent implements OnInit {
   private textOnEditor:string;
   public newFiles:string[] = [];
   public status = '';
-
+  public addArticleSpinner = false;
+  public updateArticleSpinner = false;
 
   @ViewChild(RichTextEditorComponent,{ static:false }) RTE:RichTextEditorComponent;
   @ViewChild('articleTitle',{ static:false }) public articleTitle:ElementRef ;
@@ -67,14 +66,17 @@ export class ArticleCreatorComponent implements OnInit {
     })
   }
   
-  ngOnInit() {
+  ngOnInit() {    
   }
   
-  addTag(tag:string){
-    var tagAux = tag.replace(/#/gi,'').replace(/ /gi,'');
-    if(!this.tags.includes(tagAux)){
-      this.tags.push(tagAux);
-    }
+  addTag(textInput:string){
+
+    this.tags = textInput.replace(/#/gi,'').replace(/ /gi,',').split(',').filter(word => !!word)
+
+    // var tagAux = tag.replace(/#/gi,'').replace(/ /gi,'');
+    // if(!this.tags.includes(tagAux)){
+    //   this.tags.push(tagAux);
+    // }
   }
 
   deleteTag(tagToDelete:string){
@@ -82,6 +84,7 @@ export class ArticleCreatorComponent implements OnInit {
   }
 
   saveArticle(){
+    this.addArticleSpinner = true;
 
     if(!!this.articleToEdit){
       let newArticle:postArticleDTO = {
@@ -99,10 +102,12 @@ export class ArticleCreatorComponent implements OnInit {
         throttle(() => interval(700)),
         concatMap(() => this.articlesApi.updateArticle(this.articleToEdit.id, newArticle).pipe())
       ).subscribe(newArticle => {
+        this.addArticleSpinner = false;
         this.goToArticle(this.articleToEdit.id)
+
       })
 
-    }else if(!!this.seletedCategory){
+    } else if(!!this.seletedCategory){
       let newArticle:postArticleDTO  = {
         attached:[],
         category:this.seletedCategory,
@@ -117,13 +122,17 @@ export class ArticleCreatorComponent implements OnInit {
       of(null).pipe(
         throttle(() => interval(700)),
         concatMap(() => this.articlesApi.postArticle(newArticle))
-      ).subscribe(newArticle => {
+      ).subscribe(newArticle => {        
+        this.addArticleSpinner = false;
         this.goToArticle(newArticle.id)
       })
     }
   }
 
   saveAsDraft(){
+
+    this.updateArticleSpinner = true;
+
     if(!!this.articleToEdit){
       let newArticle:postArticleDTO = {
         attached:[ ...this.articleToEdit.attached, ...this.newFiles ],
@@ -139,7 +148,8 @@ export class ArticleCreatorComponent implements OnInit {
       of(null).pipe(
         throttle(() => interval(700)),
         concatMap(() => this.articlesApi.updateArticle(this.articleToEdit.id, newArticle).pipe())
-      ).subscribe(newArticle => {
+      ).subscribe(newArticle => {        
+        this.updateArticleSpinner = false;
         window.alert('Articulo guardado')
       })
 
@@ -158,10 +168,10 @@ export class ArticleCreatorComponent implements OnInit {
       of(null).pipe(
         throttle(() => interval(700)),
         concatMap(() => this.articlesApi.postArticle(newArticle))
-      ).subscribe(newArticle => {
+      ).subscribe(newArticle => {        
+        this.updateArticleSpinner = false;
         this.articleToEdit = newArticle 
         this.router.navigate(['/app/articlecreation'],{ queryParams: { articleId: newArticle.id }})       
-        window.alert('Articulo guardado')
       })
     }
   }

@@ -14,6 +14,7 @@ import { NgScrollbarModule } from 'ngx-scrollbar';
 import { PickerModule } from '@ctrl/ngx-emoji-mart';
 import { UploaderModule  } from '@syncfusion/ej2-angular-inputs';
 import { RadioButtonModule } from '@syncfusion/ej2-angular-buttons';
+import { TooltipModule } from 'ng2-tooltip-directive';
 
 import { AppComponent } from './app.component';
 import { ArticleCreatorComponent } from './components/article-creator/article-creator.component';
@@ -54,6 +55,7 @@ import { UsersconfigComponent } from './components/usersconfig/usersconfig.compo
 import { TreeViewMultiComponent } from './components/tree-view-multi/tree-view-multi.component';
 import { TreeViewMultiRowComponent } from './components/tree-view-multi-row/tree-view-multi-row.component';
 import { FullScreenComponent } from './components/full-screen/full-screen.component';
+import { SpinnerComponent } from './components/spinner/spinner.component';
 @NgModule({
     declarations: [
         AppComponent,
@@ -105,6 +107,7 @@ import { FullScreenComponent } from './components/full-screen/full-screen.compon
         TreeViewMultiComponent,
         TreeViewMultiRowComponent,
         FullScreenComponent,
+        SpinnerComponent,
     ],
     imports: [
         BrowserModule,
@@ -121,7 +124,8 @@ import { FullScreenComponent } from './components/full-screen/full-screen.compon
         NgScrollbarModule,
         PickerModule,
         UploaderModule,
-        RadioButtonModule
+        RadioButtonModule,
+        TooltipModule
     ],
     providers: [
         JwtInterceptor
