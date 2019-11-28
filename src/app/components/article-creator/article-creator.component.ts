@@ -18,7 +18,8 @@ export class ArticleCreatorComponent implements OnInit {
   constructor(
     private articlesApi:ArticlesApiService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private spinner: NgxSpinnerService
   ) { }
 
   public tags:string[] = [];
