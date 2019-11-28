@@ -6,7 +6,6 @@ import { ArticlesApiService, postArticleDTO } from "../../api/articles-api.servi
 import { Article } from "../../article";
 import { RichTextEditorComponent } from "../rich-text-editor/rich-text-editor.component";
 import { environment } from '../../../environments/environment';
-import { NgxSpinnerService } from "ngx-spinner";
 
 @Component({
   selector: 'app-article-creator',
