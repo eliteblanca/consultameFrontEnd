@@ -6,7 +6,6 @@ import { ArticlesApiService, postArticleDTO } from "../../api/articles-api.servi
 import { Article } from "../../article";
 import { RichTextEditorComponent } from "../rich-text-editor/rich-text-editor.component";
 import { environment } from '../../../environments/environment';
-import { NgxSpinnerService } from "ngx-spinner";
 
 @Component({
   selector: 'app-article-creator',
@@ -18,8 +17,7 @@ export class ArticleCreatorComponent implements OnInit {
   constructor(
     private articlesApi:ArticlesApiService,
     private route: ActivatedRoute,
-    private router: Router,
-    private spinner: NgxSpinnerService
+    private router: Router
   ) { }
 
   public tags:string[] = [];
