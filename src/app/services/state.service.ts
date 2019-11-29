@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, combineLatest } from 'rxjs';
+import { BehaviorSubject, Observable, combineLatest, iif } from 'rxjs';
 import { map, distinctUntilChanged, tap, filter, switchMap } from 'rxjs/operators';
 import { PcrcApiService, cliente } from "../api/pcrc-api.service";
 import { category, CategoriesApiService, categoryRaw } from "../api/categories-api.service";
@@ -8,7 +8,7 @@ import { user } from "../api/user-api.service";
 import { UserService } from "../services/user.service";
 import { UserApiService } from "../api/user-api.service";
 
-type state = {
+export type state = {
     selectedPcrc: cliente['pcrcs'][0],
     selectedCliente: cliente,
     userPcrc: cliente[],
@@ -18,6 +18,8 @@ type state = {
     selectedUser: user,
     selectedUserPcrcs: cliente[],
     editionSelectedCategory: categoryRaw,
+    selectedUserAccesoTodos: boolean,
+    selectedUserPcrcsState: { state: 'finish' | 'loading' }
 }
 
 @Injectable({
@@ -41,7 +43,9 @@ export class StateService {
         userslist: { state: 'loading' },
         selectedUser: null,
         selectedUserPcrcs: [],
-        editionSelectedCategory: null
+        editionSelectedCategory: null,
+        selectedUserAccesoTodos: false,
+        selectedUserPcrcsState: { state:"loading" }
     }
 
     private store = new BehaviorSubject<state>(this._state)
@@ -56,6 +60,8 @@ export class StateService {
     public selectedUser$ = this.state$.pipe(map(_state => _state.selectedUser), distinctUntilChanged(), filter(user => !!user))
     public selectedUserPcrcs$ = this.state$.pipe(map(_state => _state.selectedUserPcrcs), distinctUntilChanged())
     public editionSelectedCategory$ = this.state$.pipe(map(_state => _state.editionSelectedCategory), distinctUntilChanged())
+    public selectedUserAccesoTodos$ = this.state$.pipe(map(_state => _state.selectedUserAccesoTodos), distinctUntilChanged())
+    public selectedUserPcrcsState$ = this.state$.pipe(map(_state => _state.selectedUserPcrcsState), distinctUntilChanged())
 
     constructor(
         public route: ActivatedRoute,
@@ -80,11 +86,11 @@ export class StateService {
         ).subscribe()
 
         this.selectedUser$.pipe(
-            tap(user => console.log('user',user)),
+            tap(user => { this.newSelectedUserPcrcState({state:"loading"}) }),
             switchMap(user => this.pcrcApi.getUserPcrc(user.cedula,0,1000)),
             tap(pcrcs => {
-                console.log('selectedUser',pcrcs)
                 this.store.next(this._state = { ...this._state, selectedUserPcrcs: pcrcs })
+                this.newSelectedUserPcrcState({state:"finish"})
             })
         ).subscribe()
     }
@@ -129,8 +135,41 @@ export class StateService {
     newDeletedCategory = (categoryId:string) => {
         this.store.next(this._state = { ...this._state, selectedPcrcCategories: { value:this._state.selectedPcrcCategories.value.filter(category => category.id != categoryId) , state:"finish"} })
     }
-
+    
     getValueOf = <K extends keyof state>(key: K) => {
         return this._state[key]
     }
+
+    newSelectedUserPcrc = (pcrcs:cliente[]) => {
+        this.store.next(this._state = { ...this._state, selectedUserPcrcs:pcrcs })
+    }
+
+    newSelectedUserPcrcState = (state:state['selectedUserPcrcsState']) => {
+        this.store.next(this._state = { ...this._state, selectedUserPcrcsState:state })
+    }
+
+    clearState = () => {
+        this.store.next(this._state = {
+            selectedPcrc: {
+                cod_pcrc: '',
+                id_dp_pcrc: 0,
+                pcrc: ''
+            },
+            selectedCliente: {
+                cliente: '',
+                id_dp_clientes: 0,
+                pcrcs: []
+            },
+            userPcrc: [],
+            sideSheetOpen: false,
+            selectedPcrcCategories: { state: 'loading' },
+            userslist: { state: 'loading' },
+            selectedUser: null,
+            selectedUserPcrcs: [],
+            editionSelectedCategory: null,
+            selectedUserAccesoTodos: false,
+            selectedUserPcrcsState: { state:"loading" }
+        })
+    }
+
 }

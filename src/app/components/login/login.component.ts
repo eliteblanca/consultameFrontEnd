@@ -37,4 +37,9 @@ export class LoginComponent implements OnInit {
         }
     }
 
+    enter(event:KeyboardEvent){
+        if(event.keyCode == 13){
+            this.login()
+        }
+    }
 }

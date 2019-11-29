@@ -2,10 +2,7 @@
 <div class="articleContainer">
     <header class="header" *ngIf="article">
         <app-icon [iconName]="'mdi:arrow-left'" (click)="goBack()"> </app-icon>
-        <h4 class="title">{{article.title}}</h4>
-        <a [routerLink]="['/fullScreen/',article.id]">
-            <app-icon [iconName]="'mdi:fullscreen'"> </app-icon>
-        </a>
+        <h4 class="title">{{article.title}}</h4>        
     </header>
     <ng-scrollbar class="content" >
         <div #content>
@@ -35,10 +32,12 @@
     <div class="fileList" *ngIf="adjuntosMode">
         <app-file-prev *ngFor="let file of article.attached" [fileName]="file" [articleId]="article.id" [mode]="'notDelete'"></app-file-prev>
     </div>
-    <div class="indice" *ngIf="!adjuntosMode">
-        <div *ngFor="let el of indexElements; index as i" [innerHTML]="el.innerHTML" [ngClass]="[el.tagName, calculateActive(i)]" (click)="scrollTo(el)"></div>
-    </div>
+    <ng-scrollbar>
+        <div class="indice" *ngIf="!adjuntosMode">
+            <div *ngFor="let el of indexElements; index as i" [innerHTML]="el.innerHTML" [ngClass]="[el.tagName, calculateActive(i)]" (click)="scrollTo(el)"></div>
+        </div>
+    </ng-scrollbar>
 </div>
 <div class="comments" *ngIf="article">
-        <app-comment-list [articleId]="article.id"></app-comment-list>
+    <app-comment-list [articleId]="article.id"></app-comment-list>
 </div>

@@ -59,6 +59,7 @@ export class SideSheetComponent implements OnInit {
   }
 
   logOut = () => {
+    this.state.clearState()
     this.userService.logOut()
   }
 

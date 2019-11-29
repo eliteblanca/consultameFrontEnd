@@ -9,7 +9,11 @@
     </div>
     <h4 class="ml1">Pcrc</h4>
     <div class="pcrcPicker">
-        <ng-scrollbar>            
+        <div class="accesoTodos">
+            <app-button [buttonText]="'Dar acceso a todos'" [iconName]="'mdi:all-inclusive'" (click)="darAccesoTodos()" class="mb.5 mr.5"></app-button>
+            <app-button [buttonText]="'Quitar accesos'" [iconName]="'mdi:all-inclusive'" (click)="quitarAccesoTodos()" class="mb.5"></app-button>
+        </div>
+        <ng-scrollbar>
             <app-tree-view-multi></app-tree-view-multi>
         </ng-scrollbar>
     </div>

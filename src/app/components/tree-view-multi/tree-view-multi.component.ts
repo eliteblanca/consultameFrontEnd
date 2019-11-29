@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { StateService } from "../../services/state.service";
+import { StateService, state } from "../../services/state.service";
 import { PcrcApiService, cliente } from "../../api/pcrc-api.service";
 import { Observable, combineLatest } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
@@ -17,18 +17,14 @@ export class TreeViewMultiComponent implements OnInit {
     selectedUserPcrcs:cliente[]
   }>
 
+  public loadingState:state['selectedUserPcrcsState']
+
   constructor(
     public state:StateService,
     public pcrcApi:PcrcApiService
   ) {  }
 
-  ngOnInit() {    
-
-    this.state.selectedUserPcrcs$.pipe(
-      tap(pcrcs => {
-        console.log(pcrcs)
-      })
-    ).subscribe()
+  ngOnInit() {     
 
     this.allpcrc$ = combineLatest(
       this.pcrcApi.getAllPcrc(),
@@ -41,6 +37,12 @@ export class TreeViewMultiComponent implements OnInit {
         }))
       )
 
+    this.state.selectedUserPcrcsState$.pipe(
+      tap(state => { 
+        console.log(state)
+        this.loadingState = state
+      })
+    ).subscribe()
   }
 
   childSeleccionado(event){  }

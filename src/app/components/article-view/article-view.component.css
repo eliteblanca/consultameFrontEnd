@@ -188,5 +188,10 @@
 .fileList{
   display: flex;
   flex-direction: column;
+}
 
+.index{
+  display: grid;
+  grid-template-columns: auto;
+  grid-template-rows: 2rem auto;
 }

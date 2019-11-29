@@ -1,3 +1,9 @@
-<div *ngIf="allpcrc$ | async as combinedData">    
-    <app-tree-view-multi-row *ngFor="let cliente of combinedData.allPcrc" [cliente]="cliente" [clienteData]="combinedData" (onChildSeleccionado)="childSeleccionado($event)"></app-tree-view-multi-row>
+<div *ngIf="allpcrc$ | async as combinedData">
+    <div *ngIf="(state.selectedUserPcrcsState$ | async).state == 'finish' else loading">
+        <app-tree-view-multi-row *ngFor="let cliente of combinedData.allPcrc" [cliente]="cliente" [clienteData]="combinedData" (onChildSeleccionado)="childSeleccionado($event)"></app-tree-view-multi-row>
+    </div>
+
+    <ng-template #loading>
+        <app-spinner></app-spinner>
+    </ng-template>
 </div>

@@ -6,6 +6,6 @@
         <app-button [buttonText]="'Nueva categoria'" (click)="nuevaCategoriaMode = true" *ngIf="!!response.value.length && !nuevaCategoriaMode">  </app-button>
     </ng-template>
     <ng-template [ngIf]="response.state == 'loading'" >
-        ...Cargando
+        <app-spinner></app-spinner>
     </ng-template>
 </div>

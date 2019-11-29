@@ -22,3 +22,7 @@
 .pcrcPicker{
     height: 300px;
 }
+
+.accesoTodos {
+    display: flex;
+}
