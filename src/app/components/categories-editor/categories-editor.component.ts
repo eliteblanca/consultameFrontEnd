@@ -24,19 +24,14 @@ export class CategoriesEditorComponent implements OnInit {
     ngOnInit() { }
 
     agregarNuevaCategoria(nombre: string) {
-        this.state.selectedPcrc$.pipe(
-            tap(({id_dp_pcrc}) => {
-
-                this.categoriesApi.addCategory({
-                    icon: this.icon,
-                    position: 1,
-                    name: nombre,
-                    pcrc: id_dp_pcrc.toString()
-                }).subscribe(newCategory => {
-                    this.state.addCategory({ subcategories: [], ...newCategory })
-                })
-            })
-        ).subscribe()
+        this.categoriesApi.addCategory({
+            icon: this.icon,
+            position: 1,
+            name: nombre,
+            pcrc: this.state.getValueOf('selectedPcrc').id_dp_pcrc.toString()
+        }).subscribe(newCategory => {
+            this.state.addCategory({ subcategories: [], ...newCategory })
+        })
     }
 
     categoryDeleted(categoryId: string) {

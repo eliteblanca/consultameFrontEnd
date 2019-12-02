@@ -1,11 +1,11 @@
 <header class="header">
-        
     <app-icon [iconName]="getIcon()" *ngIf="!editCategoryNameMode" (click)="showIconPicker()" tooltip="Seleccionar icono" placement="top" show-delay="500"></app-icon>
     <h4 class="title" *ngIf="!editCategoryNameMode" (click)="seleccionarCategoria()" [ngClass]="{'leaftCategory': !!!getSubCategories().length}">{{category.name}}</h4>
     <app-icon class="editIcon" [iconName]="'mdi:pencil'" (click)="editCategoryNameMode = true" *ngIf="!editCategoryNameMode" tooltip="Editar nombre" placement="top" show-delay="500"></app-icon>
-    <app-icon class="editIcon" [iconName]="'mdi:trash'" (click)="eliminarCategoria()" *ngIf="!editCategoryNameMode" tooltip="Eliminar categoria" placement="top" show-delay="500"></app-icon>
+    <app-icon class="editIcon" [iconName]="'mdi:trash'" (click)="eliminarCategoria()" *ngIf="!editCategoryNameMode && !deleteCategorySpinner" tooltip="Eliminar categoria" placement="top" show-delay="500"></app-icon>
+    <app-spinner class="ml1" *ngIf="deleteCategorySpinner"></app-spinner>
     <app-icon class="editIcon" [iconName]="'mdi:plus-circle'" (click)="addCategoryMode = true" *ngIf="!editCategoryNameMode" tooltip="Agregar subcategoria" placement="top" show-delay="500"></app-icon>
-    <app-icon  [iconName]="'mdi:arrow-down-drop'" (click)="desplegarSubCategorias()" *ngIf="!editCategoryNameMode && !!getSubCategories().length"></app-icon>
+    <app-icon  [iconName]="desplegado ? 'mdi:arrow-up-drop-circle-outline' : 'mdi:arrow-down-drop-circle-outline'" (click)="desplegarSubCategorias()" *ngIf="!editCategoryNameMode && !!getSubCategories().length"></app-icon>
     <app-text-input [placeholder]="'Nombre Categoria'" [initialText]="category.name" (onConfirm)="actualizarNombre($event); editCategoryNameMode = false" (onCancel)="editCategoryNameMode = false"  *ngIf="editCategoryNameMode"> </app-text-input>
 </header>
 <div class="body" *ngIf="desplegado || addCategoryMode">

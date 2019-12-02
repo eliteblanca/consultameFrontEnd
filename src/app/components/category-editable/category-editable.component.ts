@@ -1,9 +1,4 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import arrow_drop_down from '@iconify/icons-mdi/arrow-drop-down';
-import arrow_drop_up from '@iconify/icons-mdi/arrow-drop-up';
-import pencil from '@iconify/icons-mdi/pencil';
-import plus_circle from '@iconify/icons-mdi/plus-circle';
-import trash from '@iconify/icons-mdi/trash';
 import { filter, switchMap } from 'rxjs/operators';
 import { ArticlesApiService } from "../../api/articles-api.service";
 import { CategoriesApiService, category, categoryRaw } from "../../api/categories-api.service";
@@ -14,12 +9,6 @@ import { StateService } from "../../services/state.service";
     styleUrls: ['./category-editable.component.css']
 })
 export class CategoryEditableComponent implements OnInit {
-    //*icons
-    public arrow_icon = arrow_drop_down;
-    public edit_icon = pencil;
-    public delete_icon = trash;
-    public add_icon = plus_circle;
-    //*icons
 
     constructor(
         private categoriesApi: CategoriesApiService,
@@ -33,17 +22,16 @@ export class CategoryEditableComponent implements OnInit {
     @Output() onCategorySelected = new EventEmitter();
 
     public desplegado = false;
-
     public editCategoryNameMode = false;
     public addCategoryMode = false;
     public iconPickerOpen = false;
+    public deleteCategorySpinner = false;
 
     ngOnInit() {
     }
 
     desplegarSubCategorias() {
         this.desplegado = !this.desplegado;
-        this.arrow_icon = this.desplegado ? arrow_drop_up : arrow_drop_down;
     }
 
     actualizarNombre(nuevoNombre: string) {
@@ -60,7 +48,9 @@ export class CategoryEditableComponent implements OnInit {
     }
 
     eliminarCategoria() {
+        this.deleteCategorySpinner = true;
         this.categoriesApi.deleteCategory(this.category.id).subscribe(result => {
+            this.deleteCategorySpinner = false;
             this.onCategoryDeleted.next(this.category.id)
         });
     }
@@ -70,18 +60,16 @@ export class CategoryEditableComponent implements OnInit {
     }
 
     agregarCategoria(nombre: string) {
-
         this.articlesApi.getArticlesByCategory(this.category.id).pipe(
             filter(articles => {
                 return articles.length <= 0
             }),
-            switchMap(articles => this.state.selectedPcrc$),
-            switchMap(({id_dp_pcrc}) => this.categoriesApi.addCategory({
+            switchMap(articles => this.categoriesApi.addCategory({
                 group: this.category.id,
                 icon: 'mdi:circle-small',
                 name: nombre,
                 position: 1,
-                pcrc: id_dp_pcrc.toString()
+                pcrc: this.state.getValueOf('selectedPcrc').id_dp_pcrc.toString()
             }))
         ).subscribe(newCategory => {
             this.allCategories.push( newCategory )
@@ -129,4 +117,7 @@ export class CategoryEditableComponent implements OnInit {
         return this.allCategories.filter(category => category.group == this.category.id)
     }
 
+    isActive(){
+        return this.state.getValueOf('')
+    }
 }

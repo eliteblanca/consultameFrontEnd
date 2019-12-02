@@ -19,6 +19,7 @@
     <div class="tag" *ngFor="let tag of Article.tags" (click)="searchTag(tag)">{{ tag }}</div>
 </div>
 <div class="footer" *ngIf="Article">
+    <app-icon *appUserRoleIsIn="['publicador','admin']" class="socialButton" (click)="goToArticleEdition()" [iconName]="'mdi:pencil'" tooltip="Editar articulo" placement="top" show-delay="500"> </app-icon>
     <app-icon class="socialButton favoriteIcon" (click)="addToFavorites()" (mouseover)="isFavoriteHover = true" (mouseout)="isFavoriteHover = false" [iconName]="'mdi:star'"  [ngClass]="{ favorite : isFavorite()}" tooltip="Agregar a favoritos" placement="top" show-delay="500" > </app-icon>
     <span>{{Article.favorites.length}}</span>
     <app-icon class="socialButton" [iconName]="isLike() ? 'mdi:thumb-up' : 'mdi:thumb-up-outline'" (click)="addLike()" tooltip="Me gusta" placement="top" show-delay="500"> </app-icon>

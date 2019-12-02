@@ -20,5 +20,7 @@
 </div>
 <div class="footer">
     <app-button #saveAsDraftButton *ngIf="!!!newsOnEdition || newsOnEdition.state == 'archived'" [iconName]="'mdi:archive'" [buttonText]="'Guardar borrador'"></app-button>
+    <app-spinner *ngIf="saveDraftNewsSpinner"></app-spinner>
     <app-button #publishNewsButton class="ml.5" [iconName]="'mdi:publish'" [buttonText]="newsOnEdition && newsOnEdition.state == 'published' ? 'Actualizar':'Publicar'"></app-button>
+    <app-spinner *ngIf="postNewsSpinner"></app-spinner>
 </div>

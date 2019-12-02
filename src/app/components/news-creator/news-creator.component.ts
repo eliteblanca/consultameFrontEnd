@@ -44,6 +44,10 @@ export class NewsCreatorComponent implements OnInit, AfterViewInit {
 
   postNews$: Observable<news>;
 
+  postNewsSpinner = false;
+
+  saveDraftNewsSpinner = false;
+
   constructor(
     private eventsService: EventsService,
     private newsApi: NewsApiService,
@@ -69,23 +73,26 @@ export class NewsCreatorComponent implements OnInit, AfterViewInit {
     )
 
     this.postNews$ = fromEvent(this.publishNewsButton.nativeElement, 'click').pipe(
-      filter(event => !!!this.newsOnEdition),      
-      switchMap(event => this.state.selectedPcrc$),
-      map<cliente['pcrcs'][0], newsDTO>(pcrc => {
+      filter(event => !!!this.newsOnEdition),
+      map<any, newsDTO>(event => {
         return {
           attached: [],
           content: this.RTE.getText(),
           obj: this.RTE.getContent(),
           state: 'published',
-          subline: pcrc.id_dp_pcrc.toString(),
+          subline: this.state.getValueOf('selectedPcrc').id_dp_pcrc.toString(),
           title: this.articleTitle.nativeElement.value
         }
+      }),
+      tap( newsToSave => {
+        this.postNewsSpinner = true;
       }),
       switchMap(newsToSave => this.newsApi.postNews(newsToSave)),
       tap( newsAdded => {
         this.listMode = 'news'
         this.newsOnEdition = newsAdded;
-        this.newslist.addNewsResponse(newsAdded)
+        this.newslist.addNewsResponse(newsAdded);        
+        this.postNewsSpinner = false;
         this.router.navigate(['/app/news', newsAdded.id])
       })
     )
@@ -109,10 +116,14 @@ export class NewsCreatorComponent implements OnInit, AfterViewInit {
 
     this.postDraft$ = this.postDraftDTO$.pipe(
       filter(newsToSave => !!!this.newsOnEdition),
+      tap(newsAdded => {
+        this.saveDraftNewsSpinner = true;
+      }),
       switchMap(newsToSave => this.newsApi.postNews(newsToSave)),
       tap(newsAdded => {
         this.newsOnEdition = newsAdded;
-        this.listMode = 'draft';
+        this.listMode = 'draft';        
+        this.saveDraftNewsSpinner = false;
         this.newslist.concatNews(newsAdded)
       })
     )
@@ -142,7 +153,7 @@ export class NewsCreatorComponent implements OnInit, AfterViewInit {
     this.articleTitle.nativeElement.value = ''
     this.newsOnEdition = undefined;
   }
-
+ 
   onNewsEdit(newsId: string) {
     this.addNewsMode = true;
     of(null).pipe(

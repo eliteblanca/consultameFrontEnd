@@ -14,7 +14,8 @@ export class EdicionComponent implements OnInit {
 
   public clientes: cliente[];
   public articles: Article[] = [];
-  public selectedCategory: string;
+  public selectedCategory: category;
+
   public categories:Observable<category[]>
 
   constructor(
@@ -25,8 +26,13 @@ export class EdicionComponent implements OnInit {
   ngOnInit() {  }
 
   onCategorySelected(category: category) {
-    if (this.selectedCategory != category.id) {
-      this.selectedCategory = category.id;
+    console.log(category);
+    if(this.selectedCategory){
+      if (this.selectedCategory.id != category.id) {
+        this.selectedCategory = category;
+      }
+    }else{
+      this.selectedCategory = category;      
     }
   }
 

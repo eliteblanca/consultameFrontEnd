@@ -73,3 +73,7 @@
     font-family: 'Roboto', sans-serif !important;
 }
     
+.editIcon:hover{
+    cursor: pointer;
+    color: var(--primary);
+}
