@@ -117,7 +117,4 @@ export class CategoryEditableComponent implements OnInit {
         return this.allCategories.filter(category => category.group == this.category.id)
     }
 
-    isActive(){
-        return this.state.getValueOf('')
-    }
 }
