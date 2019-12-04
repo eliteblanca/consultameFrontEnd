@@ -7,7 +7,12 @@
     <app-rich-text-editor ></app-rich-text-editor>
 </div>
 <div class="articleOps">
-    <input type="text" class="tagEditor mb1" placeholder="Tag1,Tag2" (change)="addTag($event.target.value)" (keyup)="addTag($event.target.value)" spellcheck="false">
+    <ng-scrollbar>
+<div class="scroll">
+
+
+    
+    <input type="text" #tagstext class="tagEditor mb1" placeholder="Tag1,Tag2" (change)="addTag($event.target.value)" (keyup)="addTag($event.target.value)" spellcheck="false">
     <div class="tagList mb1">
         <div class="tag" *ngFor="let tag of tags">
             <span>{{tag}}</span>
@@ -32,4 +37,6 @@
             </div>
         </ng-template>
     </ejs-uploader>
+</div>
+</ng-scrollbar>
 </div>

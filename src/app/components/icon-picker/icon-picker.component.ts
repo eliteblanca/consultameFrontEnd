@@ -89,10 +89,6 @@ export class IconPickerComponent implements OnInit {
 
     selectIcon(icon:icon){
         this.selectedIcon = icon;
-    }
-
-    confirmarSeleccion(){
         this.onIconSelected.next('mdi:' + this.selectedIcon.name)
     }
-
 }

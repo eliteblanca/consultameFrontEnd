@@ -1,15 +1,14 @@
 import { Location } from '@angular/common';
 import { AfterViewInit, Component, ElementRef, OnInit, Renderer2, ViewChild } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import format from 'date-fns/format';
 import toDate from 'date-fns/toDate';
-import { fromEvent } from 'rxjs';
+import { NgScrollbar } from 'ngx-scrollbar';
 import { map, switchMap } from 'rxjs/operators';
 import { ArticlesApiService } from "../../api/articles-api.service";
 import { Article } from "../../article";
 import { UserService } from "../../services/user.service";
 import { RTEViewComponent } from "../rteview/rteview.component";
-import { NgScrollbar } from 'ngx-scrollbar';
 
 
 @Component({
@@ -34,7 +33,8 @@ export class ArticleViewComponent implements OnInit, AfterViewInit {
      public renderer:Renderer2,
      public articlesApi:ArticlesApiService,
      public UserService:UserService,
-     public Location:Location
+     public Location:Location,     
+    public router: Router
   ) { }
 
   // private articleUrl:string;
@@ -162,6 +162,14 @@ export class ArticleViewComponent implements OnInit, AfterViewInit {
     }else{
       return 'na';
     }
+  }
+
+  searchTag(tag){    
+    this.router.navigate(['/app/search'], { queryParams: { tag: tag } })
+  }
+
+  goToArticleEdition(){
+    this.router.navigate(['/app/articlecreation'],{ queryParams: { articleId: this.article.id }, queryParamsHandling: 'merge' })
   }
 
 }

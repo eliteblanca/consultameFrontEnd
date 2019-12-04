@@ -13,5 +13,5 @@
     <app-category-editable *ngFor="let subcategory of getSubCategories()" [category]="subcategory" [allCategories]="allCategories" (onCategoryDeleted)="subCategoriaEliminada($event)" (onCategorySelected)="seleccionarCategoria($event)"> </app-category-editable>
 </div>
 <jw-modal id="iconPickerCategories_1" *ngIf="iconPickerOpen" (onClose)="iconPickerOpen = false">
-    <app-icon-picker (onIconSelected)="updateIcon($event)"></app-icon-picker>
+    <app-icon-picker (onIconSelected)="updateIcon($event); iconPickerOpen = false"></app-icon-picker>
 </jw-modal>

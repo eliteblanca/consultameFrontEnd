@@ -12,8 +12,7 @@ import { UsersconfigComponent } from "./components/usersconfig/usersconfig.compo
 import { FullScreenComponent } from "./components/full-screen/full-screen.component";
 
 const routes: Routes = [
-	{ path: '', redirectTo: '/home', pathMatch: 'full' },
-	{ path: 'home', component: HomeComponent, canActivate: [HomeGuard] },
+	{ path: '', redirectTo: '/login', pathMatch: 'full' },
 	{ path: 'login', component: LoginComponent, canActivate: [HomeGuard] },
 	{ path: 'fullScreen/:id', component: FullScreenComponent, canActivate: [AuthGuard] },
 	{

@@ -36,9 +36,24 @@ export class SideSheetComponent implements OnInit {
 
     this.PcrcApiService.getUserPcrc(this.userService.usuario.sub,0,1000).pipe(
           tap(clientes => {
-              this.state.newUserPcrc(clientes)
-              this.state.newSelectedCliente(clientes[0])
-              this.state.newSelectedPcrc(clientes[0].pcrcs[0])
+
+              let selectedClienteId = localStorage.getItem('selectedClienteId')
+
+              let selectedPcrcId = localStorage.getItem('selectedPcrcId')
+
+              if(selectedClienteId != null && selectedPcrcId != null){               
+
+                let cliente = clientes.find(cliente => cliente.id_dp_clientes.toString() == selectedClienteId)
+
+                this.state.newSelectedCliente(cliente)
+                
+                this.state.newSelectedPcrc(cliente.pcrcs.find(pcrc => pcrc.id_dp_pcrc.toString() == selectedPcrcId))
+
+                this.state.newUserPcrc(clientes)
+              } else {
+                this.state.newSelectedCliente(clientes[0])
+                this.state.newSelectedPcrc(clientes[0].pcrcs[0])
+              }
             }
           )
         ).subscribe()
@@ -53,7 +68,10 @@ export class SideSheetComponent implements OnInit {
   }
 
   onPcrcSeleccionado(cliente:cliente){
-    console.log(cliente)
+
+    localStorage.setItem('selectedClienteId', cliente.id_dp_clientes.toString())
+    localStorage.setItem('selectedPcrcId', cliente.pcrcs[0].id_dp_pcrc.toString())
+
     this.state.newSelectedPcrc(cliente.pcrcs[0])
     this.state.newSelectedCliente(cliente)
   }

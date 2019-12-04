@@ -3,7 +3,7 @@
     height: 100%;
     width: 100%;
     display: grid;
-    grid-template-columns: 80% 20%;
+    grid-template-columns: 75% 25%;
     grid-template-rows: 4rem auto;
     grid-gap: 1rem;
 }
@@ -65,4 +65,9 @@
     border-radius: 3px;
     box-shadow: var(--shadow1);
     outline: none !important;
+}
+
+.scroll{
+    padding: .1rem;
+    padding-right: 1rem;
 }

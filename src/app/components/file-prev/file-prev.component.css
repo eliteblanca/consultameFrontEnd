@@ -5,19 +5,19 @@
     align-items: center;
     padding-left: .5rem;
     padding-right: .5rem;
+    width: 17rem;
 }
 
 :host:hover{
     background-color: var(--terciaryDark);
 }
 
-.icon{
-    margin-right: 1rem;
-}
-
 a{
     padding: .75rem;
     flex-grow: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .deleteIcon{

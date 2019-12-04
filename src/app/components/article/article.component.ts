@@ -160,7 +160,7 @@ export class ArticleComponent implements OnInit, AfterViewInit {
     this.router.navigate(['/app/search'], { queryParams: { tag: tag } })
   }
 
-goToArticleEdition(){
+  goToArticleEdition(){
     this.router.navigate(['/app/articlecreation'],{ queryParams: { articleId: this.Article.id }, queryParamsHandling: 'merge' })
   }
 

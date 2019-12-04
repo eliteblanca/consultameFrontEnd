@@ -25,17 +25,13 @@ export class ModalComponent implements OnInit, OnDestroy {
             console.error('modal must have an id');
             return;
         }
-
-        // close modal on background click
-        this.element.addEventListener('click', function (e: any) {
-            if (e.target.className === 'jw-modal') {
-                modal.close();
-            }
-        });
-
         // add self (this modal instance) to the modal service so it's accessible from controllers
         this.modalService.add(this);
         this.open();
+
+        this.el.nativeElement.addEventListener('click',()=>{
+            this.close();
+        })
     }
 
     // remove self from modal service when component is destroyed

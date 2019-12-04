@@ -4,9 +4,9 @@
 <a class="title" [routerLink]="['/app/articles/',Article.id]" [state]="Article">{{Article.title}}</a>
 <div class="article_body">
 
-    <div class="resumme" #resume>
+    <a class="resumme" #resume [routerLink]="['/app/articles/',Article.id]">
         <p *ngFor="let frase of resumen" [innerHTML]="frase"></p>
-    </div>
+    </a>
     <div class="resume_lists" #resumeLists>
         
     </div>

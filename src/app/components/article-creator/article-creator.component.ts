@@ -31,6 +31,7 @@ export class ArticleCreatorComponent implements OnInit {
 
   @ViewChild(RichTextEditorComponent,{ static:false }) RTE:RichTextEditorComponent;
   @ViewChild('articleTitle',{ static:false }) public articleTitle:ElementRef ;
+  @ViewChild('tagstext',{ static:false }) public tagsText:ElementRef;
 
   public articleToEdit:Article;
 
@@ -53,8 +54,14 @@ export class ArticleCreatorComponent implements OnInit {
       };
 
       this.articleTitle.nativeElement.value = this.articleToEdit.title;
+
       this.tags = this.articleToEdit.tags;
+      this.tagsText.nativeElement.value = this.tags.join(',')
+
       this.RTE.setContent( JSON.parse((this.articleToEdit.obj || "[]")) )
+
+
+
     })
   
     let newArticleObservable = this.route.queryParamMap.pipe(
@@ -194,8 +201,7 @@ export class ArticleCreatorComponent implements OnInit {
 
   onFileUploaded(filesData){
     if(filesData.operation == "upload"){
-      this.articleToEdit.attached.push(filesData.file.name)
-      this.saveAsDraft()
+      this.articleToEdit.attached.push(filesData.file.name)      
       this.status = 'Cargado con exito'
     }
   }
