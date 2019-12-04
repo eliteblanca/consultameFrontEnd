@@ -2,7 +2,7 @@
     <app-icon [iconName]="getIcon()" *ngIf="!editCategoryNameMode" (click)="showIconPicker()" tooltip="Seleccionar icono" placement="top" show-delay="500"></app-icon>
     <h4 class="title" *ngIf="!editCategoryNameMode" (click)="seleccionarCategoria()" [ngClass]="{'leaftCategory': !!!getSubCategories().length}">{{category.name}}</h4>
     <app-icon class="editIcon" [iconName]="'mdi:pencil'" (click)="editCategoryNameMode = true" *ngIf="!editCategoryNameMode" tooltip="Editar nombre" placement="top" show-delay="500"></app-icon>
-    <app-icon class="editIcon" [iconName]="'mdi:trash'" (click)="eliminarCategoria()" *ngIf="!editCategoryNameMode && !deleteCategorySpinner" tooltip="Eliminar categoria" placement="top" show-delay="500"></app-icon>
+    <app-icon class="editIcon" [iconName]="'mdi:trash'" (click)="deleteCategoryModalOpen = true" *ngIf="!editCategoryNameMode && !deleteCategorySpinner" tooltip="Eliminar categoria" placement="top" show-delay="500"></app-icon>
     <app-spinner class="ml1" *ngIf="deleteCategorySpinner"></app-spinner>
     <app-icon class="editIcon" [iconName]="'mdi:plus-circle'" (click)="addCategoryMode = true" *ngIf="!editCategoryNameMode" tooltip="Agregar subcategoria" placement="top" show-delay="500"></app-icon>
     <app-icon  [iconName]="desplegado ? 'mdi:arrow-up-drop-circle-outline' : 'mdi:arrow-down-drop-circle-outline'" (click)="desplegarSubCategorias()" *ngIf="!editCategoryNameMode && !!getSubCategories().length"></app-icon>
@@ -12,6 +12,12 @@
     <app-text-input class="mb.5 mr.5" [placeholder]="'Nombre Nueva categoria'" [initialText]="''" (onConfirm)="agregarCategoria($event); addCategoryMode = false" (onCancel)="addCategoryMode = false"  *ngIf="addCategoryMode"> </app-text-input>
     <app-category-editable *ngFor="let subcategory of getSubCategories()" [category]="subcategory" [allCategories]="allCategories" (onCategoryDeleted)="subCategoriaEliminada($event)" (onCategorySelected)="seleccionarCategoria($event)"> </app-category-editable>
 </div>
-<jw-modal id="iconPickerCategories_1" *ngIf="iconPickerOpen" (onClose)="iconPickerOpen = false">
+<jw-modal *ngIf="iconPickerOpen" (onClose)="iconPickerOpen = false">
     <app-icon-picker (onIconSelected)="updateIcon($event); iconPickerOpen = false"></app-icon-picker>
+</jw-modal>
+<jw-modal *ngIf="deleteCategoryModalOpen" (onClose)="deleteCategoryModalOpen = false">    
+    <app-card>
+        <h4>Eliminar categoria: {{category.name}}</h4>
+        <app-button [buttonText]="'Confirmar'" [iconName]="'mdi:delete'" (click)="eliminarCategoria(); deleteCategoryModalOpen = false"></app-button>
+    </app-card>
 </jw-modal>

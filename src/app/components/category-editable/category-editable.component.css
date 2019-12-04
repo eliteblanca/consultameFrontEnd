@@ -27,8 +27,13 @@
     color: transparent;
     transition: all 200ms ease-in-out;
 }
+
 :host .header:hover .editIcon{
     color: var(--primaryText);
+}
+
+:host .header:hover .editIcon:hover{
+    color: var(--primary);
 }
 
 :host .header .title{

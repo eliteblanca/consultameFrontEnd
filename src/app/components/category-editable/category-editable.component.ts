@@ -24,6 +24,7 @@ export class CategoryEditableComponent implements OnInit {
     public desplegado = false;
     public editCategoryNameMode = false;
     public addCategoryMode = false;
+    public deleteCategoryModalOpen = false;
     public iconPickerOpen = false;
     public deleteCategorySpinner = false;
 

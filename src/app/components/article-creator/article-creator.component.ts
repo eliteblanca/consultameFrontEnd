@@ -155,8 +155,8 @@ export class ArticleCreatorComponent implements OnInit {
         throttle(() => interval(700)),
         concatMap(() => this.articlesApi.updateArticle(this.articleToEdit.id, newArticle).pipe())
       ).subscribe(newArticle => {        
+        this.articleToEdit.state = 'archived'
         this.updateArticleSpinner = false;
-        window.alert('Articulo guardado')
       })
 
     }else if(!!this.seletedCategory){

@@ -56,6 +56,7 @@ import { TreeViewMultiComponent } from './components/tree-view-multi/tree-view-m
 import { TreeViewMultiRowComponent } from './components/tree-view-multi-row/tree-view-multi-row.component';
 import { FullScreenComponent } from './components/full-screen/full-screen.component';
 import { SpinnerComponent } from './components/spinner/spinner.component';
+import { CardComponent } from './components/card/card.component';
 @NgModule({
     declarations: [
         AppComponent,
@@ -108,6 +109,7 @@ import { SpinnerComponent } from './components/spinner/spinner.component';
         TreeViewMultiRowComponent,
         FullScreenComponent,
         SpinnerComponent,
+        CardComponent,
     ],
     imports: [
         BrowserModule,

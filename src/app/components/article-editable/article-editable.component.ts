@@ -15,6 +15,7 @@ export class ArticleEditableComponent implements OnInit {
   @Output() onArticleDeleted = new EventEmitter();
 
   public isDeleted = false;
+  public deleteArticleModalOpen = false;
 
   constructor(
     private articlesApi:ArticlesApiService,

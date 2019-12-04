@@ -8,16 +8,15 @@
 </div>
 <div class="articleOps">
     <ng-scrollbar>
-<div class="scroll">
-
-
-    
+<div class="scroll">    
     <input type="text" #tagstext class="tagEditor mb1" placeholder="Tag1,Tag2" (change)="addTag($event.target.value)" (keyup)="addTag($event.target.value)" spellcheck="false">
     <div class="tagList mb1">
         <div class="tag" *ngFor="let tag of tags">
             <span>{{tag}}</span>
         </div>
     </div>
+    <h4 *ngIf="articleToEdit else singuardar">Estado: {{articleToEdit.state == 'archived' ? 'Guardado en borradores' : 'Publicado'}}</h4>
+    <ng-template #singuardar><h4>Estado: Sin guardar</h4></ng-template>
     <app-spinner *ngIf="addArticleSpinner"></app-spinner>
     <app-button [buttonText]="'Publicar'" class="mb.5" (click)="saveArticle()" [iconName]="'mdi:publish'" *ngIf="!addArticleSpinner"></app-button>
     <app-spinner *ngIf="updateArticleSpinner"></app-spinner>

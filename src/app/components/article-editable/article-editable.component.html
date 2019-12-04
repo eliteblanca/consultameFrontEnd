@@ -11,11 +11,18 @@
     <h4 class="info">{{article.disLikes.length}}</h4>
     <span class="separator"></span>
     <app-icon class="editIcon" [iconName]="'mdi:pencil'" (click)="goToArticleEdition()"></app-icon>
-    <app-icon class="editIcon" [iconName]="'mdi:delete'" (click)="deleteArticle()" *ngIf="!isDeleted" ></app-icon>
+    <app-icon class="editIcon" [iconName]="'mdi:delete'" (click)="deleteArticleModalOpen = true" *ngIf="!isDeleted" ></app-icon>
     <app-icon class="editIcon" [iconName]="'mdi:timer-sand'" [style.display]="isDeleted ? 'flex' : 'none'"></app-icon>
 </div>
 <div class="iconsContainer" *ngIf="article.state == 'archived'">
     <app-icon class="editIcon" [iconName]="'mdi:pencil'" (click)="goToArticleEdition()"></app-icon>
-    <app-icon class="editIcon" [iconName]="'mdi:delete'" (click)="deleteArticle()" *ngIf="!isDeleted" ></app-icon>
+    <app-icon class="editIcon" [iconName]="'mdi:delete'" (click)="deleteArticleModalOpen = true" *ngIf="!isDeleted" ></app-icon>
     <app-icon class="editIcon" [iconName]="'mdi:timer-sand'" [style.display]="isDeleted ? 'flex' : 'none'"></app-icon>
 </div>
+
+<jw-modal *ngIf="deleteArticleModalOpen" (onClose)="deleteArticleModalOpen = false">    
+    <app-card>
+        <h4>Eliminar articulo: {{article.title}}</h4>
+        <app-button [buttonText]="'Confirmar'" [iconName]="'mdi:delete'" (click)="deleteArticle(); deleteArticleModalOpen = false"></app-button>
+    </app-card>
+</jw-modal>
