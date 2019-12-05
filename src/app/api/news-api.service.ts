@@ -47,9 +47,25 @@ export class NewsApiService {
     postNews: `${environment.endpoint}/api/news`,
     updateNews: (idNews: string) => `${environment.endpoint}/api/news/${idNews}`,
     deleteNews: (idNews: string) => `${environment.endpoint}/api/news/${idNews}`
-  }
+  }  
 
-  public getNews(idSubline: string, state: 'published' | 'archived', from: number = 0, size: number = 20, date:string = new Date().getTime().toString() ): Observable<news[]> {
+
+
+  public getNews({
+    idSubline,
+    state,
+    from = 0,
+    size = 20,
+    date = new Date().getTime().toString(),
+    query
+  }: {
+    idSubline: string,
+    state: 'published' | 'archived',
+    from?: number,
+    size?: number,
+    date?:string,
+    query?:string
+  } ): Observable<news[]> {
     return this.http.get<news[]>(this.endPoints.getNews(idSubline), { params: { state: state, from: from.toString(), size: size.toString(), date: date }, observe: "body" })
   }
 

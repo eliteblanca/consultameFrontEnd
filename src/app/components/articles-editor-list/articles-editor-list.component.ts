@@ -11,6 +11,8 @@ import { Article } from "../../article";
 export class ArticlesEditorListComponent implements OnInit,OnChanges {
 
   private pagesize = 20;
+  public articlesLoadingSpinner = true;
+
 
   ngOnChanges(changes:SimpleChanges){
     if(!changes.categorySelected.isFirstChange() && changes.categorySelected.currentValue){
@@ -23,15 +25,13 @@ export class ArticlesEditorListComponent implements OnInit,OnChanges {
   @Input() categorySelected:string;
   @Input() state:Article['state'];
 
-
   public articles:Article[] = [];
+  public currentSearch = '';
 
   constructor(private articlesApi:ArticlesApiService, private router: Router) {  }
 
   ngOnInit() { 
-    this.articlesApi.getArticlesByCategory( this.categorySelected, this.state, 0, this.pagesize ).subscribe( articles => {
-      this.articles = articles;
-    })
+    this.onScroll(null)
   }
 
   articuloEliminado(idArticulo:string){
@@ -46,8 +46,16 @@ export class ArticlesEditorListComponent implements OnInit,OnChanges {
   }
 
   onScroll(event){
-    this.articlesApi.getArticlesByCategory( this.categorySelected, this.state,this.articles.length, this.pagesize ).subscribe( articles => {
-      this.articles = this.articles.concat(articles);
+    this.articlesLoadingSpinner = true;
+    this.articlesApi.getArticlesByCategory( this.categorySelected, this.state,this.articles.length, this.pagesize, this.currentSearch ).subscribe( articles => {
+      this.articles = this.articles.concat(articles);      
+      this.articlesLoadingSpinner = false;
     })
+  }
+
+  search(text:string){
+    this.articles = [];
+    this.currentSearch = text;
+    this.onScroll(null);
   }
 }

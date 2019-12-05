@@ -35,7 +35,13 @@ export class NewsListComponent implements OnInit, OnChanges {
 
   ngOnInit() {
     this.state.selectedPcrc$.pipe(
-      switchMap(({id_dp_pcrc}) => this.newsApiService.getNews( id_dp_pcrc.toString(),'published',0,20, new Date().getTime().toString()))
+      switchMap(({id_dp_pcrc}) => this.newsApiService.getNews( {
+        idSubline:id_dp_pcrc.toString(),
+        state:'published',
+        from:0,
+        size:20,
+        date:new Date().getTime().toString()
+      }))
     ).subscribe( news => {
       this._news = news
     })
@@ -45,7 +51,13 @@ export class NewsListComponent implements OnInit, OnChanges {
     if(!changes.date.isFirstChange()){
       if( changes.date.currentValue.getDate() == new Date().getDate() && changes.date.currentValue.getFullYear() == new Date().getFullYear() && changes.date.currentValue.getMonth() == new Date().getMonth()  ){
         this.state.selectedPcrc$.pipe(
-          switchMap( ({id_dp_pcrc}) => this.newsApiService.getNews( id_dp_pcrc.toString(),'published',0,20, new Date().getTime().toString() ) ),
+          switchMap( ({id_dp_pcrc}) => this.newsApiService.getNews( {
+            idSubline:id_dp_pcrc.toString(),
+            state:'published',
+            from:0,
+            size:20, 
+            date:new Date().getTime().toString() 
+          }) ),
           tap(news => {
             this._news = news
           })
@@ -53,7 +65,13 @@ export class NewsListComponent implements OnInit, OnChanges {
         
       } else {
           this.state.selectedPcrc$.pipe(
-            switchMap( ({id_dp_pcrc}) => this.newsApiService.getNews( id_dp_pcrc.toString(),'published',0,20, changes.date.currentValue.getTime().toString() ) ),
+            switchMap( ({id_dp_pcrc}) => this.newsApiService.getNews({
+              idSubline:id_dp_pcrc.toString(),
+              state:'published',
+              from:0,
+              size:20,
+              date: changes.date.currentValue.getTime().toString()
+            }) ),
             tap(news => {
               this._news = news
             })
@@ -70,13 +88,13 @@ export class NewsListComponent implements OnInit, OnChanges {
 
     this.state.selectedPcrc$.pipe(
       switchMap( ({id_dp_pcrc}) =>
-        this.newsApiService.getNews(
-            id_dp_pcrc.toString(),
-           'published',
-           this.currentPage*20,
-           20,
-           this.date.getTime().toString()
-        )
+        this.newsApiService.getNews({
+            idSubline:id_dp_pcrc.toString(),
+            state:'published',
+            from:this.currentPage*20,
+            size:20,
+            date:this.date.getTime().toString()
+        })
       ),
       tap(news => {
         this._news = this._news.concat(news)

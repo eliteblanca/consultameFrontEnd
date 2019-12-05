@@ -1,5 +1,5 @@
 <div class="Listheader mb1">
-    <app-search-input></app-search-input>
+    <app-search-input (onConfirm)="search($event)"></app-search-input>
     <app-icon class="editIcon ml1" [iconName]="'mdi:newspaper-plus'" (click)="addNews()" *ngIf="mode == 'news'">
     </app-icon>
 </div>

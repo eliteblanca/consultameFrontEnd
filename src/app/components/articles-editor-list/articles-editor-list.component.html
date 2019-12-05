@@ -1,14 +1,15 @@
 <div class="Listheader mb1">
-    <app-search-input></app-search-input>
+    <app-search-input (onConfirm)="search($event)"></app-search-input>
     <app-icon class="editIcon ma.5 ml1 mr1" [iconName]="'mdi:file-document-box-plus'" (click)="goToArticleCreation()" tooltip="Crear articulo" placement="top" show-delay="500"></app-icon>
 </div>
-<div class="list" 
+<div class="list"
     infiniteScroll
-    (scrolled)="onScroll($event)"        
+    (scrolled)="onScroll($event)"
     [infiniteScrollDistance]="2"
-    [infiniteScrollThrottle]="50" 
-    [scrollWindow]="false" >
+    [infiniteScrollThrottle]="50"
+    [scrollWindow]="false">
     <app-article-editable [article]="article" (onArticleDeleted)="articuloEliminado($event)" *ngFor="let article of articles"></app-article-editable>
-    <h5 class="dafaultMessage" *ngIf="!!!articles.length && categorySelected && state == 'published'">No hay articulos en esta categoria, agrega el primer articulo</h5>
-    <h5 class="dafaultMessage" *ngIf="!!!articles.length && categorySelected && state == 'archived'">No hay borradores en esta categoria, agrega el primer articulo</h5>
+    <app-spinner *ngIf="articlesLoadingSpinner"></app-spinner>
+    <h5 class="dafaultMessage" *ngIf="!!!articles.length && categorySelected && state == 'published' && !!!articlesLoadingSpinner">No hay articulos en esta categoria, agrega el primer articulo</h5>
+    <h5 class="dafaultMessage" *ngIf="!!!articles.length && categorySelected && state == 'archived'  && !!!articlesLoadingSpinner">No hay borradores en esta categoria, agrega el primer articulo</h5>
 </div>

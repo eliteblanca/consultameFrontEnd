@@ -10,7 +10,7 @@ export class SearchInputComponent implements OnInit {
   @Output() onConfirm = new EventEmitter();
   @ViewChild('input', { static: false }) input: ElementRef;
 
-  constructor() { }
+  constructor() {  }
 
   ngOnInit() {
   }

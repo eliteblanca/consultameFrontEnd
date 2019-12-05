@@ -49,20 +49,28 @@ export class ArticlesApiService {
         )
     }
 
-    getArticlesByCategory(categoryId: string, state:postArticleDTO["state"] = 'published' , from:number = 0, size:number = 10): Observable<Article[]> {
-        if(typeof from != undefined &&  typeof size != undefined){
+    getArticlesByCategory(categoryId: string, state:postArticleDTO["state"] = 'published' , from:number = 0, size:number = 10, query?:string): Observable<Article[]> {
+
+        if(!!query){
+            return of(null).pipe(
+                switchMap(val => {
+                    return this.http.get<Article[]>(this.endPoints.getByCategory(categoryId), { params: { from: from.toString(), size: size.toString(), state: state, query:query }, observe: "body" })
+                })
+            )
+        } else {
             return of(null).pipe(
                 switchMap(val => {
                     return this.http.get<Article[]>(this.endPoints.getByCategory(categoryId), { params: { from: from.toString(), size: size.toString(), state: state }, observe: "body" })
                 })
             )
         }
+
     }
 
-    getArticlesByQuery(subline: string, state:postArticleDTO["state"] = 'published' , from:number = 0, size:number = 10, query:{ tag: string } | { query: string } ): Observable<Article[]> {
+    getArticlesByQuery(idPcrc: string, state:postArticleDTO["state"] = 'published' , from:number = 0, size:number = 10, query:{ tag: string } | { query: string } ): Observable<Article[]> {
         return of(null).pipe(
             switchMap(val => {
-                return this.http.get<Article[]>(this.endPoints.getByQuery(subline), { params: { from:from.toString(), size:size.toString(), state:state, ...query }, observe: "body" })
+                return this.http.get<Article[]>(this.endPoints.getByQuery(idPcrc), { params: { from:from.toString(), size:size.toString(), state:state, ...query }, observe: "body" })
             })
         )
     }

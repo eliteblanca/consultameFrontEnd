@@ -10,8 +10,9 @@ import { of } from 'rxjs';
 })
 export class NewsListEditableComponent implements OnInit, OnChanges {
 
-  newsList: news[] = [];
-  newsdraftList: news[] = [];
+  public newsList: news[] = [];
+  public newsdraftList: news[] = [];
+  public currentSearch = '';
 
   @Input() mode: 'news' | 'draft' = 'news';
   @Input() selectedSubline: string;
@@ -29,9 +30,19 @@ export class NewsListEditableComponent implements OnInit, OnChanges {
       of(changes.selectedSubline.currentValue).pipe(
         switchMap(selectedSublineId => {
           if (changes.mode.currentValue == 'news') {            
-            return this.newsApi.getNews(selectedSublineId, 'published', 0, 20)
+            return this.newsApi.getNews({
+              idSubline:selectedSublineId,
+              state:'published',
+              from:0,
+              size:20
+            })
           } else {
-            return this.newsApi.getNews(selectedSublineId, 'archived', 0, 20)
+            return this.newsApi.getNews({
+              idSubline:selectedSublineId,
+              state:'archived',
+              from:0,
+              size:20
+            })
           }
         })
       ).subscribe(news => {
@@ -40,28 +51,48 @@ export class NewsListEditableComponent implements OnInit, OnChanges {
     } else if (changes.selectedSubline && this.mode == 'draft') {
 
       of(changes.selectedSubline.currentValue).pipe(
-        switchMap(selectedSublineId => this.newsApi.getNews(selectedSublineId, 'archived', 0, 20))
+        switchMap(selectedSublineId => this.newsApi.getNews({ 
+          idSubline: selectedSublineId,
+          state:'archived',
+          from:0,
+          size:20
+        }))
       ).subscribe(news => {
         this.newsList = news
       })
     } else if (changes.selectedSubline && this.mode == 'news') {      
 
       of(changes.selectedSubline.currentValue).pipe(
-        switchMap(selectedSublineId => this.newsApi.getNews(selectedSublineId, 'published', 0, 20))
+        switchMap(selectedSublineId => this.newsApi.getNews({
+          idSubline:selectedSublineId,
+          state:'published',
+          from:0,
+          size:20
+        }))
       ).subscribe(news => {
         this.newsList = news
       })
     } else if (changes.mode && changes.mode.currentValue == 'news') {
 
       of(this.selectedSubline).pipe(
-        switchMap(selectedSublineId => this.newsApi.getNews(selectedSublineId, 'published', 0, 20))
+        switchMap(selectedSublineId => this.newsApi.getNews({
+          idSubline:selectedSublineId,
+          state:'published',
+          from: 0,
+          size: 20
+        }))
       ).subscribe(news => {
         this.newsList = news
       })
     } else if (changes.mode && changes.mode.currentValue == 'draft') {
 
       of(this.selectedSubline).pipe(
-        switchMap(selectedSublineId => this.newsApi.getNews(selectedSublineId, 'archived', 0, 20))
+        switchMap(selectedSublineId => this.newsApi.getNews({
+          idSubline:selectedSublineId,
+          state:'archived',
+          from: 0,
+          size: 20
+        }))
       ).subscribe(news => {
         this.newsList = news
       })
@@ -87,9 +118,19 @@ export class NewsListEditableComponent implements OnInit, OnChanges {
       tap(result => this.newsList = this.newsList.filter(news => news.id != newsId)),
       switchMap(result => {
         if (this.mode == 'draft') {
-          return this.newsApi.getNews(this.selectedSubline, 'archived', this.newsList.length + 1, 1)
+          return this.newsApi.getNews({
+            idSubline:this.selectedSubline,
+            state: 'archived',
+            from: this.newsList.length + 1,
+            size: 1
+          })
         } else {
-          return this.newsApi.getNews(this.selectedSubline, 'published', this.newsList.length + 1, 1)
+          return this.newsApi.getNews({
+            idSubline:this.selectedSubline, 
+            state:'published', 
+            from:this.newsList.length + 1, 
+            size: 1
+          })
         }
       })
     ).subscribe(news => {
@@ -100,11 +141,21 @@ export class NewsListEditableComponent implements OnInit, OnChanges {
 
   onScroll(event) {
     if (this.mode == 'draft') {
-      this.newsApi.getNews(this.selectedSubline, 'archived', this.newsList.length, 20).subscribe(news => {
+      this.newsApi.getNews({
+        idSubline:this.selectedSubline, 
+        state:'archived', 
+        from:this.newsList.length, 
+        size:20
+      }).subscribe(news => {
         this.newsList = this.newsList.concat(news)        
       })
     } else {
-      this.newsApi.getNews(this.selectedSubline, 'published', this.newsList.length, 20).subscribe(news => {
+      this.newsApi.getNews({
+        idSubline:this.selectedSubline, 
+        state:'published', 
+        from:this.newsList.length, 
+        size:20
+      }).subscribe(news => {
         this.newsList = this.newsList.concat(news)
       })
     }
@@ -112,6 +163,10 @@ export class NewsListEditableComponent implements OnInit, OnChanges {
 
   concatNews(news:news){
     this.newsList.push(news)
+  }
+
+  search(text:string){
+    this.currentSearch = text;
   }
 
 }

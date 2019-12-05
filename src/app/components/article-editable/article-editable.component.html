@@ -2,7 +2,7 @@
 <div class="iconsContainer" *ngIf="article.state == 'published'">
 
     <app-icon [iconName]="'mdi:file-eye'"></app-icon>
-    <h4 class="info">{{0}}</h4>
+    <h4 class="info">{{article.views || 0}}</h4>
     <app-icon [iconName]="'mdi:star-circle'"></app-icon>
     <h4 class="info">{{article.favorites.length}}</h4>
     <app-icon [iconName]="'mdi:thumb-up'"></app-icon>
