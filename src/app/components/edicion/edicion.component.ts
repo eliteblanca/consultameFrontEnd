@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { CategoriesApiService, category } from "../../api/categories-api.service";
+import { CategoriesApiService, category, categoryRaw } from "../../api/categories-api.service";
 import { cliente } from "../../api/pcrc-api.service";
 import { Article } from "../../article";
 import { StateService } from "../../services/state.service";
 import { Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-edicion',
@@ -19,11 +20,14 @@ export class EdicionComponent implements OnInit {
   public categories:Observable<category[]>
 
   constructor(
-    private categoriesApi: CategoriesApiService,
     public state:StateService
   ) { }
 
-  ngOnInit() {  }
+  ngOnInit() {
+    this.state.selectedPcrc$.pipe(
+      tap(pcrc => this.reset())
+    ).subscribe()
+  }
 
   onCategorySelected(category: category) {
     console.log(category);
@@ -40,4 +44,25 @@ export class EdicionComponent implements OnInit {
     this.selectedCategory = undefined;
     this.articles = [];
   }
+
+  onCategoryDeleted(categoryId:string){
+
+    let currentCat = Object.assign({}, this.selectedCategory);
+
+    if(currentCat.group == categoryId){
+      this.selectedCategory = undefined;
+      this.state.newDeletedCategory(categoryId)
+    }    
+
+    while (!!currentCat.group && currentCat.group != categoryId){
+      currentCat = this.state.getValueOf('selectedPcrcCategories').value.find(cat => cat.id == currentCat.group)
+      
+      if(currentCat.group == categoryId){
+        this.selectedCategory = undefined
+        this.state.newDeletedCategory(categoryId)
+        return
+      }
+    }
+  }
+
 }

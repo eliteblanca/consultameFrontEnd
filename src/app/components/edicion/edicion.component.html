@@ -1,6 +1,6 @@
 <div class="verticalColumn">
     <h3 class="columnTitle">Categorias</h3>
-    <app-categories-editor (onCategorySelected)="onCategorySelected($event)"></app-categories-editor>
+    <app-categories-editor (onCategorySelected)="onCategorySelected($event)" (onCategoryDeleted)="onCategoryDeleted($event)"></app-categories-editor>
 </div>
 <div class="verticalColumn" *ngIf="selectedCategory">
     <h3 class="columnTitle">{{selectedCategory.name }} / Articulos</h3>

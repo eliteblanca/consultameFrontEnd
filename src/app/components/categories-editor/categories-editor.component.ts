@@ -11,6 +11,7 @@ import { StateService } from "../../services/state.service";
 export class CategoriesEditorComponent implements OnInit {
 
     @Output() onCategorySelected = new EventEmitter();
+    @Output() onCategoryDeleted = new EventEmitter();
 
     public nuevaCategoriaMode = false;
 
@@ -31,11 +32,13 @@ export class CategoriesEditorComponent implements OnInit {
             pcrc: this.state.getValueOf('selectedPcrc').id_dp_pcrc.toString()
         }).subscribe(newCategory => {
             this.state.addCategory({ subcategories: [], ...newCategory })
+            this.nuevaCategoriaMode = false
+            this.seleccionarCategoria(newCategory)
         })
     }
 
     categoryDeleted(categoryId: string) {
-        this.state.newDeletedCategory(categoryId)
+        this.onCategoryDeleted.next(categoryId)
     }
 
     seleccionarCategoria(category:category) {

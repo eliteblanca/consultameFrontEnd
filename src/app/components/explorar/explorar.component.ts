@@ -2,8 +2,9 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { ArticlesApiService } from "../../api/articles-api.service";
 import { category } from "../../api/categories-api.service";
 import { Article } from "../../article";
-import { EventsService } from "../../services";
 import { ArticleListComponent } from "../article-list/article-list.component";
+import { StateService } from "../../services/state.service";
+import { tap } from 'rxjs/operators';
 
 @Component({
     selector: 'app-explorar',
@@ -20,20 +21,22 @@ export class ExplorarComponent implements OnInit {
     articleList: ArticleListComponent;
 
     constructor(
-        public events: EventsService,
+        private state: StateService,
         private articlesApi: ArticlesApiService
     ){  }
 
-    ngOnInit() {  }
+    ngOnInit() { 
+        this.state.selectedPcrc$.pipe(
+            tap(pcrc => this.articles = [])
+        ).subscribe()
+    }
 
     categoriaSeleccionada(categoria:category) {
 
         this.categorySelected = categoria;
 
-        console.log(categoria)
-
         this.articlesApi.getArticlesByCategory(categoria.id, 'published' , 0, this.pagesize).subscribe(articles => {
-            this.articles = []; // recetear los articulos
+            this.articles = [];
             this.articles = this.articles.concat(articles);
         })
     }

@@ -74,6 +74,7 @@ export class CategoryEditableComponent implements OnInit {
             }))
         ).subscribe(newCategory => {
             this.allCategories.push( newCategory )
+            this.seleccionarCategoria(newCategory)
         })
 
     }
