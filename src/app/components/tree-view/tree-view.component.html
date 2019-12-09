@@ -1,1 +1,9 @@
-<app-tree-view-row *ngFor="let row of data" [child]="child" [childText]="childText" [dataText]="dataText" [data]="row" (onChildSeleccionado)="childSeleccionado($event)"></app-tree-view-row>
+<app-tree-view-row 
+*ngFor="let row of data"
+[child]="child"
+[childText]="childText"
+[dataText]="dataText"
+[data]="row"
+(onChildSeleccionado)="childSeleccionado($event)">
+
+</app-tree-view-row>

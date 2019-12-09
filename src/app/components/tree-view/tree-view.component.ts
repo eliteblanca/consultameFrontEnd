@@ -1,4 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { da } from 'date-fns/locale';
 
 @Component({
   selector: 'app-tree-view',
@@ -15,7 +16,9 @@ export class TreeViewComponent implements OnInit {
 
   constructor() {  }
 
-  ngOnInit() {  }
+  ngOnInit() { 
+    console.log(this.data)
+  }
 
   childSeleccionado(event){
     this.onChildSeleccionado.next(event)

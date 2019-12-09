@@ -41,7 +41,9 @@ export class SideSheetComponent implements OnInit {
 
               let selectedPcrcId = localStorage.getItem('selectedPcrcId')
 
-              if(selectedClienteId != null && selectedPcrcId != null){               
+              this.state.newUserPcrc(clientes)
+
+              if(selectedClienteId != null && selectedPcrcId != null){      
 
                 let cliente = clientes.find(cliente => cliente.id_dp_clientes.toString() == selectedClienteId)
 
@@ -49,9 +51,10 @@ export class SideSheetComponent implements OnInit {
                 
                 this.state.newSelectedPcrc(cliente.pcrcs.find(pcrc => pcrc.id_dp_pcrc.toString() == selectedPcrcId))
 
-                this.state.newUserPcrc(clientes)
               } else {
+
                 this.state.newSelectedCliente(clientes[0])
+
                 this.state.newSelectedPcrc(clientes[0].pcrcs[0])
               }
             }
@@ -77,8 +80,14 @@ export class SideSheetComponent implements OnInit {
   }
 
   logOut = () => {
+    localStorage.removeItem('selectedClienteId')
+
+    localStorage.removeItem('selectedPcrcId')
+
     this.state.clearState()
+
     this.userService.logOut()
+
   }
 
 }
