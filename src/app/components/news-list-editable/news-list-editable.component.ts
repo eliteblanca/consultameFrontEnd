@@ -13,6 +13,9 @@ export class NewsListEditableComponent implements OnInit, OnChanges {
   public newsList: news[] = [];
   public newsdraftList: news[] = [];
   public currentSearch = '';
+  public calendarMode = false;
+  public selectedDate:Date = new Date();
+  public maxDate: Date = new Date();
 
   @Input() mode: 'news' | 'draft' = 'news';
   @Input() selectedSubline: string;
@@ -141,23 +144,57 @@ export class NewsListEditableComponent implements OnInit, OnChanges {
 
   onScroll(event) {
     if (this.mode == 'draft') {
-      this.newsApi.getNews({
-        idSubline:this.selectedSubline, 
-        state:'archived', 
-        from:this.newsList.length, 
-        size:20
-      }).subscribe(news => {
-        this.newsList = this.newsList.concat(news)        
-      })
+
+      if(!!this.currentSearch.length){
+        this.newsApi.getNews({
+          idSubline:this.selectedSubline, 
+          state:'archived', 
+          from:this.newsList.length, 
+          size:20,
+          query:this.currentSearch,
+          date:this.selectedDate.getTime().toString()
+        }).subscribe(news => {
+          this.newsList = this.newsList.concat(news)        
+        })
+
+      } else {
+        this.newsApi.getNews({
+          idSubline:this.selectedSubline, 
+          state:'archived', 
+          from:this.newsList.length, 
+          size:20,          
+          date:this.selectedDate.getTime().toString()
+        }).subscribe(news => {
+          this.newsList = this.newsList.concat(news)        
+        })
+      }
+
     } else {
-      this.newsApi.getNews({
-        idSubline:this.selectedSubline, 
-        state:'published', 
-        from:this.newsList.length, 
-        size:20
-      }).subscribe(news => {
-        this.newsList = this.newsList.concat(news)
-      })
+
+      if(!!this.currentSearch.length){
+        this.newsApi.getNews({
+          idSubline:this.selectedSubline, 
+          state:'published', 
+          from:this.newsList.length, 
+          size:20,
+          query:this.currentSearch,          
+          date:this.selectedDate.getTime().toString()
+        }).subscribe(news => {
+          this.newsList = this.newsList.concat(news)
+        })
+        
+      } else {
+          this.newsApi.getNews({
+            idSubline:this.selectedSubline, 
+            state:'published', 
+            from:this.newsList.length, 
+            size:20,            
+            date:this.selectedDate.getTime().toString()
+          }).subscribe(news => {
+            this.newsList = this.newsList.concat(news)
+          })
+
+      }
     }
   }
 
@@ -166,7 +203,28 @@ export class NewsListEditableComponent implements OnInit, OnChanges {
   }
 
   search(text:string){
+    this.newsList = [];
     this.currentSearch = text;
+    this.onScroll(null)
+  }
+
+  showCalendar(){
+    this.calendarMode = !this.calendarMode;
+  }
+
+  filtrarPorFecha(event){    
+    this.newsList = [];
+
+    if(event.value.getDate() == new Date().getDate() && event.value.getFullYear() == new Date().getFullYear() && event.value.getMonth() == new Date().getMonth()){
+      this.selectedDate = new Date()
+    } else {
+      this.selectedDate = event.value
+      this.selectedDate.setHours(23)
+    }
+
+    this.calendarMode = false;
+
+    this.onScroll(null)
   }
 
 }

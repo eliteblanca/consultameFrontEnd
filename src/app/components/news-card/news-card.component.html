@@ -12,5 +12,4 @@
     <div class="links">
         <a *ngFor="let link of links" [href]="link.href" target="'_blank'">{{link.text}}</a>
     </div>
-    <app-icon class="editIcon" [iconName]="'mdi:pencil'" *appUserRoleIsIn="['publicador','admin']"  > </app-icon>
 </div>

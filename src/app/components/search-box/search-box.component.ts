@@ -74,13 +74,11 @@ export class SearchBoxComponent implements OnInit, AfterViewInit {
 
     getSuggestions(input?: string) {
         this.state.selectedPcrc$.pipe(
-            tap(pcrc => console.log(pcrc)),
             switchMap(pcrc => this.PcrcApiService.getSuggestions(pcrc.id_dp_pcrc.toString(), input)),
             map(suggestions => suggestions.map((suggestion) => {
                 return { selected: false, value: suggestion['query'] }
             })),
             tap(suggestions => {
-                console.log({ suggestions })
                 this.suggestions = suggestions.slice(0, 10);
             })
         ).subscribe()

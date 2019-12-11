@@ -30,7 +30,6 @@ export class EdicionComponent implements OnInit {
   }
 
   onCategorySelected(category: category) {
-    console.log(category);
     if(this.selectedCategory){
       if (this.selectedCategory.id != category.id) {
         this.selectedCategory = category;
@@ -47,11 +46,12 @@ export class EdicionComponent implements OnInit {
 
   onCategoryDeleted(categoryId:string){
 
+    this.state.newDeletedCategory(categoryId)
+
     let currentCat = Object.assign({}, this.selectedCategory);
 
     if(currentCat.group == categoryId){
       this.selectedCategory = undefined;
-      this.state.newDeletedCategory(categoryId)
     }    
 
     while (!!currentCat.group && currentCat.group != categoryId){
@@ -59,7 +59,6 @@ export class EdicionComponent implements OnInit {
       
       if(currentCat.group == categoryId){
         this.selectedCategory = undefined
-        this.state.newDeletedCategory(categoryId)
         return
       }
     }

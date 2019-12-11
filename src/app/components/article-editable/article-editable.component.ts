@@ -33,7 +33,7 @@ export class ArticleEditableComponent implements OnInit {
   }
 
   goToArticleEdition(){
-    this.router.navigate(['/app/articlecreation'],{ queryParams: { articleId: this.article.id }, queryParamsHandling: 'merge' })
+    this.router.navigate(['/app/articlecreation'],{ queryParams: { articleId: this.article.id }})
   }
 
 }

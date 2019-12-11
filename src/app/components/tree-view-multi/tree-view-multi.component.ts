@@ -39,7 +39,6 @@ export class TreeViewMultiComponent implements OnInit {
 
     this.state.selectedUserPcrcsState$.pipe(
       tap(state => { 
-        console.log(state)
         this.loadingState = state
       })
     ).subscribe()

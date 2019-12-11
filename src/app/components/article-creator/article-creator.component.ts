@@ -28,6 +28,8 @@ export class ArticleCreatorComponent implements OnInit {
   public status = '';
   public addArticleSpinner = false;
   public updateArticleSpinner = false;
+  public sinContenidoModalOpen = false;
+
 
   @ViewChild(RichTextEditorComponent,{ static:false }) RTE:RichTextEditorComponent;
   @ViewChild('articleTitle',{ static:false }) public articleTitle:ElementRef ;
@@ -56,11 +58,9 @@ export class ArticleCreatorComponent implements OnInit {
       this.articleTitle.nativeElement.value = this.articleToEdit.title;
 
       this.tags = this.articleToEdit.tags;
-      this.tagsText.nativeElement.value = this.tags.join(',')
+      this.tagsText.nativeElement.value = this.tags.join(',');
 
-      this.RTE.setContent( JSON.parse((this.articleToEdit.obj || "[]")) )
-
-
+      this.RTE.setContent( JSON.parse((this.articleToEdit.obj || "[]")) );
 
     })
   
@@ -71,18 +71,12 @@ export class ArticleCreatorComponent implements OnInit {
       this.seletedCategory = category
     })
   }
-  
+
   ngOnInit() {    
   }
   
   addTag(textInput:string){
-
-    this.tags = textInput.replace(/#/gi,'').replace(/ /gi,',').split(',').filter(word => !!word)
-
-    // var tagAux = tag.replace(/#/gi,'').replace(/ /gi,'');
-    // if(!this.tags.includes(tagAux)){
-    //   this.tags.push(tagAux);
-    // }
+    this.tags = textInput.replace(/#/gi,'').replace(/ /gi,',').split(',').filter(word => !!word && word.length > 3)
   }
 
   deleteTag(tagToDelete:string){
@@ -92,46 +86,55 @@ export class ArticleCreatorComponent implements OnInit {
   saveArticle(){
     this.addArticleSpinner = true;
 
-    if(!!this.articleToEdit){
-      let newArticle:postArticleDTO = {
-        attached:[ ...this.articleToEdit.attached, ...this.newFiles ],
-        category:this.articleToEdit.category,
-        content:this.RTE.getText(),
-        obj:this.RTE.getContent(),
-        state:'published',
-        role:"articulo",
-        tags:this.tags,
-        title:this.articleTitle.nativeElement.value
-      };
-  
-      of(null).pipe(
-        throttle(() => interval(700)),
-        concatMap(() => this.articlesApi.updateArticle(this.articleToEdit.id, newArticle).pipe())
-      ).subscribe(newArticle => {
-        this.addArticleSpinner = false;
-        this.goToArticle(this.articleToEdit.id)
+    if(this.RTE.getContent().length > 24 && this.articleTitle.nativeElement.value.length > 0){
 
-      })
+      if(!!this.articleToEdit){
 
-    } else if(!!this.seletedCategory){
-      let newArticle:postArticleDTO  = {
-        attached:[],
-        category:this.seletedCategory,
-        content: this.RTE.getText(),//! arreglar el contenido 🖐
-        obj:this.RTE.getContent(),
-        role:"articulo",
-        state:'published',
-        tags:this.tags,
-        title:this.articleTitle.nativeElement.value
-      };
+          let newArticle:postArticleDTO = {
+            attached:[ ...this.articleToEdit.attached, ...this.newFiles ],
+            category:this.articleToEdit.category,
+            content:this.RTE.getText(),
+            obj:this.RTE.getContent(),
+            state:'published',
+            role:"articulo",
+            tags:this.tags,
+            title:this.articleTitle.nativeElement.value
+          };
+      
+          of(null).pipe(
+            throttle(() => interval(700)),
+            concatMap(() => this.articlesApi.updateArticle(this.articleToEdit.id, newArticle).pipe())
+          ).subscribe(newArticle => {
+            this.addArticleSpinner = false;
+            this.goToArticle(this.articleToEdit.id)
 
-      of(null).pipe(
-        throttle(() => interval(700)),
-        concatMap(() => this.articlesApi.postArticle(newArticle))
-      ).subscribe(newArticle => {        
-        this.addArticleSpinner = false;
-        this.goToArticle(newArticle.id)
-      })
+          })
+        
+      } else if(!!this.seletedCategory) {
+
+          let newArticle:postArticleDTO  = {
+            attached:[],
+            category:this.seletedCategory,
+            content: this.RTE.getText(),//! arreglar el contenido 🖐
+            obj:this.RTE.getContent(),
+            role:"articulo",
+            state:'published',
+            tags:this.tags,
+            title:this.articleTitle.nativeElement.value
+          };
+
+          of(null).pipe(
+            throttle(() => interval(700)),
+            concatMap(() => this.articlesApi.postArticle(newArticle))
+          ).subscribe(newArticle => {
+            this.addArticleSpinner = false;
+            this.goToArticle(newArticle.id)
+          })
+
+      }
+    } else {
+      this.sinContenidoModalOpen = true;
+      this.addArticleSpinner = false;
     }
   }
 
@@ -139,51 +142,60 @@ export class ArticleCreatorComponent implements OnInit {
 
     this.updateArticleSpinner = true;
 
-    if(!!this.articleToEdit){
-      let newArticle:postArticleDTO = {
-        attached:[ ...this.articleToEdit.attached, ...this.newFiles ],
-        category:this.articleToEdit.category,
-        content:this.RTE.getText(),
-        obj:this.RTE.getContent(),
-        role:"articulo",
-        state:'archived',
-        tags:this.tags,
-        title:this.articleTitle.nativeElement.value
-      };
-  
-      of(null).pipe(
-        throttle(() => interval(700)),
-        concatMap(() => this.articlesApi.updateArticle(this.articleToEdit.id, newArticle).pipe())
-      ).subscribe(newArticle => {        
-        this.articleToEdit.state = 'archived'
-        this.updateArticleSpinner = false;
-      })
+    if(this.RTE.getContent().length > 24 && this.articleTitle.nativeElement.value.length > 0){
 
-    }else if(!!this.seletedCategory){
-      let newArticle:postArticleDTO  = {
-        attached:[],
-        category:this.seletedCategory,
-        content: this.RTE.getText(),//! arreglar el contenido 🖐
-        obj:this.RTE.getContent(),
-        role:"articulo",        
-        state:'archived',
-        tags:this.tags,
-        title:this.articleTitle.nativeElement.value
-      };
+      if(!!this.articleToEdit){
+        let newArticle:postArticleDTO = {
+          attached:[ ...this.articleToEdit.attached, ...this.newFiles ],
+          category:this.articleToEdit.category,
+          content:this.RTE.getText(),
+          obj:this.RTE.getContent(),
+          role:"articulo",
+          state:'archived',
+          tags:this.tags,
+          title:this.articleTitle.nativeElement.value
+        };
+    
+        of(null).pipe(
+          throttle(() => interval(700)),
+          concatMap(() => this.articlesApi.updateArticle(this.articleToEdit.id, newArticle).pipe())
+        ).subscribe(newArticle => {        
+          this.articleToEdit.state = 'archived'
+          this.updateArticleSpinner = false;
+        })   
 
-      of(null).pipe(
-        throttle(() => interval(700)),
-        concatMap(() => this.articlesApi.postArticle(newArticle))
-      ).subscribe(newArticle => {        
-        this.updateArticleSpinner = false;
-        this.articleToEdit = newArticle 
-        this.router.navigate(['/app/articlecreation'],{ queryParams: { articleId: newArticle.id }})       
-      })
+
+      }else if(!!this.seletedCategory){
+        let newArticle:postArticleDTO  = {
+          attached:[],
+          category:this.seletedCategory,
+          content: this.RTE.getText(),//! arreglar el contenido 🖐
+          obj:this.RTE.getContent(),
+          role:"articulo",        
+          state:'archived',
+          tags:this.tags,
+          title:this.articleTitle.nativeElement.value
+        };
+
+        of(null).pipe(
+          throttle(() => interval(700)),
+          concatMap(() => this.articlesApi.postArticle(newArticle))
+        ).subscribe(newArticle => {        
+          this.updateArticleSpinner = false;
+          this.articleToEdit = newArticle 
+          this.router.navigate(['/app/articlecreation'],{ queryParams: { articleId: newArticle.id }})       
+        })
+      }
+
+     } else {
+      this.sinContenidoModalOpen = true;
+      this.updateArticleSpinner = false;
     }
+
   }
 
   goToArticle(articleId:string){
-    this.router.navigate(['/app/articles/' + articleId],{ queryParamsHandling: 'merge' })
+    this.router.navigate(['/app/articles/' + articleId])
   }
 
   getArticleId(){

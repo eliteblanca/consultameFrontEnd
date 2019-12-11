@@ -16,7 +16,7 @@ export class AuthGuard implements CanActivate {
       window.setTimeout(() => {
         this.state.clearState()
         this.router.navigate(['/login'])
-
+        localStorage.removeItem('token')
       },(new JwtHelperService()).getTokenExpirationDate(localStorage.getItem('token')).getTime() - Date.now() );
 
       return true;

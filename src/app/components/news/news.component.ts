@@ -21,5 +21,6 @@ export class NewsComponent implements OnInit {
 
   onChange(event){
     this.selectedDate = event.value;
+    this.selectedDate.setHours(23)
   }
 }

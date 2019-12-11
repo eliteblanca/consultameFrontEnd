@@ -29,7 +29,7 @@ export class SideSheetComponent implements OnInit {
     public state:StateService
   ) {  }
 
-  ngOnInit() {
+  ngOnInit() { 
 
     this.userName = this.userService.usuario.name
     this.rol = this.userService.usuario.rol

@@ -43,6 +43,8 @@ export class ArticleComponent implements OnInit, AfterViewInit {
 
       let wordsHiglighted = [];
 
+      console.log(this.Article.highlight)
+
       if(this.Article.highlight){
 
         for(var i = 0; i < this.Article.highlight.content.length ; i++){
@@ -161,7 +163,7 @@ export class ArticleComponent implements OnInit, AfterViewInit {
   }
 
   goToArticleEdition(){
-    this.router.navigate(['/app/articlecreation'],{ queryParams: { articleId: this.Article.id }, queryParamsHandling: 'merge' })
+    this.router.navigate(['/app/articlecreation'],{ queryParams: { articleId: this.Article.id }})
   }
 
 }

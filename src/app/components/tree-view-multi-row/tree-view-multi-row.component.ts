@@ -41,7 +41,6 @@ export class TreeViewMultiRowComponent implements OnInit {
   deleteUserPcrc = (pcrc:cliente['pcrcs'][0]) => {
     this.userApi.deleteUserPcrc(this.state.getSelectedUser().cedula, pcrc.id_dp_pcrc.toString()).pipe(
       tap(result => {
-        console.log(this.clienteData.selectedUserPcrcs)
         let clientIndex = this.clienteData.selectedUserPcrcs.findIndex(cliente => cliente.id_dp_clientes == this.cliente.id_dp_clientes)
         let pcrcIndex = this.clienteData.selectedUserPcrcs[clientIndex].pcrcs.findIndex(({id_dp_pcrc}) => id_dp_pcrc == pcrc.id_dp_pcrc)
         this.clienteData.selectedUserPcrcs[clientIndex].pcrcs.splice(pcrcIndex,1)

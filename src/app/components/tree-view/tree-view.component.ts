@@ -16,9 +16,7 @@ export class TreeViewComponent implements OnInit {
 
   constructor() {  }
 
-  ngOnInit() { 
-    console.log(this.data)
-  }
+  ngOnInit() { }
 
   childSeleccionado(event){
     this.onChildSeleccionado.next(event)

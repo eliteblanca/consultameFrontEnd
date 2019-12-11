@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { UserApiService,user } from "../../api/user-api.service";
+import { UserApiService } from "../../api/user-api.service";
 import { StateService } from "../../services/state.service";
 
 @Component({
@@ -11,15 +11,15 @@ export class UsersEditorListComponent implements OnInit {
 
   @Output() onSelectedUser = new EventEmitter();
   @Output() onNewUser = new EventEmitter();
+  public todosLosPcrcCheck = false;
 
+  
   constructor(
     private userApi:UserApiService,
     public state:StateService
   ) {  }
 
-  ngOnInit() {  
-    this.state.userslist$.subscribe(result => console.log('ngOnInit',result))
-  }
+  ngOnInit() {  }
 
   deleteUser(idUsuario:string){
     // this.userApi.deleteUser(idUsuario).subscribe(result => {
@@ -29,5 +29,9 @@ export class UsersEditorListComponent implements OnInit {
 
   newUser(){
     // this.onNewUser.next(true)
+  }
+
+  search(text:string){
+    this.state.newUsersListQuery(text)
   }
 }

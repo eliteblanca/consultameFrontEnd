@@ -17,11 +17,11 @@
     outline: 0 !important;
 }
 
-:host i{
+:host app-icon{
     margin: .3rem;
 }
 
-:host i:hover{
+:host app-icon:hover{
     cursor: pointer;
     color: var(--primary);
 }

@@ -8,19 +8,26 @@
          Borradores
     </div>
 </div>
-<div class="list" >
+<div class="list">
+    <app-button [buttonText]="'Noticia nueva'" class="mb.5" *ngIf="addNewsMode" (click)="onAddNews()"></app-button>
     <app-news-list-editable [mode]="listMode" [selectedSubline]="(state.selectedPcrc$ | async).id_dp_pcrc" (onAddNews)="onAddNews()" (onNewsEdit)="onNewsEdit($event)" (onNewsDeleted)="onNewsDeleted($event)">
     </app-news-list-editable>
 </div>
-<div class="articleTitle" >
+<div class="articleTitle">
     <input class="articleTitle_input" type="text" placeholder="Titulo de la noticia" #articleTitle>
 </div>
-<div class="editor" >
+<div class="editor">
     <app-rich-text-editor></app-rich-text-editor>
 </div>
 <div class="footer">
-    <app-button #saveAsDraftButton *ngIf="!!!newsOnEdition || newsOnEdition.state == 'archived'" [iconName]="'mdi:archive'" [buttonText]="'Guardar borrador'"></app-button>
+    <app-button *ngIf="!!!newsOnEdition || newsOnEdition.state == 'archived'" [iconName]="'mdi:archive'" [buttonText]="'Guardar borrador'" (click)="saveAsDraft()"></app-button>
     <app-spinner *ngIf="saveDraftNewsSpinner"></app-spinner>
-    <app-button #publishNewsButton class="ml.5" [iconName]="'mdi:publish'" [buttonText]="newsOnEdition && newsOnEdition.state == 'published' ? 'Actualizar':'Publicar'"></app-button>
+    <app-button class="ml.5" [iconName]="'mdi:publish'" [buttonText]="newsOnEdition && newsOnEdition.state == 'published' ? 'Actualizar':'Publicar'" (click)="publishNews()"></app-button>
     <app-spinner *ngIf="postNewsSpinner"></app-spinner>
 </div>
+
+<jw-modal *ngIf="sinContenidoModalOpen" (onClose)="sinContenidoModalOpen = false">    
+    <app-card>
+        <h4>Debes proporcionar el contenido de la noticia y un titulo</h4>
+    </app-card>
+</jw-modal>

@@ -33,7 +33,6 @@ export class CommentsApiService {
   constructor(private http: HttpClient) { }
 
   postComment(comment: postCommentDTO, articleId:string): Observable<comment>{
-    console.log({articleId})
     return this.http.post<comment>(this.endPoints.postComment(articleId), comment, { observe: "body" })
   }
 

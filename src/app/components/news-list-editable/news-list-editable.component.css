@@ -6,6 +6,44 @@
     overflow-x: hidden;
 }
 
+@media only screen and (max-height:870px) { 
+    :host{
+        display: grid;
+        grid-template-columns: 1fr;
+        grid-template-rows: 4rem 37rem;
+        padding: .1rem;
+        overflow-x: hidden;
+    }
+}
+
+@media only screen and (max-height:808px) { 
+    :host{
+        display: grid;
+        grid-template-columns: 1fr;
+        grid-template-rows: 4rem 29rem;
+        padding: .1rem;
+        overflow-x: hidden;
+    }
+}
+
+@media only screen and (max-height:750px) { 
+    :host{
+        display: grid;
+        grid-template-columns: 1fr;
+        grid-template-rows: 4rem 24rem;
+        padding: .1rem;
+        overflow-x: hidden;
+    }
+}
+
+
+
+
+
+
+
+
+
 .Listheader{
     display: flex;
     align-items: center;
@@ -102,3 +140,12 @@
     
 
 }
+
+.scroll{
+    padding: .1rem;
+}
+
+
+
+
+

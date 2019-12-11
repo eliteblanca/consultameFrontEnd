@@ -169,7 +169,7 @@ export class ArticleViewComponent implements OnInit, AfterViewInit {
   }
 
   goToArticleEdition(){
-    this.router.navigate(['/app/articlecreation'],{ queryParams: { articleId: this.article.id }, queryParamsHandling: 'merge' })
+    this.router.navigate(['/app/articlecreation'],{ queryParams: { articleId: this.article.id } })
   }
 
 }
