@@ -1,0 +1,44 @@
+.layout{
+    padding: 3rem 3rem;
+    height: 100% !important;
+    width: 100% !important;
+
+    display: grid;
+    grid-template-columns: 25% auto;
+    grid-template-rows: 100%;
+
+    grid-template-areas: "menu dash";                        
+
+    grid-gap: 1rem;
+}
+
+.menu{
+    grid-area: menu;
+}
+
+.menu .menuButton:hover{
+    color: white;
+    cursor: pointer;
+    background-color: var(--primary);
+}
+
+.menu .menuButton.active{
+    color: var(--primary);
+    cursor: pointer;
+}
+
+.menu .menuButton{
+    display: flex;
+    align-items: center;
+    padding: .5rem 1rem;
+    background-color: var(--terciaryDark);
+    border-radius: 5px;
+    margin-bottom: .5rem;
+    transition: all 200ms ease-in-out;
+}
+
+.menu .menuButton .text{
+    margin-left: 1rem;
+    font-weight: 500;
+    line-height: 1.5rem;
+}

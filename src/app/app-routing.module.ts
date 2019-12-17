@@ -10,6 +10,9 @@ import { NewsViewComponent } from "./components/news-view/news-view.component";
 import { FavoritesComponent } from "./components/favorites/favorites.component";
 import { UsersconfigComponent } from "./components/usersconfig/usersconfig.component";
 import { FullScreenComponent } from "./components/full-screen/full-screen.component";
+import { ReportsComponent } from "./components/reports/reports.component";
+import { IndicadoresComponent } from "./components/indicadores/indicadores.component";
+
 
 const routes: Routes = [
 	{ path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -29,6 +32,12 @@ const routes: Routes = [
 			{ path: 'articlecreation', component: ArticleCreatorComponent },
 			{ path: 'favorites', component: FavoritesComponent },
 			{ path: 'users', component: UsersconfigComponent },
+			{
+				path: 'reports', component: ReportsComponent,
+				children: [
+					{ path: 'indicadores', component: IndicadoresComponent }
+				]
+			}
 		]
 	},
 	{ path: '**', redirectTo: '' }
@@ -38,10 +47,10 @@ const routerOptions: ExtraOptions = {
 	useHash: true,
 	anchorScrolling: 'enabled',
 	// ...any other options you'd like to use
-  };
+};
 
 @NgModule({
-	imports: [RouterModule.forRoot(routes,routerOptions	)],
+	imports: [RouterModule.forRoot(routes, routerOptions)],
 	exports: [RouterModule]
 })
 export class AppRoutingModule { }

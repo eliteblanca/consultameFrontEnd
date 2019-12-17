@@ -1,0 +1,63 @@
+.filters {
+    display: flex;
+    justify-content: center;
+}
+
+.leftColumm {
+
+}
+
+.rightColumm {
+
+}
+
+.formField {
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+.formField .formInput {
+    padding: .5rem;
+    width: 17rem;
+    line-height: 1.5rem;
+    display: flex;
+}
+
+.formField .label {
+    flex-grow: 1;
+    text-align: right;
+    padding-right: 1rem;    
+    padding-left: 3rem;
+    
+}
+
+.formField .formInput {
+    display: flex;
+}
+
+.drop{
+    position: absolute;
+    top: 100%;
+    z-index: 20;
+    box-shadow: var(--shadow2);
+}
+
+.dateText{
+    font-weight: 500;
+    user-select: none;
+    line-height: 1.5rem;
+    padding-left: 0.25rem;
+    padding-right: 0.25rem;
+    padding: 0.25rem 0.5rem;
+    border-radius: 5px;
+}
+
+.dateText.active{
+    background-color: rgba(0,0,0,0.05);
+}
+
+.dateText:hover{    
+    cursor: pointer;
+    background-color: rgba(0,0,0,0.05);    
+}

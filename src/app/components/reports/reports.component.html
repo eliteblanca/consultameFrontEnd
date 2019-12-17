@@ -1,0 +1,30 @@
+<div class="layout">
+    <div class="menu">
+        <a class="menuButton" routerLink="./indicadores">
+            <app-icon [iconName]="'mdi:chart-bar'"></app-icon>
+            <span class="text">Indicadores</span>
+        </a>
+        <a class="menuButton">
+            <app-icon [iconName]="'mdi:account-group'"></app-icon>
+            <span class="text">Usuarios</span>
+        </a>
+        <a class="menuButton">
+            <app-icon [iconName]="'mdi:chat'"></app-icon>
+            <span class="text">Comentarios</span>
+        </a>
+        <a class="menuButton">
+            <app-icon [iconName]="'mdi:sync-alert'"></app-icon>
+            <span class="text">Control de cambios</span>
+        </a>
+        <a class="menuButton">
+            <app-icon [iconName]="'mdi:database'"></app-icon>
+            <span class="text">Base de datos</span>
+        </a>
+    </div>
+    <div>
+        <ng-scrollbar>
+            <router-outlet></router-outlet>
+            <!-- Routed components go here -->
+        </ng-scrollbar>
+    </div>
+</div>

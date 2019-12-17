@@ -11,7 +11,8 @@ export class ModalComponent implements OnInit, OnDestroy {
     @Input() id: string;
     @Output() onClose = new EventEmitter();
 
-    private element: any;
+    private element: any;    
+
 
     constructor(private modalService: ModalService, private el: ElementRef) {
         this.element = el.nativeElement;

@@ -58,6 +58,8 @@ import { FullScreenComponent } from './components/full-screen/full-screen.compon
 import { SpinnerComponent } from './components/spinner/spinner.component';
 import { CardComponent } from './components/card/card.component';
 import { CheckBoxComponent } from './components/check-box/check-box.component';
+import { ReportsComponent } from './components/reports/reports.component';
+import { IndicadoresComponent } from './components/indicadores/indicadores.component';
 @NgModule({
     declarations: [
         AppComponent,
@@ -112,6 +114,8 @@ import { CheckBoxComponent } from './components/check-box/check-box.component';
         SpinnerComponent,
         CardComponent,
         CheckBoxComponent,
+        ReportsComponent,
+        IndicadoresComponent,
     ],
     imports: [
         BrowserModule,
