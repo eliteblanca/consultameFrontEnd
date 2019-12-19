@@ -17,44 +17,64 @@
             </div>
         </div>
         <div class="formField">
-            <span class="label">Pcrc</span>
-            <div class="formInput"><app-drop-down [textoInicial]="'Cliente'" [textField]="'cliente'" [values]="dataPrueba"></app-drop-down></div>
-        </div>
-        <div class="formField">
-            <span class="label">Subcategoria</span>
-            <div class="formInput"><app-drop-down [textoInicial]="'Cliente'" [textField]="'cliente'" [values]="dataPrueba"></app-drop-down></div>
-        </div>
-        <div class="formField">
-            <span class="label">Director</span>
-            <div class="formInput"><app-drop-down [textoInicial]="'Cliente'" [textField]="'cliente'" [values]="dataPrueba"></app-drop-down></div>
-        </div>
-        <div class="formField">
-            <span class="label">Coordinador operaciones</span>
-            <div class="formInput"><app-drop-down [textoInicial]="'Cliente'" [textField]="'cliente'" [values]="dataPrueba"></app-drop-down></div>
-        </div>
-    </div>
-    <div class="rightColumm">
-        <div class="formField">
             <span class="label">Cliente</span>
-            <div class="formInput"><app-drop-down [textoInicial]="'Cliente'" [textField]="'cliente'" [values]="dataPrueba"></app-drop-down></div>
+            <div class="formInput"><app-drop-down [textoInicial]="'Cliente'" [textField]="'cliente'" [values]="state.userPcrc$ | async" (onValueSelected)="clienteSelected($event)"></app-drop-down></div>
+        </div>
+        <div class="formField">
+            <span class="label">Pcrc</span>
+            <div class="formInput"><app-drop-down [textoInicial]="'Pcrc'" [textField]="'pcrc'" [values]="(state.reportsSelectedCliente$ | async)?.pcrcs" (onValueSelected)="pcrcSelected($event)"></app-drop-down></div>
         </div>
         <div class="formField">
             <span class="label">Categoria</span>
-            <div class="formInput"><app-drop-down [textoInicial]="'Cliente'" [textField]="'cliente'" [values]="dataPrueba"></app-drop-down></div>
+            <div class="formInput">
+                <div class="categorySelector" (click)="categoryDrop = !categoryDrop">
+                    {{(state.reportsSelectedCategory$ | async)?.name || 'Seleccionar' }}
+                    <app-icon [iconName]="'mdi:file-tree'"></app-icon>
+                </div>
+                <div class="drop" *ngIf="categoryDrop">
+                    <app-categories [mode]="'report'" (onCategorySelected)="categorySelected($event);categoryDrop = false"></app-categories>
+                </div>
+            </div>
         </div>
         <div class="formField">
             <span class="label">Articulo</span>
-            <div class="formInput"><app-drop-down [textoInicial]="'Cliente'" [textField]="'cliente'" [values]="dataPrueba"></app-drop-down></div>
+            <div class="formInput">
+                <div class="categorySelector" (click)="articlesDrop = !articlesDrop">
+                    Seleccionar
+                    <app-icon [iconName]="'mdi:file-document-outline'"></app-icon>
+                </div>
+                <div class="articlesDrop" *ngIf="articlesDrop">
+                    <app-short-article-list [category]="state.reportsSelectedCategory$ | async" (onArticleSelected)="articleSelected($event)"></app-short-article-list>
+                </div>
+            </div>
         </div>
+    </div>
+    <div class="rightColumm">
+        
+        <div class="formField">
+            <span class="label">Director</span>
+            <div class="formInput"><app-drop-down [textoInicial]="'Director'" [textField]="'cliente'" [values]="dataPrueba"></app-drop-down></div>
+        </div>
+        
+        
         <div class="formField">
             <span class="label">Gerente</span>
-            <div class="formInput"><app-drop-down [textoInicial]="'Cliente'" [textField]="'cliente'" [values]="dataPrueba"></app-drop-down></div>
+            <div class="formInput"><app-drop-down [textoInicial]="'Gerente'" [textField]="'cliente'" [values]="dataPrueba"></app-drop-down></div>
+        </div>
+        <div class="formField">
+            <span class="label">Coordinador operaciones</span>
+            <div class="formInput"><app-drop-down [textoInicial]="'Coordinador operaciones'" [textField]="'cliente'" [values]="dataPrueba"></app-drop-down></div>
         </div>
         <div class="formField">
             <span class="label">Lider</span>
-            <div class="formInput"><app-drop-down [textoInicial]="'Cliente'" [textField]="'cliente'" [values]="dataPrueba"></app-drop-down></div>
+            <div class="formInput"><app-drop-down [textoInicial]="'Lider'" [textField]="'cliente'" [values]="dataPrueba"></app-drop-down></div>
         </div>
+        
+    </div>
+    <div class="search">
+        <input class="inputButton" type="button" value="Buscar">
     </div>
 </div>
 <div class="dash">
+    
 </div>

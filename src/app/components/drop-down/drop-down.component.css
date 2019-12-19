@@ -4,7 +4,6 @@
 }
 
 .dropDown{
-    box-shadow: var(--shadow1);
     border-radius: 3px;
     width: 100%; 
     position: relative;

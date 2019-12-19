@@ -1,5 +1,5 @@
 <div class="categoriesContainer">    
-    <app-categories (onCategorySelected)="categoriaSeleccionada($event)"></app-categories>
+    <app-categories [mode]="'explore'" (onCategorySelected)="categoriaSeleccionada($event)"></app-categories>
 </div>
 <div infiniteScroll
     (scrolled)="onScroll($event)"        

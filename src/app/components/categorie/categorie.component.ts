@@ -11,6 +11,7 @@ export class CategorieComponent implements OnInit {
 
     @Input() category: categoryRaw;
     @Input() allCategories: categoryRaw[];
+    @Input() mode: string;
     @Output() onCategorySelected = new EventEmitter();
 
     public editCategoryNameMode = false;
@@ -29,8 +30,12 @@ export class CategorieComponent implements OnInit {
 
     seleccionarCategoria(category?: category) {
         if (!!!category) {
-            if (!!!this.getSubCategories().length) {
-                this.onCategorySelected.next(this.category)
+            if( this.mode == 'report' ){
+                this.onCategorySelected.next(this.category)                
+            } else {
+                if (!!!this.getSubCategories().length) {
+                    this.onCategorySelected.next(this.category)                    
+                }
             }
         } else {
             this.onCategorySelected.next(category)

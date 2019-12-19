@@ -60,6 +60,8 @@ import { CardComponent } from './components/card/card.component';
 import { CheckBoxComponent } from './components/check-box/check-box.component';
 import { ReportsComponent } from './components/reports/reports.component';
 import { IndicadoresComponent } from './components/indicadores/indicadores.component';
+import { CategoriesReportComponent } from './components/categories-report/categories-report.component';
+import { ShortArticleListComponent } from './components/short-article-list/short-article-list.component';
 @NgModule({
     declarations: [
         AppComponent,
@@ -116,6 +118,8 @@ import { IndicadoresComponent } from './components/indicadores/indicadores.compo
         CheckBoxComponent,
         ReportsComponent,
         IndicadoresComponent,
+        CategoriesReportComponent,
+        ShortArticleListComponent,
     ],
     imports: [
         BrowserModule,

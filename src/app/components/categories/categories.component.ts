@@ -11,6 +11,7 @@ export class CategoriesComponent implements OnInit {
 
     @Output() onCategorySelected = new EventEmitter();
     @Input() group: string;
+    @Input() mode: string;
 
     public nuevaCategoriaMode = false;
 

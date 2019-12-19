@@ -7,6 +7,7 @@ import { ActivatedRoute } from '@angular/router';
 import { user } from "../api/user-api.service";
 import { UserService } from "../services/user.service";
 import { UserApiService } from "../api/user-api.service";
+import { Article } from '../article';
 
 export type state = {
     selectedPcrc: cliente['pcrcs'][0],
@@ -21,7 +22,17 @@ export type state = {
     selectedUserAccesoTodos: boolean,
     selectedUserPcrcsState: { state: 'finish' | 'loading' },
     buscarEnTodosCheck: boolean,
-    usersListQuery: string
+    usersListQuery: string,
+    reportsSelectedCliente: cliente,
+    reportsSelectedPcrc: cliente['pcrcs'][0],
+    reportsSelectedCategory: categoryRaw,
+    reportsSelectedDateRange:{from:Date, to:Date},
+    reportsSelectedPcrcCategories:{
+        state: "finish" | "loading";
+        value?: categoryRaw[];
+    },
+    reportsSelectedArticle: Article
+
 }
 
 @Injectable({
@@ -49,7 +60,14 @@ export class StateService {
         selectedUserAccesoTodos: false,
         selectedUserPcrcsState: { state: "loading" },
         buscarEnTodosCheck: false,
-        usersListQuery: ''
+        usersListQuery: '',
+        reportsSelectedCliente:null,
+        reportsSelectedPcrc:null,
+        reportsSelectedCategory:null,
+        reportsSelectedDateRange:null,
+        reportsSelectedPcrcCategories:{ state: 'loading' },        
+        reportsSelectedArticle: null
+
     }
 
     private store = new BehaviorSubject<state>(this._state)
@@ -68,6 +86,12 @@ export class StateService {
     public selectedUserPcrcsState$ = this.state$.pipe(map(_state => _state.selectedUserPcrcsState), distinctUntilChanged())
     public buscarEnTodosCheck$ = this.state$.pipe(map(_state => _state.buscarEnTodosCheck), distinctUntilChanged())
     public usersListQuery$ = this.state$.pipe(map(_state => _state.usersListQuery), distinctUntilChanged())
+    public reportsSelectedCliente$ = this.state$.pipe(map(_state => _state.reportsSelectedCliente), distinctUntilChanged())
+    public reportsSelectedPcrc$ = this.state$.pipe(map(_state => _state.reportsSelectedPcrc), distinctUntilChanged())
+    public reportsSelectedCategory$ = this.state$.pipe(map(_state => _state.reportsSelectedCategory), distinctUntilChanged())
+    public reportsSelectedDateRange$ = this.state$.pipe(map(_state => _state.reportsSelectedDateRange), distinctUntilChanged())
+    public repostsSelectedPcrcCategories$ = this.state$.pipe(map(_state => _state.reportsSelectedPcrcCategories), distinctUntilChanged())
+    public repostsSelectedArticle$ = this.state$.pipe(map(_state => _state.reportsSelectedArticle), distinctUntilChanged())
 
     constructor(
         public route: ActivatedRoute,
@@ -100,9 +124,27 @@ export class StateService {
             })
         ).subscribe()
 
-        // this.usersListQuery$.pipe(
-        //     filter(query => this._state.buscarEnTodosCheck),
-        // )        
+        this.reportsSelectedCliente$.pipe(
+            tap(cliente => {
+                this.newReportsSelectedPcrc(null)
+                this.store.next(this._state = { ...this._state,  reportsSelectedPcrcCategories: { state:"loading" }  })
+            })
+        ).subscribe()
+
+        this.reportsSelectedPcrc$.pipe(
+            tap(pcrc => {
+                this.newReportsSelectedCategory(null)  
+            }),
+            filter(pcrc => !!pcrc),
+            switchMap(pcrc => this.categoriesApi.getCategories(pcrc.id_dp_pcrc.toString())),
+            tap(categories => {
+                this.store.next(this._state = { ...this._state,  reportsSelectedPcrcCategories: categories  })
+            })
+        ).subscribe()
+
+        this.reportsSelectedCategory$.pipe(
+            tap(category => this.newReportsSelectedArticle(null))
+        ).subscribe()
     }
 
     newSelectedPcrc(selectedPcrc: cliente['pcrcs'][0]) {
@@ -179,9 +221,14 @@ export class StateService {
             editionSelectedCategory: null,
             selectedUserAccesoTodos: false,
             selectedUserPcrcsState: { state: "loading" },
-            buscarEnTodosCheck:false,
-            usersListQuery:''
-
+            buscarEnTodosCheck: false,
+            usersListQuery: '',
+            reportsSelectedCliente:null,
+            reportsSelectedPcrc:null,
+            reportsSelectedCategory:null,
+            reportsSelectedDateRange:null,
+            reportsSelectedPcrcCategories:{ state: 'loading' },
+            reportsSelectedArticle: null
         })
     }
 
@@ -220,6 +267,26 @@ export class StateService {
             ).subscribe()
 
         }
+    }
+
+    newReportsSelectedCliente = (selectedCliente:cliente) =>{
+        this.store.next(this._state = { ...this._state, reportsSelectedCliente: selectedCliente })
+    }
+
+    newReportsSelectedPcrc = (selectedPcrc:cliente['pcrcs'][0]) =>{
+        this.store.next(this._state = { ...this._state, reportsSelectedPcrc: selectedPcrc })
+    }
+
+    newReportsSelectedCategory = (selectedCategory:categoryRaw) =>{
+        this.store.next(this._state = { ...this._state, reportsSelectedCategory: selectedCategory })
+    }
+    
+    newReportsSelectedDateRange = (rango:{from:Date, to:Date}) =>{
+        this.store.next(this._state = { ...this._state, reportsSelectedDateRange: rango })
+    }
+
+    newReportsSelectedArticle = (article:Article) =>{
+        this.store.next(this._state = { ...this._state, reportsSelectedArticle: article })
     }
 
 }
