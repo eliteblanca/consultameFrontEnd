@@ -1,12 +1,12 @@
-import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core';
-import { ActivatedRoute, Params } from '@angular/router';
+import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { merge, Observable } from 'rxjs';
+import { filter, map, switchMap, tap } from "rxjs/operators";
 import { ArticlesApiService } from "../../api/articles-api.service";
-import { switchMap, tap, filter, map, publishBehavior, refCount } from "rxjs/operators";
-import { Article, articleConf } from "../../article";
+import { Article } from "../../article";
 import { EventsService } from "../../services/events.service";
-import { of, Observable, combineLatest, merge } from 'rxjs';
-import { ArticleListComponent } from "../article-list/article-list.component";
 import { StateService } from "../../services/state.service";
+import { ArticleListComponent } from "../article-list/article-list.component";
 @Component({
     selector: 'app-search',
     templateUrl: './search.component.html',

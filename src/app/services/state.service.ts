@@ -8,6 +8,7 @@ import { user } from "../api/user-api.service";
 import { UserService } from "../services/user.service";
 import { UserApiService } from "../api/user-api.service";
 import { Article } from '../article';
+import { news } from "../api/news-api.service";
 
 export type state = {
     selectedPcrc: cliente['pcrcs'][0],
@@ -31,8 +32,10 @@ export type state = {
         state: "finish" | "loading";
         value?: categoryRaw[];
     },
-    reportsSelectedArticle: Article
+    reportsSelectedArticle: Article,
 
+    idNewsOnEdition: string,
+    newDraft: news,
 }
 
 @Injectable({
@@ -66,8 +69,10 @@ export class StateService {
         reportsSelectedCategory:null,
         reportsSelectedDateRange:null,
         reportsSelectedPcrcCategories:{ state: 'loading' },        
-        reportsSelectedArticle: null
+        reportsSelectedArticle: null,
 
+        idNewsOnEdition: '',
+        newDraft: null
     }
 
     private store = new BehaviorSubject<state>(this._state)
@@ -92,6 +97,8 @@ export class StateService {
     public reportsSelectedDateRange$ = this.state$.pipe(map(_state => _state.reportsSelectedDateRange), distinctUntilChanged())
     public repostsSelectedPcrcCategories$ = this.state$.pipe(map(_state => _state.reportsSelectedPcrcCategories), distinctUntilChanged())
     public repostsSelectedArticle$ = this.state$.pipe(map(_state => _state.reportsSelectedArticle), distinctUntilChanged())
+    public idNewsOnEdition$ = this.state$.pipe(map(_state => _state.idNewsOnEdition), distinctUntilChanged())
+    public newDraft$ = this.state$.pipe(map(_state => _state.newDraft), distinctUntilChanged(), filter(draft => !!draft))
 
     constructor(
         public route: ActivatedRoute,
@@ -228,7 +235,9 @@ export class StateService {
             reportsSelectedCategory:null,
             reportsSelectedDateRange:null,
             reportsSelectedPcrcCategories:{ state: 'loading' },
-            reportsSelectedArticle: null
+            reportsSelectedArticle: null,
+            idNewsOnEdition: '',
+            newDraft:null
         })
     }
 
@@ -289,4 +298,11 @@ export class StateService {
         this.store.next(this._state = { ...this._state, reportsSelectedArticle: article })
     }
 
+    onIdNewsOnEdition = (idNewsOnEdition:string) => {
+        this.store.next(this._state = { ...this._state, idNewsOnEdition: idNewsOnEdition })
+    }
+    
+    onNewDraft = (draft:news) => {
+        this.store.next(this._state = { ...this._state, newDraft: draft })
+    }
 }

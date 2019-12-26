@@ -12,4 +12,7 @@
     <div class="links">
         <a *ngFor="let link of links" [href]="link.href" target="'_blank'">{{link.text}}</a>
     </div>
+    <div class="footer">
+        <app-icon [iconName]="'mdi:pencil'" class="editIcon"></app-icon>
+    </div>
 </div>

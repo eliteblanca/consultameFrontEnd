@@ -62,6 +62,7 @@ import { ReportsComponent } from './components/reports/reports.component';
 import { IndicadoresComponent } from './components/indicadores/indicadores.component';
 import { CategoriesReportComponent } from './components/categories-report/categories-report.component';
 import { ShortArticleListComponent } from './components/short-article-list/short-article-list.component';
+import { NewsEditorComponent } from './components/news-editor/news-editor.component';
 @NgModule({
     declarations: [
         AppComponent,
@@ -120,6 +121,7 @@ import { ShortArticleListComponent } from './components/short-article-list/short
         IndicadoresComponent,
         CategoriesReportComponent,
         ShortArticleListComponent,
+        NewsEditorComponent,
     ],
     imports: [
         BrowserModule,

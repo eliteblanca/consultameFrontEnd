@@ -294,7 +294,18 @@ export class RichTextEditorComponent implements OnInit, AfterViewInit {
 		toolbar: {
 			container: '#RTEtoolbar'
 		},
-		blotFormatter: { },
+		blotFormatter: {			
+			align: {
+				aligner: {
+					// whether or not the aligner should handle the actual alignment properties
+					applyStyle: false
+				},	
+				// the toolbar so users can change alignments
+				toolbar: {
+					buttonStyle: {display:'none'}
+				}
+			}
+		},
 		imageDrop: true
 	}
 

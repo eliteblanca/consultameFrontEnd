@@ -1,0 +1,159 @@
+import { Component, OnInit, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
+import { NewsApiService, news } from "../../api/news-api.service";
+import { ActivatedRoute, Router } from '@angular/router';
+import { map, switchMap, tap, filter } from 'rxjs/operators';
+import { of } from 'rxjs';
+import { RichTextEditorComponent } from "../rich-text-editor/rich-text-editor.component";
+import { StateService } from "../../services/state.service";
+
+@Component({
+  selector: 'app-news-editor',
+  templateUrl: './news-editor.component.html',
+  styleUrls: ['./news-editor.component.css']
+})
+export class NewsEditorComponent implements OnInit, AfterViewInit {
+
+  newsOnEdition: news;
+
+  @ViewChild(RichTextEditorComponent,{ static:false })
+  RTE:RichTextEditorComponent;
+
+  @ViewChild('articleTitle', { static: false })
+  articleTitle: ElementRef
+  
+  postNewsSpinner = false;
+
+  saveDraftNewsSpinner = false;
+
+  sinContenidoModalOpen = false;
+
+  constructor(
+    private activatedRoute: ActivatedRoute,   
+    private newsApi: NewsApiService,
+    public state: StateService,
+    private router: Router
+  ) {  }
+
+  ngOnInit() {  }
+  
+  ngAfterViewInit() {
+    this.activatedRoute.params.pipe(
+      map(params => params.id),
+      filter(newsId => newsId == 'new'),
+      tap(newsId => {
+        if(newsId == 'new'){
+          this.clear()
+        }
+      })
+    ).subscribe()
+
+    this.activatedRoute.params.pipe(
+      map(params => params.id),
+      filter(newsId => newsId != 'new'),
+      switchMap( newsId => this.newsApi.getSingleNews(newsId)),
+      tap(news => {
+
+        if(!!!this.state.getValueOf('idNewsOnEdition').length){
+          this.state.onIdNewsOnEdition(news.id)
+        }
+
+        this.RTE.setContent(JSON.parse(news.obj))
+        this.articleTitle.nativeElement.value = news.title
+        this.newsOnEdition = news;
+      })
+    ).subscribe()
+  }
+
+  clear(){
+    this.RTE.setContent({});
+    this.articleTitle.nativeElement.value = '';
+    this.newsOnEdition = undefined;
+  }
+
+  publishNews = () => {
+
+    this.postNewsSpinner = true;
+
+    if (this.RTE.getContent().length > 24 && this.articleTitle.nativeElement.value.length > 0) {
+
+      if(!!!this.newsOnEdition){
+  
+        let newsToSave = {
+          attached: [],
+          content: this.RTE.getText(),
+          obj: this.RTE.getContent(),
+          state: 'published',
+          subline: this.state.getValueOf('selectedPcrc').id_dp_pcrc.toString(),
+          title: this.articleTitle.nativeElement.value
+        }
+  
+        this.newsApi.postNews(newsToSave).pipe(
+          tap(newsAdded => {
+            // !this.listMode = 'news'
+            this.newsOnEdition = newsAdded;
+            this.postNewsSpinner = false;
+            this.router.navigate(['/app/news', newsAdded.id])
+          })
+        ).subscribe()
+  
+      } else {
+        let newsToUpdate = {
+          content: this.RTE.getText(),
+          obj: this.RTE.getContent(),
+          state: 'published',
+          title: this.articleTitle.nativeElement.value
+        }
+  
+        this.newsApi.updateNews(this.newsOnEdition.id, newsToUpdate).pipe(
+          tap(newsAdded => {          
+            this.postNewsSpinner = false;
+            // !this.listMode = 'news'
+            this.router.navigate(['/app/news', this.newsOnEdition.id])
+          })
+        ).subscribe()
+  
+      }
+    } else {      
+      this.postNewsSpinner = false;
+      this.sinContenidoModalOpen = true;
+    }
+  }
+  
+  saveAsDraft = () => {
+    let newsToSave = {
+      attached: [],
+      content: this.RTE.getText(),
+      obj: this.RTE.getContent(),
+      state: 'archived',
+      subline: this.state.getValueOf('selectedPcrc').id_dp_pcrc.toString(),
+      title: this.articleTitle.nativeElement.value
+    }
+
+    this.saveDraftNewsSpinner = true;
+
+    if (this.RTE.getContent().length > 24 && this.articleTitle.nativeElement.value.length > 0) {
+      if (!!!this.newsOnEdition) {
+
+        this.newsApi.postNews(newsToSave).pipe(
+          tap(newsAdded => {
+            this.newsOnEdition = newsAdded
+            this.saveDraftNewsSpinner = false
+            this.state.onNewDraft(newsAdded)
+          })
+        ).subscribe()
+
+      } else {
+        this.newsApi.updateNews(this.newsOnEdition.id, newsToSave).pipe(
+          tap(result => {
+            this.saveDraftNewsSpinner = false;
+          })
+        ).subscribe()
+      }
+    } else {
+      this.saveDraftNewsSpinner = false;
+      this.sinContenidoModalOpen = true;
+    }
+
+  }
+
+}

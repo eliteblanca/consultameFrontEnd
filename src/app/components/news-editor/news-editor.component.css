@@ -1,0 +1,30 @@
+:host{
+    height: 100%;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 100%;
+    grid-template-rows: 4rem 1fr 2.5rem;
+
+    grid-gap: 1rem;
+}
+
+.articleTitle_input{
+    width: 50%;
+    background-color: white;
+    margin: 0;
+    padding: 1rem 1.5rem;
+    border: 0;
+    border-radius: 3px;
+    outline: 0 !important;
+    box-shadow: var(--shadow1);
+}
+
+.footer{
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    margin-left: 50%;
+
+    grid-row:3 / 4 ;
+    grid-column: 1 / 2 ;
+}

@@ -13,6 +13,7 @@ import { FullScreenComponent } from "./components/full-screen/full-screen.compon
 import { ReportsComponent } from "./components/reports/reports.component";
 import { IndicadoresComponent } from "./components/indicadores/indicadores.component";
 
+import { NewsEditorComponent } from "./components/news-editor/news-editor.component";
 
 const routes: Routes = [
 	{ path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -25,7 +26,13 @@ const routes: Routes = [
 			{ path: 'explore', component: ExplorarComponent },
 			{ path: 'articles', redirectTo: 'explore' },
 			{ path: 'articles/:id', component: ArticleViewComponent },
-			{ path: 'newseditor', component: NewsCreatorComponent },
+			{
+				path: 'newseditor',
+				component: NewsCreatorComponent,
+				children: [
+					{ path: ':id', component: NewsEditorComponent }
+				]
+			},
 			{ path: 'news', component: NewsComponent },
 			{ path: 'news/:id', component: NewsViewComponent },
 			{ path: 'edicion', component: EdicionComponent },
