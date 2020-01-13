@@ -11,6 +11,7 @@ import { FavoritesComponent } from "./components/favorites/favorites.component";
 import { UsersconfigComponent } from "./components/usersconfig/usersconfig.component";
 import { FullScreenComponent } from "./components/full-screen/full-screen.component";
 import { ReportsComponent } from "./components/reports/reports.component";
+import { EventosComponent } from "./components/eventos/eventos.component";
 import { IndicadoresComponent } from "./components/indicadores/indicadores.component";
 
 import { NewsEditorComponent } from "./components/news-editor/news-editor.component";
@@ -42,6 +43,7 @@ const routes: Routes = [
 			{
 				path: 'reports', component: ReportsComponent,
 				children: [
+					{ path: 'eventos', component: EventosComponent },
 					{ path: 'indicadores', component: IndicadoresComponent }
 				]
 			}

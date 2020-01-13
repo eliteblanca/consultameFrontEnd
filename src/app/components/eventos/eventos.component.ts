@@ -11,13 +11,14 @@ import { posibleFilterFields } from "../../api/reports-api.service";
 import format from 'date-fns/format';
 
 @Component({
-  selector: 'app-indicadores',
-  templateUrl: './indicadores.component.html',
-  styleUrls: ['./indicadores.component.css']
+  selector: 'app-eventos',
+  templateUrl: './eventos.component.html',
+  styleUrls: ['./eventos.component.css']
 })
-export class IndicadoresComponent implements OnInit {
+export class EventosComponent implements OnInit {
 
   public initialDateDrop = false
+  public finalDateDrop = false
   public categoryDrop = false
   public articlesDrop = false
 
@@ -52,9 +53,15 @@ export class IndicadoresComponent implements OnInit {
   selectedLider: personData
 
   initialDate:Date
+  finalDate:Date
   initialDateHumanRead = ''
+  finalDateHumanRead = ''
 
   indicadores = [
+    // { nombre: 'Numero Visitas', value: '0' },
+    // { nombre: 'Cantidad comentarios', value: '0' },
+    // { nombre: 'Cantidad "Me gusta"', value: '0' },
+    // { nombre: 'Cantidad "No me gusta"', value: '0' }
   ]
 
   constructor(
@@ -81,6 +88,7 @@ export class IndicadoresComponent implements OnInit {
     ).subscribe()
 
     this.onInitialDateChange({value:new Date()})
+    this.onFinalDateChange({value:new Date()})
   }
 
   clienteSelected(selectedClient: cliente) {
@@ -147,6 +155,13 @@ export class IndicadoresComponent implements OnInit {
     this.initialDateHumanRead = format(this.initialDate, "dd/MM/y")
   }
 
+  onFinalDateChange(event: { value: Date }) {
+    this.finalDate = event.value
+    this.finalDate.setHours(23)
+    this.finalDate.setMinutes(59)
+    this.finalDateHumanRead = format(this.finalDate, "dd/MM/y")
+  }
+
   onDirectorSelected(directorSelected: personData) {
 
     console.log(directorSelected)
@@ -190,6 +205,43 @@ export class IndicadoresComponent implements OnInit {
 
   search() {
 
+    this.indicadores = []
+
+    this.reportsApi.getEvent(
+      'view',
+      this.getFilters(),
+      this.initialDate.getTime().toString(),
+      this.finalDate.getTime().toString()
+    ).pipe(
+      tap(result => this.indicadores.push({ nombre: 'Numero Visitas', value: result.value }))
+    ).subscribe()
+
+    this.reportsApi.getEvent(
+      'comment',
+      this.getFilters(),
+      this.initialDate.getTime().toString(),
+      this.finalDate.getTime().toString()
+    ).pipe(
+      tap(result => this.indicadores.push({ nombre: 'Cantidad comentarios', value: result.value }))
+    ).subscribe()
+
+    this.reportsApi.getEvent(
+      'like',
+      this.getFilters(),
+      this.initialDate.getTime().toString(),
+      this.finalDate.getTime().toString()
+    ).pipe(
+      tap(result => this.indicadores.push({ nombre: 'Cantidad "Me gusta"', value: result.value }))
+    ).subscribe()
+
+    this.reportsApi.getEvent(
+      'dislike',
+      this.getFilters(),
+      this.initialDate.getTime().toString(),
+      this.finalDate.getTime().toString()
+    ).pipe(
+      tap(result => this.indicadores.push({ nombre: 'Cantidad "No me gusta"', value: result.value }))
+    ).subscribe()
   }
 
   getFilters() {

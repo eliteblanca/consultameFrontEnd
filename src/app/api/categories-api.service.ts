@@ -9,7 +9,7 @@ export type categoryRaw = {
     name: string;
     position: number;
     icon: string;
-    group: string;
+    group?: string;
     id: string;
 };
 
@@ -18,7 +18,7 @@ export type category = {
     name: string;
     position: number;
     icon: string;
-    group: string;
+    group?: string;
     pcrcId: string;
     subcategories?: category[]
 }

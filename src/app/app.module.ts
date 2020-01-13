@@ -59,10 +59,11 @@ import { SpinnerComponent } from './components/spinner/spinner.component';
 import { CardComponent } from './components/card/card.component';
 import { CheckBoxComponent } from './components/check-box/check-box.component';
 import { ReportsComponent } from './components/reports/reports.component';
-import { IndicadoresComponent } from './components/indicadores/indicadores.component';
+import { EventosComponent } from './components/eventos/eventos.component';
 import { CategoriesReportComponent } from './components/categories-report/categories-report.component';
 import { ShortArticleListComponent } from './components/short-article-list/short-article-list.component';
 import { NewsEditorComponent } from './components/news-editor/news-editor.component';
+import { IndicadoresComponent } from './components/indicadores/indicadores.component';
 @NgModule({
     declarations: [
         AppComponent,
@@ -118,10 +119,11 @@ import { NewsEditorComponent } from './components/news-editor/news-editor.compon
         CardComponent,
         CheckBoxComponent,
         ReportsComponent,
-        IndicadoresComponent,
+        EventosComponent,
         CategoriesReportComponent,
         ShortArticleListComponent,
         NewsEditorComponent,
+        IndicadoresComponent,
     ],
     imports: [
         BrowserModule,

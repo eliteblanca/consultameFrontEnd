@@ -1,14 +1,13 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, combineLatest, iif } from 'rxjs';
-import { map, distinctUntilChanged, tap, filter, switchMap } from 'rxjs/operators';
-import { PcrcApiService, cliente } from "../api/pcrc-api.service";
-import { category, CategoriesApiService, categoryRaw } from "../api/categories-api.service";
 import { ActivatedRoute } from '@angular/router';
-import { user } from "../api/user-api.service";
-import { UserService } from "../services/user.service";
-import { UserApiService } from "../api/user-api.service";
-import { Article } from '../article';
+import { BehaviorSubject } from 'rxjs';
+import { distinctUntilChanged, filter, map, switchMap, tap } from 'rxjs/operators';
+import { CategoriesApiService, category, categoryRaw } from "../api/categories-api.service";
 import { news } from "../api/news-api.service";
+import { cliente, PcrcApiService } from "../api/pcrc-api.service";
+import { user, UserApiService } from "../api/user-api.service";
+import { Article } from '../article';
+import { UserService } from "../services/user.service";
 
 export type state = {
     selectedPcrc: cliente['pcrcs'][0],
@@ -24,16 +23,7 @@ export type state = {
     selectedUserPcrcsState: { state: 'finish' | 'loading' },
     buscarEnTodosCheck: boolean,
     usersListQuery: string,
-    reportsSelectedCliente: cliente,
-    reportsSelectedPcrc: cliente['pcrcs'][0],
-    reportsSelectedCategory: categoryRaw,
     reportsSelectedDateRange:{from:Date, to:Date},
-    reportsSelectedPcrcCategories:{
-        state: "finish" | "loading";
-        value?: categoryRaw[];
-    },
-    reportsSelectedArticle: Article,
-
     idNewsOnEdition: string,
     newDraft: news,
 }
@@ -64,13 +54,7 @@ export class StateService {
         selectedUserPcrcsState: { state: "loading" },
         buscarEnTodosCheck: false,
         usersListQuery: '',
-        reportsSelectedCliente:null,
-        reportsSelectedPcrc:null,
-        reportsSelectedCategory:null,
-        reportsSelectedDateRange:null,
-        reportsSelectedPcrcCategories:{ state: 'loading' },        
-        reportsSelectedArticle: null,
-
+        reportsSelectedDateRange:null,     
         idNewsOnEdition: '',
         newDraft: null
     }
@@ -91,12 +75,7 @@ export class StateService {
     public selectedUserPcrcsState$ = this.state$.pipe(map(_state => _state.selectedUserPcrcsState), distinctUntilChanged())
     public buscarEnTodosCheck$ = this.state$.pipe(map(_state => _state.buscarEnTodosCheck), distinctUntilChanged())
     public usersListQuery$ = this.state$.pipe(map(_state => _state.usersListQuery), distinctUntilChanged())
-    public reportsSelectedCliente$ = this.state$.pipe(map(_state => _state.reportsSelectedCliente), distinctUntilChanged())
-    public reportsSelectedPcrc$ = this.state$.pipe(map(_state => _state.reportsSelectedPcrc), distinctUntilChanged())
-    public reportsSelectedCategory$ = this.state$.pipe(map(_state => _state.reportsSelectedCategory), distinctUntilChanged())
     public reportsSelectedDateRange$ = this.state$.pipe(map(_state => _state.reportsSelectedDateRange), distinctUntilChanged())
-    public repostsSelectedPcrcCategories$ = this.state$.pipe(map(_state => _state.reportsSelectedPcrcCategories), distinctUntilChanged())
-    public repostsSelectedArticle$ = this.state$.pipe(map(_state => _state.reportsSelectedArticle), distinctUntilChanged())
     public idNewsOnEdition$ = this.state$.pipe(map(_state => _state.idNewsOnEdition), distinctUntilChanged())
     public newDraft$ = this.state$.pipe(map(_state => _state.newDraft), distinctUntilChanged(), filter(draft => !!draft))
 
@@ -129,28 +108,6 @@ export class StateService {
                 this.store.next(this._state = { ...this._state, selectedUserPcrcs: pcrcs })
                 this.newSelectedUserPcrcState({ state: "finish" })
             })
-        ).subscribe()
-
-        this.reportsSelectedCliente$.pipe(
-            tap(cliente => {
-                this.newReportsSelectedPcrc(null)
-                this.store.next(this._state = { ...this._state,  reportsSelectedPcrcCategories: { state:"loading" }  })
-            })
-        ).subscribe()
-
-        this.reportsSelectedPcrc$.pipe(
-            tap(pcrc => {
-                this.newReportsSelectedCategory(null)  
-            }),
-            filter(pcrc => !!pcrc),
-            switchMap(pcrc => this.categoriesApi.getCategories(pcrc.id_dp_pcrc.toString())),
-            tap(categories => {
-                this.store.next(this._state = { ...this._state,  reportsSelectedPcrcCategories: categories  })
-            })
-        ).subscribe()
-
-        this.reportsSelectedCategory$.pipe(
-            tap(category => this.newReportsSelectedArticle(null))
         ).subscribe()
     }
 
@@ -230,12 +187,7 @@ export class StateService {
             selectedUserPcrcsState: { state: "loading" },
             buscarEnTodosCheck: false,
             usersListQuery: '',
-            reportsSelectedCliente:null,
-            reportsSelectedPcrc:null,
-            reportsSelectedCategory:null,
             reportsSelectedDateRange:null,
-            reportsSelectedPcrcCategories:{ state: 'loading' },
-            reportsSelectedArticle: null,
             idNewsOnEdition: '',
             newDraft:null
         })
@@ -277,25 +229,9 @@ export class StateService {
 
         }
     }
-
-    newReportsSelectedCliente = (selectedCliente:cliente) =>{
-        this.store.next(this._state = { ...this._state, reportsSelectedCliente: selectedCliente })
-    }
-
-    newReportsSelectedPcrc = (selectedPcrc:cliente['pcrcs'][0]) =>{
-        this.store.next(this._state = { ...this._state, reportsSelectedPcrc: selectedPcrc })
-    }
-
-    newReportsSelectedCategory = (selectedCategory:categoryRaw) =>{
-        this.store.next(this._state = { ...this._state, reportsSelectedCategory: selectedCategory })
-    }
     
     newReportsSelectedDateRange = (rango:{from:Date, to:Date}) =>{
         this.store.next(this._state = { ...this._state, reportsSelectedDateRange: rango })
-    }
-
-    newReportsSelectedArticle = (article:Article) =>{
-        this.store.next(this._state = { ...this._state, reportsSelectedArticle: article })
     }
 
     onIdNewsOnEdition = (idNewsOnEdition:string) => {

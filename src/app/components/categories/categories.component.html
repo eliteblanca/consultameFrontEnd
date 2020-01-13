@@ -1,16 +1,13 @@
-<div *ngIf="mode == 'report'">
-    <div *ngIf="state.repostsSelectedPcrcCategories$ | loading | async as response">
-        <ng-template [ngIf]="response.state == 'finish'">
-            <app-categorie *ngFor="let category of getFirstCategories(response.value)" [category]="category" [allCategories]="response.value" (onCategorySelected)="seleccionarCategoria($event)" [mode]="mode"></app-categorie>
-            <h5 class="dafaultMessage" *ngIf="!!!response.value">No hay categorias en esta linea</h5>
+<div *ngIf="categories">
+        <ng-template [ngIf]="categories.state == 'finish'">
+            <app-categorie *ngFor="let category of getFirstCategories(categories.value)" [category]="category" [allCategories]="categories.value" (onCategorySelected)="seleccionarCategoria($event)" [mode]="mode"></app-categorie>
+            <h5 class="dafaultMessage" *ngIf="!!!categories.value">No hay categorias en esta linea</h5>
         </ng-template>
-        <ng-template [ngIf]="response.state == 'loading'" >
+        <ng-template [ngIf]="categories.state == 'loading'" >
             ...Cargando
-        </ng-template>
-    </div>
+        </ng-template>    
 </div>
 <div *ngIf="mode == 'explore'">
-
     <div *ngIf="state.selectedPcrcCategories$ | loading | async as response">
         <ng-template [ngIf]="response.state == 'finish'">
             <app-categorie *ngFor="let category of getFirstCategories(response.value)" [category]="category" [allCategories]="response.value" (onCategorySelected)="seleccionarCategoria($event)" [mode]="mode"></app-categorie>

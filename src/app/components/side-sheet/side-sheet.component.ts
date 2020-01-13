@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { UserService } from 'src/app/services';
+import { UserService } from '../../services/user.service';
 import { Router } from '@angular/router';
 import { mergeMap, tap, filter } from 'rxjs/operators';
 import { Observable, forkJoin } from 'rxjs';

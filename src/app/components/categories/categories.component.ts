@@ -10,6 +10,11 @@ import { StateService } from "../../services/state.service";
 export class CategoriesComponent implements OnInit {
 
     @Output() onCategorySelected = new EventEmitter();
+    @Input() categories: {
+        state: "finish" | "loading";
+        value?: categoryRaw[];
+    };
+
     @Input() group: string;
     @Input() mode: string;
 

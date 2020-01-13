@@ -15,7 +15,15 @@ export class ShortArticleListComponent implements OnInit {
   @Output() onArticleSelected = new EventEmitter();
 
   private pageSize:number = 10;
-  public articleList:Article[] = [];
+  public articleList:Article[] = [{ 
+    title:'Cualquiera',
+    content:'',
+    highlight:{
+      content: []
+    },
+    obj:'',
+    views:0
+  }];
   public currentSearch:string;
 
   constructor(private articlesApi:ArticlesApiService) {  }
@@ -35,7 +43,7 @@ export class ShortArticleListComponent implements OnInit {
   }
 
   onScroll(){
-    this.articlesApi.getArticlesByCategory(this.category.id, 'published', this.articleList.length, this.pageSize, this.currentSearch).pipe(
+    this.articlesApi.getArticlesByCategory(this.category.id, 'published', this.articleList.length-1, this.pageSize, this.currentSearch).pipe(
       tap(articles => this.articleList = this.articleList.concat(articles))
     ).subscribe()
   }
