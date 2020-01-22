@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { tap } from 'rxjs/operators';
+import { tap, switchMap } from 'rxjs/operators';
 import { CategoriesApiService, categoryRaw } from "../../api/categories-api.service";
 import { JarvisApiService, personData } from "../../api/jarvis-api.service";
 import { cliente, PcrcApiService } from "../../api/pcrc-api.service";
@@ -9,6 +9,7 @@ import { Article } from '../../article';
 import { ReportsApiService } from "../../api/reports-api.service";
 import { posibleFilterFields } from "../../api/reports-api.service";
 import format from 'date-fns/format';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-indicadores',
@@ -54,8 +55,17 @@ export class IndicadoresComponent implements OnInit {
   initialDate:Date
   initialDateHumanRead = ''
 
-  indicadores = [
-  ]
+  indicadores = {
+    'favoritismo':{ name:'Favoritismo', value:'' },
+    'articulos':{ name:'Cantidad artículos', value:'' },
+    'indiceGusto':{ name:'Índice de gusto', value:'' },
+    'indiceDisgusto':{ name:'Índice de disgusto', value:'' }
+  }
+
+  cantidadArticulos = 0
+  cantidadFavoritos = 0
+  cantidadDislikes = 0
+  cantidadLikes = 0
 
   constructor(
     public state: StateService,
@@ -142,8 +152,8 @@ export class IndicadoresComponent implements OnInit {
 
   onInitialDateChange(event: { value: Date }) {
     this.initialDate = event.value
-    this.initialDate.setHours(0)
-    this.initialDate.setMinutes(0)
+    this.initialDate.setHours(23)
+    this.initialDate.setMinutes(59)
     this.initialDateHumanRead = format(this.initialDate, "dd/MM/y")
   }
 
@@ -190,7 +200,42 @@ export class IndicadoresComponent implements OnInit {
 
   search() {
 
+    this.reportsApi.getCount('articles', this.getFilters(), this.initialDate.getTime().toString()).pipe(
+      tap(result => {
+        this.indicadores.articulos = { name: 'Cantidad de articulos', value: result.value }
+        this.cantidadArticulos = result.value
+      }),
+      switchMap(result => this.reportsApi.getCount('favorite', this.getFilters(), this.initialDate.getTime().toString())),
+      tap(result => {
+        this.indicadores.favoritismo.value = ((result.value/parseInt(this.indicadores.articulos.value))*100).toString() + '%'
+        this.cantidadFavoritos = result.value
+      })
+    ).subscribe()
+
+    let dislikes = this.reportsApi.getCount('dislike', this.getFilters(), this.initialDate.getTime().toString()).pipe(
+      tap(result => {
+        this.cantidadDislikes = result.value
+      })
+    )
+
+    let likes = this.reportsApi.getCount('like', this.getFilters(), this.initialDate.getTime().toString()).pipe(
+      tap(result => {
+        this.cantidadLikes = result.value
+      })
+    )
+
+    forkJoin(dislikes,likes).pipe(
+      tap(result => {
+        let totalValoraciones = result[0].value +  result[1].value
+        this.indicadores.indiceDisgusto = result[0].value
+      })
+    ).subscribe()
+
+
+
   }
+
+
 
   getFilters() {
 
@@ -226,4 +271,5 @@ export class IndicadoresComponent implements OnInit {
 
     return [ filter1, filter2].filter(f => f)
   }
+
 }

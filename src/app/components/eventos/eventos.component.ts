@@ -57,12 +57,7 @@ export class EventosComponent implements OnInit {
   initialDateHumanRead = ''
   finalDateHumanRead = ''
 
-  indicadores = [
-    // { nombre: 'Numero Visitas', value: '0' },
-    // { nombre: 'Cantidad comentarios', value: '0' },
-    // { nombre: 'Cantidad "Me gusta"', value: '0' },
-    // { nombre: 'Cantidad "No me gusta"', value: '0' }
-  ]
+  indicadores = [  ]
 
   constructor(
     public state: StateService,

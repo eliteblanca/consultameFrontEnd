@@ -16,8 +16,7 @@
         <div class="formField">
             <span class="label">Cliente</span>
             <div class="formInput">
-                <app-drop-down [textoInicial]="'Cliente'" [textField]="'cliente'" [values]="clientesList"
-                    (onValueSelected)="clienteSelected($event)"></app-drop-down>
+                <app-drop-down [textoInicial]="'Cliente'" [textField]="'cliente'" [values]="clientesList" (onValueSelected)="clienteSelected($event)"></app-drop-down>
             </div>
         </div>
         <div class="formField" *ngIf="isPcrcActive">
@@ -93,9 +92,9 @@
 </div>
 <div class="dash">
     <div class="indicadores">
-        <div class="indicador" *ngFor="let indicador of indicadores">
-            <div class="indicador_header">{{indicador.nombre}}</div>
-            <div class="indicador_value">{{indicador.value}}</div>
+        <div class="indicador" *ngFor="let indicador of indicadores | keyvalue">
+            <div class="indicador_header">{{indicador.value.name}}</div>
+            <div class="indicador_value">{{indicador.value.value}}</div>
         </div>
     </div>
 </div>

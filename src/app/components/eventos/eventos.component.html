@@ -7,7 +7,7 @@
                 <span class="mr.5 dateText" (click)="initialDateDrop = !initialDateDrop; finalDateDrop = false" [ngClass]="{ 'active': initialDateDrop }">{{initialDateHumanRead}}</span>
                 <span class="mr.5">-</span>
                 <app-icon [iconName]="'mdi:calendar'" ></app-icon>
-            <span class="dateText" (click)="finalDateDrop = !finalDateDrop; initialDateDrop = false" [ ]="{ 'active': finalDateDrop }">{{finalDateHumanRead}}</span>
+            <span class="dateText" (click)="finalDateDrop = !finalDateDrop; initialDateDrop = false" [ngClass]="{ 'active': finalDateDrop }">{{finalDateHumanRead}}</span>
                 <div class="drop" *ngIf="initialDateDrop">
                     <ejs-calendar (change)='onInitialDateChange($event); initialDateDrop = false'></ejs-calendar>
                 </div>
