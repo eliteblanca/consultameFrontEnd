@@ -104,10 +104,26 @@
     </div>
 </div>
 <div class="dash">
-    <div class="indicadores">
-        <div class="indicador" *ngFor="let indicador of indicadores | keyvalue">
-            <div class="indicador_header">{{indicador.value.name}}</div>
-            <div class="indicador_value">{{indicador.value.value}}</div>
-        </div>
+    <div class="spinner" *ngIf="tableIsLoading">
+        <app-spinner></app-spinner>
+    </div>
+    <div>
+        <h4>Comentario:</h4>
+        
+            <p class="ml2">{{this.selectedData?.text}}</p>
+        <hr>
+    </div>
+    <ejs-grid [dataSource]='data' *ngIf="!tableIsLoading" (rowSelected)="rowSelected($event)">
+        <e-columns>
+            <e-column field='tituloArticulo' headerText='Articulo' textAlign='Left' width=120></e-column>
+            <e-column field='publicationDate' headerText='Fecha comentario' textAlign='Center'></e-column>
+            <e-column field='cliente' headerText='Cliente' textAlign='Center'></e-column>
+            <e-column field='pcrc' headerText='PCRC' textAlign='Center'></e-column>
+            <e-column field='category' headerText='Categoria' textAlign='Center'></e-column>
+            <e-column field='username' headerText='Usuario' textAlign='Center'></e-column>
+        </e-columns>
+    </ejs-grid>
+    <div class="paginador ma1">
+        <app-pager [numberOfItems]="totalItems" [pageSize]="pageSize" (onPageSelected)="pageSelected($event)"></app-pager>
     </div>
 </div>

@@ -26,6 +26,10 @@ export class RTEViewComponent implements OnInit, AfterViewInit {
 		// Add fonts to whitelist
 	}
 
+	setHtmlContent(htmlString){
+		this.editor.clipboard.dangerouslyPasteHTML(htmlString)
+	}
+
 	modules = {
 		toolbar: {
 			enable: false

@@ -37,6 +37,10 @@ export class RichTextEditorComponent implements OnInit, AfterViewInit {
 	setContent(content) {
 		this.editor.setContents(content)
 	}
+	
+	setHtmlContent(htmlString){
+		this.editor.clipboard.dangerouslyPasteHTML(htmlString)
+	}
 
 	getContent():string{
 		return JSON.stringify(this.editor.getContents())

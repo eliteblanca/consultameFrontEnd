@@ -1,20 +1,23 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule, ExtraOptions } from '@angular/router';
-import { SearchComponent, ExplorarComponent, HomeComponent, AplicationComponent, LoginComponent, ArticleViewComponent } from "./components/index";
-import { AuthGuard, HomeGuard } from "./guards/index";
-import { EdicionComponent } from "./components/edicion/edicion.component";
+import { ExtraOptions, RouterModule, Routes } from '@angular/router';
 import { ArticleCreatorComponent } from "./components/article-creator/article-creator.component";
-import { NewsCreatorComponent } from "./components/news-creator/news-creator.component";
-import { NewsComponent } from "./components/news/news.component";
-import { NewsViewComponent } from "./components/news-view/news-view.component";
+import { BaseDatosComponent } from "./components/base-datos/base-datos.component";
+import { EdicionComponent } from "./components/edicion/edicion.component";
 import { FavoritesComponent } from "./components/favorites/favorites.component";
-import { UsersconfigComponent } from "./components/usersconfig/usersconfig.component";
 import { FullScreenComponent } from "./components/full-screen/full-screen.component";
-import { ReportsComponent } from "./components/reports/reports.component";
-import { EventosComponent } from "./components/eventos/eventos.component";
+import { AplicationComponent, ArticleViewComponent, ExplorarComponent, LoginComponent, SearchComponent } from "./components/index";
 import { IndicadoresComponent } from "./components/indicadores/indicadores.component";
-
+import { NewsCreatorComponent } from "./components/news-creator/news-creator.component";
 import { NewsEditorComponent } from "./components/news-editor/news-editor.component";
+import { NewsViewComponent } from "./components/news-view/news-view.component";
+import { NewsComponent } from "./components/news/news.component";
+import { ReportsComponent } from "./components/reports/reports.component";
+import { UsersconfigComponent } from "./components/usersconfig/usersconfig.component";
+import { ReporteComentariosComponent } from "./components/reporte-comentarios/reporte-comentarios.component";
+import { AuthGuard, HomeGuard } from "./guards/index";
+import { CanLeaveArticleGuard } from "./guards/leave.guard";
+import { ReporteCambiosComponent } from "./components/reporte-cambios/reporte-cambios.component";
+
 
 const routes: Routes = [
 	{ path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -26,7 +29,7 @@ const routes: Routes = [
 			{ path: 'search', component: SearchComponent },
 			{ path: 'explore', component: ExplorarComponent },
 			{ path: 'articles', redirectTo: 'explore' },
-			{ path: 'articles/:id', component: ArticleViewComponent },
+			{ path: 'articles/:id', component: ArticleViewComponent, canDeactivate: [CanLeaveArticleGuard] },
 			{
 				path: 'newseditor',
 				component: NewsCreatorComponent,
@@ -43,8 +46,10 @@ const routes: Routes = [
 			{
 				path: 'reports', component: ReportsComponent,
 				children: [
-					{ path: 'eventos', component: EventosComponent },
-					{ path: 'indicadores', component: IndicadoresComponent }
+					{ path: 'indicadores', component: IndicadoresComponent },
+					{ path: 'basedatos', component: BaseDatosComponent },
+					{ path: 'comentarios', component: ReporteComentariosComponent },
+					{ path: 'cambios', component: ReporteCambiosComponent }
 				]
 			}
 		]

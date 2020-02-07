@@ -15,6 +15,7 @@ import { PickerModule } from '@ctrl/ngx-emoji-mart';
 import { UploaderModule  } from '@syncfusion/ej2-angular-inputs';
 import { RadioButtonModule } from '@syncfusion/ej2-angular-buttons';
 import { TooltipModule } from 'ng2-tooltip-directive';
+import { GridModule } from '@syncfusion/ej2-angular-grids';
 
 import { AppComponent } from './app.component';
 import { ArticleCreatorComponent } from './components/article-creator/article-creator.component';
@@ -56,7 +57,7 @@ import { TreeViewMultiComponent } from './components/tree-view-multi/tree-view-m
 import { TreeViewMultiRowComponent } from './components/tree-view-multi-row/tree-view-multi-row.component';
 import { FullScreenComponent } from './components/full-screen/full-screen.component';
 import { SpinnerComponent } from './components/spinner/spinner.component';
-import { CardComponent } from './components/card/card.component';
+import { CardComponent } from './components/categories-report/card/card.component';
 import { CheckBoxComponent } from './components/check-box/check-box.component';
 import { ReportsComponent } from './components/reports/reports.component';
 import { EventosComponent } from './components/eventos/eventos.component';
@@ -64,6 +65,9 @@ import { CategoriesReportComponent } from './components/categories-report/catego
 import { ShortArticleListComponent } from './components/short-article-list/short-article-list.component';
 import { NewsEditorComponent } from './components/news-editor/news-editor.component';
 import { IndicadoresComponent } from './components/indicadores/indicadores.component';
+import { BaseDatosComponent } from './components/base-datos/base-datos.component';
+import { ReporteComentariosComponent } from './components/reporte-comentarios/reporte-comentarios.component';
+import { ReporteCambiosComponent } from './components/reporte-cambios/reporte-cambios.component';
 @NgModule({
     declarations: [
         AppComponent,
@@ -124,6 +128,9 @@ import { IndicadoresComponent } from './components/indicadores/indicadores.compo
         ShortArticleListComponent,
         NewsEditorComponent,
         IndicadoresComponent,
+        BaseDatosComponent,
+        ReporteComentariosComponent,
+        ReporteCambiosComponent,
     ],
     imports: [
         BrowserModule,
@@ -141,7 +148,8 @@ import { IndicadoresComponent } from './components/indicadores/indicadores.compo
         PickerModule,
         UploaderModule,
         RadioButtonModule,
-        TooltipModule
+        TooltipModule,
+        GridModule
     ],
     providers: [
         JwtInterceptor

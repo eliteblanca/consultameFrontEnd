@@ -55,20 +55,9 @@
             </div>
         </div>
     </div>
-    <div class="rightColumm">
-        <div class="formField">
-            <span class="label">Fecha final</span>
-            <div class="formInput">
-                <app-icon [iconName]="'mdi:calendar'" class="dateDrop" (click)="finalDateDrop = !finalDateDrop; initialDateDrop = false"></app-icon>
-                <span class="dateText"  [ngClass]="{ 'active': finalDateDrop }">{{finalDateHumanRead}}</span>
-                <app-icon [iconName]="'mdi:close-circle-outline'" class="dateClose" (click)="finalDateDrop = false; initialDateDrop = false; finalDateHumanRead = ''; finalDate = undefined" *ngIf="finalDateHumanRead"></app-icon>
-                <div class="drop" *ngIf="finalDateDrop">
-                    <ejs-calendar (change)='onFinalDateChange($event); finalDateDrop = false'></ejs-calendar>
-                </div>
-            </div>
+    <div class="rightColumm">        
+        <div class="formField space">
         </div>
-        <!-- <div class="formField space">
-        </div> -->
         <div class="formField">
             <span class="label">Director</span>
             <div class="formInput">
@@ -104,10 +93,24 @@
     </div>
 </div>
 <div class="dash">
-    <div class="indicadores">
-        <div class="indicador" *ngFor="let indicador of indicadores | keyvalue">
-            <div class="indicador_header">{{indicador.value.name}}</div>
-            <div class="indicador_value">{{indicador.value.value}}</div>
-        </div>
+    <div class="spinner" *ngIf="tableIsLoading">
+        <app-spinner></app-spinner>
+    </div>
+    <ejs-grid [dataSource]='data' *ngIf="!tableIsLoading">
+        <e-columns>
+            <e-column field='title' headerText='Titulo' textAlign='Left' width=120></e-column>
+            <e-column field='views' headerText='Vistas' textAlign='Center'></e-column>
+            <e-column field='likes' headerText='Me gusta' textAlign='Center'></e-column>
+            <e-column field='dislikes' headerText='No me gusta' textAlign='Center'></e-column>
+            <e-column field='favoritos' headerText='Favoritos' textAlign='Center'></e-column>
+            <e-column field='indiceDisgusto' headerText='Indice disgusto' textAlign='Center'></e-column>
+            <e-column field='indiceGusto' headerText='Indice gusto' textAlign='Center'></e-column>
+            <e-column field='comments' headerText='Comentarios' textAlign='Center'></e-column>
+            <e-column field='indiceUso' headerText='uso' textAlign='Center'></e-column>
+            <e-column field='lecturabilidad' headerText='Lecturabilidad' textAlign='Center'></e-column>
+        </e-columns>
+    </ejs-grid>
+    <div class="paginador ma1">
+        <app-pager [numberOfItems]="totalItems" [pageSize]="pageSize" (onPageSelected)="pageSelected($event)"></app-pager>
     </div>
 </div>

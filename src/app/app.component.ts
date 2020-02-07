@@ -3,6 +3,8 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { EventsService } from './services/index';
 import { Title } from "@angular/platform-browser";
 
+
+
 @Component({
     selector: 'app-root',
     styles: [],

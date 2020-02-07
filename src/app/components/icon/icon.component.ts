@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, OnChanges,ViewContainerRef, ViewChild,SimpleChanges, ElementRef, Renderer2 } from '@angular/core';
-import { DOCUMENT } from '@angular/common';
+
 @Component({
     selector: 'app-icon',
     templateUrl: './icon.component.html',

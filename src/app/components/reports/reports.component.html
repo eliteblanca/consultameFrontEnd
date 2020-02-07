@@ -1,31 +1,26 @@
 <div class="layout">
-    <div class="menu">
-        <a class="menuButton" routerLink="./eventos">
-            <app-icon [iconName]="'mdi:chart-bar'"></app-icon>
-            <span class="text">Eventos</span>
-        </a>
-        <a class="menuButton" routerLink="./indicadores">
+    <div class="menu">        
+        <a class="menuButton" routerLink="./indicadores" routerLinkActive="active">
             <app-icon [iconName]="'mdi:chart-bar'"></app-icon>
             <span class="text">Indicadores</span>
         </a>
-        <a class="menuButton">
+        <!-- <a class="menuButton">
             <app-icon [iconName]="'mdi:account-group'"></app-icon>
             <span class="text">Usuarios</span>
-        </a>
-        <a class="menuButton">
+        </a> -->
+        <a class="menuButton" routerLinkActive="active" routerLink="./comentarios">
             <app-icon [iconName]="'mdi:chat'"></app-icon>
             <span class="text">Comentarios</span>
         </a>
-        <a class="menuButton">
+        <a class="menuButton" routerLink="./cambios" routerLinkActive="active">
             <app-icon [iconName]="'mdi:sync-alert'"></app-icon>
             <span class="text">Control de cambios</span>
         </a>
-        <a class="menuButton">
+        <a class="menuButton" routerLink="./basedatos" routerLinkActive="active">
             <app-icon [iconName]="'mdi:database'"></app-icon>
             <span class="text">Base de datos</span>
         </a>
-    </div>
-    <div>
+    </div>    <div>
         <ng-scrollbar>
             <router-outlet></router-outlet>
             <!-- Routed components go here -->

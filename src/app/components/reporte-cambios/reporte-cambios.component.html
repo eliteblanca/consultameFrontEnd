@@ -104,10 +104,27 @@
     </div>
 </div>
 <div class="dash">
-    <div class="indicadores">
-        <div class="indicador" *ngFor="let indicador of indicadores | keyvalue">
-            <div class="indicador_header">{{indicador.value.name}}</div>
-            <div class="indicador_value">{{indicador.value.value}}</div>
-        </div>
+    <div class="spinner" *ngIf="tableIsLoading">
+        <app-spinner></app-spinner>
+    </div>
+    <ejs-grid [dataSource]='data' *ngIf="!tableIsLoading" (rowSelected)="rowSelected($event)">
+        <e-columns>
+            <e-column field='articulo' headerText='Articulo' textAlign='Left' width=120></e-column>
+            <e-column field='eventDate' headerText='Fecha evento' textAlign='Center'></e-column>
+            <e-column field='event' headerText='Evento' textAlign='Center'></e-column>
+            <e-column field='pcrc' headerText='PCRC' textAlign='Center'></e-column>
+            <e-column field='category' headerText='Categoria' textAlign='Center'></e-column>
+            <e-column field='cliente' headerText='Cliente' textAlign='Center'></e-column>
+            <e-column field='user' headerText='Usuario' textAlign='Center'></e-column>
+        </e-columns>
+    </ejs-grid>
+    <div class="paginador ma1">
+        <app-pager [numberOfItems]="totalItems" [pageSize]="pageSize" (onPageSelected)="pageSelected($event)"></app-pager>
+    </div>
+
+    <div>
+        <hr>
+        <h4>Cambios:</h4>           
+            <app-rteview></app-rteview>            
     </div>
 </div>

@@ -17,10 +17,11 @@
 }
 
 .menu .menuButton:hover{
-    color: white;
+    color: white !important;
     cursor: pointer;
     background-color: var(--primary);
 }
+
 
 .menu .menuButton.active{
     color: var(--primary);

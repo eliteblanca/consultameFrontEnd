@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { tap, switchMap } from 'rxjs/operators';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { tap } from 'rxjs/operators';
 import { CategoriesApiService, categoryRaw } from "../../api/categories-api.service";
 import { JarvisApiService, personData } from "../../api/jarvis-api.service";
 import { cliente, PcrcApiService } from "../../api/pcrc-api.service";
@@ -7,16 +7,30 @@ import { StateService } from "../../services/state.service";
 import { UserService } from "../../services/user.service";
 import { Article } from '../../article';
 import { ReportsApiService } from "../../api/reports-api.service";
-import { posibleFilterFields } from "../../api/reports-api.service";
+import { posibleFilterFields, changesReport } from "../../api/reports-api.service";
 import format from 'date-fns/format';
-import { forkJoin } from 'rxjs';
+import * as htmlconverter from 'quill-delta-to-html';
+import { RTEViewComponent } from "../rteview/rteview.component";
+import * as diff from 'diff';
+
+declare global {
+  interface Window {
+      htmldiff:any;
+  }
+}
+
+let htmldiff = window.htmldiff; // ok now
+
 
 @Component({
-  selector: 'app-indicadores',
-  templateUrl: './indicadores.component.html',
-  styleUrls: ['./indicadores.component.css']
+  selector: 'app-reporte-cambios',
+  templateUrl: './reporte-cambios.component.html',
+  styleUrls: ['./reporte-cambios.component.css']
 })
-export class IndicadoresComponent implements OnInit {
+export class ReporteCambiosComponent implements OnInit {
+
+  @ViewChild(RTEViewComponent, { static: false })
+  rteview: RTEViewComponent;
 
   public initialDateDrop = false
   public finalDateDrop = false
@@ -59,15 +73,15 @@ export class IndicadoresComponent implements OnInit {
   initialDateHumanRead = ''
   finalDateHumanRead = ''
 
-  cantidadArticulos = 0
-  cantidadFavoritos = 0
-  cantidadDislikes = 0
-  cantidadLikes = 0
-  cantidadLecturas = 0
-  cantidadVistas = 0
-  cantidadRebote = 0
+  data:object[] = []
+  currentPage = 1;
+  pageSize = 12;
+  totalItems:number = 0;
 
-  indicadores:{ [t:string]:{ name:string, value:string } } 
+  tableIsLoading = false;
+
+  selectedData: changesReport['items'][0];
+  previousState: changesReport['items'][0];
 
   constructor(
     public state: StateService,
@@ -209,159 +223,22 @@ export class IndicadoresComponent implements OnInit {
   search() {
 
     if(!!!this.initialDate && !!!this.finalDate){
-      this.initialDate = (new Date())
+      this.initialDate = new Date(949678013133)
+      this.finalDate = (new Date())
     }
 
-    if(!!this.initialDate && !!this.finalDate){
-
-      this.indicadores = {
-        'cantidadMegusta':{ name:'Cantidad "Me gusta"', value:'' },
-        'cantidadNoMegusta':{ name:'Cantidad "No me gusta"', value:'' },
-        'visitas':{ name:'Numero de visitas', value:'' },
-        'comentarios':{ name:'Cantidad de comentarios', value:'' }
-      }
-
-
-      console.log('prueba')
-      this.reportsApi.getEvent('like', this.getFilters(), this.initialDate.getTime().toString(), this.finalDate.getTime().toString()).pipe(
-        tap(result => {
-          
-          this.indicadores.cantidadMegusta.value = result.value
-        })
-      ).subscribe()
-
-      this.reportsApi.getEvent('dislike', this.getFilters(), this.initialDate.getTime().toString(), this.finalDate.getTime().toString()).pipe(
-        tap(result => {
-          this.indicadores.cantidadNoMegusta.value = result.value
-        })
-      ).subscribe()
-
-      this.reportsApi.getEvent('view', this.getFilters(), this.initialDate.getTime().toString(), this.finalDate.getTime().toString()).pipe(
-        tap(result => {
-          this.indicadores.visitas.value = result.value
-        })
-      ).subscribe()
-
-      this.reportsApi.getEvent('comment', this.getFilters(), this.initialDate.getTime().toString(), this.finalDate.getTime().toString()).pipe(
-        tap(result => {
-          this.indicadores.comentarios.value = result.value
-        })
-      ).subscribe()
-
-
-
-    } else if(!!this.initialDate) {
-
-      this.initialDate.setHours(23)
-
-      this.initialDate.setMinutes(59)
-
-      this.indicadores = {
-        'favoritismo':{ name:'Favoritismo', value:'' },
-        'articulos':{ name:'Cantidad artículos', value:'' },
-        'indiceGusto':{ name:'Índice de gusto', value:'' },
-        'indiceDisgusto':{ name:'Índice de disgusto', value:'' },
-        'cantidadMegusta':{ name:'Cantidad "Me gusta"', value:'' },
-        'cantidadNoMegusta':{ name:'Cantidad "No me gusta"', value:'' },
-        'lecturabilidad':{ name:'Lecturabilidad', value:'' },
-        'rebotes':{ name:'Tasa de rebote', value:'' },
-        'visitas':{ name:'Numero de visitas', value:'' },
-        'comentarios':{ name:'Cantidad de comentarios', value:'' }
-    
-      }
-
-      this.reportsApi.getCount('articles', this.getFilters(), this.initialDate.getTime().toString()).pipe(
-        tap(result => {
-          this.indicadores.articulos = { name: 'Cantidad de articulos', value: result.value.toString() }
-          this.cantidadArticulos = result.value
-        }),
-        switchMap(result => this.reportsApi.getCount('favorite', this.getFilters(), this.initialDate.getTime().toString())),
-        tap(result => {
-          if(this.cantidadArticulos == 0){
-            this.indicadores.favoritismo.value = '0%'
-          } else {
-            this.indicadores.favoritismo.value = ((result.value/this.cantidadArticulos)*100).toFixed(1).toString() + '%'
+    this.reportsApi.getChanges(this.initialDate.getTime(), this.finalDate.getTime(), this.getFilters(), (this.currentPage-1)*this.pageSize, this.pageSize).pipe(
+      tap(result => {
+        this.data = result.items.map(item => {
+          return {
+            ...item,
+            eventDate: format(item.eventDate, 'd/M/y H:m:s')
           }
-  
-          this.cantidadFavoritos = result.value
-        })
-      ).subscribe()
-  
-      let dislikes$ = this.reportsApi.getCount('dislike', this.getFilters(), this.initialDate.getTime().toString()).pipe(
-        tap(result => {
-          this.cantidadDislikes = result.value
-          this.indicadores.cantidadNoMegusta.value = result.value.toString()
-        })
-      )
-  
-      let likes$ = this.reportsApi.getCount('like', this.getFilters(), this.initialDate.getTime().toString()).pipe(
-        tap(result => {
-          this.cantidadLikes = result.value        
-          this.indicadores.cantidadMegusta.value = result.value.toString()
-        })
-      )
-  
-      forkJoin(dislikes$,likes$).pipe(
-        tap(([dislikes,likes]) => {
-  
-          let totalValoraciones = dislikes.value +  likes.value
-  
-          if(totalValoraciones == 0){
-  
-            this.indicadores.indiceDisgusto.value = '0%'
-  
-            this.indicadores.indiceGusto.value = '0%'
-  
-          } else {
-            
-            this.indicadores.indiceDisgusto.value = ((dislikes.value / totalValoraciones )*100).toFixed(1).toString()+'%'
-            
-            this.indicadores.indiceGusto.value = ((likes.value / totalValoraciones )*100).toFixed(1).toString()+'%'
-  
-          }
-  
-        })
-      ).subscribe()
-  
-      let lecturas$ = this.reportsApi.getViews(this.initialDate.getTime(), this.getFilters(), 40000, 999999999).pipe(
-        tap(result => {
-          this.cantidadLecturas = result.value
-        })
-      )
-  
-      let visitas$ = this.reportsApi.getViews(this.initialDate.getTime(), this.getFilters(), 0, 999999999).pipe(
-        tap(result => {
-          this.cantidadVistas = result.value
-          this.indicadores.visitas.value = result.value.toString()
-        })
-      )
-  
-      let rebotes$ =  this.reportsApi.getViews(this.initialDate.getTime(), this.getFilters(), 0, 10000).pipe(
-        tap(result => {
-          this.cantidadRebote = result.value
-        })
-      )
-  
-      forkJoin(lecturas$, visitas$, rebotes$).pipe(
-        tap(([lecturas, visitas, rebotes]) => {
-          if(visitas.value == 0){
-            this.indicadores.lecturabilidad.value = '0%'
-            this.indicadores.rebotes.value = '0%'
-          } else {
-            this.indicadores.lecturabilidad.value = ((lecturas.value/visitas.value)*100).toFixed(1).toString() + '%'
-            this.indicadores.rebotes.value = ((rebotes.value/visitas.value)*100).toFixed(1).toString() + '%'
-          }
-        })
-      ).subscribe()
-  
-      this.reportsApi.getEvent('comment', this.getFilters(), new Date().setFullYear(2000).toString(), this.initialDate.getTime().toString()).pipe(
-        tap(result => {
-          this.indicadores.comentarios.value = result.value
-        })
-      ).subscribe()
+        })        
 
-    }
-
+        this.totalItems = result.totalItems
+      })      
+    ).subscribe()
   }
 
   getFilters() {
@@ -397,6 +274,54 @@ export class IndicadoresComponent implements OnInit {
     }
 
     return [ filter1, filter2].filter(f => f)
+  }
+
+  pageSelected(event){
+    this.currentPage = event
+    this.search()
+  }
+
+  rowSelected(event:{data:changesReport['items'][0]}){
+    this.selectedData = event.data
+    this.previousState = undefined
+    if(this.selectedData.previoustate){
+      this.reportsApi.getChange(this.selectedData.previoustate)
+      .pipe(
+        tap(result => this.previousState = result),
+        tap(result => {
+          this.calculateDiff(JSON.parse(result.articlecontent),JSON.parse(this.selectedData.articlecontent))
+        })
+      )
+      .subscribe()
+
+    }
+  }
+
+  calculateDiff(prev ,current){   
+
+    let prevArray = prev.ops.reduce((accumulator, currentValue)=>{
+      return accumulator + '\n' + JSON.stringify(currentValue)
+    },'')
+
+    let currentArray = current.ops.reduce((accumulator, currentValue)=>{
+      return accumulator + '\n' + JSON.stringify(currentValue)
+    },'')
+
+    console.log(prevArray)
+    console.log(currentArray)
+
+    var converterPrev = new htmlconverter.QuillDeltaToHtmlConverter(prev.ops, {});
+    var converterCurr = new htmlconverter.QuillDeltaToHtmlConverter(current.ops, {});
+
+    var diffObj = diff.diffLines(prevArray, currentArray)
+
+    var htmlPrev = converterPrev.convert();
+    var htmlCurr = converterCurr.convert();
+
+    let stringdiff = htmldiff(htmlPrev,htmlCurr);
+
+    this.rteview.setHtmlContent(stringdiff)
+
   }
 
 }

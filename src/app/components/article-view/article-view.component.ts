@@ -1,5 +1,5 @@
 import { Location } from '@angular/common';
-import { AfterViewInit, Component, ElementRef, OnInit, Renderer2, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnInit, Renderer2, ViewChild, HostListener } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import format from 'date-fns/format';
 import toDate from 'date-fns/toDate';
@@ -42,12 +42,19 @@ export class ArticleViewComponent implements OnInit, AfterViewInit {
   public modificationDate:string;
   public publicationDate:string;
   public isFavoriteHover = false;
+  public startTime:Date;
+  public finalTime:Date;
 
   public container:Element;
   public indexElements:Element[];
   public currentScoll:number = 0;
 
   public adjuntosMode = false;
+
+  @HostListener('window:beforeunload', ['$event'])
+    unloadNotification($event: any) {
+      this.sendViewInfo()
+  }
 
   ngOnInit(){
   }
@@ -76,6 +83,8 @@ export class ArticleViewComponent implements OnInit, AfterViewInit {
       ).subscribe(event=>{
         this.currentScoll = event
       })
+
+      this.startTime = new Date();      
 
     })
   }
@@ -170,6 +179,14 @@ export class ArticleViewComponent implements OnInit, AfterViewInit {
 
   goToArticleEdition(){
     this.router.navigate(['/app/articlecreation'],{ queryParams: { articleId: this.article.id } })
+  }
+
+  sendViewInfo(){
+    if(!this.finalTime){
+      this.finalTime = (new Date())
+      this.articlesApi.postArticleView(this.article.id, this.startTime.getTime(), this.finalTime.getTime())
+      .subscribe()
+    }
   }
 
 }

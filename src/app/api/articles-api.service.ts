@@ -38,7 +38,8 @@ export class ArticlesApiService {
         deleteLike: (idArticle:string) => `${environment.endpoint}/api/articles/${idArticle}/likes`,
         postDisLike: (idArticle:string) => `${environment.endpoint}/api/articles/${idArticle}/disLikes`,
         deleteDisLike: (idArticle:string) => `${environment.endpoint}/api/articles/${idArticle}/disLikes`,
-        getSelfFavorites: `${environment.endpoint}/api/users/me/favorites`,        
+        getSelfFavorites: `${environment.endpoint}/api/users/me/favorites`,
+        postArticleView: (idArticle:string) => `${environment.endpoint}/api/articles/${idArticle}/views`,
     }
 
     getArticles(): Observable<Article[]> {
@@ -127,4 +128,13 @@ export class ArticlesApiService {
         return this.http.get<Article[]>(this.endPoints.getSelfFavorites, { params: { from: from.toString(), size: size.toString() }, observe: "body" })
     }
 
+    postArticleView(articleId:string ,initialDate:number, finalDate:number )  {
+
+        let body = {
+            initialDate:initialDate,
+            finalDate:finalDate
+        }
+
+        return this.http.post<{status:string}>(this.endPoints.postArticleView(articleId), body , { observe: "body" })
+    }
 }
