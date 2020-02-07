@@ -284,12 +284,17 @@ export class ReporteCambiosComponent implements OnInit {
   rowSelected(event:{data:changesReport['items'][0]}){
     this.selectedData = event.data
     this.previousState = undefined
+
+    this.rteview.setContent('')
+
     if(this.selectedData.previoustate){
       this.reportsApi.getChange(this.selectedData.previoustate)
       .pipe(
         tap(result => this.previousState = result),
         tap(result => {
-          this.calculateDiff(JSON.parse(result.articlecontent),JSON.parse(this.selectedData.articlecontent))
+          if(result.articlecontent && this.selectedData.articlecontent){
+            this.calculateDiff(JSON.parse(result.articlecontent), JSON.parse(this.selectedData.articlecontent))
+          }
         })
       )
       .subscribe()
@@ -299,29 +304,52 @@ export class ReporteCambiosComponent implements OnInit {
 
   calculateDiff(prev ,current){   
 
-    let prevArray = prev.ops.reduce((accumulator, currentValue)=>{
-      return accumulator + '\n' + JSON.stringify(currentValue)
-    },'')
+    let prevString = prev.ops.reduce((accumulator, currentValue)=>{
+      return accumulator + ',\n' + JSON.stringify(currentValue)
+    },'{"insert":"\\n"}')
 
-    let currentArray = current.ops.reduce((accumulator, currentValue)=>{
-      return accumulator + '\n' + JSON.stringify(currentValue)
-    },'')
+    let currentString = current.ops.reduce((accumulator, currentValue)=>{
+      return accumulator + ',\n' + JSON.stringify(currentValue)
+    },'{"insert":"\\n"}')
 
-    console.log(prevArray)
-    console.log(currentArray)
+    var diffObj = diff.diffLines(prevString, currentString)
 
-    var converterPrev = new htmlconverter.QuillDeltaToHtmlConverter(prev.ops, {});
-    var converterCurr = new htmlconverter.QuillDeltaToHtmlConverter(current.ops, {});
+    let diffArray:any[][] = diffObj.map(delta =>{
+      let quillDelta:any
+      if(delta.removed){
+        let deltaCompleted = '['+this.quitarSaltoAlfinal(delta.value)+']'        
+        quillDelta = JSON.parse( deltaCompleted )
+        quillDelta = [...[{"insert":"\n\nContenido anterior"},{"attributes":{"blockquote":true},"insert":"\n"}],...quillDelta]
+      } else if(delta.added) {
+        let deltaCompleted = '['+this.quitarSaltoAlfinal(delta.value)+']'
+        quillDelta = JSON.parse( deltaCompleted )        
+        quillDelta = [...[{"insert":"\n\nContenido nuevo"},{"attributes":{"blockquote":true},"insert":"\n"}],...quillDelta]
+        
+      } else {
+        let deltaCompleted = '['+this.quitarSaltoAlfinal(delta.value)+']'
+        quillDelta = JSON.parse( deltaCompleted )        
+        quillDelta = [...[{"insert":"\n\nSin cambio"},{"attributes":{"blockquote":true},"insert":"\n"}],...quillDelta]
+      }
 
-    var diffObj = diff.diffLines(prevArray, currentArray)
+      return quillDelta
 
-    var htmlPrev = converterPrev.convert();
-    var htmlCurr = converterCurr.convert();
+    })
 
-    let stringdiff = htmldiff(htmlPrev,htmlCurr);
+    diffArray = diffArray.reduce((acumulator, current, index)=>{
+      return [...acumulator,...current]
+    },[])
 
-    this.rteview.setHtmlContent(stringdiff)
+    this.rteview.setContent(diffArray)
 
   }
+
+  quitarSaltoAlfinal(texto:string){
+    if( texto.substr(-2) == ',\n' ){
+      return texto.slice(0,-2)
+    }
+    return texto
+  }
+  
+
 
 }
