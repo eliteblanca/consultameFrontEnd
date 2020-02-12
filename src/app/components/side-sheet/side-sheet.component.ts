@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { UserService } from '../../services/user.service';
 import { Router } from '@angular/router';
-import { mergeMap, tap, filter } from 'rxjs/operators';
-import { Observable, forkJoin } from 'rxjs';
+import { Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
+import { cliente, PcrcApiService } from "../../api/pcrc-api.service";
 import { UserApiService } from "../../api/user-api.service";
-import { PcrcApiService, cliente } from "../../api/pcrc-api.service";
 import { StateService } from "../../services/state.service";
+import { UserService } from '../../services/user.service';
 
 @Component({
   selector: 'app-side-sheet',
@@ -17,60 +17,69 @@ export class SideSheetComponent implements OnInit {
   public clientes: cliente[];
   public clienteSeleccionado: cliente;
   public pcrcSeleccionado: cliente['pcrcs'][0];
-  public userName:string;
-  public rol:string;
-  public userPcrc$:Observable<cliente[]>;
+  public userName: string;
+  public rol: string;
+  public userPcrc$: Observable<cliente[]>;
 
   constructor(
     public userApi: UserApiService,
     public router: Router,
     public userService: UserService,
-    private PcrcApiService:PcrcApiService,
-    public state:StateService
-  ) {  }
+    private PcrcApiService: PcrcApiService,
+    public state: StateService
+  ) { }
 
-  ngOnInit() { 
+  ngOnInit() {
 
     this.userName = this.userService.usuario.name
     this.rol = this.userService.usuario.rol
 
-    this.PcrcApiService.getUserPcrc(this.userService.usuario.sub,0,1000).pipe(
-          tap(clientes => {
+    this.PcrcApiService.getUserPcrc(this.userService.usuario.sub, 0, 1000).pipe(
+      tap(clientes => {
 
-              let selectedClienteId = localStorage.getItem('selectedClienteId')
+        if (clientes.length) {
 
-              let selectedPcrcId = localStorage.getItem('selectedPcrcId')
+          let selectedClienteId = localStorage.getItem('selectedClienteId')
 
-              this.state.newUserPcrc(clientes)
+          let selectedPcrcId = localStorage.getItem('selectedPcrcId')
 
-              if(selectedClienteId != null && selectedPcrcId != null){      
+          this.state.newUserPcrc(clientes)
 
-                let cliente = clientes.find(cliente => cliente.id_dp_clientes.toString() == selectedClienteId)
+          if (selectedClienteId != null && selectedPcrcId != null) {
 
-                this.state.newSelectedCliente(cliente)
-                
-                this.state.newSelectedPcrc(cliente.pcrcs.find(pcrc => pcrc.id_dp_pcrc.toString() == selectedPcrcId))
+            let cliente = clientes.find(cliente => cliente.id_dp_clientes.toString() == selectedClienteId)
 
-              } else {
+            this.state.newSelectedCliente(cliente)
 
-                this.state.newSelectedCliente(clientes[0])
+            this.state.newSelectedPcrc(cliente.pcrcs.find(pcrc => pcrc.id_dp_pcrc.toString() == selectedPcrcId))
 
-                this.state.newSelectedPcrc(clientes[0].pcrcs[0])
-              }
-            }
-          )
-        ).subscribe()
+          } else {
+
+            this.state.newSelectedCliente(clientes[0])
+
+            this.state.newSelectedPcrc(clientes[0].pcrcs[0])
+
+          }
+        } else {
+
+          localStorage.removeItem('selectedClienteId')
+
+          localStorage.removeItem('selectedPcrcId')
+
+        }
+      })
+    ).subscribe()
   }
 
   changeCliente(cliente: cliente) {
     this.state.newSelectedCliente(cliente)
   }
 
-  changeSubLine(pcrc:cliente['pcrcs'][0]) {
-    this.state.newSelectedPcrc(pcrc)    
+  changeSubLine(pcrc: cliente['pcrcs'][0]) {
+    this.state.newSelectedPcrc(pcrc)
   }
 
-  onPcrcSeleccionado(cliente:cliente){
+  onPcrcSeleccionado(cliente: cliente) {
 
     localStorage.setItem('selectedClienteId', cliente.id_dp_clientes.toString())
     localStorage.setItem('selectedPcrcId', cliente.pcrcs[0].id_dp_pcrc.toString())

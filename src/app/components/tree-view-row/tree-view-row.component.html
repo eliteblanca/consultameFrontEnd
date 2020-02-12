@@ -1,10 +1,10 @@
-<div class="header" [ngClass]="{'active':(state.selectedCliente$ | async).cliente == data[dataText]}">
+<div class="header" [ngClass]="{'active':(state.selectedCliente$ | async)?.cliente == data[dataText]}">
     <app-icon [iconName]="'mdi:menu-right'" (click)="isDesplegado = !isDesplegado" [ngClass]="{ 'desplegado': isDesplegado }"></app-icon>
     <span>{{data[dataText]}}</span>
 </div>
 <div class="body" [ngClass]="{ 'desplegado': isDesplegado }">
     <ng-scrollbar [position]="'invertY'">
-        <div class="header" *ngFor="let child of data[child]; index as i" (click)="childSeleccionado(i)" [ngClass]="{ 'active':(state.selectedCliente$ | async).cliente == data[dataText] && (state.selectedPcrc$ | async).pcrc == child[childText] }">
+        <div class="header" *ngFor="let child of data[child]; index as i" (click)="childSeleccionado(i)" [ngClass]="{ 'active':(state.selectedCliente$ | async)?.cliente == data[dataText] && (state.selectedPcrc$ | async).pcrc == child[childText] }">
             {{ child[childText] }}
         </div>
     </ng-scrollbar>
