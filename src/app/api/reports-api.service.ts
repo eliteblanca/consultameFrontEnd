@@ -38,7 +38,7 @@ export type commentsReport = {
         coordinador:string,
         gerente:string,
         director:string,
-        category:string,
+        categoria:string,
         cliente:string,
         pcrc:string,
         id:string
@@ -48,7 +48,7 @@ export type commentsReport = {
 export type changesReport = {
     totalItems:number,
     items:{
-        articleId:string,
+        articulo:string,
         articlecontent:string,
         category:string,
         cliente:string,

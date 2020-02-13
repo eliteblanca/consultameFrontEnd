@@ -9,7 +9,7 @@ export type postCommentDTO = {
 }
 
 export type comment = {
-  article:string;
+  articulo:string;
   publicationDate:number;
   user:string;
   username:string;
