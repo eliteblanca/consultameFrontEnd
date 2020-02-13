@@ -36,7 +36,7 @@ export class CommentComponent implements OnInit {
   }
 
   sendComment(){
-    this.commentsApi.postComment({ text :this.input.nativeElement.value, replyTo:this.comment.id }, this.comment.article).pipe(
+    this.commentsApi.postComment({ text :this.input.nativeElement.value, replyTo:this.comment.id }, this.comment.articulo).pipe(
       tap(newComment => {
         this.comment.replies = [ ...[newComment] ,...this.comment.replies ];
         this.input.nativeElement.value = '';

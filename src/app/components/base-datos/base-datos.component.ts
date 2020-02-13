@@ -211,6 +211,9 @@ export class BaseDatosComponent implements OnInit {
 
     this.reportsApi.getFullReport(this.initialDate.getTime(), this.getFilters(), (this.currentPage-1)*this.pageSize, this.pageSize).pipe(
       tap(result => {
+
+        console.log(result.items)
+
         this.data = result.items
         this.totalItems = result.totalItems
         this.tableIsLoading = false;
