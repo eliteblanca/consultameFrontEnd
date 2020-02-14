@@ -38,13 +38,16 @@ export class LoginComponent implements OnInit, AfterViewInit {
     login(): void {
         if( this.usuario.nativeElement.value && this.password.nativeElement.value ){
             this.isError = false
-
             this.isLoading = true
+
+            console.log(this.usuario.nativeElement.value)
+            console.log(this.password.nativeElement.value)
 
             if (this.usuario.nativeElement.value && this.password.nativeElement.value) {
                 this.autenticateApi.login(this.usuario.nativeElement.value, this.password.nativeElement.value)
                     .subscribe(autenticated => {
-                        if (autenticated) {                  
+
+                        if (autenticated) {
                             this.router.navigate(['/app']);
                         } else {
                             this.isError = true

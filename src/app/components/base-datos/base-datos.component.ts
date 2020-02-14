@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { format } from 'date-fns';
-import { tap } from 'rxjs/operators';
+import { tap, switchMap } from 'rxjs/operators';
 import { CategoriesApiService, categoryRaw } from 'src/app/api/categories-api.service';
 import { JarvisApiService, personData } from 'src/app/api/jarvis-api.service';
 import { cliente, PcrcApiService } from 'src/app/api/pcrc-api.service';
@@ -87,7 +87,6 @@ export class BaseDatosComponent implements OnInit {
         this.directores = [{ cedula: '0', nombre: 'Cualquiera' }, ...directores]
       })
     ).subscribe()
-
   }
 
   clienteSelected(selectedClient: cliente) {
