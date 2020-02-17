@@ -41,13 +41,6 @@
     color: var(--primary) !important;
 }
 
-.article_body .links a:before {
-    font-family: "Material Icons";
-    content: "link";
-    font-size: 1.5rem;
-    margin-right: 1rem;
-}
-
 .article_body .links a *{
     font-weight: 500 !important;
 }

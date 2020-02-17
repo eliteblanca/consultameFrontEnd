@@ -1,6 +1,6 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { merge, Observable } from 'rxjs';
+import { merge, Observable, of, concat } from 'rxjs';
 import { filter, map, switchMap, tap } from "rxjs/operators";
 import { ArticlesApiService } from "../../api/articles-api.service";
 import { Article } from "../../article";
@@ -21,7 +21,7 @@ export class SearchComponent implements OnInit, AfterViewInit {
 
     private currentQuery;
     private currenttag;
-    private selectedSublineId = '';
+    private selectedPcrc = '';
 
     @ViewChild(ArticleListComponent, { static: false })
     articleList: ArticleListComponent;
@@ -43,7 +43,7 @@ export class SearchComponent implements OnInit, AfterViewInit {
             }),
             map(params => ({query:params.query})),
             tap(query => {
-                this.currentQuery = query
+                this.currentQuery = query.query
                 this.currenttag = null;
             }))
 
@@ -57,18 +57,10 @@ export class SearchComponent implements OnInit, AfterViewInit {
                 this.currenttag = tag.tag;
             }))
 
-        this.articles$ = merge(this.newQuery$, this.newTag$).pipe(
-            switchMap(query =>
-                this.articlesApiService.getArticlesByQuery(
-                    this.state.getValueOf("selectedPcrc").id_dp_pcrc.toString(),
-                    'published',
-                    0,
-                    10,
-                    query
-                )
-            ),
+        this.articles$ = merge(this.newQuery$, this.newTag$).pipe(            
             tap(articles => {
-                this.articles = articles
+                this.articles = []
+                this.onScroll(null)
             })
         )
 
@@ -80,18 +72,28 @@ export class SearchComponent implements OnInit, AfterViewInit {
     }
 
     onScroll(event) {
+        console.log('scroll')
         if(this.currentQuery){
-            this.articlesApiService.getArticlesByQuery(
-                this.state.getValueOf("selectedPcrc").id_dp_pcrc.toString(),
-                'published',
-                this.articles.length,
-                10,
-                { query:this.currentQuery }
-            ).pipe(
-                tap(articles => this.articles = this.articles.concat(articles))                
+
+            this.state.selectedPcrc$.pipe(
+                filter(pcrc => pcrc.cod_pcrc != ""),
+                switchMap(pcrc => {
+                    let promises = [0,1,2,3,4,5,6,7,8,9].map(number => {
+                        return this.articlesApiService.getArticlesByQuery(
+                            pcrc.id_dp_pcrc.toString(),
+                            'published',
+                            this.articles.length + number,
+                            1,
+                            { query:this.currentQuery }
+                        )
+                    })
+
+                    return concat(...promises)
+                }),
+                tap(articles => this.articles = this.articles.concat(articles))
             ).subscribe()
 
-        }else if(this.currenttag){
+        } else if(this.currenttag) {
             this.articlesApiService.getArticlesByQuery(
                 this.state.getValueOf("selectedPcrc").id_dp_pcrc.toString(),
                 'published',
@@ -99,7 +101,7 @@ export class SearchComponent implements OnInit, AfterViewInit {
                 10,
                { tag:this.currenttag}
             ).pipe(
-                tap(articles => this.articles = this.articles.concat(articles))                
+                tap(articles => this.articles = this.articles.concat(articles))
             ).subscribe()
         }
     }

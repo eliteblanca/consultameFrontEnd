@@ -43,8 +43,6 @@ export class ArticleComponent implements OnInit, AfterViewInit {
 
       let wordsHiglighted = [];
 
-      console.log(this.Article.highlight)
-
       if(this.Article.highlight){
 
         for(var i = 0; i < this.Article.highlight.content.length ; i++){
@@ -91,6 +89,9 @@ export class ArticleComponent implements OnInit, AfterViewInit {
       })
 
       if(links.length){
+
+        console.log(links)
+
         links = links.map(link => ({ href:link['attributes']['link'], text:link['insert'] }))
         links = links.slice(0,3);
         this.links = links;

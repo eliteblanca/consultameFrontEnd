@@ -1,5 +1,7 @@
 <div class="img_header" #imgHeader>
-    <img *ngIf="imageSrc" [src]="imageSrc">
+    <a class="resumme" #resume [routerLink]="['/app/articles/',Article.id]">
+        <img *ngIf="imageSrc" [src]="imageSrc">
+    </a>
 </div>
 <a class="title" [routerLink]="['/app/articles/',Article.id]" [state]="Article">{{Article.title}}</a>
 <div class="article_body">
