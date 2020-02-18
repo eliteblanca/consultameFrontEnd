@@ -21,7 +21,6 @@ export class SearchComponent implements OnInit, AfterViewInit {
 
     private currentQuery;
     private currenttag;
-    private selectedPcrc = '';
 
     @ViewChild(ArticleListComponent, { static: false })
     articleList: ArticleListComponent;
@@ -67,7 +66,7 @@ export class SearchComponent implements OnInit, AfterViewInit {
         this.articles$.subscribe( )
 
         this.newTag$.subscribe()
-        
+
         this.newQuery$.subscribe()
     }
 

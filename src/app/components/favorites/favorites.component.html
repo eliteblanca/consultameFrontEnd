@@ -2,7 +2,7 @@
     infiniteScroll
     (scrolled)="onScroll($event)"
     [infiniteScrollDistance]="2"
-    [infiniteScrollThrottle]="50"
+    [infiniteScrollThrottle]="1000"
     [scrollWindow]="false">
     <ngx-masonry [options]="{ gutter: 15}">
         <app-article ngxMasonryItem  class="masonry-item" *ngFor="let article of articles" [Article]="article" (onDeleteFavorite)="onDeleteFavorite($event)"></app-article>
