@@ -4,7 +4,7 @@
 <div infiniteScroll
     (scrolled)="onScroll($event)"        
     [infiniteScrollDistance]="2"
-    [infiniteScrollThrottle]="50" 
+    [infiniteScrollThrottle]="1000" 
     [scrollWindow]="false"
     class="searchContainer">
     <app-article-list [articles]="articles"></app-article-list>

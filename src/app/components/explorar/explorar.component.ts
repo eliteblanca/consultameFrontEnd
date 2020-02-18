@@ -4,7 +4,8 @@ import { category } from "../../api/categories-api.service";
 import { Article } from "../../article";
 import { ArticleListComponent } from "../article-list/article-list.component";
 import { StateService } from "../../services/state.service";
-import { tap } from 'rxjs/operators';
+import { tap, switchMap } from 'rxjs/operators';
+import { of, concat } from 'rxjs';
 
 @Component({
     selector: 'app-explorar',
@@ -35,16 +36,30 @@ export class ExplorarComponent implements OnInit {
 
         this.categorySelected = categoria;
 
-        this.articlesApi.getArticlesByCategory(categoria.id, 'published' , 0, this.pagesize).subscribe(articles => {
-            this.articles = [];
-            this.articles = this.articles.concat(articles);
-        })
+        this.onScroll(null)
+
+        this.articles = [];
+
     }
 
     onScroll(event){
-        this.articlesApi.getArticlesByCategory(this.categorySelected.id, 'published' ,this.articleList.articles.length, this.pagesize).subscribe(articles => {
-            this.articles = this.articles.concat(articles)
-        })
+        of(null).pipe(
+            switchMap(value => {
+                let promises = [0,1,2,3,4].map(number => {
+                    return this.articlesApi.getArticlesByCategory(
+                        this.categorySelected.id,
+                        'published',
+                        this.articleList.articles.length + number,
+                        1
+                    )
+                })
+
+                return concat(...promises)
+            }),
+            tap(article => {
+                this.articles = this.articles.concat(article)
+            })
+        ).subscribe()
     }
 
 }
