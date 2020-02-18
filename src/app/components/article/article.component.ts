@@ -43,32 +43,12 @@ export class ArticleComponent implements OnInit, AfterViewInit {
 
       let wordsHiglighted = [];
 
-      if(this.Article.highlight){
-
-        for(var i = 0; i < this.Article.highlight.content.length ; i++){
-          wordsHiglighted.push(this.Article.highlight.content[i].match(/<em>[a-zA-Z1-9áéíóú]*<\/em>/gm))
-        }
-
-        wordsHiglighted = wordsHiglighted.reduce((prev,current)=> [...prev,...current] ,[])
-
-        let wordsToReplace = wordsHiglighted.map(word => word.replace('<em>','').replace('</em>',''))
-
-        let resume = this.Article.content.split('.')
-
-        resume = resume.filter(frase => {
-          let alguna = wordsToReplace.some(word => {
-            let incluida = frase.includes(' ' + word + ' ')
-            return incluida
-          })
-
-          return alguna
-        })
+      if(this.Article.highlight && this.Article.highlight.content){        
         
-        this.resumen = resume.map(frase => {
-          let nuevaFrase = frase;
-          wordsToReplace.forEach((word, index) =>{ nuevaFrase = nuevaFrase.replace(' ' + word + ' ',' ' + wordsHiglighted[index] + ' ') })
-          return nuevaFrase
-        }).slice(0,5);
+        let resume = ''
+
+        this.resumen = this.Article.highlight.content.filter(frase => frase)
+
       }
 
       if(this.resumen.length == 0){
@@ -90,13 +70,11 @@ export class ArticleComponent implements OnInit, AfterViewInit {
 
       if(links.length){
 
-        console.log(links)
-
         links = links.map(link => ({ href:link['attributes']['link'], text:link['insert'] }))
         links = links.slice(0,3);
         this.links = links;
       }
-    })    
+    })
   }
 
   isFavorite(){
