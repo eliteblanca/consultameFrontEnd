@@ -1,4 +1,4 @@
-<div *ngIf="state.selectedPcrcCategories$ | loading | async as response">
+<div *ngIf="state.selectedPcrcCategories$ | loading | async as response" class="ma.5">
     <ng-template [ngIf]="response.state == 'finish'">
         <app-category-editable *ngFor="let category of getFirstCategories(response.value)" [allCategories]="response.value" [category]="category" (onCategoryDeleted)="categoryDeleted($event)" (onCategorySelected)="seleccionarCategoria($event)"></app-category-editable>
         <h5 class="dafaultMessage" *ngIf="!!!response.value.length">No hay categorias en esta linea, agrega la primer categoria</h5>

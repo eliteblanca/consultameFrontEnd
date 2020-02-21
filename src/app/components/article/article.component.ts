@@ -69,7 +69,6 @@ export class ArticleComponent implements OnInit, AfterViewInit {
       })
 
       if(links.length){
-
         links = links.map(link => ({ href:link['attributes']['link'], text:link['insert'] }))
         links = links.slice(0,3);
         this.links = links;
