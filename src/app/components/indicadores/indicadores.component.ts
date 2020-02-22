@@ -344,12 +344,12 @@ export class IndicadoresComponent implements OnInit {
   
       forkJoin(lecturas$, visitas$, rebotes$).pipe(
         tap(([lecturas, visitas, rebotes]) => {
-          if(visitas.value == 0){
+          if(lecturas.value + rebotes.value == 0){
             this.indicadores.lecturabilidad.value = '0%'
             this.indicadores.rebotes.value = '0%'
           } else {
-            this.indicadores.lecturabilidad.value = ((lecturas.value/visitas.value)*100).toFixed(1).toString() + '%'
-            this.indicadores.rebotes.value = ((rebotes.value/visitas.value)*100).toFixed(1).toString() + '%'
+            this.indicadores.lecturabilidad.value = ((lecturas.value/(lecturas.value + rebotes.value))*100).toFixed(1).toString() + '%'
+            this.indicadores.rebotes.value = ((rebotes.value/(lecturas.value + rebotes.value))*100).toFixed(1).toString() + '%'
           }
         })
       ).subscribe()
