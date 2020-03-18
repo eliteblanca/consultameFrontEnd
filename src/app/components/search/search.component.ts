@@ -7,6 +7,7 @@ import { Article } from "../../article";
 import { EventsService } from "../../services/events.service";
 import { StateService } from "../../services/state.service";
 import { ArticleListComponent } from "../article-list/article-list.component";
+import { googleAnalytics } from "../../services/googleAnalytics.service";
 @Component({
     selector: 'app-search',
     templateUrl: './search.component.html',
@@ -30,6 +31,8 @@ export class SearchComponent implements OnInit, AfterViewInit {
         private eventsService: EventsService,
         private articlesApiService: ArticlesApiService,
         private state: StateService,
+        private googleAnalytics:googleAnalytics
+
     ) {  }
 
     ngOnInit() {  }

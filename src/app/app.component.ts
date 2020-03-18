@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { EventsService } from './services/index';
 import { Title } from "@angular/platform-browser";
-
+import { googleAnalytics } from "./services/googleAnalytics.service";
 
 
 @Component({
@@ -12,10 +12,26 @@ import { Title } from "@angular/platform-browser";
     providers: [Title]
 })
 export class AppComponent implements OnInit {
-    constructor(public events: EventsService, public router: Router, public route: ActivatedRoute, public title: Title) {  }
+    constructor(
+        public events: EventsService,
+        public router: Router,
+        public route: ActivatedRoute,
+        public title: Title,
+        public googleAnalytics:googleAnalytics
+    ) {  }
 
     ngOnInit() {
-        
+
+        let performanceData = window.performance;
+
+        this.googleAnalytics.timing('timing', 'pageLoad', Math.round(performanceData.now()))
+
+        this.router.events.subscribe(event => {
+            if(event instanceof NavigationEnd){
+                this.googleAnalytics.pagePath(event.urlAfterRedirects)
+            }
+        })
+
         this.events.onNewSearch$.subscribe(newSearch => {
             if (newSearch) {
                 this.title.setTitle(newSearch);

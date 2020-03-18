@@ -44,7 +44,7 @@ export class PcrcApiService {
     }
 
     getSuggestions = (idPcrc: string, input: string) => {
-        return this.http.get<search[]>(this.endPoints.getSuggestions(idPcrc), { params: { input: input }, observe: "body" })
+        return this.http.get<string[]>(this.endPoints.getSuggestions(idPcrc), { params: { input: input }, observe: "body" })
     }
 
     
