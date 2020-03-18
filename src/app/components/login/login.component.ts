@@ -1,7 +1,8 @@
 import { Component, OnInit, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { AutenticateApiService } from "../../api/autenticate-api.service";
-import { JwtHelperService } from '@auth0/angular-jwt';
 import { Router } from '@angular/router';
+import { googleAnalytics } from "../../services/googleAnalytics.service";
+import { UserService } from "../../services/user.service";
 
 type httpError = {
     status: number;
@@ -21,7 +22,11 @@ export class LoginComponent implements OnInit, AfterViewInit {
 
     constructor(
         private autenticateApi: AutenticateApiService,
-        private router: Router) { }
+        private router: Router,
+        private googleAnalytics: googleAnalytics,
+        private userService: UserService,
+        
+    ) { }
 
     ngOnInit() {  }
     
@@ -39,9 +44,6 @@ export class LoginComponent implements OnInit, AfterViewInit {
         if( this.usuario.nativeElement.value && this.password.nativeElement.value ){
             this.isError = false
             this.isLoading = true
-
-            console.log(this.usuario.nativeElement.value)
-            console.log(this.password.nativeElement.value)
 
             if (this.usuario.nativeElement.value && this.password.nativeElement.value) {
                 this.autenticateApi.login(this.usuario.nativeElement.value, this.password.nativeElement.value)

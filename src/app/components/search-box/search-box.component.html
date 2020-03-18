@@ -1,7 +1,12 @@
 <div class="search_box">
     <div class="backDrop" (click)="onFocusout()" *ngIf="suggestions.length != 0"></div>
-    <input type="text" placeholder="Buscar" class="search_box_input" (focus)="onFocus()"  #busqueda tabindex="-1">
+    <input type="text" placeholder="Buscar" class="search_box_input" (focus)="onFocus()" [(ngModel)]="textoDeBusqueda"  (ngModelChange)="textChange()" #busqueda tabindex="-1">
     <div class="search_box_suggestions">
-        <div class="search_box_suggestion" *ngFor="let suggestion of suggestions" [ngClass]="{'selected': suggestion.selected}" (click)="buscar(suggestion.value)">{{suggestion.value}}</div>
+        <div class="search_box_suggestion" 
+            *ngFor="let suggestion of suggestions" 
+            [ngClass]="{'selected': suggestion.selected}"
+            (click)="buscar(textoDeBusqueda+suggestion.value)">                
+                <strong>{{suggestion.value}}</strong>
+        </div>
     </div>
 </div>

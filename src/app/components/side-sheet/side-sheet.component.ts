@@ -6,6 +6,7 @@ import { cliente, PcrcApiService } from "../../api/pcrc-api.service";
 import { UserApiService } from "../../api/user-api.service";
 import { StateService } from "../../services/state.service";
 import { UserService } from '../../services/user.service';
+import { googleAnalytics } from "../../services/googleAnalytics.service";
 
 @Component({
   selector: 'app-side-sheet',
@@ -26,7 +27,8 @@ export class SideSheetComponent implements OnInit {
     public router: Router,
     public userService: UserService,
     private PcrcApiService: PcrcApiService,
-    public state: StateService
+    public state: StateService,
+    public googleAnalytics: googleAnalytics,
   ) { }
 
   ngOnInit() {
@@ -72,10 +74,12 @@ export class SideSheetComponent implements OnInit {
   }
 
   changeCliente(cliente: cliente) {
+    this.googleAnalytics.setDimension(1, 'cliente', cliente.cliente)
     this.state.newSelectedCliente(cliente)
   }
 
   changeSubLine(pcrc: cliente['pcrcs'][0]) {
+    this.googleAnalytics.setDimension(2, 'pcrc', pcrc.pcrc)
     this.state.newSelectedPcrc(pcrc)
   }
 

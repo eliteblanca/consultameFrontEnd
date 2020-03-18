@@ -14,15 +14,12 @@ export class SearchBoxComponent implements OnInit, AfterViewInit {
     @Output() nuevaBusqueda = new EventEmitter();
     @ViewChild('busqueda', { static: false }) busqueda: ElementRef;
 
-    nextWord: string = "";
-    lastWord: string = "";
     suggestions: { selected: boolean, value: string }[] = [];
+    textoDeBusqueda:string;
     public onkeydown$: Observable<KeyboardEvent>;
     public onArrows$: Observable<KeyboardEvent>;
     public onEnter$: Observable<KeyboardEvent>;
     public onNewWord$: Observable<string>;
-    public onWordCountChange$: Observable<string>;
-    public onValueChange$: Observable<string>;
 
     constructor(
         public events: EventsService,
@@ -39,21 +36,49 @@ export class SearchBoxComponent implements OnInit, AfterViewInit {
             filter(({ code }) => code == 'Enter')
         )
 
-        this.onWordCountChange$ = this.onkeydown$.pipe(
-            map(event => this.getInputValue(event).trim()),
-            tap(text => {
-                this.getSuggestions(text)
+        this.onArrows$ = this.onkeydown$.pipe(
+            filter(({code})=>{
+                return code == 'ArrowUp' || code == 'ArrowDown'
+            }),
+            tap(event => {
+                event.preventDefault()
+            }),
+            tap(({code})=>{
+
+                let currentSelectedIndex =  this.suggestions.findIndex(data => {
+                    return data.selected
+                })
+
+                if(code == 'ArrowUp'){
+                    if(currentSelectedIndex > 0){
+                        this.suggestions[currentSelectedIndex].selected = false;
+                        this.suggestions[currentSelectedIndex - 1].selected = true;
+                    }
+
+                    if(currentSelectedIndex == 0){
+                        this.suggestions[currentSelectedIndex].selected = false;
+                    }
+                }
+
+                if(code == 'ArrowDown'){
+                    if(currentSelectedIndex < this.suggestions.length - 1 && currentSelectedIndex >= 0){
+                        this.suggestions[currentSelectedIndex].selected = false;
+                        this.suggestions[currentSelectedIndex + 1].selected = true;
+                    }
+
+                    if(currentSelectedIndex == -1){
+                        this.suggestions[0].selected = true;
+                    }
+                }
             })
         )
 
-        this.onWordCountChange$.subscribe()       
-
         this.onEnter$.subscribe(val => {
             if (this.suggestions.find(x => x.selected)) {
-                this.busqueda.nativeElement.value = this.suggestions.find(x => x.selected).value;
+                this.textoDeBusqueda = this.suggestions.find(x => x.selected).value;
                 this.suggestions[this.suggestions.findIndex(x => x.selected)].selected = false;
-                this.getSuggestions(this.busqueda.nativeElement.value.trim());
-            } else if (this.getInputValue()) {
+                this.getSuggestions(this.textoDeBusqueda);
+            } else if (this.textoDeBusqueda) {
                 this.buscar();
             }
         });
@@ -61,6 +86,8 @@ export class SearchBoxComponent implements OnInit, AfterViewInit {
         this.events.onNewQuery$.subscribe(query => {
             this.buscar(query);
         })
+
+        this.onArrows$.subscribe()
     }
 
     buscar(value?: string): void {
@@ -72,11 +99,10 @@ export class SearchBoxComponent implements OnInit, AfterViewInit {
         }
     }
 
-    getSuggestions(input?: string) {
-        this.state.selectedPcrc$.pipe(
-            switchMap(pcrc => this.PcrcApiService.getSuggestions(pcrc.id_dp_pcrc.toString(), input)),
-            map(suggestions => suggestions.map((suggestion) => {
-                return { selected: false, value: suggestion['query'] }
+    getSuggestions(input: string) {
+        this.PcrcApiService.getSuggestions(this.state.getValueOf('selectedPcrc').id_dp_pcrc.toString(), input).pipe(
+            map(suggestions => suggestions.map(suggestion => {
+                return { selected: false, value: suggestion }
             })),
             tap(suggestions => {
                 this.suggestions = suggestions.slice(0, 10);
@@ -85,7 +111,11 @@ export class SearchBoxComponent implements OnInit, AfterViewInit {
     }
 
     onFocus() {
-        this.getSuggestions();
+        if(this.textoDeBusqueda){
+            this.getSuggestions(this.textoDeBusqueda);
+        }else{
+
+        }
     }
 
     onFocusout() {
@@ -110,17 +140,15 @@ export class SearchBoxComponent implements OnInit, AfterViewInit {
         }
     }
 
-    compareWords(x: String, y: string): boolean {
-        return new RegExp(`^${x.toLowerCase().replace('á', 'a').replace('é', 'e').replace('í', 'i').replace('ó', 'o').replace('ú', 'u')}.*$`).test(y.toLowerCase().replace('á', 'a').replace('é', 'e').replace('í', 'i').replace('ó', 'o').replace('ú', 'u'))
-            && x.toLowerCase().replace('á', 'a').replace('é', 'e').replace('í', 'i').replace('ó', 'o').replace('ú', 'u') != y.toLowerCase().replace('á', 'a').replace('é', 'e').replace('í', 'i').replace('ó', 'o').replace('ú', 'u')
+    getInputValue(): string {
+        return this.busqueda.nativeElement.value
     }
 
-    getInputValue($event?: KeyboardEvent): string {
-        if ($event && $event.which >= 65 && $event.which <= 90) {
-            return this.busqueda.nativeElement.value + $event.key;
+    textChange(){
+        if(this.textoDeBusqueda){
+            this.getSuggestions(this.textoDeBusqueda)
         } else {
-            return this.busqueda.nativeElement.value
+            this.suggestions = [];
         }
     }
-
 }

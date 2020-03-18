@@ -1,8 +1,9 @@
 import { Component, OnInit, Input, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { CommentsApiService, comment } from "../../api/comments-api.service";
 import { tap } from 'rxjs/operators';
-import { fromEvent, Observable } from 'rxjs';
-
+import { Observable } from 'rxjs';
+import { googleAnalytics } from "../../services/googleAnalytics.service";
+import { StateService } from "../../services/state.service";
 @Component({
   selector: 'app-comment-list',
   templateUrl: './comment-list.component.html',
@@ -24,7 +25,11 @@ export class CommentListComponent implements OnInit, AfterViewInit {
   private inputkeyUp$:Observable<any>
 
 
-  constructor(private commentsApi: CommentsApiService) {  }
+  constructor(
+    private commentsApi: CommentsApiService,
+    private stateService: StateService,
+    private googleAnalytics: googleAnalytics,
+  ) {  }
 
   ngOnInit() {
     this.commentsApi.getComments(this.articleId, { from: 0, size: 10 }).pipe(
@@ -48,7 +53,13 @@ export class CommentListComponent implements OnInit, AfterViewInit {
         this.comments = [...[newComment], ...this.comments] ,
         this.input.nativeElement.value = '';
       })
-    ).subscribe()
+    ).subscribe(()=>{
+      this.googleAnalytics.sendEvent(
+        'addComment',
+        'interaction',
+        this.stateService.getValueOf('selectedCliente').cliente + '/' + this.stateService.getValueOf('selectedPcrc').pcrc          
+      )
+    })
   }
 
   iconoSeleccionado(event){
