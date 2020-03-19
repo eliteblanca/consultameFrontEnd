@@ -2,8 +2,7 @@
 
     <div class="title">
         <span class="text">{{comment.username}}</span>
-        <app-icon class="replyIcon" [iconName]="'mdi:reply'" (click)="replyMode = !replyMode" *ngIf="!replyMode">
-        </app-icon>
+        <app-icon class="replyIcon" [iconName]="'mdi:reply'" (click)="replyMode = !replyMode" *ngIf="!replyMode"></app-icon>
     </div>
 
     <div class="content">
@@ -23,7 +22,7 @@
             <app-icon class="sendIcon" [iconName]="'mdi:send'" (click)="sendComment()" *ngIf="input.value.length >=3">
             </app-icon>
         </div>
-        <emoji-mart [hideObsolete]="true" [totalFrequentLines]="2" [emojiSize]="24" [color]="'#039be5'" [isNative]="true" (emojiSelect)="iconoSeleccionado($event);emojiMode = false" *ngIf="emojiMode">
+        <emoji-mart [sheetSize]="16" [perLine]="8" [hideObsolete]="true" [totalFrequentLines]="2" [emojiSize]="20" [color]="'#039be5'" [isNative]="true" (emojiSelect)="iconoSeleccionado($event);emojiMode = false" *ngIf="emojiMode">
         </emoji-mart>
         <span class="lenghtIndicator">
             {{input.value.length}}/150

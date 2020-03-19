@@ -76,7 +76,7 @@ export class ArticleCreatorComponent implements OnInit {
   }
   
   addTag(textInput:string){
-    this.tags = textInput.replace(/#/gi,'').replace(/ /gi,',').split(',').filter(word => !!word && word.length > 3)
+    this.tags = textInput.replace(/#/gi,'').replace(/ /gi,',').split(',').filter(word => !!word && word.length >= 3)
   }
 
   deleteTag(tagToDelete:string){

@@ -52,7 +52,9 @@ export class ArticleViewComponent implements OnInit, AfterViewInit {
   public indexElements: Element[];
   public currentScoll: number = 0;
 
-  public adjuntosMode = false;
+  public modo:'indice'|'tags'|'adjuntos' = 'indice';
+
+  public adjuntosVisibles = false
 
   @HostListener('window:beforeunload', ['$event'])
   unloadNotification($event: any) {
@@ -75,7 +77,7 @@ export class ArticleViewComponent implements OnInit, AfterViewInit {
       this.modificationDate = format(toDate(this.article.modificationDate), 'yyyy/MM/dd  HH:mm');
       this.publicationDate = format(toDate(this.article.publicationDate), 'yyyy/MM/dd  HH:mm');
 
-      this.indexElements = Array.from((this.newsContainer.nativeElement as HTMLElement).querySelectorAll('h1,h2'))
+      this.indexElements = Array.from((this.newsContainer.nativeElement as HTMLElement).querySelectorAll('h1,h2,h3,h4,h5,h6'))
 
       this.indexElements = this.indexElements.filter(el => el['innerText']['length'] > 1)
 
