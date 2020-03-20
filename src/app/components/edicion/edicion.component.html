@@ -1,15 +1,8 @@
 <div class="verticalColumn">
-    <h3 class="columnTitle">Categorias</h3>    
-    
-
-        <ng-scrollbar>
-            
-                <app-categories-editor (onCategorySelected)="onCategorySelected($event)" (onCategoryDeleted)="onCategoryDeleted($event)"></app-categories-editor>
-
-            
-        </ng-scrollbar>
-    
-
+    <h3 class="columnTitle">Categorias</h3>
+    <ng-scrollbar>
+        <app-categories-editor (onCategorySelected)="onCategorySelected($event)" (onCategoryDeleted)="onCategoryDeleted($event)"></app-categories-editor>            
+    </ng-scrollbar>
 </div>
 <div class="verticalColumn" *ngIf="selectedCategory">
     <h3 class="columnTitle">{{selectedCategory.name }} / Articulos</h3>

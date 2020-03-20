@@ -2,6 +2,8 @@ import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/cor
 import { Router } from '@angular/router';
 import { ArticlesApiService } from "../../api/articles-api.service";
 import { Article } from "../../article";
+import { BehaviorSubject } from 'rxjs';
+import { tap, concatMap, startWith, endWith } from 'rxjs/operators';
 
 @Component({
   selector: 'app-articles-editor-list',
@@ -12,15 +14,8 @@ export class ArticlesEditorListComponent implements OnInit,OnChanges {
 
   private pagesize = 20;
   public articlesLoadingSpinner = true;
-
-
-  ngOnChanges(changes:SimpleChanges){
-    if(!changes.categorySelected.isFirstChange() && changes.categorySelected.currentValue){
-      this.articlesApi.getArticlesByCategory( this.categorySelected, this.state, 0, this.pagesize ).subscribe( articles => {
-        this.articles = articles;
-      })
-    }
-  }
+  private scrollSubject = new BehaviorSubject(1)
+  private scroll$ = this.scrollSubject.asObservable();
 
   @Input() categorySelected:string;
   @Input() state:Article['state'];
@@ -30,8 +25,27 @@ export class ArticlesEditorListComponent implements OnInit,OnChanges {
 
   constructor(private articlesApi:ArticlesApiService, private router: Router) {  }
 
-  ngOnInit() { 
-    this.onScroll(null)
+  ngOnChanges(changes:SimpleChanges){
+    if(!changes.categorySelected.isFirstChange() && changes.categorySelected.currentValue){
+      this.currentSearch = '';
+      this.scrollSubject.next(1)      
+    }
+  }
+
+  ngOnInit() {
+    this.scroll$.pipe(
+      tap(() => {
+        this.articlesLoadingSpinner = true;
+      }),
+      concatMap(() =>
+        this.articlesApi.getArticlesByCategory( this.categorySelected, this.state, this.articles.length, this.pagesize, this.currentSearch )
+        
+      ),
+      tap( articles => {
+        this.articles = this.articles.concat(articles);
+        this.articlesLoadingSpinner = false;
+      })
+    ).subscribe()
   }
 
   articuloEliminado(idArticulo:string){
@@ -46,16 +60,12 @@ export class ArticlesEditorListComponent implements OnInit,OnChanges {
   }
 
   onScroll(event){
-    this.articlesLoadingSpinner = true;
-    this.articlesApi.getArticlesByCategory( this.categorySelected, this.state,this.articles.length, this.pagesize, this.currentSearch ).subscribe( articles => {
-      this.articles = this.articles.concat(articles);      
-      this.articlesLoadingSpinner = false;
-    })
+    this.scrollSubject.next(1)
   }
 
   search(text:string){
     this.articles = [];
     this.currentSearch = text;
-    this.onScroll(null);
+    this.scrollSubject.next(1)
   }
 }

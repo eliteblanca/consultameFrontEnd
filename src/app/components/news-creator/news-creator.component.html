@@ -1,16 +1,16 @@
 <div class="selector">
-    <div class="tab " (click)="listMode = 'news'" [ngClass]="{active: listMode == 'news'}">
+    <div class="tab " (click)="listMode = 'published'" [ngClass]="{active: listMode == 'published'}">
         <app-icon class="mr.5" [iconName]="'mdi:newspaper'"></app-icon> Noticias
     </div>
     <h3 class="separator">  |  </h3>
-    <div class="tab" (click)="listMode = 'draft'" [ngClass]="{active: listMode == 'draft'}">
+    <div class="tab" (click)="listMode = 'archived'" [ngClass]="{active: listMode == 'archived'}">
         <app-icon class="mr.5" [iconName]="'mdi:archive'"></app-icon>
          Borradores
     </div>
 </div>
 <div class="list">
     <app-button [buttonText]="'Noticia nueva'" class="mb.5" (click)="onAddNews()"></app-button>
-    <app-news-list-editable [mode]="listMode" [selectedSubline]="(state.selectedPcrc$ | async).id_dp_pcrc" (onAddNews)="onAddNews()" (onNewsEdit)="onNewsEdit($event)" (onNewsDeleted)="onNewsDeleted($event)">
+    <app-news-list-editable [mode]="listMode" (onAddNews)="onAddNews()" (onNewsEdit)="onNewsEdit($event)" (onNewsDeleted)="onNewsDeleted($event)">
     </app-news-list-editable>
 </div>
 <div class="editor">
