@@ -1,6 +1,6 @@
 <div class="Listheader mb1">
     <app-search-input (onConfirm)="search($event)"></app-search-input>
-    <app-icon class="editIcon ml1" [iconName]="'mdi:calendar'" (click)="showCalendar()" *ngIf="mode == 'news'" tooltip="Filtrar por fecha" placement="top" show-delay="500">
+    <app-icon class="editIcon ml1" [iconName]="'mdi:calendar'" (click)="showCalendar()" *ngIf="mode == 'published'" tooltip="Filtrar por fecha" placement="top" show-delay="500">
     </app-icon>
 </div>
 

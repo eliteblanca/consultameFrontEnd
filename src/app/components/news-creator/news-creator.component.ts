@@ -15,7 +15,9 @@ export class NewsCreatorComponent implements OnInit {
   @ViewChild(NewsListEditableComponent, { static: false })
   newslist: NewsListEditableComponent
 
-  listMode: 'news' | 'draft' = 'news';
+  listMode: 'archived' | 'published' = 'published';
+
+  addNewsMode = false;
 
   constructor(
     private router: Router,
@@ -26,12 +28,12 @@ export class NewsCreatorComponent implements OnInit {
     this.state.newDraft$.pipe(
       tap(draft => { 
         this.onNewDraft(draft)
-        this.listMode = 'draft';
+        this.listMode = 'archived';
       })
     ).subscribe()
   }
 
-  addNewsMode = false;
+
 
   onAddNews() {
     this.router.navigate(['/app/newseditor', 'new'])

@@ -7,15 +7,13 @@
             </div>
             <app-icon class="sendIcon" [iconName]="'mdi:send'" (click)="sendComment()" *ngIf="input.value.length >=3"></app-icon>
         </div>
-        <emoji-mart [hideObsolete]="true" [i18n]="localStrings" [totalFrequentLines]="2" [emojiSize]="24" [color]="'#039be5'" [isNative]="true" (emojiSelect)="iconoSeleccionado($event);emojiMode = false" *ngIf="emojiMode"></emoji-mart>
+        <emoji-mart [perLine]="8" [sheetSize]="16" [hideObsolete]="true" [i18n]="localStrings" [totalFrequentLines]="2" [emojiSize]="20" [color]="'#039be5'" [isNative]="true" (emojiSelect)="iconoSeleccionado($event);emojiMode = false" *ngIf="emojiMode"></emoji-mart>
         <span class="lenghtIndicator">
             {{input.value.length}}/150
         </span>
         <h4 *ngIf="!!!comments.length">No hay comentarios, Se el primero en comentar! 👍🏽 </h4>
     </div>    
 <div class="commentList">
-    <app-comment *ngFor="let comment of comments" [comment]="comment"></app-comment>
-   
-    
+    <app-comment *ngFor="let comment of comments" [comment]="comment"></app-comment>    
 </div>
 </ng-scrollbar>

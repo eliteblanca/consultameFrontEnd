@@ -4,8 +4,8 @@ import { category } from "../../api/categories-api.service";
 import { Article } from "../../article";
 import { ArticleListComponent } from "../article-list/article-list.component";
 import { StateService } from "../../services/state.service";
-import { tap, switchMap } from 'rxjs/operators';
-import { of, concat } from 'rxjs';
+import { tap, switchMap, concatMap, filter } from 'rxjs/operators';
+import { of, concat, BehaviorSubject, iif } from 'rxjs';
 
 @Component({
     selector: 'app-explorar',
@@ -14,9 +14,10 @@ import { of, concat } from 'rxjs';
 })
 export class ExplorarComponent implements OnInit {
 
-    public articles: Article[] = [];
-    private categorySelected:category;
-    private pagesize = 20;
+    public articles: Article[] = []
+    private categorySelected:category
+    private scrollSubject = new BehaviorSubject(1)
+    private scroll$ = this.scrollSubject.asObservable()
 
     @ViewChild(ArticleListComponent, { static: false })
     articleList: ArticleListComponent;
@@ -30,36 +31,31 @@ export class ExplorarComponent implements OnInit {
         this.state.selectedPcrc$.pipe(
             tap(pcrc => this.articles = [])
         ).subscribe()
+
+        this.scroll$.pipe(
+            filter(value => !!this.categorySelected) ,
+            concatMap(value =>
+                this.articlesApi.getArticlesByCategory(
+                    this.categorySelected.id,
+                    'published',
+                    this.articleList.articles.length,
+                    6
+                )
+            ),
+            tap(articles => {
+                this.articleList.articles = this.articleList.articles.concat(articles)
+            })
+        ).subscribe()
     }
 
     categoriaSeleccionada(categoria:category) {
-
-        this.categorySelected = categoria;
-
-        this.onScroll(null)
-
         this.articles = [];
-
+        this.categorySelected = categoria;
+        this.scrollSubject.next(1);
     }
 
     onScroll(event){
-        of(null).pipe(
-            switchMap(value => {
-                let promises = [0,1,2,3,4].map(number => {
-                    return this.articlesApi.getArticlesByCategory(
-                        this.categorySelected.id,
-                        'published',
-                        this.articleList.articles.length + number,
-                        1
-                    )
-                })
-
-                return concat(...promises)
-            }),
-            tap(article => {
-                this.articles = this.articles.concat(article)
-            })
-        ).subscribe()
+        this.scrollSubject.next(1);
     }
 
 }

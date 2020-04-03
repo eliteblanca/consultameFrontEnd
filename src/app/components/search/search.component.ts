@@ -1,13 +1,12 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { merge, Observable, of, concat } from 'rxjs';
-import { filter, map, switchMap, tap } from "rxjs/operators";
+import { merge, Observable, of, concat, Subject, BehaviorSubject, iif } from 'rxjs';
+import { filter, map, switchMap, tap, concatMap } from "rxjs/operators";
 import { ArticlesApiService } from "../../api/articles-api.service";
 import { Article } from "../../article";
 import { EventsService } from "../../services/events.service";
 import { StateService } from "../../services/state.service";
 import { ArticleListComponent } from "../article-list/article-list.component";
-import { googleAnalytics } from "../../services/googleAnalytics.service";
 @Component({
     selector: 'app-search',
     templateUrl: './search.component.html',
@@ -19,9 +18,12 @@ export class SearchComponent implements OnInit, AfterViewInit {
     private articles$:Observable<any>;
     private newQuery$:Observable<any>;
     private newTag$:Observable<any>;
-
+    private vlen = 0;
     private currentQuery;
     private currenttag;
+    private scrollSubject = new BehaviorSubject(1)
+    private scroll$ = this.scrollSubject.asObservable();
+
 
     @ViewChild(ArticleListComponent, { static: false })
     articleList: ArticleListComponent;
@@ -30,9 +32,7 @@ export class SearchComponent implements OnInit, AfterViewInit {
         public route: ActivatedRoute,
         private eventsService: EventsService,
         private articlesApiService: ArticlesApiService,
-        private state: StateService,
-        private googleAnalytics:googleAnalytics
-
+        private state: StateService
     ) {  }
 
     ngOnInit() {  }
@@ -62,49 +62,43 @@ export class SearchComponent implements OnInit, AfterViewInit {
         this.articles$ = merge(this.newQuery$, this.newTag$).pipe(            
             tap(articles => {
                 this.articles = []
-                this.onScroll(null)
+                this.scrollSubject.next(1);
             })
         )
+
+        this.scroll$.pipe(
+            concatMap(value => {
+                return iif( () =>!!this.currenttag,
+                    this.articlesApiService.getArticlesByQuery(
+                        this.state.getValueOf("selectedPcrc").id_dp_pcrc.toString(),
+                        'published',
+                        this.articles.length,
+                        6,
+                        { tag:this.currenttag}
+                    ),
+                    this.articlesApiService.getArticlesByQuery(
+                        this.state.getValueOf("selectedPcrc").id_dp_pcrc.toString(),
+                        'published',
+                        this.articles.length,
+                        6,
+                        { query:this.currentQuery }
+                    )
+                )
+            }),
+            tap(articles => {
+                this.articles = this.articles.concat(articles)
+            })
+        ).subscribe()
 
         this.articles$.subscribe( )
 
         this.newTag$.subscribe()
 
         this.newQuery$.subscribe()
+
     }
 
-    onScroll(event) {
-        console.log('scroll')
-        if(this.currentQuery){
-
-            this.state.selectedPcrc$.pipe(
-                filter(pcrc => pcrc.cod_pcrc != ""),
-                switchMap(pcrc => {
-                    let promises = [0,1,2,3,4,5,6,7,8,9].map(number => {
-                        return this.articlesApiService.getArticlesByQuery(
-                            pcrc.id_dp_pcrc.toString(),
-                            'published',
-                            this.articles.length + number,
-                            1,
-                            { query:this.currentQuery }
-                        )
-                    })
-
-                    return concat(...promises)
-                }),
-                tap(articles => this.articles = this.articles.concat(articles))
-            ).subscribe()
-
-        } else if(this.currenttag) {
-            this.articlesApiService.getArticlesByQuery(
-                this.state.getValueOf("selectedPcrc").id_dp_pcrc.toString(),
-                'published',
-                this.articles.length,
-                10,
-               { tag:this.currenttag}
-            ).pipe(
-                tap(articles => this.articles = this.articles.concat(articles))
-            ).subscribe()
-        }
+    onScroll(event) {        
+        this.scrollSubject.next(1);
     }
 }
