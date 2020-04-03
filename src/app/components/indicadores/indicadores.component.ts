@@ -215,8 +215,8 @@ export class IndicadoresComponent implements OnInit {
     if(!!this.initialDate && !!this.finalDate){
 
       this.indicadores = {
-        'cantidadMegusta':{ name:'Cantidad "Me gusta"', value:'' },
-        'cantidadNoMegusta':{ name:'Cantidad "No me gusta"', value:'' },
+        'cantidadMegusta':{ name:'Cantidad de "útiles"', value:'' },
+        'cantidadNoMegusta':{ name:'Cantidad de "no útiles"', value:'' },
         'visitas':{ name:'Numero de visitas', value:'' },
         'comentarios':{ name:'Cantidad de comentarios', value:'' }
       }
@@ -259,10 +259,10 @@ export class IndicadoresComponent implements OnInit {
       this.indicadores = {
         'favoritismo':{ name:'Favoritismo', value:'' },
         'articulos':{ name:'Cantidad artículos', value:'' },
-        'indiceGusto':{ name:'Índice de gusto', value:'' },
-        'indiceDisgusto':{ name:'Índice de disgusto', value:'' },
-        'cantidadMegusta':{ name:'Cantidad "Me gusta"', value:'' },
-        'cantidadNoMegusta':{ name:'Cantidad "No me gusta"', value:'' },
+        'indiceGusto':{ name:'Índice de utilidad', value:'' },
+        'indiceDisgusto':{ name:'Índice de no utilidad', value:'' },
+        'cantidadMegusta':{ name:'Cantidad de "útiles"', value:'' },
+        'cantidadNoMegusta':{ name:'Cantidad de "no útiles"', value:'' },
         'lecturabilidad':{ name:'Lecturabilidad', value:'' },
         'rebotes':{ name:'Tasa de rebote', value:'' },
         'visitas':{ name:'Numero de visitas', value:'' },

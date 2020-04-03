@@ -33,7 +33,7 @@ export class SearchBoxComponent implements OnInit, AfterViewInit {
         this.onkeydown$ = fromEvent(this.busqueda.nativeElement, 'keydown');
 
         this.onEnter$ = this.onkeydown$.pipe(
-            filter(({ code }) => code == 'Enter')
+            filter(({ code }) => code == 'Enter' || code == 'NumpadEnter')
         )
 
         this.onArrows$ = this.onkeydown$.pipe(

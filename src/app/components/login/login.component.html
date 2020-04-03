@@ -5,8 +5,9 @@
         <div class="acrylic">
         </div>
         <div class="formActions">
-            
-            <img class="imagotipo" src="/assets/Imagotipo.png">
+            <div class="logo">
+                <img src="/assets/Imagotipo.png">
+            </div>
             
             <div class="username">
                 <app-icon [iconName]="'mdi:account'"></app-icon>
@@ -27,13 +28,5 @@
             <input class="submitButton" type="button" (click)="login()" value="Entrar" *ngIf="!isLoading">
 
         </div>
-    </div>
-
-    <div class="pieDePagina">
-        <h2 class="textoBlanco">"Estar </h2>
-        <h2 class="textoMorado">Konectado </h2>
-        <h2 class="textoBlanco"> es mantenerte </h2>
-        <h2 class="textoMorado">informado"</h2>
-    </div>
-
+    </div>   
 </div>

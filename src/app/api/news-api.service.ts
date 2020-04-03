@@ -24,7 +24,7 @@ export interface newsDTO {
   obj: string;
   attached: string[];
   state: string;
-  subline: string;
+  pcrc: string;
 }
 
 export interface UpdateNewsDTO {

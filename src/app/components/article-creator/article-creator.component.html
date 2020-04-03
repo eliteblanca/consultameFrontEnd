@@ -20,7 +20,7 @@
     <app-spinner *ngIf="addArticleSpinner"></app-spinner>
     <app-button [buttonText]="'Publicar'" class="mb.5" (click)="saveArticle()" [iconName]="'mdi:publish'" *ngIf="!addArticleSpinner"></app-button>
     <app-spinner *ngIf="updateArticleSpinner"></app-spinner>
-    <app-button class="mb2" [buttonText]="'Archivar'" (click)="saveAsDraft()" [iconName]="'mdi:archive'" *ngIf="!updateArticleSpinner"></app-button>
+    <app-button class="mb2" [buttonText]="'Guardar como borrador'" (click)="saveAsDraft()" [iconName]="'mdi:archive'" *ngIf="!updateArticleSpinner"></app-button>
     <div *ngIf="articleToEdit">
         <h4>{{articleToEdit.attached.length}} Archivos adjuntos</h4>
         <app-file-prev class="mb.5" *ngFor="let file of articleToEdit.attached" [fileName]="file" [articleId]="articleToEdit.id" (onFileDeleted)="fileDeleted(file)"></app-file-prev>
