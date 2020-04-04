@@ -4,11 +4,36 @@
         <app-categories-editor (onCategorySelected)="onCategorySelected($event)" (onCategoryDeleted)="onCategoryDeleted($event)"></app-categories-editor>            
     </ng-scrollbar>
 </div>
-<div class="verticalColumn" *ngIf="selectedCategory">
-    <h3 class="columnTitle">{{selectedCategory.name }} / Articulos</h3>
-    <app-articles-editor-list [categorySelected]="selectedCategory.id" [state]="'published'"></app-articles-editor-list>
+<div class="verticalColumn" *ngIf="categorySelected">
+    <h3 class="columnTitle">{{categorySelected.name }} / Articulos</h3>
+    <ng-scrollbar>
+        <div class="scroll">
+            <div class="Listheader mb1">
+                <app-search-input (onConfirm)="search($event)"></app-search-input>
+                <app-icon class="editIcon ma.5 ml1 mr1" [iconName]="'mdi:file-document-box-plus'" (click)="goToArticleCreation()" tooltip="Crear articulo" placement="top" show-delay="500"></app-icon>
+            </div>
+            <div class="list">
+                <app-article-editable [article]="article" (onArticleDeleted)="articuloEliminado($event)" *ngFor="let article of articles"></app-article-editable>
+            </div>
+            <app-button *ngIf="!articlesLoadingSpinner" [buttonText]="'Cargar mas articulos'" [iconName]="'mdi:chevron-double-down'" (click)="loadMoreArticles()"></app-button>
+            <app-spinner *ngIf="articlesLoadingSpinner"></app-spinner>
+
+        </div>
+            <!-- <app-articles-editor-list [categorySelected]="categorySelected.id" [state]="'published'"></app-articles-editor-list> -->
+    </ng-scrollbar>
 </div>
-<div class="verticalColumn" *ngIf="selectedCategory">
+<div class="verticalColumn" *ngIf="categorySelected">
     <h3 class="columnTitle">Borradores</h3>
-    <app-articles-editor-list [categorySelected]="selectedCategory.id" [state]="'archived'"></app-articles-editor-list>
+    <ng-scrollbar>
+        <div class="scroll">
+            <div class="Listheader mb1">
+                <app-search-input (onConfirm)="searchBorradores($event)"></app-search-input>
+            </div>
+            <div class="list">
+                <app-article-editable [article]="borrador" (onArticleDeleted)="borradorEliminado($event)" *ngFor="let borrador of borradores"></app-article-editable>
+            </div>
+            <app-button *ngIf="!borradoresLoadingSpinner" [buttonText]="'Cargar mas borradores'" [iconName]="'mdi:chevron-double-down'" (click)="loadMoreBorradores()"></app-button>
+            <app-spinner *ngIf="borradoresLoadingSpinner"></app-spinner>
+        </div>
+    </ng-scrollbar>
 </div>

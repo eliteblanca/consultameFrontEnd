@@ -27,6 +27,7 @@ export class ArticlesEditorListComponent implements OnInit,OnChanges {
 
   ngOnChanges(changes:SimpleChanges){
     if(!changes.categorySelected.isFirstChange() && changes.categorySelected.currentValue){
+      this.articles = []
       this.currentSearch = '';
       this.scrollSubject.next(1)      
     }
@@ -38,8 +39,7 @@ export class ArticlesEditorListComponent implements OnInit,OnChanges {
         this.articlesLoadingSpinner = true;
       }),
       concatMap(() =>
-        this.articlesApi.getArticlesByCategory( this.categorySelected, this.state, this.articles.length, this.pagesize, this.currentSearch )
-        
+        this.articlesApi.getArticlesByCategory( this.categorySelected, this.state, this.articles.length, this.pagesize, this.currentSearch )        
       ),
       tap( articles => {
         this.articles = this.articles.concat(articles);
