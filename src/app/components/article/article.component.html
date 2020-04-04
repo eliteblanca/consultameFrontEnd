@@ -24,8 +24,8 @@
     <app-icon *appUserRoleIsIn="['publicador','admin']" class="socialButton" (click)="goToArticleEdition()" [iconName]="'mdi:pencil'" tooltip="Editar articulo" placement="top" show-delay="500"> </app-icon>
     <app-icon class="socialButton favoriteIcon" (click)="addToFavorites()" (mouseover)="isFavoriteHover = true" (mouseout)="isFavoriteHover = false" [iconName]="'mdi:star'"  [ngClass]="{ favorite : isFavorite()}" tooltip="Agregar a favoritos" placement="top" show-delay="500" > </app-icon>
     <span>{{Article.favorites.length}}</span>
-    <app-icon class="socialButton" [iconName]="isLike() ? 'mdi:thumb-up' : 'mdi:thumb-up-outline'" (click)="addLike()" tooltip="Me gusta" placement="top" show-delay="500"> </app-icon>
+    <app-icon class="socialButton" [iconName]="isLike() ? 'mdi:thumb-up' : 'mdi:thumb-up-outline'" (click)="addLike()" tooltip="Útil" placement="top" show-delay="500"> </app-icon>
     <span>{{Article.likes.length}}</span>
-    <app-icon class="socialButton" [iconName]="isDisLike() ? 'mdi:thumb-down' : 'mdi:thumb-down-outline'" (click)="addDisLike()" tooltip="No me gusta" placement="top" show-delay="500"> </app-icon>
+    <app-icon class="socialButton" [iconName]="isDisLike() ? 'mdi:thumb-down' : 'mdi:thumb-down-outline'" (click)="addDisLike()" tooltip="No útil" placement="top" show-delay="500"> </app-icon>
     <span>{{Article.disLikes.length}}</span>
 </div>

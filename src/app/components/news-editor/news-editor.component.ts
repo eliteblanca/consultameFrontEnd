@@ -83,13 +83,16 @@ export class NewsEditorComponent implements OnInit, AfterViewInit {
           content: this.RTE.getText(),
           obj: this.RTE.getContent(),
           state: 'published',
-          subline: this.state.getValueOf('selectedPcrc').id_dp_pcrc.toString(),
+          pcrc: this.state.getValueOf('selectedPcrc').id_dp_pcrc.toString(),
           title: this.articleTitle.nativeElement.value
         }
   
         this.newsApi.postNews(newsToSave).pipe(
           tap(newsAdded => {
             // !this.listMode = 'news'
+
+            console.log(newsAdded)
+
             this.newsOnEdition = newsAdded;
             this.postNewsSpinner = false;
             this.router.navigate(['/app/news', newsAdded.id])
@@ -125,7 +128,7 @@ export class NewsEditorComponent implements OnInit, AfterViewInit {
       content: this.RTE.getText(),
       obj: this.RTE.getContent(),
       state: 'archived',
-      subline: this.state.getValueOf('selectedPcrc').id_dp_pcrc.toString(),
+      pcrc: this.state.getValueOf('selectedPcrc').id_dp_pcrc.toString(),
       title: this.articleTitle.nativeElement.value
     }
 
