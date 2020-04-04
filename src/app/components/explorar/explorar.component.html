@@ -1,5 +1,9 @@
 <div class="categoriesContainer">    
-    <app-categories [mode]="'explore'" (onCategorySelected)="categoriaSeleccionada($event)"></app-categories>
+    <ng-scrollbar>
+        <div class="ma.5 mr1">
+            <app-categories [mode]="'explore'" (onCategorySelected)="categoriaSeleccionada($event)"></app-categories>
+        </div>
+    </ng-scrollbar>
 </div>
 <div infiniteScroll
     (scrolled)="onScroll($event)"        
