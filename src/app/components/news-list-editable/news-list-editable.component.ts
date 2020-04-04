@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, OnChanges, SimpleChanges, Output, EventEmitter } from '@angular/core';
 import { NewsApiService, news } from "../../api/news-api.service";
 import { switchMap, tap, concatMap } from 'rxjs/operators';
-import { of, BehaviorSubject } from 'rxjs';
+import { of, BehaviorSubject, merge } from 'rxjs';
 import { StateService } from "../../services/state.service";
 
 @Component({
@@ -36,17 +36,31 @@ export class NewsListEditableComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges) {    
     this.newsList = []
-    this.scrollSubject.next(1);
+
+    if(!changes['mode'].isFirstChange()){
+      console.log('ngOnChanges(changes: SimpleChanges)')
+      console.log(changes['mode'].isFirstChange())
+      this.scrollSubject.next(1);
+    }
+
   }
 
   ngOnInit() {
-    this.scroll$.pipe(
-      tap(value => console.log(this.mode)),
+    console.log('1')
+    this.newsList = []
+
+    var newPcrc$ = this.state.selectedPcrc$.pipe(
+      tap(() => this.newsList = []),    
+      tap(() => console.log('prueba'))
+    )
+
+    var news$ = merge(newPcrc$, this.scroll$).pipe(
+      tap(()=>console.log('query')),
       concatMap(value =>
         this.newsApi.getNews({
           idSubline:this.state.getValueOf('selectedPcrc').id_dp_pcrc.toString(),
           state:this.mode,
-          from:0,
+          from:this.newsList.length,
           size:20,
           query:this.currentSearch,
           date:this.selectedDate.getTime().toString()
@@ -55,9 +69,12 @@ export class NewsListEditableComponent implements OnInit, OnChanges {
       tap( news => {
         this.newsList = this.newsList.concat(news)
       })
-    ).subscribe()
+    )
 
-    this.scrollSubject.next(1);
+    news$.subscribe()
+    
+    console.log('2')
+    // this.scrollSubject.next(1);    
   }
 
   addNews() {
@@ -99,6 +116,7 @@ export class NewsListEditableComponent implements OnInit, OnChanges {
   }
 
   onScroll(event) {
+    console.log('onScroll(event)')
     this.scrollSubject.next(1);
   }
 
@@ -109,6 +127,7 @@ export class NewsListEditableComponent implements OnInit, OnChanges {
   search(text:string){
     this.newsList = [];
     this.currentSearch = text;
+    console.log('search(text:string)')
     this.scrollSubject.next(1);
   }
 
@@ -128,6 +147,7 @@ export class NewsListEditableComponent implements OnInit, OnChanges {
 
     this.calendarMode = false;
 
+    console.log('filtrarPorFecha(event)')
     this.scrollSubject.next(1);
   }
 

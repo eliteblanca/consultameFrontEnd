@@ -13,7 +13,7 @@
 <ng-scrollbar *ngIf="!calendarMode">
     <div infiniteScroll
         (scrolled)="onScroll($event)"
-        [infiniteScrollDistance]="2"
+        [infiniteScrollDistance]="200"
         [infiniteScrollThrottle]="50" 
         [scrollWindow]="false">
         <div class="scroll">
