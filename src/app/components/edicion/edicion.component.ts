@@ -37,8 +37,6 @@ export class EdicionComponent implements OnInit {
     this.state.selectedPcrc$.pipe(
       tap(pcrc => this.reset())
     ).subscribe()
-
-
   }
 
   loadMoreArticles(){
@@ -124,7 +122,7 @@ export class EdicionComponent implements OnInit {
   }
 
   goToArticleCreation(){
-    this.router.navigate(['/app/articlecreation'],{ queryParams: { category: this.categorySelected }, queryParamsHandling: 'merge' })
+    this.router.navigate(['/app/articlecreation'],{ queryParams: { category: this.categorySelected.id }, queryParamsHandling: 'merge' })
   }
 
   articuloEliminado(idArticulo:string){

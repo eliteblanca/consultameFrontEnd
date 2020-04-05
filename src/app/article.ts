@@ -16,6 +16,7 @@ export interface articleConf{
     creator?:string;
     commentsList?:string;
     line?:string;
+    type?:string;
     subLine?:string;
     category?:string;
     highlight: { content: string[] };
@@ -44,6 +45,7 @@ export class Article implements articleConf{
     public obj:string;
     public highlight: { content: string[] };
     public views:number;
+    public type?:string;
 
     constructor(config:articleConf){
         this.title = config.title;
@@ -104,6 +106,9 @@ export class Article implements articleConf{
         }
         if(config.views){
             this.views = config.views;
+        }
+        if(config.type){
+            this.type = config.type;
         }
     }
 }

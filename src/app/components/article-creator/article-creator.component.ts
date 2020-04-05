@@ -100,7 +100,7 @@ export class ArticleCreatorComponent implements OnInit {
             tags:this.tags,
             title:this.articleTitle.nativeElement.value
           };
-      
+
           of(null).pipe(
             throttle(() => interval(700)),
             concatMap(() => this.articlesApi.updateArticle(this.articleToEdit.id, newArticle).pipe())
