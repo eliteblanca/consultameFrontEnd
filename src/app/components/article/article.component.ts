@@ -141,7 +141,13 @@ export class ArticleComponent implements OnInit, AfterViewInit {
   }
 
   goToArticleEdition(){
-    this.router.navigate(['/app/articlecreation'],{ queryParams: { articleId: this.Article.id }})
+    if(this.Article.type == 'news'){
+      this.router.navigate(['/app/newseditor', this.Article.id ])
+
+    } else {
+      this.router.navigate(['/app/articlecreation'], { queryParams: { articleId: this.Article.id } })
+
+    }
   }
 
 }

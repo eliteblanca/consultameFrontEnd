@@ -7,7 +7,7 @@
 
     <div class="timeLapse">
         <ngx-masonry [options]="{ gutter: 15, horizontalOrder: true}">
-            <app-news-card  ngxMasonryItem  class="masonry-item" *ngFor="let news of _news" [news]="news"></app-news-card>
+            <app-article  ngxMasonryItem  class="masonry-item" *ngFor="let news of _news" [Article]="news"></app-article>
         </ngx-masonry>
     </div>
 </div>

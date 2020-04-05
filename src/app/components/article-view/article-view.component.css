@@ -200,6 +200,12 @@
   grid-template-rows: 3rem auto;
 }
 
+.index.no_title{
+  display: grid;
+  grid-template-columns: auto;
+  grid-template-rows: auto;
+}
+
 .index_menu{
   display: flex;
   justify-content: space-between;
