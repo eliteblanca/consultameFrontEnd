@@ -1,3 +1,7 @@
+:host{
+    align-self: baseline;
+}
+
 .search_box{
     width: 20rem;
     margin-right: 1rem;
