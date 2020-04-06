@@ -95,7 +95,7 @@ export class NewsEditorComponent implements OnInit, AfterViewInit {
 
             this.newsOnEdition = newsAdded;
             this.postNewsSpinner = false;
-            this.router.navigate(['/app/news', newsAdded.id])
+            this.router.navigate(['/app/articles', newsAdded.id])
           })
         ).subscribe()
   
@@ -111,7 +111,7 @@ export class NewsEditorComponent implements OnInit, AfterViewInit {
           tap(newsAdded => {          
             this.postNewsSpinner = false;
             // !this.listMode = 'news'
-            this.router.navigate(['/app/news', this.newsOnEdition.id])
+            this.router.navigate(['/app/articles', this.newsOnEdition.id])
           })
         ).subscribe()
   
