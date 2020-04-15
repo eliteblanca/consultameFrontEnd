@@ -3,7 +3,7 @@ import { Router, ActivatedRoute, NavigationEnd } from '@angular/router';
 import { EventsService } from './services/index';
 import { Title } from "@angular/platform-browser";
 import { googleAnalytics } from "./services/googleAnalytics.service";
-
+import { ArticlesWebSocketsService } from "./webSockets/articles-web-sockets.service";
 
 @Component({
     selector: 'app-root',
@@ -17,7 +17,8 @@ export class AppComponent implements OnInit {
         public router: Router,
         public route: ActivatedRoute,
         public title: Title,
-        public googleAnalytics:googleAnalytics
+        public googleAnalytics:googleAnalytics,
+        public articlesWebSockets:ArticlesWebSocketsService,
     ) {  }
 
     ngOnInit() {

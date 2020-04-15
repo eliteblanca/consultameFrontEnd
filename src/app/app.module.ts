@@ -68,6 +68,8 @@ import { IndicadoresComponent } from './components/indicadores/indicadores.compo
 import { BaseDatosComponent } from './components/base-datos/base-datos.component';
 import { ReporteComentariosComponent } from './components/reporte-comentarios/reporte-comentarios.component';
 import { ReporteCambiosComponent } from './components/reporte-cambios/reporte-cambios.component';
+import { NotificationsComponent } from './components/notifications/notifications.component';
+import { NotificationComponent } from './components/notification/notification.component';
 @NgModule({
     declarations: [
         AppComponent,
@@ -131,6 +133,8 @@ import { ReporteCambiosComponent } from './components/reporte-cambios/reporte-ca
         BaseDatosComponent,
         ReporteComentariosComponent,
         ReporteCambiosComponent,
+        NotificationsComponent,
+        NotificationComponent,
     ],
     imports: [
         BrowserModule,

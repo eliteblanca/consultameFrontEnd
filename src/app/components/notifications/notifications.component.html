@@ -1,0 +1,9 @@
+<header class="notificationsHeader">
+    <span class="notificationsLabel">{{notifications}} Notificaciones</span>
+    <app-icon [iconName]="'mdi:notification-clear-all'"></app-icon>    
+</header>
+<main class="notificationsContainer">
+    <div *ngFor="let notification of articlesWebSockets.newArticleNotifications$ | async">
+        <app-notification  [notification]="notification"></app-notification>
+    </div>
+</main>

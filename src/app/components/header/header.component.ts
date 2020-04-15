@@ -3,6 +3,8 @@ import { Subscription } from 'rxjs';
 import { Article } from "../../article";
 import settingsIcon from '@iconify/icons-mdi/settings';
 import { StateService } from "../../services/state.service";
+import { ArticlesWebSocketsService } from "../../webSockets/articles-web-sockets.service";
+import { tap } from 'rxjs/operators';
 
 @Component({
     selector: 'app-header',
@@ -11,16 +13,31 @@ import { StateService } from "../../services/state.service";
 })
 export class HeaderComponent implements OnInit {
 
-    constructor(public state:StateService) {  }
+    notifications:number = 0;
+
+    constructor(
+        public state:StateService,
+        public articlesWebSockets:ArticlesWebSocketsService
+    ) {  }
 
     settingsIcon = settingsIcon;
 
     newSearchSubs: Subscription;
 
-    ngOnInit() {  }
+    ngOnInit() { 
+        this.articlesWebSockets.newArticleNotifications$.pipe(
+            tap(notifications => {
+                this.notifications = notifications.length
+            })
+        ).subscribe()
+    }
 
     toggleSideSheet(){
         this.state.toogleSideSheet()
+    }
+
+    toggleNotificatons(){
+        this.articlesWebSockets.togleNotifications()
     }
 
 }

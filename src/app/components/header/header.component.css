@@ -8,61 +8,14 @@
     align-items: center;
     flex-direction: row;
     justify-content: flex-start;
-    padding: .5rem;
+    padding: .5rem 1rem .5rem 1rem;
     color: white;
-}
-
-.logo{
-    margin-right: 1rem;
-    width: 4rem;
-    height: 100%;    
-    background-size: cover;
-    background-image: url(/assets/Imagotipo.png);
-    width: 4.2rem;
-    padding-right: -1rem;
-      
-}
-
-.logo img{
-    max-height: 100%;
-    max-width: 100%;
-    overflow: hidden;
-
-}
-
-.tab.active-link{
-    box-shadow: var(--shadow1);
-    border: 2px solid rgba(255, 255, 255, 0.63);
-}
-
-.tab{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: .4rem 1rem;
-    background-color: rgba(255,255,255,0.2);    
-    margin-right: .5rem;
-    border-radius: 3px;
-    text-decoration: none;
-    color: inherit;
-    font-weight: 500;
-    white-space: nowrap;
-    border: 2px solid transparent;
-
-}
-
-.tab app-icon{
-    margin-right: .5rem;
-}
-
-.tab:hover{
-    cursor: pointer;
 }
 
 :host .separator{
     flex-grow: 1;
 }
 
-.accountIcon:hover{
+app-icon:hover{
     cursor: pointer;
 }
