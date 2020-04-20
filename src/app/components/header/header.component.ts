@@ -25,7 +25,7 @@ export class HeaderComponent implements OnInit {
     newSearchSubs: Subscription;
 
     ngOnInit() { 
-        this.articlesWebSockets.newArticleNotifications$.pipe(
+        this.articlesWebSockets.notifications$.pipe(
             tap(notifications => {
                 this.notifications = notifications.length
             })

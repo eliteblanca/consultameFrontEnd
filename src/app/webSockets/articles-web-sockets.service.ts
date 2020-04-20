@@ -1,25 +1,26 @@
 import { Injectable } from '@angular/core';
-import { tap, map, distinctUntilChanged, scan, filter } from 'rxjs/operators';
+import { tap, map, distinctUntilChanged, scan, filter, switchMap } from 'rxjs/operators';
 import io from 'socket.io-client';
-import { Article } from "../article";
 import { StateService } from "../services/state.service";
 import { UserService } from "../services/user.service";
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, forkJoin } from 'rxjs';
+import { UserApiService } from "../api/user-api.service";
 
 export type state = {
-  newArticleNotification:newArticleNotificatonDTO | null,  
-  notificationsOpen:boolean
+  notificationsOpen:boolean,
+  notifications:notification[],
+  commentNotifications:notification[]
 }
 
 export type notification = {
-  notificationTitle:string,
-  date:string
+  date:string,
+  event:string,
+  room:string,
+  id:string,
+  data:any
 }
 
-export type newArticleNotificatonDTO = notification & {
-  data: Partial<Article>
-}
-
+export type posibleEvents = 'newarticle' | 'articleUpdate' | 'nuevanoticia' | 'newComment'
 
 @Injectable({
   providedIn: 'root'
@@ -27,37 +28,57 @@ export type newArticleNotificatonDTO = notification & {
 export class ArticlesWebSocketsService {
 
   private _state:state = {
-    newArticleNotification:null,
-    notificationsOpen:false
+    notificationsOpen:false,
+    notifications:[],
+    commentNotifications:[],
   }
 
   private store = new BehaviorSubject<state>(this._state)
   
-  private state$ = this.store.asObservable();
+  private state$ = this.store.asObservable()
 
   public notificationsOpen$ = this.state$.pipe(map(_state => _state.notificationsOpen), distinctUntilChanged())
-  public newArticleNotification$ = this.state$.pipe(map(_state => _state.newArticleNotification), distinctUntilChanged())
-  public newArticleNotifications$ = this.state$.pipe(
-    map(_state => _state.newArticleNotification),
-    distinctUntilChanged(),
-    filter(item => !!item),
-    map(item => [item]),
-    scan((acum, item, index) => [...acum, ...item]),
-    tap(items => console.log(items))
-    )
+  public notifications$ = this.state$.pipe(map(_state => _state.notifications), distinctUntilChanged())
+  public commentNotifications$ = this.state$.pipe(map(_state => _state.commentNotifications), distinctUntilChanged())
 
-  private socket 
+  private socket
 
   constructor(
     private userService:UserService,
     private state:StateService,
-  ) {    
-    this.socket = io('http://localhost:3001/articles',{ query:{ cedula: userService.usuario.sub }})
+    private userApi:UserApiService,
+  ) {  }
+
+  public connect(){
+    this.socket = io('http://localhost:3001/articles',{ query: {cedula: this.userService.usuario.sub}})
 
     this.socket.on('connect', () => {
       this.socket.on('newarticle', data => {
-        this.store.next(this._state = { ...this._state, newArticleNotification: JSON.parse(data) })
+        this.storeNotification(data)
       })
+
+      this.socket.on('articleUpdate', data => {
+        this.storeNotification(data)
+      })
+
+      this.socket.on('nuevanoticia', data => {
+        this.storeNotification(data)
+      })
+
+      this.socket.on('newComment', data => {
+        
+        this.userApi.postUserNotification({
+          data: data.data,
+          date: data.date,
+          event: data.event,
+          notificationId: data.id,
+          room: data.room
+        }).subscribe()
+
+        this.store.next(this._state = { ...this._state, notifications: [...this._state.notifications, {...data, data:JSON.parse(data.data)}] })
+
+      })
+
     });
 
     this.state.selectedPcrc$.pipe(
@@ -67,22 +88,72 @@ export class ArticlesWebSocketsService {
     ).subscribe()
   }
 
-  public subscribeToRoom(roomId:string){
-    this.socket.emit('subcribe', roomId )
+  private storeNotification(articleNotification:notification){
+
+    this.userApi.postUserNotification({
+      data: articleNotification.data,
+      date: articleNotification.date,
+      event: articleNotification.event,
+      notificationId: articleNotification.id,
+      room: articleNotification.room
+    }).subscribe()
+
+    this.store.next(this._state = { ...this._state, notifications: [...this._state.notifications, {...articleNotification, data:JSON.parse(articleNotification.data)}] })
+    
   }
 
-  public sendNewArticleNotification(data:newArticleNotificatonDTO['data']){
-    let notificationDTO: newArticleNotificatonDTO = {
-      notificationTitle:'new article',
-      date: (new Date()).getTime().toString(),
-      data: data
-    }
+  public subscribeToRoom(roomId:string){
+    this.socket.emit('subcribe', roomId , (response:any[]) => {
 
-    this.socket.emit('newarticle', JSON.stringify(notificationDTO))
+      this.store.next(this._state = { ...this._state, notifications: [] })
+
+      this.userApi.getUserNotifications(roomId).pipe(
+        tap(userNotifications => {
+
+          let notifications:notification[] = userNotifications.map( x => {
+            return {
+              date: x.date.toString(),
+              event: x.event,
+              room: x.room,
+              id: x.notificationId,
+              data: JSON.parse(x.data)
+            }
+          })
+
+          this.store.next(this._state = { ...this._state, notifications: [...this._state.notifications,...notifications, ...response.map(x =>({...x,data:JSON.parse(x.data)}))] })
+        }),
+        switchMap(userNotifications => {
+          let promises = response.map((notification:notification) => {
+            return this.userApi.postUserNotification({
+              data:notification.data,
+              date: notification.date,
+              event: notification.event,
+              notificationId: notification.id,
+              room:notification.room
+            })
+          })
+    
+          return forkJoin(...promises)
+
+        })        
+      ).subscribe()
+
+    })
+  }
+  
+  public sendNotification(event:posibleEvents, data:any){
+    this.socket.emit(event, JSON.stringify(data))
   }
 
   public togleNotifications(){
     this.store.next(this._state = { ...this._state, notificationsOpen: !this._state.notificationsOpen })
   }
 
+  public deleteNotification(notificationId:string){
+    return this.userApi.deleteUserNotification(notificationId).pipe(
+      tap(result => {
+        this.store.next(this._state = { ...this._state, notifications: [...this._state.notifications.filter(x => x.id != notificationId)] })
+      })
+    )
+  }
 }

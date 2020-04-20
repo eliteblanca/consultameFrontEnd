@@ -1,10 +1,10 @@
-import { Component, OnInit, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
-import { NewsApiService, news } from "../../api/news-api.service";
+import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { map, switchMap, tap, filter } from 'rxjs/operators';
-import { of } from 'rxjs';
-import { RichTextEditorComponent } from "../rich-text-editor/rich-text-editor.component";
+import { filter, map, switchMap, tap } from 'rxjs/operators';
+import { news, NewsApiService } from "../../api/news-api.service";
 import { StateService } from "../../services/state.service";
+import { RichTextEditorComponent } from "../rich-text-editor/rich-text-editor.component";
+import { ArticlesWebSocketsService } from "../../webSockets/articles-web-sockets.service";
 
 @Component({
   selector: 'app-news-editor',
@@ -31,7 +31,8 @@ export class NewsEditorComponent implements OnInit, AfterViewInit {
     private activatedRoute: ActivatedRoute,   
     private newsApi: NewsApiService,
     public state: StateService,
-    private router: Router
+    private router: Router,
+    private articlesWebSockets: ArticlesWebSocketsService,
   ) {  }
 
   ngOnInit() {  }
@@ -89,9 +90,17 @@ export class NewsEditorComponent implements OnInit, AfterViewInit {
   
         this.newsApi.postNews(newsToSave).pipe(
           tap(newsAdded => {
-            // !this.listMode = 'news'
 
-            console.log(newsAdded)
+            let notificationData:Partial<news> = {
+              id:newsAdded.id,
+              title:newsAdded.title,
+              subline:newsAdded.subline,
+              creator:newsAdded.creator
+            }
+
+            console.log('nueva noticia ')
+
+            this.articlesWebSockets.sendNotification('nuevanoticia', notificationData)
 
             this.newsOnEdition = newsAdded;
             this.postNewsSpinner = false;

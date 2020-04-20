@@ -106,7 +106,19 @@ export class ArticleCreatorComponent implements OnInit {
           of(null).pipe(
             throttle(() => interval(700)),
             concatMap(() => this.articlesApi.updateArticle(this.articleToEdit.id, newArticle).pipe())
-          ).subscribe(newArticle => {
+          ).subscribe(result => {
+            
+            let partialArticle:Partial<Article> = {
+              creator:this.articleToEdit.creator,
+              title:newArticle.title,
+              id:this.articleToEdit.id,
+              subLine: this.articleToEdit.subLine,
+              line: this.articleToEdit.line,
+              category : this.articleToEdit.category
+            }
+            
+            this.articlesWebSockets.sendNotification('articleUpdate', partialArticle)
+
             this.addArticleSpinner = false;
             this.goToArticle(this.articleToEdit.id)
 
@@ -139,7 +151,7 @@ export class ArticleCreatorComponent implements OnInit {
                 category : newArticle.category
               }
 
-              this.articlesWebSockets.sendNewArticleNotification(partialArticle)
+              this.articlesWebSockets.sendNotification('newarticle', partialArticle)
 
               this.addArticleSpinner = false;
               

@@ -1,17 +1,37 @@
 <div class="notification">
-    <header class="notificationHeader" (click)="goToArticle()">
-        <span class="title">Nuevo: {{notification.data.title}}</span>
-        <app-icon [iconName]="'mdi:text-box-plus-outline'"></app-icon>
-    </header>
-    <!-- <main class="notificationBody">
-        <span class="title">
-            Julian andres vargas
-        </span>
-        <p class="text">
-            Ya hemos actualizado la informacion
-        </p>
-    </main>
-    <footer class="notificationFooter">
+    <div *ngIf="notification.event == 'newarticle'">
+        <header class="notificationHeader" (click)="goToArticle()">
+            <span class="title">Nuevo: {{notification.data.title}}</span>
+            <app-icon [iconName]="'mdi:text-box-plus-outline'"></app-icon>
+        </header>
+    </div>
+    <div *ngIf="notification.event == 'articleUpdate'">
+        <header class="notificationHeader" (click)="goToArticle()">
+            <span class="title">Cambio: {{notification.data.title}}</span>
+            <app-icon [iconName]="'mdi:text-box-plus-outline'"></app-icon>
+        </header>
+    </div>
+    <div *ngIf="notification.event == 'nuevanoticia'">
+        <header class="notificationHeader" (click)="goToArticle()">
+            <span class="title">Noticia: {{notification.data.title}}</span>
+            <app-icon [iconName]="'mdi:newspaper-plus'"></app-icon>
+        </header>
+    </div>
+    <div *ngIf="notification.event == 'newComment'">
+        <header class="notificationHeader" (click)="goToArticle()">
+            <span class="title">{{articleTitle}}</span>
+            <app-icon [iconName]="'mdi:comment-text-outline'"></app-icon>
+        </header>
+        <main class="notificationBody">
+            <span class="title">
+                {{notification.data.username}}
+            </span>
+            <p class="text">
+                {{notification.data.text}}
+            </p>
+        </main>
+    </div>
+    <!-- <footer class="notificationFooter">
         <span>Hace un dia</span>
     </footer> -->
 </div>

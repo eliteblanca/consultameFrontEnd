@@ -5,6 +5,8 @@ import { es } from 'date-fns/locale'
 import { tap } from 'rxjs/operators';
 import { googleAnalytics } from "../../services/googleAnalytics.service";
 import { StateService } from "../../services/state.service";
+import { ArticlesWebSocketsService } from "../../webSockets/articles-web-sockets.service";
+
 
 @Component({
   selector: 'app-comment',
@@ -24,7 +26,8 @@ export class CommentComponent implements OnInit {
   constructor(
     private commentsApi:CommentsApiService,
     private googleAnalytics:googleAnalytics,
-    private stateService:StateService
+    private stateService:StateService,
+    private articlesWebSockets:ArticlesWebSocketsService,
   ) { }
 
   ngOnInit() {
@@ -47,12 +50,24 @@ export class CommentComponent implements OnInit {
         this.googleAnalytics.sendEvent(
           'replyComment',
           'interaction',
-          this.stateService.getValueOf('selectedCliente').cliente + '/' + this.stateService.getValueOf('selectedPcrc').pcrc          
+          this.stateService.getValueOf('selectedCliente').cliente + '/' + this.stateService.getValueOf('selectedPcrc').pcrc
         )
 
-        this.comment.replies = [ ...[newComment] ,...this.comment.replies ];
-        this.input.nativeElement.value = '';
-        this.replyMode = false;
+        let commentNotification:Partial<comment & { replytext:string }> = {
+          articulo:newComment.articulo,          
+          id:newComment.id,
+          text:newComment.text,
+          user:newComment.user,
+          username:newComment.username,
+          replyTo:newComment.replyTo,
+          replytext:this.comment.text
+        }
+
+        this.articlesWebSockets.sendNotification('newComment', commentNotification)
+
+        this.comment.replies = [ ...[newComment] ,...this.comment.replies ]
+        this.input.nativeElement.value = ''
+        this.replyMode = false
       })
     ).subscribe()
   }

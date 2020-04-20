@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { EventsService } from "./events.service";
-import { AllowedLines } from "../api/user-api.service";
+import { AllowedLines, UserApiService } from "../api/user-api.service";
 import { Router } from '@angular/router';
 
 const helper = new JwtHelperService();
@@ -19,7 +19,8 @@ export class UserService {
 
     constructor(
         public events: EventsService,
-        public router: Router
+        public router: Router,
+        public userApi:UserApiService
     ) { }
 
     private _user: user;
@@ -30,9 +31,12 @@ export class UserService {
     }
 
     logOut() {
-        localStorage.removeItem("token")
         
-        this.router.navigate(['/login'])
+        this.userApi.endUserSesion().subscribe(result =>{
+            localStorage.removeItem("token")
+            this.router.navigate(['/login'])
+        })
+
     }
 
     set selectedSubLine(newSubLine: { line: AllowedLines[0], subLine: AllowedLines[0]['sublines'][0] }) {

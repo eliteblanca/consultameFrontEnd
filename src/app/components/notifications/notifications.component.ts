@@ -16,7 +16,7 @@ export class NotificationsComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.articlesWebSockets.newArticleNotifications$.pipe(
+    this.articlesWebSockets.notifications$.pipe(
       tap(notifications => this.notifications = notifications.length)
     ).subscribe()
   }

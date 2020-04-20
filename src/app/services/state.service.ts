@@ -1,12 +1,11 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
-import { distinctUntilChanged, filter, map, switchMap, tap } from 'rxjs/operators';
+import { distinctUntilChanged, filter, map, switchMap, tap, pairwise, concatMap } from 'rxjs/operators';
 import { CategoriesApiService, category, categoryRaw } from "../api/categories-api.service";
 import { news } from "../api/news-api.service";
 import { cliente, PcrcApiService } from "../api/pcrc-api.service";
 import { user, UserApiService } from "../api/user-api.service";
-import { Article } from '../article';
 import { UserService } from "../services/user.service";
 
 export type state = {
@@ -35,7 +34,7 @@ export class StateService {
     private _state: state = {
         selectedPcrc: {
             cod_pcrc: '',
-            id_dp_pcrc: 0,
+            id_dp_pcrc: -1,
             pcrc: ''
         },
         selectedCliente: {
@@ -62,7 +61,10 @@ export class StateService {
     private store = new BehaviorSubject<state>(this._state)
     private state$ = this.store.asObservable();
 
-    public selectedPcrc$ = this.state$.pipe(map(_state => _state.selectedPcrc), distinctUntilChanged())
+    public selectedPcrc$ = this.state$.pipe(map(_state => _state.selectedPcrc), 
+        filter(pcrc => pcrc.id_dp_pcrc >= 0),
+        distinctUntilChanged()
+    )
     public selectedCliente$ = this.state$.pipe(map(_state => _state.selectedCliente), distinctUntilChanged())
     public userPcrc$ = this.state$.pipe(map(_state => _state.userPcrc), distinctUntilChanged())
     public sideSheetOpen$ = this.state$.pipe(map(_state => _state.sideSheetOpen), distinctUntilChanged())
@@ -82,10 +84,24 @@ export class StateService {
     constructor(
         public route: ActivatedRoute,
         public categoriesApi: CategoriesApiService,
-        public UserService: UserService,
+        public userService: UserService,
         public userApi: UserApiService,
         private pcrcApi: PcrcApiService,
     ) {
+        this.selectedPcrc$.pipe(
+            concatMap(pcrc => {
+                return this.userApi.endUserSesion().pipe(
+                    switchMap(result => this.userApi.startUserSesion(
+                        (new Date()).getTime().toString(),
+                        '',
+                        pcrc.id_dp_pcrc.toString()
+                    ))
+                )
+            })
+            
+        ).subscribe()
+
+
         this.selectedPcrc$.pipe(
             switchMap(pcrc => this.categoriesApi.getCategories(pcrc.id_dp_pcrc.toString())),
             tap(selectedPcrcCategories => {
@@ -94,7 +110,7 @@ export class StateService {
         ).subscribe()
 
         this.selectedPcrc$.pipe(
-            filter(pcrc => this.UserService.usuario.rol == 'admin'),
+            filter(pcrc => this.userService.usuario.rol == 'admin'),
             switchMap(pcrc => this.userApi.getPcrcUsers(pcrc.id_dp_pcrc.toString())),
             tap(users => {
                 this.store.next(this._state = { ...this._state, userslist: users })
@@ -117,7 +133,6 @@ export class StateService {
 
     newSelectedCliente(selectedCliente: cliente) {
         this.store.next(this._state = { ...this._state, selectedCliente: selectedCliente })
-        this.store.next(this._state = { ...this._state, selectedPcrc: selectedCliente.pcrcs[0] })
     }
 
     newUserPcrc(userPcrc: cliente[]) {
@@ -168,7 +183,7 @@ export class StateService {
         this.store.next(this._state = {
             selectedPcrc: {
                 cod_pcrc: '',
-                id_dp_pcrc: 0,
+                id_dp_pcrc: -1,
                 pcrc: ''
             },
             selectedCliente: {
