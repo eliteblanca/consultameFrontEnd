@@ -21,6 +21,7 @@ export class SideSheetComponent implements OnInit {
   public userName: string;
   public rol: string;
   public userPcrc$: Observable<cliente[]>;
+  public changePcrc: boolean;
 
   constructor(
     public userApi: UserApiService,

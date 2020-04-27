@@ -74,6 +74,7 @@ export class UserApiService {
         postUserNotification: `${environment.endpoint}/api/users/me/notification`,
         getUserNotifications: `${environment.endpoint}/api/users/me/notification`,
         deleteUserNotification: (notificationId:string) => `${environment.endpoint}/api/users/me/notification/${notificationId}`,
+        deleteAllUserNotifications: `${environment.endpoint}/api/users/me/notification`,
     }
 
     postUserPcrc(idUsuario: string, idPcrc: string): Observable<{ status: string }> {
@@ -147,6 +148,10 @@ export class UserApiService {
 
     deleteUserNotification(notificationId:string){
         return this.http.delete<any>(this.endPoints.deleteUserNotification(notificationId))
+    }
+
+    deleteAllUserNotifications(room:string){
+        return this.http.delete<any>(this.endPoints.deleteAllUserNotifications,{ params:{ pcrc : room }})
     }
 
 }

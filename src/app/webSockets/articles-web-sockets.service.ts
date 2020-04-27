@@ -156,4 +156,13 @@ export class ArticlesWebSocketsService {
       })
     )
   }
+
+  public deleteAllNotifications(){
+    if(this._state.notifications.length){
+      this.userApi.deleteAllUserNotifications(this._state.notifications[0].room).subscribe(result =>
+        this.store.next(this._state = { ...this._state, notifications: [] })
+      )
+    }
+  }
+
 }

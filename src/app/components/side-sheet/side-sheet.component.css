@@ -6,9 +6,10 @@
     position: fixed;
     left: -25vw;
     top: 0;
-    padding: 2rem;
     transition: left ease-in-out 300ms;   
     z-index: 1000;
+    overflow: hidden;
+    
 }
 
 :host.open{
@@ -36,22 +37,89 @@
     top: 0;
 }
 
-.logOut{
-    display: flex;
-    padding: 1.5rem 2rem ;
-    justify-content: center;
-    align-items: center;    
-    margin: -2rem;
-    background-color: var(--terciaryDark);
-    font-weight: 700;
-    color: var(--secondaryText);
+.scroll{
+    height: 100%;
+    overflow-y: scroll;
+    margin-right: -1rem;
 }
 
-.logOut:hover{
+.menuSection{
+    padding: 1rem;
+    border-bottom: 1px solid #EFEFEF;
+}
+
+.menuSection .headerTitle{
+    font-size: 1rem;
+    font-weight: 500;
+    margin-bottom: .5rem;
+    margin-top: 5rem;
+}
+
+.menuSection .headerSubtitle{
+    font-size: .75rem;
+    font-weight: 300;
+    margin: 0;
+    margin-bottom: 1rem;    
+}
+
+.menuSection .tab.active{
+    background-color: #F6F6F6;
     color: var(--primary);
+}
+.menuSection .tab:hover{
     cursor: pointer;
+    background-color: #F6F6F6;
 }
 
-.separator{
-    flex-grow: 1;
+.menuSection .tab:last-child{
+    margin-bottom: 0;
+}
+
+.menuSection .tab{
+    display: flex;
+    border-radius: 3px;
+    background-color: transparent;
+    padding: .75rem;
+    font-weight: 500;
+    align-items: center;
+    color: #6E6E6E;
+    margin-bottom: .5rem;
+    
+}
+
+.menuSection .tab app-icon{
+    margin-right: 2rem;
+}
+
+.menuSection .sectionTitle{
+    color:rgb(136, 136, 136);
+    font-weight: 500;
+    margin: 0;
+    padding: 0;
+    margin-bottom: 1rem;
+    font-size: 1rem;
+}
+
+.headerDataBaseSelector{
+    border-radius: 50px;
+    /* border: 1px solid lightgray; */
+    display: flex;
+    justify-content: space-between;
+    padding: .5rem 1rem;
+    color:rgb(136, 136, 136);
+    align-items: center;
+    background-color: rgb(249, 249, 249);
+}
+
+.headerDataBaseSelector span{
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
+    
+}
+
+.headerDataBaseSelector app-icon:hover{
+    cursor: pointer;
+    color: var(--primary);
 }

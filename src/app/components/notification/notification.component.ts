@@ -24,11 +24,13 @@ export class NotificationComponent implements OnInit {
   }
 
   ngOnChanges(changes: SimpleChanges) {
-    if(changes?.notification?.currentValue?.event ){
-      this.articlesApi.getArticle(changes.notification.currentValue.data.articulo)      
-      .subscribe(article => {
-        this.articleTitle = article.title
-      })
+    if(changes.notification){
+      if(changes.notification.currentValue.event == 'newComment'){
+        this.articlesApi.getArticle(changes.notification.currentValue.data.articulo)
+        .subscribe(article => {
+          this.articleTitle = article.title
+        })
+      }
     }
   }
 

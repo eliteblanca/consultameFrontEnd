@@ -23,6 +23,9 @@
             <app-icon [iconName]="'mdi:comment-text-outline'"></app-icon>
         </header>
         <main class="notificationBody">
+            <p class="text">
+                {{notification.data.replytext}}
+            </p>
             <span class="title">
                 {{notification.data.username}}
             </span>
