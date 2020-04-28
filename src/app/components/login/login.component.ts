@@ -1,8 +1,9 @@
 import { Component, OnInit, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { AutenticateApiService } from "../../api/autenticate-api.service";
 import { Router } from '@angular/router';
-import { googleAnalytics } from "../../services/googleAnalytics.service";
-import { UserService } from "../../services/user.service";
+import { OnExecuteData, ReCaptchaV3Service } from 'ng-recaptcha';
+import { Subscription, of } from 'rxjs';
+import { switchMap, tap } from 'rxjs/operators';
 
 type httpError = {
     status: number;
@@ -20,20 +21,20 @@ export class LoginComponent implements OnInit, AfterViewInit {
     @ViewChild('usuario', { static: false }) usuario: ElementRef;
     @ViewChild('password', { static: false }) password: ElementRef;
 
+    private loginReCaptchaSubscription: Subscription;
+
     constructor(
         private autenticateApi: AutenticateApiService,
         private router: Router,
-        private googleAnalytics: googleAnalytics,
-        private userService: UserService,
-        
+        private reCaptchaV3Service: ReCaptchaV3Service
     ) { }
 
-    ngOnInit() {  }
-    
+    ngOnInit() { }
+
     ngAfterViewInit() {
-        setTimeout(()=>{
+        setTimeout(() => {
             this.usuario.nativeElement.focus();
-        },0);  
+        }, 0);
     }
 
     isError = false
@@ -41,37 +42,49 @@ export class LoginComponent implements OnInit, AfterViewInit {
     isLoading = false
 
     login(): void {
-        if( this.usuario.nativeElement.value && this.password.nativeElement.value ){
+        if (this.loginReCaptchaSubscription) {
+            this.loginReCaptchaSubscription.unsubscribe()
+        }
+        if (this.usuario.nativeElement.value && this.password.nativeElement.value) {
             this.isError = false
             this.isLoading = true
+            this.loginReCaptchaSubscription = this.reCaptchaV3Service.execute('login').pipe(
+                switchMap(token => {
+                    return this.autenticateApi.validateCaptcha(token)
+                }),                
+                switchMap(response => {
 
-            if (this.usuario.nativeElement.value && this.password.nativeElement.value) {
-                this.autenticateApi.login(this.usuario.nativeElement.value, this.password.nativeElement.value)
-                    .subscribe(autenticated => {
+                    if(response.score >= 0.5){
+                        return this.autenticateApi.login(this.usuario.nativeElement.value, this.password.nativeElement.value)
+                    }else{
+                        return of(null)
+                    }
 
-                        if (autenticated) {
-                            this.router.navigate(['/app']);
-                        } else {
-                            this.isError = true
-                        }
+                })
+            ).subscribe(autenticated => {
 
-                        this.isLoading = false
+                if (autenticated) {
+                    this.router.navigate(['/app']);
+                } else {
+                    this.isError = true
+                }
 
-                    },(error:httpError) => {
-                        if(error.statusText == 'Unauthorized'){
-                            this.isError = true
-                            this.isLoading = false
-                        }                            
+                this.isLoading = false
 
-                    })
-            }
+            }, (error: httpError) => {
+                if (error.statusText == 'Unauthorized') {
+                    this.isError = true
+                    this.isLoading = false
+                }
 
+            })
         }
+
 
     }
 
-    enter(event:KeyboardEvent){
-        if(event.key == "Enter"){
+    enter(event: KeyboardEvent) {
+        if (event.key == "Enter") {
             this.login()
         }
     }
