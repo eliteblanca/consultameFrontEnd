@@ -4,6 +4,13 @@ import { Observable, of } from 'rxjs';
 import { switchMap, tap, map } from "rxjs/operators";
 import { environment } from '../../environments/environment';
 
+export type captchaResponse = {
+    success: boolean,
+    challenge_ts: string,
+    hostname: string,
+    score: number,
+    action: string
+}
 
 @Injectable({
     providedIn: 'root'
@@ -14,14 +21,16 @@ export class AutenticateApiService {
         private http: HttpClient
     ) {  }
 
-    private endPoint = `${environment.endpoint}/api/authenticate`;
+    private endPoints = {
+        authenticate:`${environment.endpoint}/api/authenticate`,
+        reCaptcha:`${environment.endpoint}/api/validateCaptcha`
+    }
 
     login(user: string, pass: string): Observable<boolean> {
         return of(null).pipe(
-            switchMap(val => this.http.post<{ tokem: string }>(this.endPoint, { username: user, password: pass }, { observe: "body" })),
+            switchMap(val => this.http.post<{ tokem: string }>(this.endPoints.authenticate, { username: user, password: pass }, { observe: "body" })),
             tap(val => {
                 if (val.tokem) {
-
                     localStorage.setItem('token', val.tokem);
                 }
             }), 
@@ -33,5 +42,9 @@ export class AutenticateApiService {
                 }
             })
         )
+    }
+
+    validateCaptcha(token):Observable<captchaResponse>{
+        return this.http.post<captchaResponse>(this.endPoints.reCaptcha, { token: token }, { observe: "body" })
     }
 }
