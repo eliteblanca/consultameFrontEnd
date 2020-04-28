@@ -16,6 +16,8 @@ import { UploaderModule  } from '@syncfusion/ej2-angular-inputs';
 import { RadioButtonModule } from '@syncfusion/ej2-angular-buttons';
 import { TooltipModule } from 'ng2-tooltip-directive';
 import { GridModule } from '@syncfusion/ej2-angular-grids';
+import { NgPipesModule } from 'ngx-pipes';
+import { RECAPTCHA_V3_SITE_KEY, RecaptchaV3Module } from 'ng-recaptcha';
 
 import { AppComponent } from './app.component';
 import { ArticleCreatorComponent } from './components/article-creator/article-creator.component';
@@ -149,10 +151,13 @@ import { ReporteCambiosComponent } from './components/reporte-cambios/reporte-ca
         UploaderModule,
         RadioButtonModule,
         TooltipModule,
-        GridModule
+        GridModule,
+        NgPipesModule,
+        RecaptchaV3Module
     ],
     providers: [
-        JwtInterceptor
+        JwtInterceptor,
+        { provide: RECAPTCHA_V3_SITE_KEY, useValue: '6LeHN-4UAAAAADekZh0uauPSDDc2yGol1pzVGg9n' }
     ],
     bootstrap: [AppComponent]
 })
