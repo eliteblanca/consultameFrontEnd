@@ -57,6 +57,8 @@ export class LoginComponent implements OnInit, AfterViewInit {
                     if(response.score >= 0.5){
                         return this.autenticateApi.login(this.usuario.nativeElement.value, this.password.nativeElement.value)
                     }else{
+
+                        console.log('recaptchaError')
                         return of(null)
                     }
 
