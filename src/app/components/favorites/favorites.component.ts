@@ -13,7 +13,8 @@ import { switchMap, tap, concatMap } from 'rxjs/operators';
 export class FavoritesComponent implements OnInit {
   
   public articles: Article[] = [];
-  private placeholders:any[]
+  public placeholders:any[]
+  public updateMasonryLayout:boolean = false;
   private scrollSubject = new BehaviorSubject(1)
   private scroll$ = this.scrollSubject.asObservable()
 

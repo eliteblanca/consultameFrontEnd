@@ -14,8 +14,9 @@ import { StateService } from "../../services/state.service";
 export class NewsListComponent implements OnInit, OnChanges {
 
   news: news[] = [];
-  private placeholders:any[] = []
-  private currentPage = 1;
+  public placeholders:any[] = []
+  public updateMasonryLayout:boolean = false;
+
 
   @Input()
   date:Date;  
