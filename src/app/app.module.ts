@@ -3,6 +3,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { IconModule } from "@visurel/iconify-angular";
 import { AppRoutingModule } from './app-routing.module';
 import { QuillModule } from 'ngx-quill';
@@ -22,7 +23,6 @@ import { RECAPTCHA_V3_SITE_KEY, RecaptchaV3Module } from 'ng-recaptcha';
 import { AppComponent } from './app.component';
 import { ArticleCreatorComponent } from './components/article-creator/article-creator.component';
 import { ArticleEditableComponent } from './components/article-editable/article-editable.component';
-import { ArticlesEditorListComponent } from './components/articles-editor-list/articles-editor-list.component';
 import { ButtonComponent } from './components/button/button.component';
 import { CategoriesEditorComponent } from './components/categories-editor/categories-editor.component';
 import { CategoryEditableComponent } from './components/category-editable/category-editable.component';
@@ -70,6 +70,7 @@ import { IndicadoresComponent } from './components/indicadores/indicadores.compo
 import { BaseDatosComponent } from './components/base-datos/base-datos.component';
 import { ReporteComentariosComponent } from './components/reporte-comentarios/reporte-comentarios.component';
 import { ReporteCambiosComponent } from './components/reporte-cambios/reporte-cambios.component';
+import { ArticleplaceholderComponent } from './components/articleplaceholder/articleplaceholder.component';
 @NgModule({
     declarations: [
         AppComponent,
@@ -94,7 +95,6 @@ import { ReporteCambiosComponent } from './components/reporte-cambios/reporte-ca
         IconComponent,
         PagerComponent,
         ModalComponent,
-        ArticlesEditorListComponent,
         ArticleEditableComponent,
         ArticleCreatorComponent,
         SearchInputComponent,
@@ -133,6 +133,7 @@ import { ReporteCambiosComponent } from './components/reporte-cambios/reporte-ca
         BaseDatosComponent,
         ReporteComentariosComponent,
         ReporteCambiosComponent,
+        ArticleplaceholderComponent,
     ],
     imports: [
         BrowserModule,
@@ -153,7 +154,8 @@ import { ReporteCambiosComponent } from './components/reporte-cambios/reporte-ca
         TooltipModule,
         GridModule,
         NgPipesModule,
-        RecaptchaV3Module
+        RecaptchaV3Module,
+        BrowserAnimationsModule
     ],
     providers: [
         JwtInterceptor,

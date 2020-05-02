@@ -21,6 +21,7 @@ export class ArticleComponent implements OnInit, AfterViewInit {
 
   @Output() onPostFavorite = new EventEmitter<Article>();
   @Output() onDeleteFavorite = new EventEmitter<Article>();
+  @Output() imageLoaded = new EventEmitter<boolean>();
 
   public listDissmised = true;
   public hasLongList;
@@ -37,6 +38,10 @@ export class ArticleComponent implements OnInit, AfterViewInit {
   public resumen:string[] = [];
   public imageSrc:string;
   public links:{href:string, text:string}[] = [];
+
+  imageLoad(){
+    this.imageLoaded.next(true)
+  }
 
   ngAfterViewInit(){
     setTimeout(() => {

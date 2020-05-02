@@ -1,5 +1,6 @@
-import { Component, OnInit, Input, ChangeDetectionStrategy } from '@angular/core';
-import { Article, articleConf } from "../../article";
+import { Component, Input, OnInit } from '@angular/core';
+import { NgxMasonryOptions } from 'ngx-masonry';
+import { Article } from "../../article";
 
 @Component({
   selector: 'app-article-list',
@@ -9,9 +10,16 @@ import { Article, articleConf } from "../../article";
 export class ArticleListComponent implements OnInit {
 
   @Input() articles:Article[] = [];
+  @Input() placeholders:any[] = [];
 
   constructor() {  }
 
   ngOnInit() {  }
+
+  updateMasonryLayout = false;
+
+  masonryOptions:NgxMasonryOptions = {
+    gutter: 16
+  }
 
 }

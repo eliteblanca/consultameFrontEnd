@@ -1,6 +1,6 @@
 <div class="img_header" #imgHeader>
     <a class="resumme" #resume [routerLink]="['/app/articles/',Article.id]">
-        <img *ngIf="imageSrc" [src]="imageSrc">
+        <img *ngIf="imageSrc" [src]="imageSrc" (load)="imageLoad()">
     </a>
 </div>
 <a class="title" [routerLink]="['/app/articles/',Article.id]" [state]="Article">{{Article.title}}</a>

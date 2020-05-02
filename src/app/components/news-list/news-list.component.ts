@@ -1,7 +1,8 @@
-import { Component, OnInit, Input, OnChanges, SimpleChanges } from '@angular/core';
-import { news,NewsApiService } from "../../api/news-api.service";
-import { EventsService } from "../../services/events.service";
-import { filter, switchMap, map, tap } from 'rxjs/operators';
+import { Component, Input, OnChanges, OnInit, SimpleChanges } from '@angular/core';
+import { NgxMasonryOptions } from 'ngx-masonry';
+import { BehaviorSubject, merge, Observable } from 'rxjs';
+import { concatMap, tap } from 'rxjs/operators';
+import { news, NewsApiService } from "../../api/news-api.service";
 import { StateService } from "../../services/state.service";
 
 
@@ -12,20 +13,19 @@ import { StateService } from "../../services/state.service";
 })
 export class NewsListComponent implements OnInit, OnChanges {
 
-  _news: news[];
-
+  news: news[] = [];
+  private placeholders:any[] = []
   private currentPage = 1;
 
   @Input()
-  date:Date;
+  date:Date;  
+  
+  private scrollSubject = new BehaviorSubject(1)
+  private scroll$ = this.scrollSubject.asObservable()
+  private news$:Observable<news[]>
 
-  @Input()
-  set news(news: news[]) {
-    this._news = news;
-  }
-
-  get news(): news[] {
-    return this._news;
+  masonryOptions:NgxMasonryOptions = {
+    gutter: 16
   }
 
   constructor(
@@ -34,73 +34,36 @@ export class NewsListComponent implements OnInit, OnChanges {
   ) {  }
 
   ngOnInit() {
-    this.state.selectedPcrc$.pipe(
-      switchMap(({id_dp_pcrc}) => this.newsApiService.getNews( {
-        idSubline:id_dp_pcrc.toString(),
-        state:'published',
-        from:0,
-        size:20,
-        date:new Date().getTime().toString()
-      }))
-    ).subscribe( news => {
-      this._news = news
-    })
+    let pcrc$ = this.state.selectedPcrc$.pipe(tap(pcrc => this.news = []))
+
+    this.news$ = merge(this.scroll$,pcrc$).pipe(
+      tap(value => this.placeholders = [1,2,3]),
+      concatMap(value => 
+        this.newsApiService.getNews({
+          idSubline:this.state.getValueOf('selectedPcrc').id_dp_pcrc.toString(),
+          state:'published',
+          from:this.news.length,
+          size:6,
+          date:this.date.getTime().toString()
+        })),
+        tap(news => {
+          this.news = this.news.concat(news)
+          this.placeholders = []
+        })
+    )
+
+    this.news$.subscribe()
+
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     if(!changes.date.isFirstChange()){
-      if( changes.date.currentValue.getDate() == new Date().getDate() && changes.date.currentValue.getFullYear() == new Date().getFullYear() && changes.date.currentValue.getMonth() == new Date().getMonth()  ){
-        this.state.selectedPcrc$.pipe(
-          switchMap( ({id_dp_pcrc}) => this.newsApiService.getNews( {
-            idSubline:id_dp_pcrc.toString(),
-            state:'published',
-            from:0,
-            size:20, 
-            date:new Date().getTime().toString() 
-          }) ),
-          tap(news => {
-            this._news = news
-          })
-        ).subscribe()
-        
-      } else {
-          this.state.selectedPcrc$.pipe(
-            switchMap( ({id_dp_pcrc}) => this.newsApiService.getNews({
-              idSubline:id_dp_pcrc.toString(),
-              state:'published',
-              from:0,
-              size:20,
-              date: changes.date.currentValue.getTime().toString()
-            }) ),
-            tap(news => {
-              this._news = news
-            })
-          ).subscribe()
-
-      }
+      this.news = []
+      this.scrollSubject.next(1);
     }
   }
 
   onScroll(event){
-    if(!!!this.date){
-      this.date = new Date()
-    }
-
-    this.state.selectedPcrc$.pipe(
-      switchMap( ({id_dp_pcrc}) =>
-        this.newsApiService.getNews({
-            idSubline:id_dp_pcrc.toString(),
-            state:'published',
-            from:this.currentPage*20,
-            size:20,
-            date:this.date.getTime().toString()
-        })
-      ),
-      tap(news => {
-        this._news = this._news.concat(news)
-        this.currentPage++;
-      })
-    )
-
+    this.scrollSubject.next(1);
   }
 }

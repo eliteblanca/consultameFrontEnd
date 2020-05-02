@@ -15,6 +15,7 @@ import { of, concat, BehaviorSubject, iif } from 'rxjs';
 export class ExplorarComponent implements OnInit {
 
     public articles: Article[] = []
+    public placeholders: any[] = []
     private categorySelected:category
     private scrollSubject = new BehaviorSubject(1)
     private scroll$ = this.scrollSubject.asObservable()
@@ -33,7 +34,8 @@ export class ExplorarComponent implements OnInit {
         ).subscribe()
 
         this.scroll$.pipe(
-            filter(value => !!this.categorySelected) ,
+            filter(value => !!this.categorySelected),
+            tap(value => this.placeholders = [1,1,1]),
             concatMap(value =>
                 this.articlesApi.getArticlesByCategory(
                     this.categorySelected.id,
@@ -44,6 +46,7 @@ export class ExplorarComponent implements OnInit {
             ),
             tap(articles => {
                 this.articleList.articles = this.articleList.articles.concat(articles)
+                this.placeholders = []
             })
         ).subscribe()
     }

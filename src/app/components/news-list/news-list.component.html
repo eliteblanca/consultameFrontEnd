@@ -2,12 +2,13 @@
     infiniteScroll
     (scrolled)="onScroll($event)"        
     [infiniteScrollDistance]="2"
-    [infiniteScrollThrottle]="50" 
+    [infiniteScrollThrottle]="1000" 
     [scrollWindow]="false">
 
     <div class="timeLapse">
-        <ngx-masonry [options]="{ gutter: 15, horizontalOrder: true}">
-            <app-article  ngxMasonryItem  class="masonry-item" *ngFor="let news of _news" [Article]="news"></app-article>
+        <ngx-masonry [options]="masonryOptions" [updateLayout]="updateMasonryLayout">
+            <app-article (imageLoaded)="updateMasonryLayout = !updateMasonryLayout" ngxMasonryItem  class="masonry-item" *ngFor="let news of news" [Article]="news"></app-article>
+            <app-articleplaceholder ngxMasonryItem  class="masonry-item" *ngFor="let placeholder of placeholders" [type]="'articulo'"> </app-articleplaceholder>
         </ngx-masonry>
     </div>
 </div>

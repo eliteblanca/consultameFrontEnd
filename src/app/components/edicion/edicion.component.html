@@ -5,7 +5,7 @@
     </ng-scrollbar>
 </div>
 <div class="verticalColumn" *ngIf="categorySelected">
-    <h3 class="columnTitle">{{categorySelected.name }} / Articulos</h3>
+    <h3 class="columnTitle">{{categorySelected.name }}</h3>
     <ng-scrollbar>
         <div class="scroll">
             <div class="Listheader mb1">
@@ -16,10 +16,10 @@
                 <app-article-editable [article]="article" (onArticleDeleted)="articuloEliminado($event)" *ngFor="let article of articles"></app-article-editable>
             </div>
             <app-button *ngIf="!articlesLoadingSpinner" [buttonText]="'Cargar mas articulos'" [iconName]="'mdi:chevron-double-down'" (click)="loadMoreArticles()"></app-button>
-            <app-spinner *ngIf="articlesLoadingSpinner"></app-spinner>
-
+            <app-articleplaceholder [type]="'articulorow'" *ngIf="articlesLoadingSpinner"></app-articleplaceholder>
+            <app-articleplaceholder [type]="'articulorow'" *ngIf="articlesLoadingSpinner"></app-articleplaceholder>
+            <app-articleplaceholder [type]="'articulorow'" *ngIf="articlesLoadingSpinner"></app-articleplaceholder>
         </div>
-            <!-- <app-articles-editor-list [categorySelected]="categorySelected.id" [state]="'published'"></app-articles-editor-list> -->
     </ng-scrollbar>
 </div>
 <div class="verticalColumn" *ngIf="categorySelected">
@@ -33,7 +33,9 @@
                 <app-article-editable [article]="borrador" (onArticleDeleted)="borradorEliminado($event)" *ngFor="let borrador of borradores"></app-article-editable>
             </div>
             <app-button *ngIf="!borradoresLoadingSpinner" [buttonText]="'Cargar mas borradores'" [iconName]="'mdi:chevron-double-down'" (click)="loadMoreBorradores()"></app-button>
-            <app-spinner *ngIf="borradoresLoadingSpinner"></app-spinner>
+            <app-articleplaceholder [type]="'articulorow'" *ngIf="borradoresLoadingSpinner"></app-articleplaceholder>
+            <app-articleplaceholder [type]="'articulorow'" *ngIf="borradoresLoadingSpinner"></app-articleplaceholder>
+            <app-articleplaceholder [type]="'articulorow'" *ngIf="borradoresLoadingSpinner"></app-articleplaceholder>
         </div>
     </ng-scrollbar>
 </div>
