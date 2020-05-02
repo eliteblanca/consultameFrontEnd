@@ -5,7 +5,7 @@
         <div class="search_box_suggestion" 
             *ngFor="let suggestion of suggestions" 
             [ngClass]="{'selected': suggestion.selected}"
-            (click)="buscar(textoDeBusqueda+suggestion.value)">                
+            (click)="buscar(suggestion.value)">                
                 <strong>{{suggestion.value}}</strong>
         </div>
     </div>

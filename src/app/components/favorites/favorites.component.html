@@ -4,7 +4,8 @@
     [infiniteScrollDistance]="2"
     [infiniteScrollThrottle]="1000"
     [scrollWindow]="false">
-    <ngx-masonry [options]="{ gutter: 15}">
-        <app-article ngxMasonryItem  class="masonry-item" *ngFor="let article of articles" [Article]="article" (onDeleteFavorite)="onDeleteFavorite($event)"></app-article>
+    <ngx-masonry [options]="{ gutter: 15}" [updateLayout]="updateMasonryLayout">
+        <app-article ngxMasonryItem  class="masonry-item" (imageLoaded)="updateMasonryLayout = !updateMasonryLayout" *ngFor="let article of articles" [Article]="article" (onDeleteFavorite)="onDeleteFavorite($event)"></app-article>
+        <app-articleplaceholder [type]="'articulo'" ngxMasonryItem  class="masonry-item" *ngFor="let placeholder of placeholders"> </app-articleplaceholder>
     </ngx-masonry>
 </div>

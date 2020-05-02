@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { news, NewsApiService } from "../../api/news-api.service";
+import { news } from "../../api/news-api.service";
 
 @Component({
   selector: 'app-news',
@@ -12,10 +12,12 @@ export class NewsComponent implements OnInit {
   newsList:news[] = [];
   public maxDate: Date = new Date();
   public minDate: Date = new Date(2019, 9 , 30);
-  public selectedDate:Date;
+  public selectedDate:Date = new Date();
 
 
-  constructor(){  }
+  constructor(){ 
+
+  }
   
   ngOnInit(){  }
 

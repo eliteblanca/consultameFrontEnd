@@ -1,10 +1,9 @@
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { merge, Observable, of, concat, Subject, BehaviorSubject, iif } from 'rxjs';
-import { filter, map, switchMap, tap, concatMap } from "rxjs/operators";
+import { BehaviorSubject, iif, merge, Observable } from 'rxjs';
+import { concatMap, filter, map, tap } from "rxjs/operators";
 import { ArticlesApiService } from "../../api/articles-api.service";
 import { Article } from "../../article";
-import { EventsService } from "../../services/events.service";
 import { StateService } from "../../services/state.service";
 import { ArticleListComponent } from "../article-list/article-list.component";
 @Component({
@@ -15,10 +14,10 @@ import { ArticleListComponent } from "../article-list/article-list.component";
 export class SearchComponent implements OnInit, AfterViewInit {
 
     public articles:Article[] = [];
+    public placeholders:any[] = [];
     private articles$:Observable<any>;
     private newQuery$:Observable<any>;
     private newTag$:Observable<any>;
-    private vlen = 0;
     private currentQuery;
     private currenttag;
     private scrollSubject = new BehaviorSubject(1)
@@ -30,15 +29,11 @@ export class SearchComponent implements OnInit, AfterViewInit {
 
     constructor(
         public route: ActivatedRoute,
-        private eventsService: EventsService,
         private articlesApiService: ArticlesApiService,
         private state: StateService
     ) {  }
 
-    ngOnInit() {  }
-
-    ngAfterViewInit() {
-
+    ngOnInit() { 
         this.newQuery$ = this.route.queryParams.pipe(
             filter(params => {
                 return !!params.query
@@ -48,7 +43,7 @@ export class SearchComponent implements OnInit, AfterViewInit {
                 this.currentQuery = query.query
                 this.currenttag = null;
             }))
-
+   
         this.newTag$ = this.route.queryParams.pipe(
             filter(params => {
                 return !!params.tag
@@ -58,15 +53,16 @@ export class SearchComponent implements OnInit, AfterViewInit {
                 this.currentQuery = null
                 this.currenttag = tag.tag;
             }))
-
+   
         this.articles$ = merge(this.newQuery$, this.newTag$).pipe(            
             tap(articles => {
                 this.articles = []
                 this.scrollSubject.next(1);
             })
         )
-
+   
         this.scroll$.pipe(
+            tap(value => this.placeholders = [1,1,1]),
             concatMap(value => {
                 return iif( () =>!!this.currenttag,
                     this.articlesApiService.getArticlesByQuery(
@@ -87,14 +83,20 @@ export class SearchComponent implements OnInit, AfterViewInit {
             }),
             tap(articles => {
                 this.articles = this.articles.concat(articles)
+                this.placeholders = []
             })
         ).subscribe()
-
+   
         this.articles$.subscribe( )
-
+   
         this.newTag$.subscribe()
-
+   
         this.newQuery$.subscribe()
+
+     }
+
+    ngAfterViewInit() {
+
 
     }
 

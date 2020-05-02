@@ -25,10 +25,12 @@
 
 :host .header .editIcon{
     color: transparent;
+    display: none;
     transition: all 200ms ease-in-out;
 }
 
 :host .header:hover .editIcon{
+    display: unset;
     color: var(--primaryText);
 }
 
@@ -37,10 +39,14 @@
 }
 
 :host .header .title{
+    overflow-wrap: break-word;
+    width: 1rem;
     margin: 0;
     margin-left: 1rem;
     line-height: 1.5rem;
+    -webkit-box-flex: 1;
     flex-grow: 1;
+
 }
 :host .header .title.leaftCategory:hover{
     color: var(--primary);

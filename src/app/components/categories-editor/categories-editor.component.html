@@ -6,6 +6,6 @@
         <app-button [buttonText]="'Nueva categoria'" (click)="nuevaCategoriaMode = true" *ngIf="!!response.value.length && !nuevaCategoriaMode">  </app-button>
     </ng-template>
     <ng-template [ngIf]="response.state == 'loading'" >
-        <app-spinner></app-spinner>
+        <app-articleplaceholder *ngFor="let placeholder of [1,2,3]" [type]="'categoria'"></app-articleplaceholder>
     </ng-template>
 </div>

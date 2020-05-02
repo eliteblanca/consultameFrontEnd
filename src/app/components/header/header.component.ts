@@ -7,7 +7,7 @@ import { StateService } from "../../services/state.service";
 @Component({
     selector: 'app-header',
     templateUrl: './header.component.html',
-    styleUrls: ['./header.component.css', '../../../../node_modules/ng-masonry-grid/ng-masonry-grid.css']
+    styleUrls: ['./header.component.css']
 })
 export class HeaderComponent implements OnInit {
 

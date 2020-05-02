@@ -2,6 +2,7 @@
     <app-article *ngFor="let article of column" [Article]="article"></app-article>
 </div> -->
 
-<ngx-masonry [options]="{ gutter: 15}">
-    <app-article  ngxMasonryItem  class="masonry-item" *ngFor="let article of articles" [Article]="article"></app-article>
+<ngx-masonry [options]="masonryOptions" [updateLayout]="updateMasonryLayout">
+    <app-article (imageLoaded)="updateMasonryLayout = !updateMasonryLayout" ngxMasonryItem  class="masonry-item" *ngFor="let article of articles" [Article]="article"></app-article>
+    <app-articleplaceholder [type]="'articulo'" ngxMasonryItem  class="masonry-item" *ngFor="let placeholder of placeholders">a</app-articleplaceholder>
 </ngx-masonry>
