@@ -159,7 +159,7 @@ import { ArticleplaceholderComponent } from './components/articleplaceholder/art
     ],
     providers: [
         JwtInterceptor,
-        { provide: RECAPTCHA_V3_SITE_KEY, useValue: '6LeHN-4UAAAAADekZh0uauPSDDc2yGol1pzVGg9n' }
+        { provide: RECAPTCHA_V3_SITE_KEY, useValue: '6Ld2YvMUAAAAAO2HZcz6L-s7uKeJKKXvn4W5o3V2' }
     ],
     bootstrap: [AppComponent]
 })
