@@ -18,7 +18,7 @@ import { RadioButtonModule } from '@syncfusion/ej2-angular-buttons';
 import { TooltipModule } from 'ng2-tooltip-directive';
 import { GridModule } from '@syncfusion/ej2-angular-grids';
 import { NgPipesModule } from 'ngx-pipes';
-import { RECAPTCHA_V3_SITE_KEY, RecaptchaV3Module } from 'ng-recaptcha';
+import { RecaptchaModule, RECAPTCHA_LANGUAGE } from 'ng-recaptcha';
 
 import { AppComponent } from './app.component';
 import { ArticleCreatorComponent } from './components/article-creator/article-creator.component';
@@ -154,12 +154,15 @@ import { ArticleplaceholderComponent } from './components/articleplaceholder/art
         TooltipModule,
         GridModule,
         NgPipesModule,
-        RecaptchaV3Module,
+        RecaptchaModule,
         BrowserAnimationsModule
     ],
     providers: [
         JwtInterceptor,
-        { provide: RECAPTCHA_V3_SITE_KEY, useValue: '6Ld2YvMUAAAAAO2HZcz6L-s7uKeJKKXvn4W5o3V2' }
+        {
+            provide: RECAPTCHA_LANGUAGE,
+            useValue: 'es'
+        }
     ],
     bootstrap: [AppComponent]
 })
