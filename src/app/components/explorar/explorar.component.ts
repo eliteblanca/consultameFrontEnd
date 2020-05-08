@@ -1,11 +1,10 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
+import { concatMap, filter, tap } from 'rxjs/operators';
 import { ArticlesApiService } from "../../api/articles-api.service";
 import { category } from "../../api/categories-api.service";
 import { Article } from "../../article";
-import { ArticleListComponent } from "../article-list/article-list.component";
 import { StateService } from "../../services/state.service";
-import { tap, switchMap, concatMap, filter } from 'rxjs/operators';
-import { of, concat, BehaviorSubject, iif } from 'rxjs';
 
 @Component({
     selector: 'app-explorar',
@@ -19,9 +18,6 @@ export class ExplorarComponent implements OnInit {
     private categorySelected:category
     private scrollSubject = new BehaviorSubject(1)
     private scroll$ = this.scrollSubject.asObservable()
-
-    @ViewChild(ArticleListComponent, { static: false })
-    articleList: ArticleListComponent;
 
     constructor(
         private state: StateService,
@@ -40,12 +36,12 @@ export class ExplorarComponent implements OnInit {
                 this.articlesApi.getArticlesByCategory(
                     this.categorySelected.id,
                     'published',
-                    this.articleList.articles.length,
+                    this.articles.length,
                     6
                 )
             ),
             tap(articles => {
-                this.articleList.articles = this.articleList.articles.concat(articles)
+                this.articles = this.articles.concat(articles)
                 this.placeholders = []
             })
         ).subscribe()
