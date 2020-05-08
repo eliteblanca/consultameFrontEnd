@@ -31,7 +31,7 @@ export class AplicationComponent implements OnInit, OnDestroy {
         this.googleAnalytics.login(this.userService.usuario.sub)
         this.clicktime = setTimeout(() => {
             this.userService.logOut()
-        }, 1000*15);
+        }, 1000*300);
     }
 
 
@@ -41,6 +41,6 @@ export class AplicationComponent implements OnInit, OnDestroy {
 
         this.clicktime = setTimeout(() => {            
             this.userService.logOut()
-        }, 1000*15);
+        }, 1000*300);
     }
 }

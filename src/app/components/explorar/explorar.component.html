@@ -1,4 +1,4 @@
-<div class="categoriesContainer">    
+<div class="categoriesContainer">
     <ng-scrollbar>
         <div class="ma.5 mr1">
             <app-categories [mode]="'explore'" (onCategorySelected)="categoriaSeleccionada($event)"></app-categories>
@@ -6,9 +6,9 @@
     </ng-scrollbar>
 </div>
 <div infiniteScroll
-    (scrolled)="onScroll($event)"        
+    (scrolled)="onScroll($event)"
     [infiniteScrollDistance]="2"
-    [infiniteScrollThrottle]="1000" 
+    [infiniteScrollThrottle]="1000"
     [scrollWindow]="false"
     class="searchContainer">
     <app-article-list [articles]="articles" [placeholders]="placeholders"></app-article-list>
