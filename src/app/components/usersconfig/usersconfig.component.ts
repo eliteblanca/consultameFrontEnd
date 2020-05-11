@@ -18,7 +18,13 @@ export class UsersconfigComponent implements OnInit {
     public pcrcApi:PcrcApiService
   ) {  }
 
-  ngOnInit() { 
+  ngOnInit() {
+
+    this.state.selectedPcrc$.subscribe( pcrc =>{
+      this.state.loadPcrcUsersList()
+    })
+
+    this.state.loadPcrcUsersList()
   }
 
   public roles:user['rol'][] = ["admin","publicador","user"]

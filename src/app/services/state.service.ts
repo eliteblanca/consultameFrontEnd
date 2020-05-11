@@ -1,13 +1,11 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, combineLatest } from 'rxjs';
 import { distinctUntilChanged, filter, map, switchMap, tap } from 'rxjs/operators';
 import { CategoriesApiService, category, categoryRaw } from "../api/categories-api.service";
 import { news } from "../api/news-api.service";
 import { cliente, PcrcApiService } from "../api/pcrc-api.service";
 import { user, UserApiService } from "../api/user-api.service";
-import { Article } from '../article';
-import { UserService } from "../services/user.service";
 
 export type state = {
     selectedPcrc: cliente['pcrcs'][0],
@@ -26,6 +24,11 @@ export type state = {
     reportsSelectedDateRange:{from:Date, to:Date},
     idNewsOnEdition: string,
     newDraft: news,
+    user: {
+        sub: string,
+        name: string,
+        rol: 'admin' | 'user' | 'publicador'
+    }
 }
 
 @Injectable({
@@ -33,16 +36,8 @@ export type state = {
 })
 export class StateService {
     private _state: state = {
-        selectedPcrc: {
-            cod_pcrc: '',
-            id_dp_pcrc: 0,
-            pcrc: ''
-        },
-        selectedCliente: {
-            cliente: '',
-            id_dp_clientes: 0,
-            pcrcs: []
-        },
+        selectedPcrc: null,
+        selectedCliente: null,
         userPcrc: [],
         sideSheetOpen: false,
         selectedPcrcCategories: { state: 'loading' },
@@ -56,14 +51,15 @@ export class StateService {
         usersListQuery: '',
         reportsSelectedDateRange:null,     
         idNewsOnEdition: '',
-        newDraft: null
+        newDraft: null,
+        user: null
     }
 
     private store = new BehaviorSubject<state>(this._state)
     private state$ = this.store.asObservable();
 
-    public selectedPcrc$ = this.state$.pipe(map(_state => _state.selectedPcrc), distinctUntilChanged())
-    public selectedCliente$ = this.state$.pipe(map(_state => _state.selectedCliente), distinctUntilChanged())
+    public selectedPcrc$ = this.state$.pipe(map(_state => _state.selectedPcrc), distinctUntilChanged(), filter(pcrc => !!pcrc))
+    public selectedCliente$ = this.state$.pipe(map(_state => _state.selectedCliente), distinctUntilChanged() , filter(cliente => !!cliente))
     public userPcrc$ = this.state$.pipe(map(_state => _state.userPcrc), distinctUntilChanged())
     public sideSheetOpen$ = this.state$.pipe(map(_state => _state.sideSheetOpen), distinctUntilChanged())
     public selectedPcrcCategories$ = this.state$.pipe(map(_state => _state.selectedPcrcCategories), distinctUntilChanged())
@@ -78,11 +74,11 @@ export class StateService {
     public reportsSelectedDateRange$ = this.state$.pipe(map(_state => _state.reportsSelectedDateRange), distinctUntilChanged())
     public idNewsOnEdition$ = this.state$.pipe(map(_state => _state.idNewsOnEdition), distinctUntilChanged())
     public newDraft$ = this.state$.pipe(map(_state => _state.newDraft), distinctUntilChanged(), filter(draft => !!draft))
+    public user$ = this.state$.pipe(map(_state => _state.user), distinctUntilChanged(), filter(user => !!user))
 
     constructor(
         public route: ActivatedRoute,
         public categoriesApi: CategoriesApiService,
-        public UserService: UserService,
         public userApi: UserApiService,
         private pcrcApi: PcrcApiService,
     ) {
@@ -93,13 +89,7 @@ export class StateService {
             })
         ).subscribe()
 
-        this.selectedPcrc$.pipe(
-            filter(pcrc => this.UserService.usuario.rol == 'admin'),
-            switchMap(pcrc => this.userApi.getPcrcUsers(pcrc.id_dp_pcrc.toString())),
-            tap(users => {
-                this.store.next(this._state = { ...this._state, userslist: users })
-            })
-        ).subscribe()
+
 
         this.selectedUser$.pipe(
             tap(user => { this.newSelectedUserPcrcState({ state: "loading" }) }),
@@ -189,7 +179,8 @@ export class StateService {
             usersListQuery: '',
             reportsSelectedDateRange:null,
             idNewsOnEdition: '',
-            newDraft:null
+            newDraft:null,
+            user:null
         })
     }
 
@@ -226,10 +217,9 @@ export class StateService {
                     this.store.next(this._state = { ...this._state, userslist: users })
                 })
             ).subscribe()
-
         }
     }
-    
+
     newReportsSelectedDateRange = (rango:{from:Date, to:Date}) =>{
         this.store.next(this._state = { ...this._state, reportsSelectedDateRange: rango })
     }
@@ -237,8 +227,20 @@ export class StateService {
     onIdNewsOnEdition = (idNewsOnEdition:string) => {
         this.store.next(this._state = { ...this._state, idNewsOnEdition: idNewsOnEdition })
     }
-    
+
     onNewDraft = (draft:news) => {
         this.store.next(this._state = { ...this._state, newDraft: draft })
+    }
+
+    setUser = (user:state['user']) => {
+        this.store.next(this._state = { ...this._state, user: user })
+    }
+
+    loadPcrcUsersList = () => {
+        this.userApi.getPcrcUsers(this._state.selectedPcrc.id_dp_pcrc.toString()).pipe(
+            tap(users => {
+                this.store.next(this._state = { ...this._state, userslist: users })
+            })            
+        ).subscribe()
     }
 }

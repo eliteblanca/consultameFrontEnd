@@ -162,7 +162,7 @@ import { ArticleplaceholderComponent } from './components/articleplaceholder/art
         {
             provide: RECAPTCHA_LANGUAGE,
             useValue: 'es'
-        }
+        }        
     ],
     bootstrap: [AppComponent]
 })

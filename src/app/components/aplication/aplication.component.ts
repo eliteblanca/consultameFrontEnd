@@ -19,7 +19,7 @@ export class AplicationComponent implements OnInit, OnDestroy {
     ) { }
 
     ngOnDestroy(): void {
-        clearTimeout(this.clicktime)
+        // clearTimeout(this.clicktime)
     }
 
     @HostListener('window:beforeunload', ['$event'])
@@ -28,19 +28,19 @@ export class AplicationComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
-        this.googleAnalytics.login(this.userService.usuario.sub)
-        this.clicktime = setTimeout(() => {
-            this.userService.logOut()
-        }, 1000*300);
+        // this.googleAnalytics.login(this.userService.usuario.sub)
+        // this.clicktime = setTimeout(() => {
+        //     this.userService.logOut()
+        // }, 1000*300);
     }
 
 
     siteClic(event){
 
-        clearTimeout(this.clicktime)
+        // clearTimeout(this.clicktime)
 
-        this.clicktime = setTimeout(() => {            
-            this.userService.logOut()
-        }, 1000*300);
+        // this.clicktime = setTimeout(() => {            
+        //     this.userService.logOut()
+        // }, 1000*300);
     }
 }

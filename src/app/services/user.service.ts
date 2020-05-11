@@ -34,14 +34,4 @@ export class UserService {
         
         this.router.navigate(['/login'])
     }
-
-    set selectedSubLine(newSubLine: { line: AllowedLines[0], subLine: AllowedLines[0]['sublines'][0] }) {
-        this._selectedSubLine = newSubLine;
-        this.events.newSelectedLine(newSubLine);
-    }
-
-    get selectedSubLine(): { line: AllowedLines[0], subLine: AllowedLines[0]['sublines'][0] } {
-        return this._selectedSubLine;
-    }
-
 }

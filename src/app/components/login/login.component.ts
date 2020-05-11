@@ -3,7 +3,6 @@ import { Router } from '@angular/router';
 import { AutenticateApiService } from "../../api/autenticate-api.service";
 import { RecaptchaComponent } from 'ng-recaptcha'
 
-
 type httpError = {
     status: number;
     statusText: string
@@ -29,7 +28,8 @@ export class LoginComponent implements OnInit, AfterViewInit {
 
     constructor(
         private autenticateApi: AutenticateApiService,
-        private router: Router
+        private router: Router,
+        
     ) { }
 
     ngOnInit() { }
