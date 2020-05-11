@@ -75,8 +75,8 @@ export class UserApiService {
         return this.http.delete<any>(this.endPoints.deleteUserPcrc(cedula, idPcrc),{ observe: "body" })
     }
 
-    searchUsers = (query:string): Observable<{ state: queryStatus, value?: user[] }> => {
-        return this.http.get<user[]>(this.endPoints.searchUsers, { params:{ query : query }, observe: "body" }).pipe(
+    searchUsers = (query:string, pcrcid?:string): Observable<{ state: queryStatus, value?: user[] }> => {
+        return this.http.get<user[]>(this.endPoints.searchUsers, { params:{ query : query, pcrcId:pcrcid }, observe: "body" }).pipe(
             map<user[],{ state: queryStatus, value?: user[]}  >(users => ({ state: "finish", value: users })),
             startWith({ state: "loading" })
         )

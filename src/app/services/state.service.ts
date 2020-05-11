@@ -192,15 +192,9 @@ export class StateService {
 
         this.store.next(this._state = { ...this._state, usersListQuery: query })
         if (!!query && !this._state.buscarEnTodosCheck) {
-            
-            this.store.next(this._state = { ...this._state, userslist: { state: "loading" } })
-
-            this.userApi.getPcrcUsers(this._state.selectedPcrc.id_dp_pcrc.toString()).pipe(
+            this.userApi.searchUsers(query,this._state.selectedPcrc.id_dp_pcrc.toString()).pipe(
                 tap(users => {
-                    if(users.value){
-                        let filteredUsers = users.value.filter(user => user.cedula.includes(query) || user.nombre.toLowerCase().replace('á','a').replace('é','e').replace('í','i').replace('ó','o').replace('ú','u').includes(query.toLowerCase()))
-                        this.store.next(this._state = { ...this._state, userslist: { state: "finish", value: filteredUsers } })
-                    }
+                    this.store.next(this._state = { ...this._state, userslist: users })                    
                 })
             ).subscribe()
 
