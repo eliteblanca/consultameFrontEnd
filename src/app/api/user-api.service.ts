@@ -76,7 +76,15 @@ export class UserApiService {
     }
 
     searchUsers = (query:string, pcrcid?:string): Observable<{ state: queryStatus, value?: user[] }> => {
-        return this.http.get<user[]>(this.endPoints.searchUsers, { params:{ query : query, pcrcId:pcrcid }, observe: "body" }).pipe(
+        var params = {}
+
+        if(pcrcid){
+            params = { query : query, pcrcId:pcrcid }
+        } else {
+            params = { query : query }
+        }
+
+        return this.http.get<user[]>(this.endPoints.searchUsers, { params:params, observe: "body" }).pipe(
             map<user[],{ state: queryStatus, value?: user[]}  >(users => ({ state: "finish", value: users })),
             startWith({ state: "loading" })
         )
