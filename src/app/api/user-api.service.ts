@@ -33,9 +33,7 @@ export class UserApiService {
 
     private endPoints = {
         getUsers: `${environment.endpoint}/api/users`,
-        postUser: `${environment.endpoint}/api/users`,
         updateUser: (idUsuario: string) => `${environment.endpoint}/api/users/${idUsuario}`,
-        deleteUser: (idUsuario: string) => `${environment.endpoint}/api/users/${idUsuario}`,
         getPcrcUsers: (idPcrc: string) => `${environment.endpoint}/api/pcrc/${idPcrc}/usuarios`,
         postUsersPcrc: (idUsuario: string) => `${environment.endpoint}/api/users/${idUsuario}/pcrc`,
         deleteUserPcrc: (cedula:string, pcrc:string) => `${environment.endpoint}/api/users/${cedula}/pcrc/${pcrc}`,
@@ -48,15 +46,7 @@ export class UserApiService {
 
     getUsers(): Observable<user[]> {
         return this.http.get<user[]>(this.endPoints.getUsers, { observe: "body" })
-    }
-
-    deleteUser(idUser: string): Observable<{ deleted: number }> {
-        return this.http.delete<{ deleted: number }>(this.endPoints.deleteUser(idUser), { observe: "body" })
-    }
-
-    postUser(user: { username: string, password: string, rol: string }): Observable<user> {
-        return this.http.post<user>(this.endPoints.postUser, user, { observe: "body" })
-    }
+    }    
 
     updateUserRol(idUsuario: string, newRol: string): Observable<{ status: string }> {
         return this.http.put<{ status: string }>(this.endPoints.updateUser(idUsuario), { rol: newRol }, { observe: "body" })

@@ -22,11 +22,6 @@ export class AplicationComponent implements OnInit, OnDestroy {
         // clearTimeout(this.clicktime)
     }
 
-    @HostListener('window:beforeunload', ['$event'])
-    unloadNotification($event: any) {
-      this.userService.logOut()
-    }
-
     ngOnInit() {
         // this.googleAnalytics.login(this.userService.usuario.sub)
         // this.clicktime = setTimeout(() => {
