@@ -7,7 +7,6 @@ import { NgScrollbar } from 'ngx-scrollbar';
 import { map, switchMap } from 'rxjs/operators';
 import { ArticlesApiService } from "../../api/articles-api.service";
 import { Article } from "../../article";
-import { UserService } from "../../services/user.service";
 import { RTEViewComponent } from "../rteview/rteview.component";
 import { googleAnalytics } from "../../services/googleAnalytics.service";
 import { StateService } from "../../services/state.service";
@@ -33,7 +32,6 @@ export class ArticleViewComponent implements OnInit, AfterViewInit {
     public activatedRoute: ActivatedRoute,
     public renderer: Renderer2,
     public articlesApi: ArticlesApiService,
-    public UserService: UserService,
     public Location: Location,
     public router: Router,
     public googleAnalytics: googleAnalytics,
@@ -95,15 +93,16 @@ export class ArticleViewComponent implements OnInit, AfterViewInit {
   }
 
   isFavorite() {
-    return this.article.favorites.includes(this.UserService.usuario.sub)
+    return this.article.favorites.includes(this.stateService.getValueOf('user').sub)
+    this.stateService.getValueOf('user')
   }
 
   isLike() {
-    return this.article.likes.includes(this.UserService.usuario.sub)
+    return this.article.likes.includes(this.stateService.getValueOf('user').sub)
   }
 
   isDisLike() {
-    return this.article.disLikes.includes(this.UserService.usuario.sub)
+    return this.article.disLikes.includes(this.stateService.getValueOf('user').sub)
   }
 
   addToFavorites() {
@@ -114,7 +113,7 @@ export class ArticleViewComponent implements OnInit, AfterViewInit {
           'interaction',          
           this.stateService.getValueOf('selectedCliente').cliente + '/' + this.stateService.getValueOf('selectedPcrc').pcrc          
         )
-        this.article.favorites = this.article.favorites.filter(userId => userId != this.UserService.usuario.sub)
+        this.article.favorites = this.article.favorites.filter(userId => userId != this.stateService.getValueOf('user').sub)
       })
     } else {
       this.articlesApi.postFavorite(this.article.id).subscribe((result) => {
@@ -123,7 +122,7 @@ export class ArticleViewComponent implements OnInit, AfterViewInit {
           'interaction',          
           this.stateService.getValueOf('selectedCliente').cliente + '/' + this.stateService.getValueOf('selectedPcrc').pcrc          
         )
-        this.article.favorites.push(this.UserService.usuario.sub)
+        this.article.favorites.push(this.stateService.getValueOf('user').sub)
       })
     }
   }
@@ -144,7 +143,7 @@ export class ArticleViewComponent implements OnInit, AfterViewInit {
           'interaction',
           this.stateService.getValueOf('selectedCliente').cliente + '/' + this.stateService.getValueOf('selectedPcrc').pcrc          
         )
-        this.article.likes = this.article.likes.filter(userId => userId != this.UserService.usuario.sub)
+        this.article.likes = this.article.likes.filter(userId => userId != this.stateService.getValueOf('user').sub)
       })
     } else {
       this.articlesApi.postLike(this.article.id).subscribe(() => {
@@ -153,11 +152,11 @@ export class ArticleViewComponent implements OnInit, AfterViewInit {
           'interaction',
           this.stateService.getValueOf('selectedCliente').cliente + '/' + this.stateService.getValueOf('selectedPcrc').pcrc          
         )
-        this.article.likes.push(this.UserService.usuario.sub)
+        this.article.likes.push(this.stateService.getValueOf('user').sub)
       })
     }
 
-    this.article.disLikes = this.article.disLikes.filter(userId => userId != this.UserService.usuario.sub)
+    this.article.disLikes = this.article.disLikes.filter(userId => userId != this.stateService.getValueOf('user').sub)
 
   }
 
@@ -169,7 +168,7 @@ export class ArticleViewComponent implements OnInit, AfterViewInit {
           'interaction',
           this.stateService.getValueOf('selectedCliente').cliente + '/' + this.stateService.getValueOf('selectedPcrc').pcrc          
         )
-        this.article.disLikes = this.article.disLikes.filter(userId => userId != this.UserService.usuario.sub)
+        this.article.disLikes = this.article.disLikes.filter(userId => userId != this.stateService.getValueOf('user').sub)
       })
     } else {
       this.articlesApi.postDisLike(this.article.id).subscribe(() => {
@@ -178,11 +177,11 @@ export class ArticleViewComponent implements OnInit, AfterViewInit {
           'interaction',
           this.stateService.getValueOf('selectedCliente').cliente + '/' + this.stateService.getValueOf('selectedPcrc').pcrc          
         )
-        this.article.disLikes.push(this.UserService.usuario.sub)
+        this.article.disLikes.push(this.stateService.getValueOf('user').sub)
       })
     }
 
-    this.article.likes = this.article.likes.filter(userId => userId != this.UserService.usuario.sub)
+    this.article.likes = this.article.likes.filter(userId => userId != this.stateService.getValueOf('user').sub)
 
   }
 

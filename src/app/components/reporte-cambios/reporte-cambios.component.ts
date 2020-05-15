@@ -1,17 +1,14 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import format from 'date-fns/format';
+import * as diff from 'diff';
 import { tap } from 'rxjs/operators';
 import { CategoriesApiService, categoryRaw } from "../../api/categories-api.service";
 import { JarvisApiService, personData } from "../../api/jarvis-api.service";
 import { cliente, PcrcApiService } from "../../api/pcrc-api.service";
-import { StateService } from "../../services/state.service";
-import { UserService } from "../../services/user.service";
+import { changesReport, posibleFilterFields, ReportsApiService } from "../../api/reports-api.service";
 import { Article } from '../../article';
-import { ReportsApiService } from "../../api/reports-api.service";
-import { posibleFilterFields, changesReport } from "../../api/reports-api.service";
-import format from 'date-fns/format';
-import * as htmlconverter from 'quill-delta-to-html';
+import { StateService } from "../../services/state.service";
 import { RTEViewComponent } from "../rteview/rteview.component";
-import * as diff from 'diff';
 
 declare global {
   interface Window {
@@ -86,7 +83,6 @@ export class ReporteCambiosComponent implements OnInit {
   constructor(
     public state: StateService,
     public pcrcApi: PcrcApiService,
-    public userService: UserService,
     public jarvisApi: JarvisApiService,
     public categoriesApi: CategoriesApiService,
     public reportsApi: ReportsApiService,
@@ -94,7 +90,7 @@ export class ReporteCambiosComponent implements OnInit {
 
   ngOnInit() {
 
-    this.pcrcApi.getUserPcrc(this.userService.usuario.sub, 0, 1000).pipe(
+    this.pcrcApi.getUserPcrc(this.state.getValueOf('user').sub, 0, 1000).pipe(
       tap(pcrcs => {
         this.clientesList = [ { cliente:'Cualquiera', id_dp_clientes:0, pcrcs:[] } ,...pcrcs]
       })

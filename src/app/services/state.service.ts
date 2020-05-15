@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { BehaviorSubject, combineLatest } from 'rxjs';
+import { ActivatedRoute, Router } from '@angular/router';
+import { BehaviorSubject } from 'rxjs';
 import { distinctUntilChanged, filter, map, switchMap, tap } from 'rxjs/operators';
 import { CategoriesApiService, category, categoryRaw } from "../api/categories-api.service";
 import { news } from "../api/news-api.service";
@@ -28,13 +28,16 @@ export type state = {
         sub: string,
         name: string,
         rol: 'admin' | 'user' | 'publicador'
-    }
+    },
+    rawtoken: string
 }
 
 @Injectable({
     providedIn: 'root'
 })
 export class StateService {
+
+
     private _state: state = {
         selectedPcrc: null,
         selectedCliente: null,
@@ -52,7 +55,8 @@ export class StateService {
         reportsSelectedDateRange:null,     
         idNewsOnEdition: '',
         newDraft: null,
-        user: null
+        user: null,
+        rawtoken:null
     }
 
     private store = new BehaviorSubject<state>(this._state)
@@ -75,21 +79,24 @@ export class StateService {
     public idNewsOnEdition$ = this.state$.pipe(map(_state => _state.idNewsOnEdition), distinctUntilChanged())
     public newDraft$ = this.state$.pipe(map(_state => _state.newDraft), distinctUntilChanged(), filter(draft => !!draft))
     public user$ = this.state$.pipe(map(_state => _state.user), distinctUntilChanged(), filter(user => !!user))
+    public token$ = this.state$.pipe(map(_state => _state.rawtoken), distinctUntilChanged(), filter(token => !!token))
 
     constructor(
         public route: ActivatedRoute,
         public categoriesApi: CategoriesApiService,
         public userApi: UserApiService,
         private pcrcApi: PcrcApiService,
+        public router: Router
+
     ) {
+
         this.selectedPcrc$.pipe(
+            tap(pcrc => console.log('pidiendo categorias')),
             switchMap(pcrc => this.categoriesApi.getCategories(pcrc.id_dp_pcrc.toString())),
             tap(selectedPcrcCategories => {
                 this.store.next(this._state = { ...this._state, selectedPcrcCategories: selectedPcrcCategories })
             })
         ).subscribe()
-
-
 
         this.selectedUser$.pipe(
             tap(user => { this.newSelectedUserPcrcState({ state: "loading" }) }),
@@ -180,7 +187,8 @@ export class StateService {
             reportsSelectedDateRange:null,
             idNewsOnEdition: '',
             newDraft:null,
-            user:null
+            user:null,
+            rawtoken:null
         })
     }
 
@@ -227,7 +235,21 @@ export class StateService {
     }
 
     setUser = (user:state['user']) => {
+
+        window.localStorage.setItem('logout', 'false')
+
+        window.addEventListener('storage', event => {
+            if (event.key == 'logout' && event.newValue == 'true') {
+                this.logOut()
+            }
+        })
+
         this.store.next(this._state = { ...this._state, user: user })
+    }
+
+    setToken = (rawtoken:state['rawtoken'], decoded:any) => {       
+        
+        this.store.next(this._state = { ...this._state, rawtoken: rawtoken })
     }
 
     loadPcrcUsersList = () => {
@@ -236,5 +258,10 @@ export class StateService {
                 this.store.next(this._state = { ...this._state, userslist: users })
             })            
         ).subscribe()
+    }
+
+    logOut(){
+        this.clearState()
+        this.router.navigate(['/login'])
     }
 }
