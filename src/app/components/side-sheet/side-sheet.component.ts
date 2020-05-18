@@ -35,43 +35,7 @@ export class SideSheetComponent implements OnInit {
     this.userName = this.state.getValueOf('user').name
     this.rol = this.state.getValueOf('user').rol
 
-    console.log('pidiendo pcrc')
-
-    this.PcrcApiService.getUserPcrc(this.state.getValueOf('user').sub, 0, 1000).pipe(
-      tap(clientes => {
-
-        if (clientes.length) {
-
-          let selectedClienteId = localStorage.getItem('selectedClienteId')
-
-          let selectedPcrcId = localStorage.getItem('selectedPcrcId')
-
-          this.state.newUserPcrc(clientes)
-
-          if (selectedClienteId != null && selectedPcrcId != null) {
-
-            let cliente = clientes.find(cliente => cliente.id_dp_clientes.toString() == selectedClienteId)
-
-            this.state.newSelectedCliente(cliente)
-
-            this.state.newSelectedPcrc(cliente.pcrcs.find(pcrc => pcrc.id_dp_pcrc.toString() == selectedPcrcId))
-
-          } else {
-
-            this.state.newSelectedCliente(clientes[0])
-
-            this.state.newSelectedPcrc(clientes[0].pcrcs[0])
-
-          }
-        } else {
-
-          localStorage.removeItem('selectedClienteId')
-
-          localStorage.removeItem('selectedPcrcId')
-
-        }
-      })
-    ).subscribe()
+   
   }
 
   changeCliente(cliente: cliente) {

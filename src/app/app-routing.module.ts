@@ -14,7 +14,7 @@ import { NewsComponent } from "./components/news/news.component";
 import { ReportsComponent } from "./components/reports/reports.component";
 import { UsersconfigComponent } from "./components/usersconfig/usersconfig.component";
 import { ReporteComentariosComponent } from "./components/reporte-comentarios/reporte-comentarios.component";
-import { AuthGuard, HomeGuard } from "./guards/index";
+import { AuthGuard, HomeGuard, PreloadPcrcGuard } from "./guards/index";
 import { CanLeaveArticleGuard } from "./guards/leave.guard";
 import { ReporteCambiosComponent } from "./components/reporte-cambios/reporte-cambios.component";
 
@@ -23,8 +23,9 @@ const routes: Routes = [
 	{ path: '', redirectTo: '/login', pathMatch: 'full' },
 	{ path: 'login', component: LoginComponent, canActivate: [HomeGuard] },
 	{
-		path: 'app', component: AplicationComponent, canActivate: [AuthGuard],
+		path: 'app', component: AplicationComponent, canActivate: [AuthGuard, PreloadPcrcGuard],
 		children: [
+			{ path: '', redirectTo: 'explore', pathMatch: 'full'},
 			{ path: 'search', component: SearchComponent },
 			{ path: 'explore', component: ExplorarComponent },
 			{ path: 'articles', redirectTo: 'explore' },

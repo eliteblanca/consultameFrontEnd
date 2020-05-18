@@ -75,8 +75,7 @@ export class AutenticateApiService {
 
     logOut(){
         window.localStorage.setItem('logout', 'true')
-        this.state.logOut()
-        return this.http.get<any>(this.endPoints.logOut, { observe: "body" }).subscribe()
+        return this.http.get<any>(this.endPoints.logOut, { observe: "body" }).subscribe(res => this.state.logOut())
     }
 
     validateCaptcha(token):Observable<captchaResponse>{
