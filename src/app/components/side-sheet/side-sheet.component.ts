@@ -5,9 +5,8 @@ import { tap } from 'rxjs/operators';
 import { cliente, PcrcApiService } from "../../api/pcrc-api.service";
 import { UserApiService } from "../../api/user-api.service";
 import { StateService } from "../../services/state.service";
-import { UserService } from '../../services/user.service';
 import { googleAnalytics } from "../../services/googleAnalytics.service";
-
+import { AutenticateApiService } from "../../api/autenticate-api.service";
 @Component({
   selector: 'app-side-sheet',
   templateUrl: './side-sheet.component.html',
@@ -26,18 +25,20 @@ export class SideSheetComponent implements OnInit {
   constructor(
     public userApi: UserApiService,
     public router: Router,
-    public userService: UserService,
     private PcrcApiService: PcrcApiService,
     public state: StateService,
     public googleAnalytics: googleAnalytics,
+    public autenticateApi: AutenticateApiService,
   ) { }
 
   ngOnInit() {
 
-    this.userName = this.userService.usuario.name
-    this.rol = this.userService.usuario.rol
+    this.userName = this.state.getValueOf('user').name
+    this.rol = this.state.getValueOf('user').rol
 
-    this.PcrcApiService.getUserPcrc(this.userService.usuario.sub, 0, 1000).pipe(
+    console.log('pidiendo pcrc')
+
+    this.PcrcApiService.getUserPcrc(this.state.getValueOf('user').sub, 0, 1000).pipe(
       tap(clientes => {
 
         if (clientes.length) {
@@ -95,13 +96,8 @@ export class SideSheetComponent implements OnInit {
 
   logOut = () => {
     localStorage.removeItem('selectedClienteId')
-
     localStorage.removeItem('selectedPcrcId')
-
-    this.state.clearState()
-
-    this.userService.logOut()
-
+    this.autenticateApi.logOut()
   }
 
 }

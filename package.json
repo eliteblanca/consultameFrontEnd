@@ -21,7 +21,7 @@
     "@angular/platform-browser": "~8.0.0",
     "@angular/platform-browser-dynamic": "~8.0.0",
     "@angular/router": "~8.0.0",
-    "@auth0/angular-jwt": "^2.1.2",
+    "@auth0/angular-jwt": "^4.0.0",
     "@ctrl/ngx-emoji-mart": "^1.0.3",
     "@iconify/icons-mdi": "^1.0.35",
     "@syncfusion/ej2-angular-buttons": "^17.3.27",

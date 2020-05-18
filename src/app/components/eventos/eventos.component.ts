@@ -4,7 +4,6 @@ import { CategoriesApiService, categoryRaw } from "../../api/categories-api.serv
 import { JarvisApiService, personData } from "../../api/jarvis-api.service";
 import { cliente, PcrcApiService } from "../../api/pcrc-api.service";
 import { StateService } from "../../services/state.service";
-import { UserService } from "../../services/user.service";
 import { Article } from '../../article';
 import { ReportsApiService } from "../../api/reports-api.service";
 import { posibleFilterFields } from "../../api/reports-api.service";
@@ -62,7 +61,6 @@ export class EventosComponent implements OnInit {
   constructor(
     public state: StateService,
     public pcrcApi: PcrcApiService,
-    public userService: UserService,
     public jarvisApi: JarvisApiService,
     public categoriesApi: CategoriesApiService,
     public reportsApi: ReportsApiService,
@@ -70,7 +68,7 @@ export class EventosComponent implements OnInit {
 
   ngOnInit() {
 
-    this.pcrcApi.getUserPcrc(this.userService.usuario.sub, 0, 1000).pipe(
+    this.pcrcApi.getUserPcrc(this.state.getValueOf('user').sub, 0, 1000).pipe(
       tap(pcrcs => {
         this.clientesList = [ { cliente:'Cualquiera', id_dp_clientes:0, pcrcs:[] } ,...pcrcs]
       })

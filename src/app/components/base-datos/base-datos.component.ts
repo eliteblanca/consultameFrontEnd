@@ -1,12 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { format } from 'date-fns';
-import { tap, switchMap } from 'rxjs/operators';
+import { tap } from 'rxjs/operators';
 import { CategoriesApiService, categoryRaw } from 'src/app/api/categories-api.service';
 import { JarvisApiService, personData } from 'src/app/api/jarvis-api.service';
 import { cliente, PcrcApiService } from 'src/app/api/pcrc-api.service';
 import { posibleFilterFields, ReportsApiService } from 'src/app/api/reports-api.service';
 import { Article } from 'src/app/article';
-import { UserService } from 'src/app/services';
 import { StateService } from 'src/app/services/state.service';
 
 @Component({
@@ -68,7 +67,6 @@ export class BaseDatosComponent implements OnInit {
   constructor(
     public state: StateService,
     public pcrcApi: PcrcApiService,
-    public userService: UserService,
     public jarvisApi: JarvisApiService,
     public categoriesApi: CategoriesApiService,
     public reportsApi: ReportsApiService,
@@ -76,7 +74,7 @@ export class BaseDatosComponent implements OnInit {
 
   ngOnInit() {
 
-    this.pcrcApi.getUserPcrc(this.userService.usuario.sub, 0, 1000).pipe(
+    this.pcrcApi.getUserPcrc(this.state.getValueOf('user').sub, 0, 1000).pipe(
       tap(pcrcs => {
         this.clientesList = [ { cliente:'Cualquiera', id_dp_clientes:0, pcrcs:[] } ,...pcrcs]
       })

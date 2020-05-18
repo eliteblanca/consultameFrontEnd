@@ -22,7 +22,6 @@ import { ReporteCambiosComponent } from "./components/reporte-cambios/reporte-ca
 const routes: Routes = [
 	{ path: '', redirectTo: '/login', pathMatch: 'full' },
 	{ path: 'login', component: LoginComponent, canActivate: [HomeGuard] },
-	{ path: 'fullScreen/:id', component: FullScreenComponent, canActivate: [AuthGuard] },
 	{
 		path: 'app', component: AplicationComponent, canActivate: [AuthGuard],
 		children: [

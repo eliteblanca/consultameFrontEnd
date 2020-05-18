@@ -1,9 +1,8 @@
 import { AfterViewInit, Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
-import { UserService } from 'src/app/services';
 import { ArticlesApiService } from "../../api/articles-api.service";
 import { Article } from '../../article';
 import { Router } from '@angular/router';
-
+import { StateService } from "../../services/state.service";
 @Component({
   selector: 'app-article',
   templateUrl: './article.component.html',
@@ -28,8 +27,8 @@ export class ArticleComponent implements OnInit, AfterViewInit {
   
   constructor(
     private articlesApi:ArticlesApiService,
-    public UserService:UserService,
-    public router: Router
+    public router: Router,
+    private stateService:StateService
   ) { }
  
   ngOnInit() {
@@ -82,26 +81,26 @@ export class ArticleComponent implements OnInit, AfterViewInit {
   }
 
   isFavorite(){
-    return this.Article.favorites.includes(this.UserService.usuario.sub)
+    return this.Article.favorites.includes(this.stateService.getValueOf('user').sub)
   }
 
   isLike(){
-    return this.Article.likes.includes(this.UserService.usuario.sub)
+    return this.Article.likes.includes(this.stateService.getValueOf('user').sub)
   }
 
   isDisLike(){
-    return this.Article.disLikes.includes(this.UserService.usuario.sub)
+    return this.Article.disLikes.includes(this.stateService.getValueOf('user').sub)
   }
 
   addToFavorites(){
     if(this.isFavorite()){
       this.articlesApi.deleteFavorite(this.Article.id).subscribe((result)=>{
-        this.Article.favorites = this.Article.favorites.filter( userId => userId != this.UserService.usuario.sub)
+        this.Article.favorites = this.Article.favorites.filter( userId => userId != this.stateService.getValueOf('user').sub)
         this.onDeleteFavorite.next(this.Article)
       })
     }else{
       this.articlesApi.postFavorite(this.Article.id).subscribe((result)=>{
-        this.Article.favorites.push(this.UserService.usuario.sub)
+        this.Article.favorites.push(this.stateService.getValueOf('user').sub)
         this.onPostFavorite.next(this.Article)
       })
     }
@@ -110,34 +109,34 @@ export class ArticleComponent implements OnInit, AfterViewInit {
   addLike(){
     if(this.isLike()){      
       this.articlesApi.deleteLike(this.Article.id).subscribe(()=>{
-        this.Article.likes = this.Article.likes.filter(userId => userId !=  this.UserService.usuario.sub )
+        this.Article.likes = this.Article.likes.filter(userId => userId !=  this.stateService.getValueOf('user').sub )
         this.onDeleteLike.next(this.Article)
       })
     }else{
       this.articlesApi.postLike(this.Article.id).subscribe(()=>{
-        this.Article.likes.push(this.UserService.usuario.sub)
+        this.Article.likes.push(this.stateService.getValueOf('user').sub)
         this.onPostLike.next(this.Article)
       })
     }
 
-    this.Article.disLikes = this.Article.disLikes.filter(userId => userId !=  this.UserService.usuario.sub )
+    this.Article.disLikes = this.Article.disLikes.filter(userId => userId !=  this.stateService.getValueOf('user').sub )
 
   }
 
   addDisLike(){
     if(this.isDisLike()){
       this.articlesApi.deleteDisLike(this.Article.id).subscribe(()=>{
-        this.Article.disLikes = this.Article.disLikes.filter(userId => userId !=  this.UserService.usuario.sub )
+        this.Article.disLikes = this.Article.disLikes.filter(userId => userId !=  this.stateService.getValueOf('user').sub )
         this.onDeleteDisLike.next(this.Article)
       })
     }else{
       this.articlesApi.postDisLike(this.Article.id).subscribe(()=>{
-        this.Article.disLikes.push(this.UserService.usuario.sub)
+        this.Article.disLikes.push(this.stateService.getValueOf('user').sub)
         this.onPostDisLike.next(this.Article)
       })
     }
 
-    this.Article.likes = this.Article.likes.filter(userId => userId !=  this.UserService.usuario.sub )
+    this.Article.likes = this.Article.likes.filter(userId => userId !=  this.stateService.getValueOf('user').sub )
 
   }
 
