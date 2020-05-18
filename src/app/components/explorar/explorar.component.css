@@ -18,5 +18,19 @@
     overflow-y: scroll;
 }
 
+.exporarSectionTab:hover, .exporarSectionTab.active{
+    cursor: pointer;
+    color: var(--primary);
+}
 
+.exporarSectionTab{
+    display: flex;
+    align-items: center;
+    padding-left: 1rem;
+}
 
+.exporarSectionTab h5{
+    margin: 0;
+    font-size: 1rem;
+    line-height: 1rem;
+}

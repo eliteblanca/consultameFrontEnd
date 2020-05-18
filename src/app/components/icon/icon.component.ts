@@ -27,7 +27,6 @@ export class IconComponent implements OnInit , OnChanges{
 
     @Input() iconName: string;
 
-
     ngOnInit() {
 
     }

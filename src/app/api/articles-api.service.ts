@@ -27,8 +27,8 @@ export class ArticlesApiService {
     private endPoints = {
         getArticles:`${environment.endpoint}/api/articles`,
         postArticle:`${environment.endpoint}/api/articles`,
-        getByCategory: (idCategory:string) => `${environment.endpoint}/api/categories/${idCategory}/articles`,
-        getByQuery: (idPcrc:string) => `${environment.endpoint}/api/pcrc/${idPcrc}/articles`,
+        getCategoryArticles: (idCategory:string) => `${environment.endpoint}/api/categories/${idCategory}/articles`,
+        getPcrcArticles: (idPcrc:string) => `${environment.endpoint}/api/pcrc/${idPcrc}/articles`,
         deleteArticle: (idArticle:string) => `${environment.endpoint}/api/articles/${idArticle}`,
         getArticle: (idArticle:string) => `${environment.endpoint}/api/articles/${idArticle}`,
         updateArticle: (idArticle:string) => `${environment.endpoint}/api/articles/${idArticle}`,
@@ -55,13 +55,13 @@ export class ArticlesApiService {
         if(!!query){
             return of(null).pipe(
                 switchMap(val => {
-                    return this.http.get<Article[]>(this.endPoints.getByCategory(categoryId), { params: { from: from.toString(), size: size.toString(), state: state, query:query }, observe: "body" })
+                    return this.http.get<Article[]>(this.endPoints.getCategoryArticles(categoryId), { params: { from: from.toString(), size: size.toString(), state: state, query:query }, observe: "body" })
                 })
             )
         } else {
             return of(null).pipe(
                 switchMap(val => {
-                    return this.http.get<Article[]>(this.endPoints.getByCategory(categoryId), { params: { from: from.toString(), size: size.toString(), state: state }, observe: "body" })
+                    return this.http.get<Article[]>(this.endPoints.getCategoryArticles(categoryId), { params: { from: from.toString(), size: size.toString(), state: state }, observe: "body" })
                 })
             )
         }
@@ -71,9 +71,17 @@ export class ArticlesApiService {
     getArticlesByQuery(idPcrc: string, state:postArticleDTO["state"] = 'published' , from:number = 0, size:number = 10, query:{ tag: string } | { query: string } ): Observable<Article[]> {
         return of(null).pipe(
             switchMap(val => {
-                return this.http.get<Article[]>(this.endPoints.getByQuery(idPcrc), { params: { from:from.toString(), size:size.toString(), state:state, ...query }, observe: "body" })
+                return this.http.get<Article[]>(this.endPoints.getPcrcArticles(idPcrc), { params: { from:from.toString(), size:size.toString(), state:state, ...query }, observe: "body" })
             })
         )
+    }
+
+    getArticlesByUpdate(idPcrc: string, from:number = 0, size:number = 10): Observable<Article[]> {
+        return this.http.get<Article[]>(this.endPoints.getPcrcArticles(idPcrc), { params: { from:from.toString(), size:size.toString(), orderby:'update' }, observe: "body" })
+    }
+
+    getArticlesByViews(idPcrc: string, from:number = 0, size:number = 10): Observable<Article[]> {
+        return this.http.get<Article[]>(this.endPoints.getPcrcArticles(idPcrc), { params: { from:from.toString(), size:size.toString(), orderby:'views' }, observe: "body" })
     }
 
     deleteArticle(idArticulo:string) :Observable<any> {

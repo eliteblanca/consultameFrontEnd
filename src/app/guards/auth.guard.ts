@@ -24,25 +24,30 @@ export class AuthGuard implements CanActivate {
     state: RouterStateSnapshot
   ): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
 
-    return this.autenticateApi.refreshToken().pipe(
-      catchError(err => of(false)),
-      map(val => {
+    if(!!this.state.getValueOf('user')){
+      return true
+    } else {
+      return this.autenticateApi.refreshToken().pipe(
+        catchError(err => of(false)),
+        map(val => {
+  
+          if(typeof val == 'boolean'){
+            this.router.navigate(['/login']);
+            return val
+          } else {
+            let decoded = helper.decodeToken(val.token)
+            this.state.setToken(val.token, decoded)
+            this.state.setUser({ name: decoded.name, rol: decoded.rol, sub:decoded.sub })
+  
+            this.autenticateApi.startSilentRefresh(decoded)
+  
+            return true
+  
+          }
+  
+        })
+      )
+    }
 
-        if(typeof val == 'boolean'){
-          this.router.navigate(['/login']);
-          return val
-        } else {
-          let decoded = helper.decodeToken(val.token)
-          this.state.setToken(val.token, decoded)
-          this.state.setUser({ name: decoded.name, rol: decoded.rol, sub:decoded.sub })
-
-          this.autenticateApi.startSilentRefresh(decoded)
-
-          return true
-
-        }
-
-      })
-    )
   }
 }

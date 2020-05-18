@@ -6,6 +6,8 @@ import { category } from "../../api/categories-api.service";
 import { Article } from "../../article";
 import { StateService } from "../../services/state.service";
 
+type mode = 'category'|'top'|'update'
+
 @Component({
     selector: 'app-explorar',
     templateUrl: './explorar.component.html',
@@ -16,6 +18,7 @@ export class ExplorarComponent implements OnInit {
     public articles: Article[] = []
     public placeholders: any[] = []
     private categorySelected:category
+    public mode:mode = 'update'
     private scrollSubject = new BehaviorSubject(1)
     private scroll$ = this.scrollSubject.asObservable()
 
@@ -30,16 +33,34 @@ export class ExplorarComponent implements OnInit {
         ).subscribe()
 
         this.scroll$.pipe(
-            filter(value => !!this.categorySelected),
             tap(value => this.placeholders = [1,1,1]),
-            concatMap(value =>
-                this.articlesApi.getArticlesByCategory(
-                    this.categorySelected.id,
-                    'published',
-                    this.articles.length,
-                    6
-                )
-            ),
+            concatMap(value =>{
+
+                if(this.mode == "category"){
+                    return this.articlesApi.getArticlesByCategory(
+                        this.categorySelected.id,
+                        'published',
+                        this.articles.length,
+                        6
+                    )                    
+                }
+
+                if(this.mode == 'update'){
+                    return this.articlesApi.getArticlesByUpdate(
+                        this.state.getValueOf('selectedPcrc').id_dp_pcrc.toString(),                        
+                        this.articles.length,
+                        6
+                    )
+                }
+
+                if(this.mode == 'top'){
+                    return this.articlesApi.getArticlesByViews(
+                        this.state.getValueOf('selectedPcrc').id_dp_pcrc.toString(),
+                        this.articles.length,
+                        6
+                    )
+                }
+            }),
             tap(articles => {
                 this.articles = this.articles.concat(articles)
                 this.placeholders = []
@@ -48,13 +69,18 @@ export class ExplorarComponent implements OnInit {
     }
 
     categoriaSeleccionada(categoria:category) {
-        this.articles = [];
-        this.categorySelected = categoria;
-        this.scrollSubject.next(1);
+        this.categorySelected = categoria
+        this.changeModeTo('category')
+    }
+
+    changeModeTo(mode:mode){
+        this.mode = mode
+        this.articles = []
+        this.scrollSubject.next(1)
     }
 
     onScroll(event){
-        this.scrollSubject.next(1);
+        this.scrollSubject.next(1)
     }
 
 }

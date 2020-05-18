@@ -176,16 +176,8 @@ export class StateService {
 
     clearState = () => {
         this.store.next(this._state = {
-            selectedPcrc: {
-                cod_pcrc: '',
-                id_dp_pcrc: -1,
-                pcrc: ''
-            },
-            selectedCliente: {
-                cliente: '',
-                id_dp_clientes: 0,
-                pcrcs: []
-            },
+            selectedPcrc: null,
+            selectedCliente: null,
             userPcrc: [],
             sideSheetOpen: false,
             selectedPcrcCategories: { state: 'loading' },
