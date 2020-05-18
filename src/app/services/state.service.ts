@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { BehaviorSubject, combineLatest } from 'rxjs';
-import { distinctUntilChanged, filter, map, switchMap, tap } from 'rxjs/operators';
+import { BehaviorSubject } from 'rxjs';
+import { concatMap, distinctUntilChanged, filter, map, switchMap, tap } from 'rxjs/operators';
 import { CategoriesApiService, category, categoryRaw } from "../api/categories-api.service";
 import { news } from "../api/news-api.service";
 import { cliente, PcrcApiService } from "../api/pcrc-api.service";
@@ -83,12 +83,25 @@ export class StateService {
         private pcrcApi: PcrcApiService,
     ) {
         this.selectedPcrc$.pipe(
+            concatMap(pcrc => {
+                return this.userApi.endUserSesion().pipe(
+                    switchMap(result => this.userApi.startUserSesion(
+                        (new Date()).getTime().toString(),
+                        '',
+                        pcrc.id_dp_pcrc.toString()
+                    ))
+                )
+            })
+            
+        ).subscribe()
+
+
+        this.selectedPcrc$.pipe(
             switchMap(pcrc => this.categoriesApi.getCategories(pcrc.id_dp_pcrc.toString())),
             tap(selectedPcrcCategories => {
                 this.store.next(this._state = { ...this._state, selectedPcrcCategories: selectedPcrcCategories })
             })
         ).subscribe()
-
 
 
         this.selectedUser$.pipe(
@@ -107,7 +120,6 @@ export class StateService {
 
     newSelectedCliente(selectedCliente: cliente) {
         this.store.next(this._state = { ...this._state, selectedCliente: selectedCliente })
-        this.store.next(this._state = { ...this._state, selectedPcrc: selectedCliente.pcrcs[0] })
     }
 
     newUserPcrc(userPcrc: cliente[]) {
@@ -158,7 +170,7 @@ export class StateService {
         this.store.next(this._state = {
             selectedPcrc: {
                 cod_pcrc: '',
-                id_dp_pcrc: 0,
+                id_dp_pcrc: -1,
                 pcrc: ''
             },
             selectedCliente: {

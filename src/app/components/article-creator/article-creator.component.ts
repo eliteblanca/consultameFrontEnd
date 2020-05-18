@@ -1,12 +1,14 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { interval, of } from 'rxjs';
-import { concatMap, filter, map, switchMap, throttle } from 'rxjs/operators';
+import { concatMap, filter, map, switchMap, throttle, tap } from 'rxjs/operators';
 import { ArticlesApiService, postArticleDTO } from "../../api/articles-api.service";
 import { Article } from "../../article";
 import { RichTextEditorComponent } from "../rich-text-editor/rich-text-editor.component";
 import { environment } from '../../../environments/environment';
 import axios from 'axios';
+import { ArticlesWebSocketsService } from "../../webSockets/articles-web-sockets.service";
+
 @Component({
   selector: 'app-article-creator',
   templateUrl: './article-creator.component.html',
@@ -17,7 +19,8 @@ export class ArticleCreatorComponent implements OnInit {
   constructor(
     private articlesApi:ArticlesApiService,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private articlesWebSockets: ArticlesWebSocketsService,
   ) { }
 
   public tags:string[] = [];
@@ -104,7 +107,19 @@ export class ArticleCreatorComponent implements OnInit {
           of(null).pipe(
             throttle(() => interval(700)),
             concatMap(() => this.articlesApi.updateArticle(this.articleToEdit.id, newArticle).pipe())
-          ).subscribe(newArticle => {
+          ).subscribe(result => {
+            
+            let partialArticle:Partial<Article> = {
+              creator:this.articleToEdit.creator,
+              title:newArticle.title,
+              id:this.articleToEdit.id,
+              subLine: this.articleToEdit.subLine,
+              line: this.articleToEdit.line,
+              category : this.articleToEdit.category
+            }
+            
+            this.articlesWebSockets.sendNotification('articleUpdate', partialArticle)
+
             this.addArticleSpinner = false;
             this.goToArticle(this.articleToEdit.id)
 
@@ -125,11 +140,26 @@ export class ArticleCreatorComponent implements OnInit {
 
           of(null).pipe(
             throttle(() => interval(700)),
-            concatMap(() => this.articlesApi.postArticle(newArticle))
-          ).subscribe(newArticle => {
-            this.addArticleSpinner = false;
-            this.goToArticle(newArticle.id)
-          })
+            concatMap(() => this.articlesApi.postArticle(newArticle)),
+            tap(newArticle => {
+
+              let partialArticle:Partial<Article> = {
+                creator:newArticle.creator,
+                title:newArticle.title,
+                id:newArticle.id,
+                subLine: newArticle.subLine,
+                line: newArticle.line,
+                category : newArticle.category
+              }
+
+              this.articlesWebSockets.sendNotification('newarticle', partialArticle)
+
+              this.addArticleSpinner = false;
+              
+              this.goToArticle(newArticle.id)
+
+            })
+          ).subscribe()
 
       }
     } else {

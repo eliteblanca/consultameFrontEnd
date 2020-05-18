@@ -1,13 +1,16 @@
-import { Component, HostListener, OnDestroy, OnInit } from '@angular/core';
-import { googleAnalytics } from "../../services/googleAnalytics.service";
+import { Component, OnInit, HostListener } from '@angular/core';
 import { StateService } from "../../services/state.service";
+import { googleAnalytics } from "../../services/googleAnalytics.service";
 import { UserService } from "../../services/user.service";
+import { ArticlesWebSocketsService } from "../../webSockets/articles-web-sockets.service";
+import { UserApiService } from "../../api/user-api.service";
+
 @Component({
     selector: 'app-aplication',
     templateUrl: './aplication.component.html',
     styleUrls: ['./aplication.component.css']
 })
-export class AplicationComponent implements OnInit, OnDestroy {
+export class AplicationComponent implements OnInit{
 
     
     clicktime:any
@@ -16,26 +19,18 @@ export class AplicationComponent implements OnInit, OnDestroy {
         public state:StateService,
         public googleAnalytics:googleAnalytics,
         public userService:UserService,
-    ) { }
-
-    ngOnDestroy(): void {
-        // clearTimeout(this.clicktime)
-    }
+        public userApi:UserApiService,
+        public articlesWebSockets:ArticlesWebSocketsService,
+    ) { }    
 
     ngOnInit() {
-        // this.googleAnalytics.login(this.userService.usuario.sub)
-        // this.clicktime = setTimeout(() => {
-        //     this.userService.logOut()
-        // }, 1000*300);
+        this.googleAnalytics.login(this.userService.usuario.sub)
+        this.articlesWebSockets.connect()
     }
 
-
-    siteClic(event){
-
-        // clearTimeout(this.clicktime)
-
-        // this.clicktime = setTimeout(() => {            
-        //     this.userService.logOut()
-        // }, 1000*300);
+    @HostListener('window:beforeunload', ['$event'])
+    unloadNotification($event: any) {   
+        this.userApi.endUserSesion().subscribe()
     }
+
 }

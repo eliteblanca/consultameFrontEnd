@@ -71,6 +71,8 @@ import { BaseDatosComponent } from './components/base-datos/base-datos.component
 import { ReporteComentariosComponent } from './components/reporte-comentarios/reporte-comentarios.component';
 import { ReporteCambiosComponent } from './components/reporte-cambios/reporte-cambios.component';
 import { ArticleplaceholderComponent } from './components/articleplaceholder/articleplaceholder.component';
+import { NotificationsComponent } from './components/notifications/notifications.component';
+import { NotificationComponent } from './components/notification/notification.component';
 @NgModule({
     declarations: [
         AppComponent,
@@ -134,6 +136,8 @@ import { ArticleplaceholderComponent } from './components/articleplaceholder/art
         ReporteComentariosComponent,
         ReporteCambiosComponent,
         ArticleplaceholderComponent,
+        NotificationsComponent,
+        NotificationComponent,
     ],
     imports: [
         BrowserModule,
