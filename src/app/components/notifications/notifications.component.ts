@@ -15,7 +15,7 @@ export class NotificationsComponent implements OnInit {
 
 
   constructor( 
-    private articlesWebSockets:ArticlesWebSocketsService
+    public articlesWebSockets:ArticlesWebSocketsService
   ) { }
 
   ngOnInit() {

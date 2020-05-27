@@ -54,7 +54,6 @@ export class LoginComponent implements OnInit, AfterViewInit {
 
             this.autenticateApi.login(this.usuario.nativeElement.value, this.password.nativeElement.value)
                 .subscribe(autenticated => {
-    
                     if (autenticated) {
                         this.router.navigate(['/app']);
                     } else {

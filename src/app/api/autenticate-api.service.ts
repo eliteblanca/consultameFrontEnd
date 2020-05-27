@@ -39,19 +39,23 @@ export class AutenticateApiService {
         logOut:`${environment.endpoint}/api/log_out`,
     }
 
-    startSilentRefresh(time){
+    startSilentRefresh(rawToken){
         if(this.logOutTimer){
             clearTimeout(this.logOutTimer)
         }
 
+        let decoded = helper.decodeToken(rawToken)
+        let time = ((new Date(decoded.exp * 1000)).getTime() - (new Date()).getTime()) - 3000
+
         this.logOutTimer = setTimeout(() => {
-            this.refreshToken().subscribe(val => {                
-                let decoded = helper.decodeToken(val.token)
-                this.state.setToken(val.token, decoded)
+            this.refreshToken().subscribe(val => {
+                this.state.setToken(val.token)
+                this.startSilentRefresh(val.token)
             }, error => {
                 this.state.logOut()
             })
         }, time )
+        
     }
 
     login(user: string, pass: string): Observable<boolean> {
@@ -60,11 +64,11 @@ export class AutenticateApiService {
                 if (val.token) {
                     let decoded = helper.decodeToken(val.token)
 
-                    this.state.setToken(val.token, decoded)
+                    this.state.setToken(val.token)
 
                     this.state.setUser({ name: decoded.name, rol: decoded.rol, sub:decoded.sub })
 
-                    this.startSilentRefresh(((decoded.exp * 1000) - (new Date()).getTime()) - 1000 * 5)
+                    this.startSilentRefresh(val.token)
                 }
             }),
             map(val => {
@@ -78,13 +82,14 @@ export class AutenticateApiService {
     }
 
     logOut(){
-        window.localStorage.setItem('logout', 'true')
-        this.state.logOut()
-
+        
         forkJoin(
             this.userApi.endUserSesion(),
             this.http.get<any>(this.endPoints.logOut, { observe: "body" })            
-        ).subscribe()
+        ).subscribe(response => {
+            window.localStorage.setItem('logout', 'true')
+            this.state.logOut()
+        })
         
     }
 

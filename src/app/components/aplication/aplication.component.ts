@@ -24,7 +24,7 @@ export class AplicationComponent implements OnInit{
     ) { }    
 
     ngOnInit() {
-        this.googleAnalytics.login(this.userService.usuario.sub)
+        this.googleAnalytics.login(this.state.getValueOf('user').sub)
         this.articlesWebSockets.connect()
     }
 

@@ -52,5 +52,7 @@
         <div class="tab" routerLinkActive="active" routerLink="/app/users" *appUserRoleIsIn="['admin']"><app-icon [iconName]="'mdi:account-group'"></app-icon>Usuarios</div>
         <div class="tab" routerLinkActive="active" routerLink="/app/reports" *appUserRoleIsIn="['admin']"><app-icon [iconName]="'mdi:finance'"></app-icon>Indicadores</div>
     </div>
-
+    <div  class="menuSection">
+        <div class="tab" (click)="logOut()"><app-icon [iconName]="'mdi:logout'"></app-icon>Salir</div>
+    </div>
 </div>

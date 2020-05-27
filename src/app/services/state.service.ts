@@ -252,7 +252,7 @@ export class StateService {
         this.store.next(this._state = { ...this._state, user: user })
     }
 
-    setToken = (rawtoken:state['rawtoken'], decoded:any) => {       
+    setToken = (rawtoken:state['rawtoken']) => {       
         
         this.store.next(this._state = { ...this._state, rawtoken: rawtoken })
     }
