@@ -38,19 +38,19 @@
     </div>
     <div  class="menuSection">
         
-        <div class="tab" routerLinkActive="active" routerLink="/app/explore" *appUserRoleIsIn="['publicador','admin','user']"><app-icon [iconName]="'mdi:map-search-outline'"></app-icon>Explorar</div>
-        <div class="tab" routerLinkActive="active" routerLink="/app/news" *appUserRoleIsIn="['publicador','admin','user']"><app-icon [iconName]="'mdi:newspaper'"></app-icon>Noticias</div>
-        <div class="tab" routerLinkActive="active" routerLink="/app/favorites" *appUserRoleIsIn="['publicador','admin','user']"><app-icon [iconName]="'mdi:star'"></app-icon>Favoritos</div>
+        <div class="tab" (click)="state.toogleSideSheet()" routerLinkActive="active" routerLink="/app/explore" *appUserRoleIsIn="['publicador','admin','user']"><app-icon [iconName]="'mdi:map-search-outline'" ></app-icon>Explorar</div>
+        <div class="tab" (click)="state.toogleSideSheet()" routerLinkActive="active" routerLink="/app/news" *appUserRoleIsIn="['publicador','admin','user']"><app-icon [iconName]="'mdi:newspaper'"></app-icon>Noticias</div>
+        <div class="tab"(click)="state.toogleSideSheet()"  routerLinkActive="active" routerLink="/app/favorites" *appUserRoleIsIn="['publicador','admin','user']"><app-icon [iconName]="'mdi:star'"></app-icon>Favoritos</div>
     </div>    
     <div  class="menuSection">
         <h3 class="sectionTitle">Edicion</h3>
-        <div class="tab" routerLinkActive="active" routerLink="/app/edicion" *appUserRoleIsIn="['publicador','admin']"><app-icon [iconName]="'mdi:file-document-edit-outline'"></app-icon>Articulos</div>
-        <div class="tab" routerLinkActive="active" routerLink="/app/newseditor" *appUserRoleIsIn="['publicador','admin']"><app-icon [iconName]="'mdi:newspaper-plus'"></app-icon>Noticias</div>
+        <div class="tab" (click)="state.toogleSideSheet()" routerLinkActive="active" routerLink="/app/edicion" *appUserRoleIsIn="['publicador','admin']"><app-icon [iconName]="'mdi:file-document-edit-outline'"></app-icon>Articulos</div>
+        <div class="tab" (click)="state.toogleSideSheet()" routerLinkActive="active" routerLink="/app/newseditor" *appUserRoleIsIn="['publicador','admin']"><app-icon [iconName]="'mdi:newspaper-plus'"></app-icon>Noticias</div>
     </div>
     <div  class="menuSection">
         <h3 class="sectionTitle">Administracion</h3>
-        <div class="tab" routerLinkActive="active" routerLink="/app/users" *appUserRoleIsIn="['admin']"><app-icon [iconName]="'mdi:account-group'"></app-icon>Usuarios</div>
-        <div class="tab" routerLinkActive="active" routerLink="/app/reports" *appUserRoleIsIn="['admin']"><app-icon [iconName]="'mdi:finance'"></app-icon>Indicadores</div>
+        <div class="tab" (click)="state.toogleSideSheet()" routerLinkActive="active" routerLink="/app/users" *appUserRoleIsIn="['admin']"><app-icon [iconName]="'mdi:account-group'"></app-icon>Usuarios</div>
+        <div class="tab" (click)="state.toogleSideSheet()" routerLinkActive="active" routerLink="/app/reports" *appUserRoleIsIn="['admin']"><app-icon [iconName]="'mdi:finance'"></app-icon>Indicadores</div>
     </div>
     <div  class="menuSection">
         <div class="tab" (click)="logOut()"><app-icon [iconName]="'mdi:logout'"></app-icon>Salir</div>

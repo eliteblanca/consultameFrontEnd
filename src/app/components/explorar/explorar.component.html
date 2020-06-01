@@ -19,5 +19,7 @@
     [infiniteScrollThrottle]="1000"
     [scrollWindow]="false"
     class="searchContainer">
+    <h4 *ngIf="searchError">Se ha producido un error 😕, intentaremos de nuevo en {{searchErrorMessage}}s.</h4>
+    <h4 *ngIf="error$ | async">Se ha producido un error 😕, intentalo mas tarde.</h4>
     <app-article-list [articles]="articles" [placeholders]="placeholders"></app-article-list>
 </div>

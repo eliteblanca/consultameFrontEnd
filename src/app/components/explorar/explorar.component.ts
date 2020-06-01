@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
-import { concatMap, filter, tap } from 'rxjs/operators';
+import { BehaviorSubject, timer } from 'rxjs';
+import { concatMap, filter, tap, retryWhen, takeUntil, delayWhen, skip } from 'rxjs/operators';
 import { ArticlesApiService } from "../../api/articles-api.service";
 import { category } from "../../api/categories-api.service";
 import { Article } from "../../article";
@@ -22,6 +22,15 @@ export class ExplorarComponent implements OnInit {
     private scrollSubject = new BehaviorSubject(1)
     private scroll$ = this.scrollSubject.asObservable()
 
+    public searchError = false;
+    public searchErrorMessage = 10;
+    private errorSubject = new BehaviorSubject(true)
+    public error$ = this.errorSubject.asObservable().pipe(skip(3),tap(result => {
+        this.searchError = false
+        this.placeholders = []
+    }));
+    private errorTimeout;
+    
     constructor(
         private state: StateService,
         private articlesApi: ArticlesApiService
@@ -60,6 +69,27 @@ export class ExplorarComponent implements OnInit {
                         6
                     )
                 }
+            }),
+            retryWhen(errors => {
+                return errors.pipe(
+                    tap(errors => {
+                        this.errorSubject.next(true)                        
+                        this.placeholders = []                        
+                    }),
+                    takeUntil(this.error$),
+                    tap(result => {
+                        this.searchError = true
+                        this.errorTimeout = setInterval(()=>{
+                            this.searchErrorMessage--
+                        },1000)
+                    }),
+                    delayWhen(() => timer(10*1000)),
+                    tap(() => {
+                        console.log('retrying...')  
+                        this.searchError = false                         
+                        clearInterval(this.errorTimeout)
+                        this.searchErrorMessage = 10
+                    }))
             }),
             tap(articles => {
                 this.articles = this.articles.concat(articles)

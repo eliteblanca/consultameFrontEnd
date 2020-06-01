@@ -1,3 +1,6 @@
+
+<h4 *ngIf="searchError" class="ma2">Se ha producido un error 😕, intentaremos de nuevo en {{searchErrorMessage}}s.</h4>
+<h4 *ngIf="error$ | async" class="ma2">Se ha producido un error 😕, intentalo mas tarde.</h4>
 <div class="scroll"
     infiniteScroll
     (scrolled)="onScroll($event)"
