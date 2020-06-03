@@ -1,31 +1,10 @@
-<!-- <div class="sheet" >
-    <header>
-        <h3>{{userName}}</h3>
-        <h3>{{rol}}</h3>
-    </header>
-    <div class="mb1">
-        <span>{{(state.selectedCliente$ | async)?.cliente }} / {{(state.selectedPcrc$ | async)?.pcrc }}</span>
-    </div>
-    <div class="treeView">
-        <ng-scrollbar>
-            <app-tree-view *ngIf="state.userPcrc$ | async" [data]="state.userPcrc$ | async" [child]="'pcrcs'" [childText]="'pcrc'" [dataText]="'cliente'" (onChildSeleccionado)="onPcrcSeleccionado($event)"></app-tree-view>
-        </ng-scrollbar>
-    </div>
-    <div class="separator">
-    </div>
-    <footer class="logOut" (click)="logOut()">
-        <span>Salir</span>
-        <app-icon [iconName]="'mdi:logout'" class="ml.5"></app-icon>
-    </footer>   
-</div>
--->
 <div class="drawer" *ngIf="state.sideSheetOpen$ | async" (click)="state.toogleSideSheet()">
     
 </div>
 <div class="scroll">
     <div  class="menuSection">
-        <h2 class="headerTitle">Julian Andres Vargas</h2>
-        <h5 class="headerSubtitle">Admin</h5>
+        <h2 class="headerTitle">{{userName}}</h2>
+        <h5 class="headerSubtitle">{{rol}}</h5>
         <div class="headerDataBaseSelector" *ngIf="!changePcrc">
             <span>{{(state.selectedCliente$ | async)?.cliente }} / {{(state.selectedPcrc$ | async)?.pcrc }}</span>
             <app-icon [iconName]="'mdi:database-search'" tooltip="Bases de conocimiento" placement="top" show-delay="500" (click)="changePcrc = true"></app-icon>
