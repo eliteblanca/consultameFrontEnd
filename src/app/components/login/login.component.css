@@ -17,8 +17,8 @@
 }
 
 .logo img{
-    margin-left: -3.5rem;
-    max-width: calc(100% + 3rem);
+      /* margin-left: -3.5rem; */
+      max-width: 100%;
 }
 
 .formActions{
