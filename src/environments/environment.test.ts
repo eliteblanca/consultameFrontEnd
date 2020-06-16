@@ -1,4 +1,4 @@
 export const environment = {
-  test: true,
+  production: true,
   endpoint:'/test'
 };
