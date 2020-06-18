@@ -20,7 +20,7 @@ import { ReporteCambiosComponent } from "./components/reporte-cambios/reporte-ca
 
 
 const routes: Routes = [
-	{ path: '', redirectTo: '/login', pathMatch: 'full' },
+	{ path: '', redirectTo: '/app', pathMatch: 'full' },
 	{ path: 'login', component: LoginComponent, canActivate: [HomeGuard] },
 	{
 		path: 'app', component: AplicationComponent, canActivate: [AuthGuard],
