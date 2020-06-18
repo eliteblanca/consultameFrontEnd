@@ -87,7 +87,7 @@ export class AutenticateApiService {
             this.userApi.endUserSesion(),
             this.http.get<any>(this.endPoints.logOut, { observe: "body" })            
         ).pipe(
-            delay(800)
+            delay(1100)
         )
         .subscribe(response => {
             window.localStorage.setItem('logout', 'true')
