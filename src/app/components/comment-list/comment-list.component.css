@@ -1,7 +1,4 @@
 :host{
-    /* display: grid;
-    grid-template-columns: 1fr;
-    grid-template-rows: auto 30rem */
     height: 100%;
     width: 100%;
 }
