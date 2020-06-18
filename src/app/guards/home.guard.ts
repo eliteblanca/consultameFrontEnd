@@ -22,7 +22,12 @@ export class HomeGuard implements CanActivate {
   canActivate(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-      return this.autenticateApi.refreshToken().pipe(
+
+      if (!!this.state.getValueOf('user')) {
+        this.router.navigate(['/app'])
+      } else {
+        return this.autenticateApi.refreshToken().pipe(
+        
         catchError(err => of(null)),
         mergeMap(apiRes => iif(() => !!apiRes,
           of(apiRes).pipe(
@@ -43,6 +48,7 @@ export class HomeGuard implements CanActivate {
           )
         )
       )
+          }
   }
   
 }
