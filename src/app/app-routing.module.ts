@@ -9,7 +9,6 @@ import { AplicationComponent, ArticleViewComponent, ExplorarComponent, LoginComp
 import { IndicadoresComponent } from "./components/indicadores/indicadores.component";
 import { NewsCreatorComponent } from "./components/news-creator/news-creator.component";
 import { NewsEditorComponent } from "./components/news-editor/news-editor.component";
-import { NewsViewComponent } from "./components/news-view/news-view.component";
 import { NewsComponent } from "./components/news/news.component";
 import { ReportsComponent } from "./components/reports/reports.component";
 import { UsersconfigComponent } from "./components/usersconfig/usersconfig.component";
@@ -38,7 +37,6 @@ const routes: Routes = [
 				]
 			},
 			{ path: 'news', component: NewsComponent },
-			{ path: 'news/:id', component: NewsViewComponent },
 			{ path: 'edicion', component: EdicionComponent },
 			{ path: 'articlecreation', component: ArticleCreatorComponent },
 			{ path: 'favorites', component: FavoritesComponent },

@@ -2,18 +2,11 @@
     padding: 3rem 3rem;
     height: 100% !important;
     width: 100% !important;
-
-    display: grid;
-    grid-template-columns: 25% auto;
-    grid-template-rows: 100%;
-
-    grid-template-areas: "menu dash";                        
-
-    grid-gap: 1rem;
+    display: flex;
 }
 
 .menu{
-    grid-area: menu;
+    width: 25%;
 }
 
 .menu .menuButton:hover{
@@ -22,10 +15,16 @@
     background-color: var(--primary);
 }
 
-
 .menu .menuButton.active{
     color: var(--primary);
     cursor: pointer;
+}
+
+.report_area{
+    height: 100%;
+    width: 75%;
+    padding-left: 3rem;
+    padding-right: 3rem;
 }
 
 .menu .menuButton{

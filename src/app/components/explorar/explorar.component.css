@@ -1,21 +1,13 @@
 :host{
     height: 100% !important;
     width: 100%;
-
-    display: grid;
-    grid-template-columns: 25% auto;
-    grid-template-rows: auto;
-    column-gap: 0;
+    display: flex;
 }
 
 .categoriesContainer{
     padding-left: 3rem;
     padding-top: 3rem;
-}
-
-.articles_container{
-    padding-top: 3rem;
-    overflow-y: scroll;
+    width: 25%;
 }
 
 .exporarSectionTab:hover, .exporarSectionTab.active{
@@ -33,4 +25,8 @@
     margin: 0;
     font-size: 1rem;
     line-height: 1rem;
+}
+
+.searchContainer{
+    width: 75%;
 }

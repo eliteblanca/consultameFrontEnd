@@ -1,53 +1,72 @@
-
 <div class="articleContainer">
     <header class="header" *ngIf="article">
         <app-icon [iconName]="'mdi:arrow-left'" (click)="goBack()"> </app-icon>
-        <h4 class="title">{{article.title}}</h4>        
+        <h4 class="title">{{article.title}}</h4>
     </header>
-    <ng-scrollbar class="content">        
+    <ng-scrollbar class="content">
         <div #content [hidden]="adjuntosVisibles">
             <app-rteview></app-rteview>
         </div>
     </ng-scrollbar>
     <div class="footer" *ngIf="article">
         <app-icon [iconName]="'mdi:help-circle-outline'" [title]="'Publicado el ' + publicationDate"></app-icon>
-        <span  class="leyend">Ultima modificacion el: {{modificationDate}}</span>
-        <app-icon *appUserRoleIsIn="['publicador','admin']" class="socialButton" (click)="goToArticleEdition()" [iconName]="'mdi:pencil'" tooltip="Editar articulo" placement="top" show-delay="500"> </app-icon>
-        <app-icon class="socialButton favoriteIcon" *ngIf="article.type != 'news'" (click)="addToFavorites()" (mouseover)="isFavoriteHover = true" (mouseout)="isFavoriteHover = false" [iconName]="'mdi:star'"  [ngClass]="{ favorite : isFavorite()}" tooltip="Agregar a favoritos" placement="top" show-delay="500"> </app-icon>
+        <span class="leyend">Ultima modificacion el: {{modificationDate}}</span>
+        <app-icon *appUserRoleIsIn="['publicador','admin']" class="socialButton" (click)="goToArticleEdition()"
+            [iconName]="'mdi:pencil'" tooltip="Editar articulo" placement="top" show-delay="500"> </app-icon>
+        <app-icon class="socialButton favoriteIcon" *ngIf="article.type != 'news'" (click)="addToFavorites()"
+            (mouseover)="isFavoriteHover = true" (mouseout)="isFavoriteHover = false" [iconName]="'mdi:star'"
+            [ngClass]="{ favorite : isFavorite()}" tooltip="Agregar a favoritos" placement="top" show-delay="500">
+        </app-icon>
         <span *ngIf="article.type != 'news'">{{article.favorites.length}}</span>
-        <app-icon class="socialButton" [iconName]="isLike() ? 'mdi:thumb-up' : 'mdi:thumb-up-outline'" (click)="addLike()" [title]="'Publicado el ' + publicationDate" tooltip="Útil" placement="top" show-delay="500"> </app-icon>
+        <app-icon class="socialButton" [iconName]="isLike() ? 'mdi:thumb-up' : 'mdi:thumb-up-outline'"
+            (click)="addLike()" [title]="'Publicado el ' + publicationDate" tooltip="Útil" placement="top"
+            show-delay="500"> </app-icon>
         <span>{{article.likes.length}}</span>
-        <app-icon class="socialButton" [iconName]="isDisLike() ? 'mdi:thumb-down' : 'mdi:thumb-down-outline'" (click)="addDisLike()" [title]="'Publicado el ' + publicationDate" tooltip="No útil" placement="top" show-delay="500"> </app-icon>
+        <app-icon class="socialButton" [iconName]="isDisLike() ? 'mdi:thumb-down' : 'mdi:thumb-down-outline'"
+            (click)="addDisLike()" [title]="'Publicado el ' + publicationDate" tooltip="No útil" placement="top"
+            show-delay="500"> </app-icon>
         <span>{{article.disLikes.length}}</span>
     </div>
 </div>
-<div class="index" *ngIf="article" [ngClass]="{no_title: article.type == 'news'}">
-    <div class="index_menu" *ngIf="article.type != 'news'">
-        <div class="tab" [ngClass]="{'active': modo == 'indice'}" (click)="modo = 'indice'">
-            <app-icon class="mr.5" [iconName]="'mdi:format-list-bulleted'"></app-icon>            
-            <h4> Indice</h4>
-        </div>        
-        <div class="tab" (click)="modo = 'tags'"  [ngClass]="{'active': modo == 'tags'}">
-            <app-icon class="mr.5" [iconName]="'mdi:tag-multiple'"></app-icon>            
-            <h4> Tags</h4>
+<div class="side_panel">
+    <div class="index" *ngIf="article">
+        <div class="index_menu" *ngIf="article.type != 'news'">
+            <div class="tab" [ngClass]="{'active': modo == 'indice'}" (click)="modo = 'indice'">
+                <app-icon class="mr.5" [iconName]="'mdi:format-list-bulleted'"></app-icon>
+                <h4> Indice</h4>
+            </div>
+            <div class="tab" (click)="modo = 'tags'" [ngClass]="{'active': modo == 'tags'}">
+                <app-icon class="mr.5" [iconName]="'mdi:tag-multiple'"></app-icon>
+                <h4> Tags</h4>
+            </div>
+            <div class="tab" (click)="modo = 'adjuntos'" [ngClass]="{'active': modo == 'adjuntos'}">
+                <app-icon class="mr.5" [iconName]="'mdi:file-multiple-outline'"></app-icon>
+                <h4>Adjuntos</h4>
+            </div>
         </div>
-        <div class="tab" (click)="modo = 'adjuntos'"  [ngClass]="{'active': modo == 'adjuntos'}">
-            <app-icon class="mr.5" [iconName]="'mdi:file-multiple-outline'"></app-icon>
-            <h4>Adjuntos</h4>            
-        </div>
+        
+            <div class="fileList pt1" *ngIf="modo == 'adjuntos'">
+                <ng-scrollbar>
+                <app-file-prev class="mb.5" *ngFor="let file of article.attached" [fileName]="file"
+                [articleId]="article.id" [mode]="'notDelete'"></app-file-prev>
+            </ng-scrollbar>
+            </div>
+            <div class="tagList" *ngIf="modo == 'tags'">
+                <ng-scrollbar>
+                    <div class="lista">
+                        <div class="tag" *ngFor="let tag of article.tags" (click)="searchTag(tag)">{{tag}}</div>
+
+                    </div>
+                </ng-scrollbar>
+            </div>
+            <div class="indice" *ngIf="modo == 'indice'">
+                <ng-scrollbar>
+                <div *ngFor="let el of indexElements; index as i" [innerHTML]="el.innerHTML"
+                    [ngClass]="[el.tagName, calculateActive(i)]" (click)="scrollTo(el)"></div>
+                </ng-scrollbar>
+            </div>
     </div>
-    <ng-scrollbar>
-        <div class="fileList pt1" *ngIf="modo == 'adjuntos'">
-            <app-file-prev class="mb.5" *ngFor="let file of article.attached" [fileName]="file" [articleId]="article.id" [mode]="'notDelete'"></app-file-prev>
-        </div>
-        <div class="tagList" *ngIf="modo == 'tags'">
-            <div class="tag" *ngFor="let tag of article.tags" (click)="searchTag(tag)">{{tag}}</div>
-        </div>
-        <div class="indice" *ngIf="modo == 'indice'">
-            <div *ngFor="let el of indexElements; index as i" [innerHTML]="el.innerHTML" [ngClass]="[el.tagName, calculateActive(i)]" (click)="scrollTo(el)"></div>
-        </div>
-    </ng-scrollbar>
-</div>
-<div class="comments" *ngIf="article">
-    <app-comment-list [articleId]="article.id"></app-comment-list>
+    <div class="comments" *ngIf="article">
+        <app-comment-list [articleId]="article.id"></app-comment-list>
+    </div>
 </div>
