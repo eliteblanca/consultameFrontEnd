@@ -2,11 +2,11 @@
     <ng-scrollbar>
         <div class="exporarSectionTab mb1" (click)="changeModeTo('update')" [ngClass]="{ active: mode == 'update'}">
             <app-icon [iconName]="'mdi:update'" class="mr1"></app-icon>
-            <h5>Ultimas actualizaciones</h5>
+            <h5>Últimas actualizaciones</h5>
         </div>
         <div class="exporarSectionTab mb1" (click)="changeModeTo('top')" [ngClass]="{ active: mode == 'top'}">
             <app-icon [iconName]="'mdi:seal'" class="mr1"></app-icon>
-            <h5>Top articulos</h5>
+            <h5>Top de artículos</h5>
         </div>
         <div class="ma.5 mr1">
             <app-categories [mode]="'explore'" (onCategorySelected)="categoriaSeleccionada($event)"></app-categories>

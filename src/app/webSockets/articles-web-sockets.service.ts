@@ -50,7 +50,7 @@ export class ArticlesWebSocketsService {
   ) {  }
 
   public connect(){
-    this.socket = io('http://localhost:3001/articles',{ query: { cedula: this.state.getValueOf('user').sub }})
+    this.socket = io('/articles',{ query: { cedula: this.state.getValueOf('user').sub }})
 
     this.socket.on('connect', () => {
       this.socket.on('newarticle', data => {
