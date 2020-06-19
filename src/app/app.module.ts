@@ -44,7 +44,6 @@ import { NewsListEditableComponent } from './components/news-list-editable/news-
 import { NewsComponent } from './components/news/news.component';
 import { NewsListComponent } from './components/news-list/news-list.component';
 import { NewsCardComponent } from './components/news-card/news-card.component';
-import { NewsViewComponent } from './components/news-view/news-view.component';
 import { FavoritesComponent } from './components/favorites/favorites.component';
 import { CommentListComponent } from './components/comment-list/comment-list.component';
 import { CommentComponent } from './components/comment/comment.component';
@@ -109,7 +108,6 @@ import { NotificationComponent } from './components/notification/notification.co
         NewsComponent,
         NewsListComponent,
         NewsCardComponent,
-        NewsViewComponent,
         FavoritesComponent,
         CommentListComponent,
         CommentComponent,

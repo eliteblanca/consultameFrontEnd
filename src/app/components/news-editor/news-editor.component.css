@@ -1,11 +1,8 @@
 :host{
     height: 100%;
     width: 100%;
-    display: grid;
-    grid-template-columns: 100%;
-    grid-template-rows: 4rem 1fr 2.5rem;
-
-    grid-gap: 1rem;
+    display: flex;
+    flex-direction: column;
 }
 
 .articleTitle_input{
@@ -17,6 +14,7 @@
     border-radius: 3px;
     outline: 0 !important;
     box-shadow: var(--shadow1);
+    margin-bottom: 1rem;
 }
 
 .footer{
@@ -24,7 +22,5 @@
     align-items: center;
     justify-content: flex-end;
     margin-left: 50%;
-
-    grid-row:3 / 4 ;
-    grid-column: 1 / 2 ;
+    margin-top: 1rem;
 }

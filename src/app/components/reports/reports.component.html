@@ -4,10 +4,6 @@
             <app-icon [iconName]="'mdi:chart-bar'"></app-icon>
             <span class="text">Indicadores</span>
         </a>
-        <!-- <a class="menuButton">
-            <app-icon [iconName]="'mdi:account-group'"></app-icon>
-            <span class="text">Usuarios</span>
-        </a> -->
         <a class="menuButton" routerLinkActive="active" routerLink="./comentarios">
             <app-icon [iconName]="'mdi:chat'"></app-icon>
             <span class="text">Comentarios</span>
@@ -20,7 +16,8 @@
             <app-icon [iconName]="'mdi:database'"></app-icon>
             <span class="text">Base de datos</span>
         </a>
-    </div>    <div>
+    </div>    
+    <div class="report_area">
         <ng-scrollbar>
             <router-outlet></router-outlet>
             <!-- Routed components go here -->
