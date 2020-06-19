@@ -10,8 +10,9 @@
     <ejs-calendar (change)="filtrarPorFecha($event)" [max]='maxDate' [value]="selectedDate" ></ejs-calendar>
 </div>
 
-<ng-scrollbar *ngIf="!calendarMode">
-    <div infiniteScroll
+<div class="scroll">
+    <ng-scrollbar *ngIf="!calendarMode" class="scrollBar">
+        <div infiniteScroll
         (scrolled)="onScroll($event)"
         [infiniteScrollDistance]="200"
         [infiniteScrollThrottle]="50" 
@@ -28,4 +29,5 @@
         </div>
         
     </div>
-</ng-scrollbar>
+    </ng-scrollbar>
+</div>
