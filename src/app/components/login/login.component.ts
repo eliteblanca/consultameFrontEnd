@@ -16,8 +16,14 @@ type httpError = {
 export class LoginComponent implements OnInit, AfterViewInit {
 
     @ViewChild(RecaptchaComponent , { static: false }) recaptcha:RecaptchaComponent;
+    @ViewChild('box', { static: false }) box: ElementRef;
     @ViewChild('usuario', { static: false }) usuario: ElementRef;
     @ViewChild('password', { static: false }) password: ElementRef;    
+
+    slide = false;
+    initialPos = 0 ;
+    initialInnerOfset = 0;
+    captchaValidado = false
 
     public captchaToken:string = '';
     isLoginError = false
@@ -37,16 +43,18 @@ export class LoginComponent implements OnInit, AfterViewInit {
     ngAfterViewInit() {
         setTimeout(() => {
             this.usuario.nativeElement.focus();
+            this.initialPos = this.box.nativeElement.getBoundingClientRect().left;
         }, 0);
     }   
 
     login(): void {
 
+
         if( !(this.usuario.nativeElement.value && this.password.nativeElement.value) ){
             this.isUserPassFieldsError = true
         } else {
             this.isUserPassFieldsError = false
-        }        
+        }
         
         if( !this.isUserPassFieldsError && this.captchaCheked){
             this.isLoginError = false;    
@@ -68,31 +76,47 @@ export class LoginComponent implements OnInit, AfterViewInit {
                         this.isLoading = false
                     }
                 })
-        }
-        
+            }
+            
+            this.box.nativeElement.style.left = 0
+            this.slide = false;        
+            this.initialPos = this.box.nativeElement.getBoundingClientRect().left;
+            this.initialInnerOfset = 0;
+            this.captchaCheked = false
     }
 
-    enter(event: KeyboardEvent) {
-        if (event.key == "Enter") {
-            this.login()
+
+    mouseDown(e){
+        this.slide = true;        
+        this.initialInnerOfset = e.offsetX;
+    }
+    
+    mouseUp(){
+        this.slide = false;
+    }
+
+    mouseMove(e){
+        if(!this.captchaCheked){
+            let posX = e.clientX;            
+            let diferencia  = (posX - this.initialPos) - this.initialInnerOfset;
+            
+            if(( diferencia + 48 ) >= 300){
+                this.validado()
+                return
+            }
+
+            if(this.slide && !this.captchaCheked && diferencia > 0 ){
+                this.box.nativeElement.style.left = diferencia + "px";
+            } else {
+                this.box.nativeElement.style.left = 0;
+            }
         }
     }
 
-    captchaResolved(token:string){
-
-        this.captchaToken = token;
-
-        if(token){
-            this.autenticateApi.validateCaptcha(token).subscribe(response =>{
-                if(response.success){
-                    this.captchaCheked = true
-                    this.isBotError = false
-                } else {
-                    this.captchaCheked = false
-                    this.isBotError = true
-                    this.recaptcha.reset()
-                }
-            })
-        }
+    validado(){
+        console.log('validado')
+        this.captchaCheked = true
+        this.login()
     }
+
 }

@@ -1,4 +1,4 @@
-<div class="imageBackGround" (keydown)="enter($event)">
+<div class="imageBackGround">
 
     <div class="formContainer ">
 
@@ -19,7 +19,17 @@
                 <input type="password" placeholder="Contraseña" #password>
             </div>
 
-            <re-captcha (resolved)="captchaResolved($event)" siteKey="6Ldk6fMUAAAAALNGMHqSeM2wNt1uzEGIsrmUzzr6" ></re-captcha>
+            <div class="slide"      >
+                <div class="box" (mousemove)="mouseMove($event)" (mousedown)="mouseDown($event)" (mouseup)="mouseUp($event)" #box>
+                    <app-icon iconName="mdi:arrow-right-bold-circle-outline"></app-icon>
+                </div>
+                <div class="text">
+                    Desliza para ingresar
+                </div>
+                <div class="objetivo">
+                    
+                </div>
+            </div>
 
             <div class="errorMessage mt1" *ngIf="isLoginError">
                 <strong>Error:</strong><span> El usuario o la contraseña son incorrectos</span>
@@ -35,7 +45,6 @@
 
             <app-spinner *ngIf="isLoading" class="ma1"></app-spinner>
 
-            <input class="submitButton mt1" type="button" (click)="login()" value="Entrar" *ngIf="usuario.value && password.value && captchaCheked">
 
         </div>
     </div>   
