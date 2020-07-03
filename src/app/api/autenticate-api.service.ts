@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
-import { switchMap, tap, map } from "rxjs/operators";
+import { switchMap, tap, map, delay } from "rxjs/operators";
 import { environment } from '../../environments/environment';
 import { StateService } from "../services/state.service";
 import { JwtHelperService } from '@auth0/angular-jwt';
@@ -86,7 +86,10 @@ export class AutenticateApiService {
         forkJoin(
             this.userApi.endUserSesion(),
             this.http.get<any>(this.endPoints.logOut, { observe: "body" })            
-        ).subscribe(response => {
+        ).pipe(
+            delay(2000)
+        )
+        .subscribe(response => {
             window.localStorage.setItem('logout', 'true')
             this.state.logOut()
         })
