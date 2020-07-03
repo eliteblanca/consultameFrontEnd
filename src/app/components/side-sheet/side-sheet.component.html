@@ -32,6 +32,7 @@
         <div class="tab" (click)="state.toogleSideSheet()" routerLinkActive="active" routerLink="/app/reports" ><app-icon [iconName]="'mdi:finance'"></app-icon>Indicadores</div>
     </div>
     <div  class="menuSection">
-        <div class="tab" (click)="logOut()"><app-icon [iconName]="'mdi:logout'"></app-icon>Salir</div>
-    </div>
+        <div class="tab" (click)="logOut()" *ngIf="!logoutLoading"><app-icon [iconName]="'mdi:logout'"></app-icon>Salir</div>
+        <app-spinner *ngIf="logoutLoading"></app-spinner>
+    </div>             
 </div>

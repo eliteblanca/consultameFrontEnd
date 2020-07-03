@@ -21,6 +21,8 @@ export class SideSheetComponent implements OnInit {
   public rol: string;
   public userPcrc$: Observable<cliente[]>;
   public changePcrc: boolean;
+  public logoutLoading = false;
+
 
   constructor(
     public userApi: UserApiService,
@@ -32,11 +34,8 @@ export class SideSheetComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-
     this.userName = this.state.getValueOf('user').name
-    this.rol = this.state.getValueOf('user').rol
-
-   
+    this.rol = this.state.getValueOf('user').rol   
   }
 
   changeCliente(cliente: cliente) {
@@ -61,6 +60,7 @@ export class SideSheetComponent implements OnInit {
   logOut = () => {
     localStorage.removeItem('selectedClienteId')
     localStorage.removeItem('selectedPcrcId')
+    this.logoutLoading = true;
     this.autenticateApi.logOut()
   }
 
