@@ -85,13 +85,12 @@ export class LoginComponent implements OnInit, AfterViewInit {
             this.captchaCheked = false
     }
 
-
     mouseDown(e){
         this.slide = true;        
         this.initialInnerOfset = e.offsetX;
     }
-    
-    mouseUp(){
+
+    mouseUp(e){
         this.slide = false;
     }
 
