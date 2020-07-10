@@ -72,6 +72,7 @@ import { ReporteCambiosComponent } from './components/reporte-cambios/reporte-ca
 import { ArticleplaceholderComponent } from './components/articleplaceholder/articleplaceholder.component';
 import { NotificationsComponent } from './components/notifications/notifications.component';
 import { NotificationComponent } from './components/notification/notification.component';
+import { SlideCaptchaComponent } from './components/slide-captcha/slide-captcha.component';
 @NgModule({
     declarations: [
         AppComponent,
@@ -136,6 +137,7 @@ import { NotificationComponent } from './components/notification/notification.co
         ArticleplaceholderComponent,
         NotificationsComponent,
         NotificationComponent,
+        SlideCaptchaComponent        
     ],
     imports: [
         BrowserModule,

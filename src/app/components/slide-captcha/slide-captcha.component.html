@@ -1,0 +1,10 @@
+<div class="slide_container" (mousemove)="mouseMove($event)" (mouseup)="mouseUp($event)" (mouseleave)="mouseLeave($event)" (mouseenter)="mouseLeave($event)">
+    <div class="slide">
+        <div class="box" (mousedown)="mouseDown($event)"  #box>
+            <app-icon iconName="mdi:arrow-right-bold-circle-outline"></app-icon>
+        </div>
+        <div class="text">
+            Desliza para ingresar
+        </div>
+    </div>
+</div>

@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { AutenticateApiService } from "../../api/autenticate-api.service";
-import { RecaptchaComponent } from 'ng-recaptcha'
+import { SlideCaptchaComponent } from '../slide-captcha/slide-captcha.component'
 
 type httpError = {
     status: number;
@@ -15,20 +15,12 @@ type httpError = {
 })
 export class LoginComponent implements OnInit, AfterViewInit {
 
-    @ViewChild(RecaptchaComponent , { static: false }) recaptcha:RecaptchaComponent;
-    @ViewChild('box', { static: false }) box: ElementRef;
+    @ViewChild(SlideCaptchaComponent , { static: false }) recaptcha:SlideCaptchaComponent;
     @ViewChild('usuario', { static: false }) usuario: ElementRef;
     @ViewChild('password', { static: false }) password: ElementRef;    
 
-    slide = false;
-    initialPos = 0 ;
-    initialInnerOfset = 0;
-    captchaValidado = false
-
-    public captchaToken:string = '';
     isLoginError = false
     isBotError = false
-    captchaCheked = false
     isUserPassFieldsError = false
     isLoading = false
 
@@ -43,7 +35,6 @@ export class LoginComponent implements OnInit, AfterViewInit {
     ngAfterViewInit() {
         setTimeout(() => {
             this.usuario.nativeElement.focus();
-            this.initialPos = this.box.nativeElement.getBoundingClientRect().left;
         }, 0);
     }   
 
@@ -52,11 +43,12 @@ export class LoginComponent implements OnInit, AfterViewInit {
 
         if( !(this.usuario.nativeElement.value && this.password.nativeElement.value) ){
             this.isUserPassFieldsError = true
+            this.recaptcha.resetCaptcha()
         } else {
             this.isUserPassFieldsError = false
         }
         
-        if( !this.isUserPassFieldsError && this.captchaCheked){
+        if( !this.isUserPassFieldsError && this.recaptcha.captchaValidado){
             this.isLoginError = false;    
             this.isLoading = true;
 
@@ -66,56 +58,22 @@ export class LoginComponent implements OnInit, AfterViewInit {
                         this.router.navigate(['/app']);
                     } else {
                         this.isLoginError = true
+                        this.recaptcha.resetCaptcha()
                     }
-    
+                    
                     this.isLoading = false
-    
+                    
                 }, (error: httpError) => {
                     if (error.statusText == 'Unauthorized') {
                         this.isLoginError = true
                         this.isLoading = false
+                        this.recaptcha.resetCaptcha()
                     }
                 })
-            }
-            
-            this.box.nativeElement.style.left = 0
-            this.slide = false;        
-            this.initialPos = this.box.nativeElement.getBoundingClientRect().left;
-            this.initialInnerOfset = 0;
-            this.captchaCheked = false
-    }
-
-    mouseDown(e){
-        this.slide = true;        
-        this.initialInnerOfset = e.offsetX;
-    }
-
-    mouseUp(e){
-        this.slide = false;
-    }
-
-    mouseMove(e){
-        if(!this.captchaCheked){
-            let posX = e.clientX;            
-            let diferencia  = (posX - this.initialPos) - this.initialInnerOfset;
-            
-            if(( diferencia + 48 ) >= 300){
-                this.validado()
-                return
-            }
-
-            if(this.slide && !this.captchaCheked && diferencia > 0 ){
-                this.box.nativeElement.style.left = diferencia + "px";
-            } else {
-                this.box.nativeElement.style.left = 0;
-            }
         }
     }
-
-    validado(){
-        console.log('validado')
-        this.captchaCheked = true
+    
+    captchaResolved(token:{ avSpeed: number, duration:number }){
         this.login()
     }
-
 }
