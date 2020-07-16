@@ -70,4 +70,6 @@ export class SlideCaptchaComponent implements OnInit {
     this.captchaValidado = false;
   }
 
+  
+
 }
