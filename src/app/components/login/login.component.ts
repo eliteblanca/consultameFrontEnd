@@ -20,6 +20,7 @@ export class LoginComponent implements OnInit, AfterViewInit {
     @ViewChild('password', { static: false }) password: ElementRef;    
 
     isLoginError = false
+    isMessage:string
     isBotError = false
     isUserPassFieldsError = false
     isLoading = false
@@ -54,10 +55,12 @@ export class LoginComponent implements OnInit, AfterViewInit {
 
             this.autenticateApi.login(this.usuario.nativeElement.value, this.password.nativeElement.value)
                 .subscribe(autenticated => {
-                    if (autenticated) {
+                    if (autenticated.code==='200') {
                         this.router.navigate(['/app']);
+                        this.isLoginError = false
                     } else {
                         this.isLoginError = true
+                        this.isMessage=autenticated.message
                         this.recaptcha.resetCaptcha()
                     }
                     
