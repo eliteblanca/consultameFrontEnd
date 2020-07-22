@@ -58,8 +58,8 @@ export class AutenticateApiService {
         
     }
 
-    login(user: string, pass: string): Observable<boolean> {
-        return this.http.post<{ token: string, refreshToken:string }>(this.endPoints.authenticate, { username: user, password: pass }, { observe: "body" }).pipe(
+    login(user: string, pass: string) {
+        return this.http.post<{ token: string, refreshToken:string,code:string,message:string }>(this.endPoints.authenticate, { username: user, password: pass }, { observe: "body" }).pipe(
             tap(val => {
                 if (val.token) {
                     let decoded = helper.decodeToken(val.token)
@@ -72,10 +72,10 @@ export class AutenticateApiService {
                 }
             }),
             map(val => {
-                if (val.token) {
-                    return true
+                if (val) {
+                    return val
                 } else {
-                    return false
+                    return val
                 }
             })
         )
