@@ -4,6 +4,7 @@ import { ArticleListComponent } from "../article-list/article-list.component";
 import { ArticlesApiService } from "../../api/articles-api.service";
 import { of, concat, BehaviorSubject, timer } from 'rxjs';
 import { switchMap, tap, concatMap, skip, retryWhen, takeUntil, delayWhen } from 'rxjs/operators';
+import { StateService } from "../../services/state.service";
 
 @Component({
   selector: 'app-favorites',
@@ -31,16 +32,29 @@ export class FavoritesComponent implements OnInit {
   articleList: ArticleListComponent;
 
   constructor(
-    private articlesApi:ArticlesApiService
+    private articlesApi:ArticlesApiService,
+    private state: StateService,
   ) {  }
 
   ngOnInit() {    
+
+    this.state.selectedPcrc$.pipe(
+      tap(pcrc => {
+        this.articles = []
+        this.placeholders = []
+        this.scrollSubject.next(1)
+        this.searchError = false                        
+        clearInterval(this.errorTimeout)
+        this.searchErrorMessage = 10
+      })
+    ).subscribe()
 
     this.scroll$.pipe(
       tap(value => this.placeholders = [1,2,3]),
       concatMap(value => this.articlesApi.getSelfFavorites(
         this.articles.length,
-        6   
+        6,
+        this.state.getValueOf('selectedPcrc').id_dp_pcrc.toString()
       )),
       retryWhen(errors => {
         return errors.pipe(
@@ -78,7 +92,7 @@ export class FavoritesComponent implements OnInit {
 
   onDeleteFavorite(article:Article){
     this.articles = this.articles.filter( _article => _article.id != article.id)
-    this.articlesApi.getSelfFavorites(this.articles.length + 1 , 1).subscribe(articles => {
+    this.articlesApi.getSelfFavorites(this.articles.length + 1 , 1, this.state.getValueOf('selectedPcrc').id_dp_pcrc.toString()).subscribe(articles => {
       this.articles = this.articles.concat(articles)
     })
   }

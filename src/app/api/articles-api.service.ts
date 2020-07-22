@@ -132,8 +132,8 @@ export class ArticlesApiService {
         return this.http.delete<any>(this.endPoints.deleteDisLike(articleId), { observe: "body" })
     }
 
-    getSelfFavorites(from?:number, size?:number): Observable<Article[]> {
-        return this.http.get<Article[]>(this.endPoints.getSelfFavorites, { params: { from: from.toString(), size: size.toString() }, observe: "body" })
+    getSelfFavorites(from:number, size:number, pcrcId:string): Observable<Article[]> {
+        return this.http.get<Article[]>(this.endPoints.getSelfFavorites, { params: { from: from.toString(), size: size.toString(), pcrc:pcrcId }, observe: "body" })
     }
 
     postArticleView(articleId:string ,initialDate:number, finalDate:number )  {
