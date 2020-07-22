@@ -22,16 +22,13 @@
             <app-slide-captcha (validado)="captchaResolved($event)"></app-slide-captcha>
 
             <div class="errorMessage mt1" *ngIf="isLoginError">
-                <strong>Error:</strong><span> El usuario o la contraseña son incorrectos</span>
+                <strong>Error:</strong><span>{{isMessage}}</span>
             </div>
 
             <div class="errorMessage mt1" *ngIf="isBotError">
                 <strong>Error:</strong><span> Verifica de nuevo el captcha</span>
             </div>
 
-            <div class="errorMessage mt1" *ngIf="isUserPassFieldsError">
-                <strong>Error:</strong><span> Falta usuario o contraseña</span>
-            </div>
         </div>
     </div>   
 </div>
