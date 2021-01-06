@@ -32,7 +32,7 @@
     "@syncfusion/ej2-ng-navigations": "^16.2.50",
     "@types/socket.io-client": "^1.4.32",
     "@visurel/iconify-angular": "0.0.7",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "date-fns": "^2.8.1",
     "diff": "^4.0.2",
     "imagesloaded": "^4.1.4",
